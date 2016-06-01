@@ -1,0 +1,36 @@
+{
+  "name": "task",
+  "description": "ownCloud Inventory App",
+  "version": "0.0.1",
+  "author": {
+    "name": "Raimund Schlüßler",
+    "email": "raimund.schluessler@googlemail.com"
+  },
+  "private": true,
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.rschluessler.com:raimund.schluessler/Inventory.git"
+  },
+  "bugs": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory/issues",
+  "contributors": [],
+  "dependencies": {},
+  "devDependencies": {
+    "bower": "*",
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.6",
+    "grunt-contrib-jshint": "*",
+    "jshint-stylish": "^2.1.0",
+    "grunt-concurrent": "~1.0.0",
+    "grunt-contrib-concat": "~0.1.2",
+    "grunt-contrib-less": "~0.6.4",
+    "grunt-contrib-watch": "~0.2.0",
+    "grunt-karma": "~0.4.5",
+    "grunt-newer": "~1.1.1",
+    "grunt-phpdocumentor": "^0.4.1",
+    "grunt-phpunit": "0.2.0",
+    "grunt-wrap": "~0.2.0",
+    "phantomjs": "~1.8.1-3"
+  },
+  "engine": "node >= 0.8"
+}

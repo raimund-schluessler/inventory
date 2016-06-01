@@ -1,0 +1,30 @@
+{
+  "name": "ownCloud Inventory App",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "",
+    "angular-route": "",
+    "angular-animate": "",
+    "angular-sanitize": "",
+    "angular-ui-select": "https://github.com/angular-ui/ui-select.git",
+    "angular-draganddrop": "https://github.com/marceljuenemann/angular-drag-and-drop-lists.git"
+  },
+  "devDependencies": {},
+  "homepage": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory",
+  "authors": [
+    "Raimund Schlüßler <raimund.schluessler@googlemail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "AGPLv3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "core/vendor",
+    "test",
+    "tests"
+  ]
+}
