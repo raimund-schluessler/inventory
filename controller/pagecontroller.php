@@ -24,6 +24,8 @@ namespace OCA\Inventory\Controller;
 
 use \OCP\AppFramework\Controller;
 use \OCP\AppFramework\Http\TemplateResponse;
+use \OCP\IRequest;
+use \OCP\IConfig;
 
 /**
  * Controller class for main page.
@@ -31,20 +33,32 @@ use \OCP\AppFramework\Http\TemplateResponse;
 class PageController extends Controller {
 
 	/**
+	 * @param string $appName
+	 * @param IConfig $config
+	 */
+	public function __construct($appName, IRequest $request,
+								$userId, IConfig $config) {
+		parent::__construct($appName, $request);
+		$this->config = $config;
+		$this->userId = $userId;
+	}
+
+
+	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
 	public function index() {
 		if (defined('DEBUG') && DEBUG) {
-			\OCP\Util::addScript('inventory', 'vendor/angularjs/angular');
-			\OCP\Util::addScript('inventory', 'vendor/angularjs/angular-route');
-			\OCP\Util::addScript('inventory', 'vendor/angularjs/angular-animate');
-			\OCP\Util::addScript('inventory', 'vendor/angularjs/angular-sanitize');
+			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular');
+			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular-route');
+			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular-animate');
+			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular-sanitize');
 		} else {
-			\OCP\Util::addScript('inventory', 'vendor/angularjs/angular.min');
-			\OCP\Util::addScript('inventory', 'vendor/angularjs/angular-route.min');
-			\OCP\Util::addScript('inventory', 'vendor/angularjs/angular-animate.min');
-			\OCP\Util::addScript('inventory', 'vendor/angularjs/angular-sanitize.min');
+			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular.min');
+			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular-route.min');
+			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular-animate.min');
+			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular-sanitize.min');
 		}
 		\OCP\Util::addScript('inventory', 'public/app');
 		// \OCP\Util::addStyle('inventory', 'vendor/angularui/ui-select/select2');

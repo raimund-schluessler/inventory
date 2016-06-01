@@ -23,6 +23,7 @@
 namespace OCA\Inventory\AppInfo;
 
 use \OCP\AppFramework\App;
+use \OCP\AppFramework\IAppContainer;
 use \OCA\Inventory\Controller\PageController;
 
 class Application extends App {
@@ -40,8 +41,26 @@ class Application extends App {
 			return new PageController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$c->query('UserId')
+				$c->query('UserId'),
+				$c->query('ServerContainer')->getConfig()
 			);
+		});
+
+		/**
+		 * Core
+		 */
+		$container->registerService('UserId', function(IAppContainer $c) {
+			$user = $c->query('ServerContainer')->getUserSession()->getUser();
+
+			return ($user) ? $user->getUID() : '';
+		});	
+
+		$container->registerService('L10N', function(IAppContainer $c) {
+			return $c->query('ServerContainer')->getL10N($c->query('AppName'));
+		});
+
+		$container->registerService('Settings', function(IAppContainer $c) {
+			return $c->query('ServerContainer')->getConfig();
 		});
 	}
 }
