@@ -49,19 +49,6 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index() {
-		if (defined('DEBUG') && DEBUG) {
-			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular');
-			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular-route');
-			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular-animate');
-			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular-sanitize');
-		} else {
-			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular.min');
-			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular-route.min');
-			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular-animate.min');
-			// \OCP\Util::addScript('inventory', 'vendor/angularjs/angular-sanitize.min');
-		}
-		\OCP\Util::addScript('inventory', 'public/app');
-		// \OCP\Util::addStyle('inventory', 'vendor/angularui/ui-select/select2');
 
 		$response = new TemplateResponse('inventory', 'main');
 		return $response;
