@@ -25,6 +25,8 @@ namespace OCA\Inventory\AppInfo;
 use \OCP\AppFramework\App;
 use \OCP\AppFramework\IAppContainer;
 use \OCA\Inventory\Controller\PageController;
+use \OCA\Inventory\Controller\ItemsController;
+use \OCA\Inventory\Service\ItemsService;
 
 class Application extends App {
 
@@ -43,6 +45,25 @@ class Application extends App {
 				$c->query('Request'),
 				$c->query('UserId'),
 				$c->query('ServerContainer')->getConfig()
+			);
+		});
+
+		$container->registerService('ItemsController', function(IAppContainer $c) {
+			return new ItemsController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ItemsService')
+			);
+		});
+
+		/**
+		 * Services
+		 */
+
+		$container->registerService('ItemsService', function(IAppContainer $c) {
+			return new ItemsService(
+				$c->query('UserId'),
+				$c->query('AppName')
 			);
 		});
 

@@ -29,6 +29,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
         taskUpdateInterval: 1000 * 600
       });
       $httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
+		$routeProvider
+		.when('/:viewID', {})
+		.otherwise({
+			redirectTo: '/items/'
+		});
     }
   ]);
 

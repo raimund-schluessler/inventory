@@ -22,7 +22,6 @@
 
 namespace OCA\Inventory;
 
-// use \OCP\AppFramework\App;
 use \OCA\Inventory\AppInfo\Application;
 
 $application = new Application();
@@ -30,5 +29,8 @@ $application = new Application();
 $application->registerRoutes($this, array('routes' => array(
 	// page
 	array('name' => 'page#index', 'url' => '/', 'verb' => 'GET'),
+
+	// items
+	array('name' => 'items#get',	'url' => '/items', 'verb' => 'GET'),
 
 )));

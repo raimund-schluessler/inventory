@@ -37,7 +37,7 @@ module.exports = function(grunt) {
 			pkg: grunt.file.readJSON('package.json'),
 			version: '<%= meta.pkg.version %>',
 			banner: '/**\n' + ' * <%= meta.pkg.description %> - v<%= meta.version %>\n' + ' *\n' + ' * Copyright (c) <%= grunt.template.today("yyyy") %> - ' + '<%= meta.pkg.author.name %> <<%= meta.pkg.author.email %>>\n' + ' *\n' + ' * This file is licensed under the Affero\
-			 General Public License version 3 or later.\n' + ' * See the COPYING file\n' + ' *\n' + ' */\n\n',
+ General Public License version 3 or later.\n' + ' * See the COPYING file\n' + ' *\n' + ' */\n\n',
 			build: 'app/',
 			production: 'public/'
 		},
