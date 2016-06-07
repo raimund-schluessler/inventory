@@ -23,15 +23,19 @@
 namespace OCA\Inventory\Service;
 
 use OCP\IConfig;
+use \OCA\Inventory\Db\Item;
+use \OCA\Inventory\Db\ItemMapper;
 
 class ItemsService {
 
 	private $userId;
 	private $appName;
+    private $itemMapper;
 
-	public function __construct($userId, $appName) {
+	public function __construct($userId, $appName, ItemMapper $itemMapper) {
 		$this->userId = $userId;
 		$this->appName = $appName;
+        $this->itemMapper = $itemMapper;
 	}
 
 	/**
@@ -40,20 +44,21 @@ class ItemsService {
 	 * @return array
 	 */
 	public function get() {
-		$items = array(
-			array(
-				'id' => 0,
-				'description' => 'Festool Oberfräse OF1400',
-				'place' => 'Schrank Flur',
-				'categories' => 'Elektro Werkzeug, Holzbearbeitung, Fräsen, Festool'
-				),
-			array(
-				'id' => 1,
-				'description' => 'Festool Fräser 18/40',
-				'place' => 'Schrank Flur',
-				'categories' => 'Elektro Werkzeug, Holzbearbeitung, Fräsen, Festool'
-				),
-		);
+		$items = $this->itemMapper->findAll();
+		// $items = array(
+		// 	array(
+		// 		'id' => 0,
+		// 		'description' => 'Festool Oberfräse OF1400',
+		// 		'place' => 'Schrank Flur',
+		// 		'categories' => 'Elektro Werkzeug, Holzbearbeitung, Fräsen, Festool'
+		// 		),
+		// 	array(
+		// 		'id' => 1,
+		// 		'description' => 'Festool Fräser 18/40',
+		// 		'place' => 'Schrank Flur',
+		// 		'categories' => 'Elektro Werkzeug, Holzbearbeitung, Fräsen, Festool'
+		// 		),
+		// );
 		return $items;
 	}
 }

@@ -2,12 +2,20 @@
     <table id="itemstable">
         <thead>
             <tr>
-                <th id="headerItem">
-                    <div id="headerItem-container">
+                <th id="headerMaker">
+                    <div id="headerMaker-container">
                         <input id="select_all_items" class="select-all checkbox" type="checkbox">
                         <label for="select_all_items">
                             <span class="hidden-visually"><?php p($l->t('Select All')); ?></span>
                         </label>
+                        <a class="maker sort columntitle" data-sort="maker">
+                            <span><?php p($l->t('Maker')); ?></span>
+                            <span class="sort-indicator icon-triangle-n"></span>
+                        </a>
+                    </div>
+                </th>
+                <th id="headerItem">
+                    <div id="headerItem-container">
                         <a class="name sort columntitle" data-sort="name">
                             <span><?php p($l->t('Item')); ?></span>
                             <span class="sort-indicator icon-triangle-n"></span>
@@ -30,7 +38,8 @@
         </thead>
         <tbody>
             <tr ng-repeat='item in items'>
-                <td>{{ item.description }}</td>
+                <td>{{ item.maker }}</td>
+                <td>{{ item.name }}</td>
                 <td>{{ item.place }}</td>
                 <td>{{ item.categories }}</td>
             </tr>

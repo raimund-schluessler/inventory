@@ -27,6 +27,7 @@ use \OCP\AppFramework\IAppContainer;
 use \OCA\Inventory\Controller\PageController;
 use \OCA\Inventory\Controller\ItemsController;
 use \OCA\Inventory\Service\ItemsService;
+use \OCA\Inventory\Db\ItemMapper;
 
 class Application extends App {
 
@@ -63,7 +64,8 @@ class Application extends App {
 		$container->registerService('ItemsService', function(IAppContainer $c) {
 			return new ItemsService(
 				$c->query('UserId'),
-				$c->query('AppName')
+				$c->query('AppName'),
+				$c->query('ItemMapper')
 			);
 		});
 
@@ -82,6 +84,16 @@ class Application extends App {
 
 		$container->registerService('Settings', function(IAppContainer $c) {
 			return $c->query('ServerContainer')->getConfig();
+		});
+
+		/**
+		 * Database
+		 */
+		$container->registerService('ItemMapper', function(IAppContainer $c) {
+			/** @var SimpleContainer $c */
+			return new ItemMapper(
+				$c->getServer()->getDb()
+			);
 		});
 	}
 }
