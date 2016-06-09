@@ -22,21 +22,21 @@
 			$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
 			$routeProvider
 			.when('/items/', {
-				templateUrl: OC.linkTo('inventory', 'templates/part.items.html'),
+				templateUrl: OC.generateUrl('/apps/inventory/templates/part.items', {}),
 				controller: 'ItemsController',
 				name: 'items'
 			})
 			.when('/items/:itemID', {
-				templateUrl: OC.linkTo('inventory', 'templates/part.itemdetails.html'),
+				templateUrl: OC.generateUrl('/apps/inventory/templates/part.itemdetails', {}),
 				name: 'item'
 			})
 			.when('/places/', {
-				templateUrl: OC.linkTo('inventory', 'templates/part.places.html'),
+				templateUrl: OC.generateUrl('/apps/inventory/templates/part.places', {}),
 				controller: 'PlacesController',
 				name: 'places'
 			})
 			.when('/categories/', {
-				templateUrl: OC.linkTo('inventory', 'templates/part.categories.html'),
+				templateUrl: OC.generateUrl('/apps/inventory/templates/part.categories', {}),
 				controller: 'CategoriesController',
 				name: 'categories'
 			})

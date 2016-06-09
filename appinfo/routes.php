@@ -29,6 +29,8 @@ $application = new Application();
 $application->registerRoutes($this, array('routes' => array(
 	// page
 	array('name' => 'page#index', 'url' => '/', 'verb' => 'GET'),
+	// templates
+	array('name' => 'page#templates', 'url' => '/templates/{template}', 'verb' => 'GET'),
 
 	// items
 	array('name' => 'items#get',	'url' => '/items', 'verb' => 'GET'),

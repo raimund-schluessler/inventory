@@ -24,6 +24,7 @@ namespace OCA\Inventory\Controller;
 
 use \OCP\AppFramework\Controller;
 use \OCP\AppFramework\Http\TemplateResponse;
+use \OCP\AppFramework\Http\NotFoundResponse;
 use \OCP\IRequest;
 use \OCP\IConfig;
 
@@ -49,8 +50,25 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index() {
-
 		$response = new TemplateResponse('inventory', 'main');
+		return $response;
+	}
+
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function templates($template) {
+		$templates = array(	'part.items',
+							'part.itemdetails',
+							'part.categories',
+							'part.places');
+		if (in_array($template, $templates)) {
+			$response = new TemplateResponse('inventory', $template, [], 'blank');
+		} else {
+			$response = new NotFoundResponse();
+		}
 		return $response;
 	}
 }
