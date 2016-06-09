@@ -19,33 +19,23 @@
  *
  */
 
-angular.module('Inventory').controller('ItemsController', [
+angular.module('Inventory').controller('CategoriesController', [
 	'$scope', '$route', '$timeout', '$location', '$routeParams', 'Persistence', 'ItemsModel', function($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel) {
 		'use strict';
-		var ItemsController = (function() {
-			function ItemsController(_$scope, _$route, _$timeout, _$location, _$routeparams, _persistence, _$itemsmodel) {
+		var CategoriesController = (function() {
+			function CategoriesController(_$scope, _$route, _$timeout, _$location, _$routeparams, _persistence, _$itemsmodel) {
 				this._$scope = _$scope;
-				this._$scope.name = 'items';
+				this._$scope.name = 'categories';
 
 				this._$route = _$route;
 				this._$timeout = _$timeout;
 				this._$location = _$location;
 				this._$routeparams = _$routeparams;
 				this._persistence = _persistence;
-				this._$itemsmodel = _$itemsmodel;
 				this._$scope.route = this._$routeparams;
-				this._persistence.getItems();
-				this._$scope.items = this._$itemsmodel.getAll();
-
-				this._$scope.openDetails = function(id, $event) {
-					var viewID = _$scope.route.viewID
-					if ($($event.currentTarget).is($($event.target).closest('.handler'))) {
-						$location.path('items/' + id);
-					}
-				};
 			}
-			return ItemsController;
+			return CategoriesController;
 		})();
-		return new ItemsController($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel);
+		return new CategoriesController($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel);
 	}
 ]);

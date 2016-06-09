@@ -1,4 +1,4 @@
-<div ng-controller="ItemsController" ng-if="route.viewID == 'items'">
+<div>
     <table id="itemstable">
         <thead>
             <tr>
@@ -37,7 +37,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat='item in items'>
+            <tr class="handler"
+                ng-repeat='item in items'
+                ng-click="openDetails(item.id,$event)">
                 <td>{{ item.maker }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.place }}</td>

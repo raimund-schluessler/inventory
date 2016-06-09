@@ -11,7 +11,7 @@
     <div id="app-navigation">
         <ul>
             <li ng-repeat="view in views"
-                ng-class="{active: route.viewID == view.id}">
+                ng-class="{active: route.current.scope.name == view.id}">
                 <a href="#/{{ view.id }}">
                     <span class="icon {{ view.id }}">
                     </span>
@@ -22,10 +22,7 @@
     </div>
 
     <div id="app-content">
-        <div class="content-wrapper">
-            <?php print_unescaped($this->inc('part.items')); ?>
-            <?php print_unescaped($this->inc('part.categories')); ?>
-            <?php print_unescaped($this->inc('part.places')); ?>
+        <div ng-view class="content-wrapper">
         </div>
     </div>
 </div>

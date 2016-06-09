@@ -30,7 +30,7 @@ angular.module('Inventory').controller('AppController', [
 				this._$location = _$location;
 				this._$routeparams = _$routeparams;
 				this._persistence = _persistence;
-				this._$scope.route = this._$routeparams;
+				this._$scope.route = _$route;
 				this._$scope.views = [
 					{
 						name: t('inventory', 'Items'),
