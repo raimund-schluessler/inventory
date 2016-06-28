@@ -33,6 +33,10 @@
                         <span><?php p($l->t('Categories')); ?></span>
                         <span class="sort-indicator hidden icon-triangle-s"></span>
                     </a>
+                    <a href="#/item/new" id="newItem">
+                        <span class="icon icon-add"></span>
+                        <span class="hidden-visually">Neu</span>
+                    </a>
                 </th>
             </tr>
         </thead>

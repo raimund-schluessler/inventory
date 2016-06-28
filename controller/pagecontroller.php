@@ -63,7 +63,8 @@ class PageController extends Controller {
 		$templates = array(	'part.items',
 							'part.itemdetails',
 							'part.categories',
-							'part.places');
+							'part.places',
+							'part.item.new');
 		if (in_array($template, $templates)) {
 			$response = new TemplateResponse('inventory', $template, [], 'blank');
 		} else {

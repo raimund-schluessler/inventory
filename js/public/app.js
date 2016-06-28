@@ -30,6 +30,10 @@
 				templateUrl: OC.generateUrl('/apps/inventory/templates/part.itemdetails', {}),
 				name: 'item'
 			})
+			.when('/item/new', {
+				templateUrl: OC.generateUrl('/apps/inventory/templates/part.item.new', {}),
+				name: 'newitem'
+			})
 			.when('/places/', {
 				templateUrl: OC.generateUrl('/apps/inventory/templates/part.places', {}),
 				controller: 'PlacesController',

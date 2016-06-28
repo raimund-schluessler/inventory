@@ -107,4 +107,25 @@ table th, table td {
   border-bottom: 1px solid #eee;
   text-align: left;
   font-weight: normal;
+  line-height: 30px;
+}
+#newItem {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  height: 30px;
+  width: 30px;
+  padding: 5px;
+  border: 1px solid #b8b8b8;
+  box-sizing: padding-box;
+  border-radius: 2px;
+  background-color: #e1e1e1;
+}
+#newItem:hover {
+  background-color: #e8e8e8;
+}
+#newItem .icon-add {
+  line-height: normal;
+  background-position: -40px 0;
+  vertical-align: top;
 }
