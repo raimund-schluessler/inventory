@@ -29,6 +29,9 @@
   padding: 0px;
   top: -3px;
 }
+.content-wrapper {
+  height: 100%;
+}
 /*
   app navigation
 */
@@ -108,6 +111,26 @@ table th, table td {
   text-align: left;
   font-weight: normal;
   line-height: 30px;
+}
+#newItemsView {
+  padding: 20px;
+  height: 100%;
+}
+#newItems {
+  height: 20%;
+  margin-top: 10px;
+}
+#newItems textarea {
+  -moz-user-select: -moz-text;
+  user-select: text;
+  width: 100%;
+  height: 90%;
+  margin: 0px;
+  resize: none;
+}
+#newItems input[type="submit"] {
+  float: right;
+  margin: 10px 0;
 }
 #newItem {
   position: absolute;

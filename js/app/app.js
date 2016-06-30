@@ -37,10 +37,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			})
 			.when('/items/:itemID', {
 				templateUrl: OC.generateUrl('/apps/inventory/templates/part.itemdetails', {}),
+				controller: 'ItemController',
 				name: 'item'
 			})
 			.when('/item/new', {
 				templateUrl: OC.generateUrl('/apps/inventory/templates/part.item.new', {}),
+				controller: 'NewItemController',
 				name: 'newitem'
 			})
 			.when('/places/', {

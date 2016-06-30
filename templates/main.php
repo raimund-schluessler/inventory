@@ -3,6 +3,7 @@
     script('inventory', 'vendor/angular-route/angular-route.min');
     script('inventory', 'vendor/angular-animate/angular-animate.min');
     script('inventory', 'vendor/angular-sanitize/angular-sanitize.min');
+    script('inventory', 'vendor/papaparse/papaparse.min');
     script('inventory', 'public/app');
     style('inventory', 'style');
 ?>

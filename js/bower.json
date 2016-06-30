@@ -7,7 +7,8 @@
     "angular-animate": "",
     "angular-sanitize": "",
     "angular-ui-select": "https://github.com/angular-ui/ui-select.git",
-    "angular-draganddrop": "https://github.com/marceljuenemann/angular-drag-and-drop-lists.git"
+    "angular-draganddrop": "https://github.com/marceljuenemann/angular-drag-and-drop-lists.git",
+    "papaparse": "https://github.com/mholt/PapaParse.git"
   },
   "devDependencies": {},
   "homepage": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory",

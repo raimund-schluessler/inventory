@@ -28,10 +28,12 @@
 			})
 			.when('/items/:itemID', {
 				templateUrl: OC.generateUrl('/apps/inventory/templates/part.itemdetails', {}),
+				controller: 'ItemController',
 				name: 'item'
 			})
 			.when('/item/new', {
 				templateUrl: OC.generateUrl('/apps/inventory/templates/part.item.new', {}),
+				controller: 'NewItemController',
 				name: 'newitem'
 			})
 			.when('/places/', {
@@ -115,6 +117,32 @@ angular.module('Inventory').controller('CategoriesController', [
 	}
 ]);
 
+angular.module('Inventory').controller('ItemController', [
+	'$scope', '$route', '$timeout', '$location', '$routeParams', 'Persistence', 'ItemsModel', function($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel) {
+		'use strict';
+		var ItemController = (function() {
+			function ItemController(_$scope, _$route, _$timeout, _$location, _$routeparams, _persistence, _$itemsmodel) {
+				this._$scope = _$scope;
+				this._$scope.name = 'newItem';
+
+				this._$route = _$route;
+				this._$timeout = _$timeout;
+				this._$location = _$location;
+				this._$routeparams = _$routeparams;
+				this._persistence = _persistence;
+				this._$itemsmodel = _$itemsmodel;
+				this._$scope.route = this._$routeparams;
+				this._persistence.getItems();
+				this._$scope.items = this._$itemsmodel.getAll();
+
+				console.log('ItemController loaded.')
+			}
+			return ItemController;
+		})();
+		return new ItemController($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel);
+	}
+]);
+
 angular.module('Inventory').controller('ItemsController', [
 	'$scope', '$route', '$timeout', '$location', '$routeParams', 'Persistence', 'ItemsModel', function($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel) {
 		'use strict';
@@ -143,6 +171,57 @@ angular.module('Inventory').controller('ItemsController', [
 			return ItemsController;
 		})();
 		return new ItemsController($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel);
+	}
+]);
+
+angular.module('Inventory').controller('NewItemController', [
+	'$scope', '$route', '$timeout', '$location', '$routeParams', 'Persistence', 'ItemsModel', function($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel) {
+		'use strict';
+		var NewItemController = (function() {
+			function NewItemController(_$scope, _$route, _$timeout, _$location, _$routeparams, _persistence, _$itemsmodel) {
+				this._$scope = _$scope;
+				this._$scope.name = 'newItem';
+
+				this._$route = _$route;
+				this._$timeout = _$timeout;
+				this._$location = _$location;
+				this._$routeparams = _$routeparams;
+				this._persistence = _persistence;
+				this._$itemsmodel = _$itemsmodel;
+				this._$scope.route = this._$routeparams;
+				this._$scope.rawInput = "";
+				this._$scope.csvConfig = {
+					delimiter: ";",
+					newline: "\n",
+				};
+
+				this._$scope.items = [];
+
+				this._$scope.parseInput = function () {
+					var results = Papa.parse(_$scope.rawInput, _$scope.csvConfig);
+					_$scope.items = [];
+					for (i = 0; i < results.data.length; i++) {
+						var it = results.data[i];
+						var item = {
+							'id':			'',
+							'maker':		it[0],
+							'name':			it[1],
+							'description':	it[2],
+							'place':		it[3],
+							'categories':	it[4],
+							'price':		it[5],
+							'link':			it[6],
+							'count':		it[7]
+						}
+						_$scope.items.push(item);
+					}
+				};
+
+				console.log('NewItemController loaded.')
+			}
+			return NewItemController;
+		})();
+		return new NewItemController($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel);
 	}
 ]);
 
