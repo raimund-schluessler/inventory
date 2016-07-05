@@ -61,4 +61,13 @@ class ItemsService {
 		// );
 		return $items;
 	}
+
+	/**
+	 * get items
+	 *
+	 * @return array
+	 */
+	public function enlist($item) {
+		$this->itemMapper->add($item);
+	}
 }

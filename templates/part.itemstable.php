@@ -21,6 +21,14 @@
                     </a>
                 </div>
             </th>
+            <th id="headerDescription">
+                <div id="headerDescription-container">
+                    <a class="name sort columntitle" data-sort="description">
+                        <span><?php p($l->t('Description')); ?></span>
+                        <span class="sort-indicator icon-triangle-n"></span>
+                    </a>
+                </div>
+            </th>
             <th id="headerPlace">
                 <a class="size sort columntitle" data-sort="size">
                     <span><?php p($l->t('Place')); ?></span>
@@ -45,6 +53,7 @@
             ng-click="openDetails(item.id,$event)">
             <td>{{ item.maker }}</td>
             <td>{{ item.name }}</td>
+            <td>{{ item.description }}</td>
             <td>{{ item.place }}</td>
             <td>{{ item.categories }}</td>
         </tr>

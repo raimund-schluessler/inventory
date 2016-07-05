@@ -217,6 +217,14 @@ angular.module('Inventory').controller('NewItemController', [
 					}
 				};
 
+				this._$scope.enlist = function () {
+					for (i=0; i<_$scope.items.length; i++) {
+						_persistence.enlist(_$scope.items[i]);
+					}
+					_$scope.items = [];
+					_$scope.rawInput = "";
+				}
+
 				console.log('NewItemController loaded.')
 			}
 			return NewItemController;
@@ -470,6 +478,16 @@ angular.module('Inventory').factory('Persistence', [
 				};
 				return this._request.get('/apps/inventory/items', params);
 			};
+
+			Persistence.prototype.enlist = function(item) {
+				var params = {
+					data: {
+						item: item
+					}
+				};
+				return this._request.post('/apps/inventory/item/add', params);
+			};
+
 		return Persistence;
 	  })();
 	  return new Persistence(Request, Loading, $rootScope);

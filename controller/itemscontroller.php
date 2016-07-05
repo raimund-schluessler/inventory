@@ -45,4 +45,13 @@ class ItemsController extends Controller {
 			return ['items' => $this->itemsService->get()];
 		});
 	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function enlist($item){
+		return $this->generateResponse(function () use ($item) {
+			return $this->itemsService->enlist($item);
+		});
+	}
 }

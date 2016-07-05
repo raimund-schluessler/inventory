@@ -62,6 +62,14 @@ angular.module('Inventory').controller('NewItemController', [
 					}
 				};
 
+				this._$scope.enlist = function () {
+					for (i=0; i<_$scope.items.length; i++) {
+						_persistence.enlist(_$scope.items[i]);
+					}
+					_$scope.items = [];
+					_$scope.rawInput = "";
+				}
+
 				console.log('NewItemController loaded.')
 			}
 			return NewItemController;

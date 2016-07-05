@@ -33,6 +33,7 @@ $application->registerRoutes($this, array('routes' => array(
 	array('name' => 'page#templates', 'url' => '/templates/{template}', 'verb' => 'GET'),
 
 	// items
-	array('name' => 'items#get',	'url' => '/items', 'verb' => 'GET'),
+	array('name' => 'items#get',	'url' => '/items', 		'verb' => 'GET'),
+	array('name' => 'items#enlist',	'url' => '/item/add',	'verb' => 'POST'),
 
 )));
