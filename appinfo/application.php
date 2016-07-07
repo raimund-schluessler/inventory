@@ -28,6 +28,8 @@ use \OCA\Inventory\Controller\PageController;
 use \OCA\Inventory\Controller\ItemsController;
 use \OCA\Inventory\Service\ItemsService;
 use \OCA\Inventory\Db\ItemMapper;
+use \OCA\Inventory\Db\CategoryMapper;
+use \OCA\Inventory\Db\ItemCategoriesMapper;
 
 class Application extends App {
 
@@ -65,7 +67,9 @@ class Application extends App {
 			return new ItemsService(
 				$c->query('UserId'),
 				$c->query('AppName'),
-				$c->query('ItemMapper')
+				$c->query('ItemMapper'),
+				$c->query('CategoryMapper'),
+				$c->query('ItemCategoriesMapper')
 			);
 		});
 
@@ -76,7 +80,7 @@ class Application extends App {
 			$user = $c->query('ServerContainer')->getUserSession()->getUser();
 
 			return ($user) ? $user->getUID() : '';
-		});	
+		});
 
 		$container->registerService('L10N', function(IAppContainer $c) {
 			return $c->query('ServerContainer')->getL10N($c->query('AppName'));
@@ -92,6 +96,20 @@ class Application extends App {
 		$container->registerService('ItemMapper', function(IAppContainer $c) {
 			/** @var SimpleContainer $c */
 			return new ItemMapper(
+				$c->getServer()->getDb()
+			);
+		});
+
+		$container->registerService('CategoryMapper', function(IAppContainer $c) {
+			/** @var SimpleContainer $c */
+			return new CategoryMapper(
+				$c->getServer()->getDb()
+			);
+		});
+
+		$container->registerService('ItemCategoriesMapper', function(IAppContainer $c) {
+			/** @var SimpleContainer $c */
+			return new ItemCategoriesMapper(
 				$c->getServer()->getDb()
 			);
 		});

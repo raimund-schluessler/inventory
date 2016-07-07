@@ -48,6 +48,13 @@ class ItemMapper extends Mapper {
 		return $this->findEntities($sql, [], $limit, $offset);
 	}
 
+	public function findCategories($itemId) {
+		$sql = 'SELECT * FROM `*PREFIX*invtry_categories_item_mapping` ' .
+			'WHERE `itemid` = ?';
+		$test = $this->findEntities($sql, [$itemId]);
+		return 'test';
+	}
+
 
 	public function itemCount($name) {
 		$sql = 'SELECT COUNT(*) AS `count` FROM `*PREFIX*invtry_items`';

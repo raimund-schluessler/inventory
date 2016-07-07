@@ -22,25 +22,18 @@
 
 namespace OCA\Inventory\Db;
 
-use OCP\AppFramework\Db\Entity;
+use OCP\IDBConnection;
+use OCP\AppFramework\Db\Mapper;
 
-class Item extends Entity {
+class CategoryMapper extends Mapper {
 
-	public $id;
-    public $owner;
-    public $name;
-    public $place;
-    public $related;
-    public $maker;
-    public $description;
-    public $itemNumber;
-    public $price;
-    public $link;
-    public $count;
+	public function __construct(IDBConnection $db) {
+		parent::__construct($db, 'invtry_categories');
+	}
 
-    public function __construct() {
-        // add types in constructor
-        $this->addType('id', 'integer');
-        $this->addType('owner', 'integer');
-    }
+	public function findCategory($categoryId) {
+		$sql = 'SELECT * FROM `*PREFIX*invtry_categories` ' .
+			'WHERE `id` = ?';
+		return $this->findEntity($sql, [$categoryId]);
+	}
 }

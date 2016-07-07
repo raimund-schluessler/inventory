@@ -55,7 +55,13 @@
             <td>{{ item.name }}</td>
             <td>{{ item.description }}</td>
             <td>{{ item.place }}</td>
-            <td>{{ item.categories }}</td>
+            <td>
+                <ul class="categories">
+                    <li ng-repeat='category in item.categories'>
+                        <span>{{ category.name }}</span>
+                    </li>
+                </ul>
+            </td>
         </tr>
     </tbody>
 </table>

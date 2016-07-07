@@ -208,7 +208,9 @@ angular.module('Inventory').controller('NewItemController', [
 							'name':			it[1],
 							'description':	it[2],
 							'place':		it[3],
-							'categories':	it[4],
+							'categories':	it[4].split(',').map(function(s) {
+								return String.prototype.trim.apply(s);
+							}),
 							'price':		it[5],
 							'link':			it[6],
 							'count':		it[7]

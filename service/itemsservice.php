@@ -25,17 +25,24 @@ namespace OCA\Inventory\Service;
 use OCP\IConfig;
 use \OCA\Inventory\Db\Item;
 use \OCA\Inventory\Db\ItemMapper;
+use \OCA\Inventory\Db\CategoryMapper;
+use \OCA\Inventory\Db\ItemCategoriesMapper;
 
 class ItemsService {
 
 	private $userId;
 	private $appName;
     private $itemMapper;
+    private $categoryMapper;
+    private $itemCategoriesMapper;
 
-	public function __construct($userId, $appName, ItemMapper $itemMapper) {
+	public function __construct($userId, $appName, ItemMapper $itemMapper, CategoryMapper $categoryMapper,
+		ItemCategoriesMapper $itemCategoriesMapper) {
 		$this->userId = $userId;
 		$this->appName = $appName;
         $this->itemMapper = $itemMapper;
+        $this->categoryMapper = $categoryMapper;
+        $this->itemCategoriesMapper = $itemCategoriesMapper;
 	}
 
 	/**
@@ -45,25 +52,23 @@ class ItemsService {
 	 */
 	public function get() {
 		$items = $this->itemMapper->findAll();
-		// $items = array(
-		// 	array(
-		// 		'id' => 0,
-		// 		'description' => 'Festool Oberfräse OF1400',
-		// 		'place' => 'Schrank Flur',
-		// 		'categories' => 'Elektro Werkzeug, Holzbearbeitung, Fräsen, Festool'
-		// 		),
-		// 	array(
-		// 		'id' => 1,
-		// 		'description' => 'Festool Fräser 18/40',
-		// 		'place' => 'Schrank Flur',
-		// 		'categories' => 'Elektro Werkzeug, Holzbearbeitung, Fräsen, Festool'
-		// 		),
-		// );
+		foreach ($items as $nr => $item) {
+			$categories = $this->itemCategoriesMapper->findCategories($item->id);
+			$categoriesNames = array();
+			foreach ($categories as $category) {
+				$name = $this->categoryMapper->findCategory($category->categoryid);
+				$categoriesNames[] = array(
+					'id'	=> $category->categoryid,
+					'name'	=> $name->name
+				);
+			}
+			$items[$nr]->categories = $categoriesNames;
+		}
 		return $items;
 	}
 
 	/**
-	 * get items
+	 * add item
 	 *
 	 * @return array
 	 */
