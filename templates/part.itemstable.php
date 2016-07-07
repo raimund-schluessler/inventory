@@ -54,7 +54,7 @@
             <td>{{ item.maker }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.description }}</td>
-            <td>{{ item.place }}</td>
+            <td>{{ item.place.name }}</td>
             <td>
                 <ul class="categories">
                     <li ng-repeat='category in item.categories'>

@@ -27,6 +27,7 @@ use \OCA\Inventory\Db\Item;
 use \OCA\Inventory\Db\ItemMapper;
 use \OCA\Inventory\Db\CategoryMapper;
 use \OCA\Inventory\Db\ItemCategoriesMapper;
+use \OCA\Inventory\Db\PlacesMapper;
 
 class ItemsService {
 
@@ -37,12 +38,13 @@ class ItemsService {
     private $itemCategoriesMapper;
 
 	public function __construct($userId, $appName, ItemMapper $itemMapper, CategoryMapper $categoryMapper,
-		ItemCategoriesMapper $itemCategoriesMapper) {
+		ItemCategoriesMapper $itemCategoriesMapper, PlacesMapper $placesMapper) {
 		$this->userId = $userId;
 		$this->appName = $appName;
         $this->itemMapper = $itemMapper;
         $this->categoryMapper = $categoryMapper;
         $this->itemCategoriesMapper = $itemCategoriesMapper;
+        $this->placesMapper = $placesMapper;
 	}
 
 	/**
@@ -63,6 +65,16 @@ class ItemsService {
 				);
 			}
 			$items[$nr]->categories = $categoriesNames;
+			$place = $this->placesMapper->findPlace($item->place);
+			if ($place) {
+				$item->place = array(
+					'id'	=> $place->id,
+					'name'	=> $place->name,
+					'parent'=> $place->parent
+				);
+			} else{
+				$item->place = null;
+			}
 		}
 		return $items;
 	}

@@ -30,6 +30,7 @@ use \OCA\Inventory\Service\ItemsService;
 use \OCA\Inventory\Db\ItemMapper;
 use \OCA\Inventory\Db\CategoryMapper;
 use \OCA\Inventory\Db\ItemCategoriesMapper;
+use \OCA\Inventory\Db\PlacesMapper;
 
 class Application extends App {
 
@@ -69,7 +70,8 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('ItemMapper'),
 				$c->query('CategoryMapper'),
-				$c->query('ItemCategoriesMapper')
+				$c->query('ItemCategoriesMapper'),
+				$c->query('PlacesMapper')
 			);
 		});
 
@@ -110,6 +112,13 @@ class Application extends App {
 		$container->registerService('ItemCategoriesMapper', function(IAppContainer $c) {
 			/** @var SimpleContainer $c */
 			return new ItemCategoriesMapper(
+				$c->getServer()->getDb()
+			);
+		});
+
+		$container->registerService('PlacesMapper', function(IAppContainer $c) {
+			/** @var SimpleContainer $c */
+			return new PlacesMapper(
 				$c->getServer()->getDb()
 			);
 		});
