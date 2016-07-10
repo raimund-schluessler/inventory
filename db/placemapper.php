@@ -24,9 +24,10 @@ namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\Mapper;
+use \OCA\Inventory\Db\Place;
 use OCP\AppFramework\Db\DoesNotExistException;
 
-class PlacesMapper extends Mapper {
+class PlaceMapper extends Mapper {
 
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_places');
@@ -40,5 +41,21 @@ class PlacesMapper extends Mapper {
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
+	}
+
+	public function findPlaceByName($placeName) {
+		$sql = 'SELECT * FROM `*PREFIX*invtry_places` ' .
+			'WHERE `name` = ?';
+		try {
+			return $this->findEntity($sql, [$placeName]);
+		} catch (DoesNotExistException $e) {
+			return false;
+		}
+	}
+
+	public function add($name) {
+		$place = new Place();
+		$place->setName($name);
+		return $this->insert($place);
 	}
 }

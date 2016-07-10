@@ -27,7 +27,7 @@ use \OCA\Inventory\Db\Item;
 use \OCA\Inventory\Db\ItemMapper;
 use \OCA\Inventory\Db\CategoryMapper;
 use \OCA\Inventory\Db\ItemCategoriesMapper;
-use \OCA\Inventory\Db\PlacesMapper;
+use \OCA\Inventory\Db\PlaceMapper;
 
 class ItemsService {
 
@@ -38,13 +38,13 @@ class ItemsService {
     private $itemCategoriesMapper;
 
 	public function __construct($userId, $appName, ItemMapper $itemMapper, CategoryMapper $categoryMapper,
-		ItemCategoriesMapper $itemCategoriesMapper, PlacesMapper $placesMapper) {
+		ItemCategoriesMapper $itemCategoriesMapper, PlaceMapper $placeMapper) {
 		$this->userId = $userId;
 		$this->appName = $appName;
         $this->itemMapper = $itemMapper;
         $this->categoryMapper = $categoryMapper;
         $this->itemCategoriesMapper = $itemCategoriesMapper;
-        $this->placesMapper = $placesMapper;
+        $this->placeMapper = $placeMapper;
 	}
 
 	/**
@@ -65,7 +65,7 @@ class ItemsService {
 				);
 			}
 			$items[$nr]->categories = $categoriesNames;
-			$place = $this->placesMapper->findPlace($item->place);
+			$place = $this->placeMapper->findPlace($item->place);
 			if ($place) {
 				$item->place = array(
 					'id'	=> $place->id,
@@ -85,6 +85,12 @@ class ItemsService {
 	 * @return array
 	 */
 	public function enlist($item) {
+		$place = $this->placeMapper->findPlaceByName($item['place']['name']);
+		if (!$place) {
+			$place = $this->placeMapper->add($item['place']['name']);
+		}
+		$item['place'] = $place->id;
+
 		$added = $this->itemMapper->add($item);
 
 		foreach ($item['categories'] as $category) {

@@ -54,8 +54,6 @@ class CategoryMapper extends Mapper {
 	}
 
 	public function add($name) {
-		// $sql = 'INSERT INTO `*PREFIX*invtry_categories` (name)'.
-				// ' Values(?)';
 		$category = new Category();
 		$category->setName($name);
 		return $this->insert($category);

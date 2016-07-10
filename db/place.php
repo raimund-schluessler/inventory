@@ -24,7 +24,7 @@ namespace OCA\Inventory\Db;
 
 use OCP\AppFramework\Db\Entity;
 
-class Places extends Entity {
+class Place extends Entity {
 
 	public $id;
     public $name;
