@@ -36,4 +36,12 @@ class ItemCategoriesMapper extends Mapper {
 			'WHERE `itemid` = ?';
 		return $this->findEntities($sql, [$itemId]);
 	}
+
+	public function add($mapping) {
+		$sql = 'INSERT INTO `*PREFIX*invtry_categories_item_mapping` (itemid, categoryid)'.
+				' Values(?, ?)';
+		return $this->execute($sql, array(	$mapping['itemid'],
+											$mapping['categoryid'])
+		);
+	}
 }

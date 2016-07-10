@@ -31,6 +31,6 @@ class Category extends Entity {
 
     public function __construct() {
         // add types in constructor
-        $this->addType('itemId', 'integer');
+        $this->addType('categoryId', 'integer');
     }
 }

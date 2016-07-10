@@ -85,6 +85,16 @@ class ItemsService {
 	 * @return array
 	 */
 	public function enlist($item) {
-		$this->itemMapper->add($item);
+		$added = $this->itemMapper->add($item);
+
+		foreach ($item['categories'] as $category) {
+			$categoryEntity = $this->categoryMapper->findCategoryByName($category['name']);
+			if (!$categoryEntity) {
+				$categoryEntity = $this->categoryMapper->add($category['name']);
+			}
+			$mapping = $this->itemCategoriesMapper->add(array(	'itemid' => $added->id,
+																'categoryid' => $categoryEntity->id)
+			);
+		}
 	}
 }

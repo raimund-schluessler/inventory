@@ -105,7 +105,7 @@
       <type>integer</type>
       <default>0</default>
       <notnull>true</notnull>
-          <autoincrement>1</autoincrement>
+      <autoincrement>1</autoincrement>
       <length>8</length>
     </field>
     <field>
@@ -127,6 +127,14 @@
       <name>categoryid</name>
       <type>integer</type>
       <notnull>true</notnull>
+    </field>
+    <field>
+      <name>categorymappingid</name>
+      <type>integer</type>
+      <default>0</default>
+      <notnull>true</notnull>
+      <autoincrement>1</autoincrement>
+      <unsigned>true</unsigned>
     </field>
   </declaration>
 </table>

@@ -24,6 +24,8 @@ namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\Mapper;
+use \OCA\Inventory\Db\Category;
+use OCP\AppFramework\Db\DoesNotExistException;
 
 class CategoryMapper extends Mapper {
 
@@ -34,6 +36,28 @@ class CategoryMapper extends Mapper {
 	public function findCategory($categoryId) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_categories` ' .
 			'WHERE `id` = ?';
-		return $this->findEntity($sql, [$categoryId]);
+		try {
+			return $this->findEntity($sql, [$categoryId]);
+		} catch (DoesNotExistException $e) {
+			return false;
+		}
+	}
+
+	public function findCategoryByName($categoryName) {
+		$sql = 'SELECT * FROM `*PREFIX*invtry_categories` ' .
+			'WHERE `name` = ?';
+		try {
+			return $this->findEntity($sql, [$categoryName]);
+		} catch (DoesNotExistException $e) {
+			return false;
+		}
+	}
+
+	public function add($name) {
+		// $sql = 'INSERT INTO `*PREFIX*invtry_categories` (name)'.
+				// ' Values(?)';
+		$category = new Category();
+		$category->setName($name);
+		return $this->insert($category);
 	}
 }

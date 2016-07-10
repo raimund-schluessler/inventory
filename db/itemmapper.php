@@ -24,6 +24,7 @@ namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\Mapper;
+use \OCA\Inventory\Db\Item;
 
 class ItemMapper extends Mapper {
 
@@ -65,17 +66,15 @@ class ItemMapper extends Mapper {
 		return $row['count'];
 	}
 
-	public function add($item) {
-		$sql = 'INSERT INTO `*PREFIX*invtry_items` (owner, name, maker, description, place, price, link, count)'.
-				' Values(?, ?, ?, ?, ?, ?, ?, ?)';
-		return $this->execute($sql, array(	'test',
-											$item['name'],
-											$item['maker'],
-											$item['description'],
-											$item['place'],
-											$item['price'],
-											$item['link'],
-											$item['count'])
-		);
+	public function add($params) {
+		$item = new Item();
+		$item->setName($params['name']);
+		$item->setMaker($params['maker']);
+		$item->setDescription($params['description']);
+		$item->setPlace($params['place']);
+		$item->setPrice($params['price']);
+		$item->setLink($params['link']);
+		$item->setCount($params['count']);
+		return $this->insert($item);
 	}
 }

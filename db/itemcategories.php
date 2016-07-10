@@ -26,6 +26,7 @@ use OCP\AppFramework\Db\Entity;
 
 class ItemCategories extends Entity {
 
+	public $categorymappingid;
 	public $categoryid;
 	public $itemid;
 
