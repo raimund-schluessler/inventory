@@ -20,10 +20,10 @@
  */
 
 angular.module('Inventory').controller('ItemsController', [
-	'$scope', '$route', '$timeout', '$location', '$routeParams', 'Persistence', 'ItemsModel', function($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel) {
+	'$scope', '$route', '$timeout', '$location', '$routeParams', 'Persistence', 'ItemsModel', 'SearchBusinessLayer', function($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel, SearchBusinessLayer) {
 		'use strict';
 		var ItemsController = (function() {
-			function ItemsController(_$scope, _$route, _$timeout, _$location, _$routeparams, _persistence, _$itemsmodel) {
+			function ItemsController(_$scope, _$route, _$timeout, _$location, _$routeparams, _persistence, _$itemsmodel, _$searchbusinesslayer) {
 				this._$scope = _$scope;
 				this._$scope.name = 'items';
 
@@ -36,6 +36,7 @@ angular.module('Inventory').controller('ItemsController', [
 				this._$scope.route = this._$routeparams;
 				this._persistence.getItems();
 				this._$scope.items = this._$itemsmodel.getAll();
+				this._$searchbusinesslayer = _$searchbusinesslayer;
 
 				this._$scope.openDetails = function(id, $event) {
 					var viewID = _$scope.route.viewID
@@ -43,9 +44,22 @@ angular.module('Inventory').controller('ItemsController', [
 						$location.path('items/' + id);
 					}
 				};
+
+				// this._$scope.filterItemsByString = function(item) {
+				// 	return function(item) {
+				// 		var searchstring = _searchbusinesslayer.getFilter();
+				// 		return _$tasksmodel.filterTasksByString(task, filter);
+				// 	};
+				// };
+
+				this._$scope.filteredItems = function() {
+					var filter = _$searchbusinesslayer.getFilter();
+					// var filter = 'as';
+					return _$itemsmodel.filteredItems(filter);
+				};
 			}
 			return ItemsController;
 		})();
-		return new ItemsController($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel);
+		return new ItemsController($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel, SearchBusinessLayer);
 	}
 ]);

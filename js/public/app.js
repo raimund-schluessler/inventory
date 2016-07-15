@@ -53,7 +53,8 @@
 	]);
 
 	angular.module('Inventory').run([
-		'$document', '$rootScope', 'Config', '$timeout', function($document, $rootScope, Config, $timeout) {
+		'$document', '$rootScope', 'Config', '$timeout', 'SearchBusinessLayer', function($document, $rootScope, Config, $timeout, SearchBusinessLayer) {
+			OCA.Search.inventory = SearchBusinessLayer;
 			$('link[rel="shortcut icon"]').attr('href', OC.filePath('inventory', 'img', 'favicon.png'));
 			return $document.click(function(event) {
 				$rootScope.$broadcast('documentClicked', event);
@@ -144,10 +145,10 @@ angular.module('Inventory').controller('ItemController', [
 ]);
 
 angular.module('Inventory').controller('ItemsController', [
-	'$scope', '$route', '$timeout', '$location', '$routeParams', 'Persistence', 'ItemsModel', function($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel) {
+	'$scope', '$route', '$timeout', '$location', '$routeParams', 'Persistence', 'ItemsModel', 'SearchBusinessLayer', function($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel, SearchBusinessLayer) {
 		'use strict';
 		var ItemsController = (function() {
-			function ItemsController(_$scope, _$route, _$timeout, _$location, _$routeparams, _persistence, _$itemsmodel) {
+			function ItemsController(_$scope, _$route, _$timeout, _$location, _$routeparams, _persistence, _$itemsmodel, _$searchbusinesslayer) {
 				this._$scope = _$scope;
 				this._$scope.name = 'items';
 
@@ -160,6 +161,7 @@ angular.module('Inventory').controller('ItemsController', [
 				this._$scope.route = this._$routeparams;
 				this._persistence.getItems();
 				this._$scope.items = this._$itemsmodel.getAll();
+				this._$searchbusinesslayer = _$searchbusinesslayer;
 
 				this._$scope.openDetails = function(id, $event) {
 					var viewID = _$scope.route.viewID
@@ -167,10 +169,23 @@ angular.module('Inventory').controller('ItemsController', [
 						$location.path('items/' + id);
 					}
 				};
+
+				// this._$scope.filterItemsByString = function(item) {
+				// 	return function(item) {
+				// 		var searchstring = _searchbusinesslayer.getFilter();
+				// 		return _$tasksmodel.filterTasksByString(task, filter);
+				// 	};
+				// };
+
+				this._$scope.filteredItems = function() {
+					var filter = _$searchbusinesslayer.getFilter();
+					// var filter = 'as';
+					return _$itemsmodel.filteredItems(filter);
+				};
 			}
 			return ItemsController;
 		})();
-		return new ItemsController($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel);
+		return new ItemsController($scope, $route, $timeout, $location, $routeParams, Persistence, ItemsModel, SearchBusinessLayer);
 	}
 ]);
 
@@ -421,7 +436,8 @@ angular.module('Inventory').factory('Loading', [
 			child.prototype = new ctor();
 			child.__super__ = parent.prototype;
 			return child;
-		};
+		},
+		__indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 	angular.module('Inventory').factory('ItemsModel', [
 		'_Model', function(_Model) {
@@ -432,6 +448,59 @@ angular.module('Inventory').factory('Loading', [
 					this._nameCache = {};
 					ItemsModel.__super__.constructor.call(this);
 				}
+
+				ItemsModel.prototype.filteredItems = function(needle) {
+					var ancestors, parentID, ret, item, items, _i, _len;
+					ret = [];
+					items = this.getAll();
+					if (!needle) {
+						ret = items;
+					} else {
+						for (_i = 0, _len = items.length; _i < _len; _i++) {
+							item = items[_i];
+							if (this.filterItemsByString(item, needle)) {
+								ret.push(item);
+								// parentID = this.getIdByUid(task.related);
+								// ancestors = this.getAncestor(parentID, ret);
+								// if (ancestors) {
+								// 	ret = ret.concat(ancestors);
+								// }
+							}
+						}
+					}
+					return ret;
+				};
+
+				ItemsModel.prototype.filterItemsByString = function(item, filter) {
+					var category, comment, key, keys, value, _i, _j, _len, _len1, _ref, _ref1;
+					keys = ['name', 'maker', 'description'];
+					filter = filter.toLowerCase();
+					for (key in item) {
+						value = item[key];
+						if (__indexOf.call(keys, key) >= 0) {
+							if (key === 'comments') {
+								_ref = item.comments;
+								for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+									comment = _ref[_i];
+									if (comment.comment.toLowerCase().indexOf(filter) !== -1) {
+										return true;
+									}
+								}
+							} else if (key === 'categories') {
+								_ref1 = item.categories;
+								for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+									// category = _ref1[_j];
+									// if (category.toLowerCase().indexOf(filter) !== -1) {
+									// 	return true;
+									// }
+								}
+							} else if (value.toLowerCase().indexOf(filter) !== -1) {
+								return true;
+							}
+						}
+					}
+					return false;
+				};
 
 				return ItemsModel;
 
@@ -658,5 +727,91 @@ angular.module('Inventory').factory('Request', [
 	return new Request($http, Publisher);
 	}
 ]);
+
+(function() {
+	var __bind = function(fn, me){
+		return function(){
+			return fn.apply(me, arguments);
+		};
+	};
+
+	angular.module('Inventory').factory('SearchBusinessLayer', [
+		'$rootScope', '$routeParams', '$location', function($rootScope, $routeParams, $location) {
+			var SearchBusinessLayer;
+			SearchBusinessLayer = (function() {
+				function SearchBusinessLayer(_$rootScope, _$routeparams, _$location) {
+					this._$rootScope = _$rootScope;
+					this._$routeparams = _$routeparams;
+					this._$location = _$location;
+					this.getFilter = __bind(this.getFilter, this);
+					this.setFilter = __bind(this.setFilter, this);
+					this.attach = __bind(this.attach, this);
+					this.initialize();
+					this._$searchString = '';
+				}
+
+				SearchBusinessLayer.prototype.attach = function(search) {
+					var _this = this;
+					search.setFilter('inventory', function(query) {
+						return _this._$rootScope.$apply(function() {
+							return _this.setFilter(query);
+						});
+					});
+					search.setRenderer('item', this.renderItemResult.bind(this));
+					return search.setHandler('item', this.handleItemClick.bind(this));
+				};
+
+				SearchBusinessLayer.prototype.setFilter = function(query) {
+					return this._$searchString = query;
+				};
+
+				SearchBusinessLayer.prototype.getFilter = function() {
+					return this._$searchString;
+				};
+
+				SearchBusinessLayer.prototype.initialize = function() {
+					var _this = this;
+					this.handleItemClick = function($row, result, event) {
+					// return _this._$location.path('/lists/' + result.calendarid + '/tasks/' + result.id);
+					};
+					this.renderItemResult = function($row, result) {
+					//   var $template;
+					//   if (!_this._$tasksmodel.filterTasks(result, _this._$routeparams.listID) || !_this._$tasksmodel.isLoaded(result)) {
+					//     $template = $('div.task-item.template');
+					//     $template = $template.clone();
+					//     $row = $('<tr class="result"></tr>').append($template.removeClass('template'));
+					//     $row.data('result', result);
+					//     $row.find('span.title').text(result.name);
+					//     if (result.starred) {
+					//       $row.find('span.task-star').addClass('task-starred');
+					//     }
+					//     if (result.completed) {
+					//       $row.find('div.task-item').addClass('done');
+					//       $row.find('span.task-checkbox').addClass('task-checked');
+					//     }
+					//     if (result.complete) {
+					//       $row.find('div.percentdone').css({
+					//         'width': result.complete + '%',
+					//         'background-color': '' + _this._$listsmodel.getColor(result.calendarid)
+					//       });
+					//     }
+					//     if (result.note) {
+					//       $row.find('div.title-wrapper').addClass('attachment');
+					//     }
+					//     return $row;
+					//   } else {
+					//     return null;
+					//   }
+					};
+					return OC.Plugins.register('OCA.Search', this);
+				};
+
+				return SearchBusinessLayer;
+
+			})();
+			return new SearchBusinessLayer($rootScope, $routeParams, $location);
+		}
+	]);
+}).call(this);
 
 })(window.angular, window.jQuery, oc_requesttoken);

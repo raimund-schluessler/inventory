@@ -36,3 +36,4 @@ namespace OCA\Inventory\AppInfo;
 		'name' => \OC::$server->getL10N('inventory')->t('Inventory'),
 	];
 });
+\OC::$server->getSearch()->registerProvider('OCA\Inventory\Controller\SearchProvider', array('apps' => array('inventory')));

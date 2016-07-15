@@ -49,7 +49,7 @@
     </thead>
     <tbody>
         <tr class="handler"
-            ng-repeat='item in items'
+            ng-repeat='item in filteredItems()'
             ng-click="openDetails(item.id,$event)">
             <td>{{ item.maker }}</td>
             <td>{{ item.name }}</td>
