@@ -55,18 +55,23 @@
 					} else {
 						for (_i = 0, _len = items.length; _i < _len; _i++) {
 							item = items[_i];
-							if (this.filterItemsByString(item, needle)) {
+							if (this.test(item, needle)) {
 								ret.push(item);
-								// parentID = this.getIdByUid(task.related);
-								// ancestors = this.getAncestor(parentID, ret);
-								// if (ancestors) {
-								// 	ret = ret.concat(ancestors);
-								// }
 							}
 						}
 					}
 					return ret;
 				};
+
+				ItemsModel.prototype.test = function (item, filter) {
+					var needles = filter.split(' ');
+					for (var needle of needles) {
+						if (!this.filterItemsByString(item, needle)) {
+							return false;
+						}
+					}
+					return true;
+				}
 
 				ItemsModel.prototype.filterItemsByString = function(item, filter) {
 					var category, comment, key, keys, value, _i, _j, _len, _len1, _ref, _ref1;
@@ -76,21 +81,13 @@
 						value = item[key];
 						if (__indexOf.call(keys, key) >= 0) {
 							if (key === 'comments') {
-								_ref = item.comments;
-								for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-									comment = _ref[_i];
-									if (comment.comment.toLowerCase().indexOf(filter) !== -1) {
-										return true;
-									}
-								}
-							} else if (key === 'categories') {
-								_ref1 = item.categories;
-								for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-									// category = _ref1[_j];
-									// if (category.toLowerCase().indexOf(filter) !== -1) {
-									// 	return true;
-									// }
-								}
+								// _ref = item.comments;
+								// for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+								// 	comment = _ref[_i];
+								// 	if (comment.comment.toLowerCase().indexOf(filter) !== -1) {
+								// 		return true;
+								// 	}
+								// }
 							} else if (value.toLowerCase().indexOf(filter) !== -1) {
 								return true;
 							}
