@@ -55,7 +55,6 @@
 	angular.module('Inventory').run([
 		'$document', '$rootScope', 'Config', '$timeout', 'SearchBusinessLayer', function($document, $rootScope, Config, $timeout, SearchBusinessLayer) {
 			OCA.Search.inventory = SearchBusinessLayer;
-			$('link[rel="shortcut icon"]').attr('href', OC.filePath('inventory', 'img', 'favicon.png'));
 			return $document.click(function(event) {
 				$rootScope.$broadcast('documentClicked', event);
 			});
