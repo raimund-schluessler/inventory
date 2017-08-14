@@ -23,28 +23,28 @@
 namespace OCA\Inventory\Service;
 
 use OCP\IConfig;
-use \OCA\Inventory\Db\Item;
-use \OCA\Inventory\Db\ItemMapper;
-use \OCA\Inventory\Db\CategoryMapper;
-use \OCA\Inventory\Db\ItemCategoriesMapper;
-use \OCA\Inventory\Db\PlaceMapper;
+use OCA\Inventory\Db\Item;
+use OCA\Inventory\Db\ItemMapper;
+use OCA\Inventory\Db\CategoryMapper;
+use OCA\Inventory\Db\ItemcategoriesMapper;
+use OCA\Inventory\Db\PlaceMapper;
 
 class ItemsService {
 
 	private $userId;
-	private $appName;
-    private $itemMapper;
-    private $categoryMapper;
-    private $itemCategoriesMapper;
+	private $AppName;
+	private $itemMapper;
+	private $categoryMapper;
+	private $itemCategoriesMapper;
 
-	public function __construct($userId, $appName, ItemMapper $itemMapper, CategoryMapper $categoryMapper,
-		ItemCategoriesMapper $itemCategoriesMapper, PlaceMapper $placeMapper) {
+	public function __construct($userId, $AppName, ItemMapper $itemMapper, CategoryMapper $categoryMapper,
+		ItemcategoriesMapper $itemcategoriesMapper, PlaceMapper $placeMapper) {
 		$this->userId = $userId;
-		$this->appName = $appName;
-        $this->itemMapper = $itemMapper;
-        $this->categoryMapper = $categoryMapper;
-        $this->itemCategoriesMapper = $itemCategoriesMapper;
-        $this->placeMapper = $placeMapper;
+		$this->appName = $AppName;
+		$this->itemMapper = $itemMapper;
+		$this->categoryMapper = $categoryMapper;
+		$this->itemCategoriesMapper = $itemcategoriesMapper;
+		$this->placeMapper = $placeMapper;
 	}
 
 	/**

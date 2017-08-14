@@ -19,21 +19,11 @@
 * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 *
 */
-
-namespace OCA\Inventory;
-
-use \OCA\Inventory\AppInfo\Application;
-
-$application = new Application();
-
-$application->registerRoutes($this, array('routes' => array(
-	// page
-	array('name' => 'page#index', 'url' => '/', 'verb' => 'GET'),
-	// templates
-	array('name' => 'page#templates', 'url' => '/templates/{template}', 'verb' => 'GET'),
-
-	// items
-	array('name' => 'items#get',	'url' => '/items', 		'verb' => 'GET'),
-	array('name' => 'items#enlist',	'url' => '/item/add',	'verb' => 'POST'),
-
-)));
+return [
+    'routes' => [
+	   ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
+	   ['name' => 'page#templates', 'url' => '/templates/{template}', 'verb' => 'GET'],
+		 ['name' => 'items#get',	'url' => '/items', 		'verb' => 'GET'],
+		 ['name' => 'items#enlist',	'url' => '/item/add',	'verb' => 'POST'],
+    ]
+];

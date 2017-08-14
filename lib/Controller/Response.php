@@ -2,8 +2,8 @@
 
 namespace OCA\Inventory\Controller;
 
-use \Closure;
-use \OCP\AppFramework\Http\JSONResponse;
+use Closure;
+use OCP\AppFramework\Http\JSONResponse;
 
 trait Response {
 

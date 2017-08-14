@@ -25,20 +25,20 @@ namespace OCA\Inventory\Db;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\Mapper;
 
-class ItemCategoriesMapper extends Mapper {
+class ItemcategoriesMapper extends Mapper {
 
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, 'invtry_categories_item_mapping');
+		parent::__construct($db, 'invtry_item_category_mapping');
 	}
 
 	public function findCategories($itemId) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_categories_item_mapping` ' .
+		$sql = 'SELECT * FROM `*PREFIX*invtry_item_category_mapping` ' .
 			'WHERE `itemid` = ?';
 		return $this->findEntities($sql, [$itemId]);
 	}
 
 	public function add($mapping) {
-		$sql = 'INSERT INTO `*PREFIX*invtry_categories_item_mapping` (itemid, categoryid)'.
+		$sql = 'INSERT INTO `*PREFIX*invtry_item_category_mapping` (itemid, categoryid)'.
 				' Values(?, ?)';
 		return $this->execute($sql, array(	$mapping['itemid'],
 											$mapping['categoryid'])

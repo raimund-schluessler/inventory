@@ -2,7 +2,7 @@
 <info>
 	<id>inventory</id>
 	<name>Inventory</name>
-	<version>0.0.1</version>
+	<version>0.0.4</version>
 	<namespace>Inventory</namespace>
 	<category>productivity</category>
 	<licence>AGPL</licence>
@@ -10,6 +10,12 @@
 	<requiremin>8.1</requiremin>
 	<description>Inventory App</description>
 	<ocsid></ocsid>
+	<navigations>
+			<navigation>
+					<name>Inventory</name>
+					<route>inventory.page.index</route>
+			</navigation>
+	</navigations>
 	<dependencies>
 			<nextcloud min-version="10" max-version="13"/>
 	</dependencies>

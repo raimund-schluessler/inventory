@@ -22,28 +22,28 @@
 
 namespace OCA\Inventory\Controller;
 
-use \OCP\AppFramework\Controller;
-use \OCP\AppFramework\Http\TemplateResponse;
-use \OCP\AppFramework\Http\NotFoundResponse;
-use \OCP\IRequest;
-use \OCP\IConfig;
+use OCP\IRequest;
+use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\NotFoundResponse;
+use OCP\AppFramework\Controller;
+use OCP\IConfig;
 
 /**
  * Controller class for main page.
  */
 class PageController extends Controller {
+	private $userId;
 
 	/**
-	 * @param string $appName
-	 * @param IConfig $config
+	 * @param string $AppName
+	 * @param IConfig $Config
 	 */
-	public function __construct($appName, IRequest $request,
-								$userId, IConfig $config) {
-		parent::__construct($appName, $request);
-		$this->config = $config;
-		$this->userId = $userId;
+	public function __construct($AppName, IRequest $request, $UserId, IConfig $Config){
+		parent::__construct($AppName, $request);
+		$this->userId = $UserId;
+		$this->config = $Config;
 	}
-
 
 	/**
 	 * @NoAdminRequired
@@ -53,7 +53,6 @@ class PageController extends Controller {
 		$response = new TemplateResponse('inventory', 'main');
 		return $response;
 	}
-
 
 	/**
 	 * @NoAdminRequired

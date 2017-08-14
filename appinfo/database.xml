@@ -52,13 +52,13 @@
       <length>8</length>
     </field>
     <field>
-      <name>related</name>
+      <name>price</name>
       <type>text</type>
       <notnull>false</notnull>
     </field>
     <field>
-      <name>price</name>
-      <type>text</type>
+      <name>count</name>
+      <type>integer</type>
       <notnull>false</notnull>
     </field>
     <field>
@@ -67,8 +67,29 @@
       <notnull>false</notnull>
     </field>
     <field>
-      <name>count</name>
+      <name>vendor</name>
+      <type>text</type>
+      <notnull>false</notnull>
+    </field>
+    <field>
+      <name>date</name>
+      <type>text</type>
+      <notnull>false</notnull>
+    </field>
+    <field>
+      <name>ean</name>
       <type>integer</type>
+      <notnull>false</notnull>
+      <length>13</length>
+    </field>
+    <field>
+      <name>details</name>
+      <type>text</type>
+      <notnull>false</notnull>
+    </field>
+    <field>
+      <name>comment</name>
+      <type>text</type>
       <notnull>false</notnull>
     </field>
   </declaration>
@@ -81,7 +102,7 @@
       <type>integer</type>
       <default>0</default>
       <notnull>true</notnull>
-          <autoincrement>1</autoincrement>
+      <autoincrement>1</autoincrement>
       <length>8</length>
     </field>
     <field>
@@ -90,7 +111,7 @@
       <notnull>true</notnull>
     </field>
     <field>
-      <name>parent</name>
+      <name>parentid</name>
       <type>integer</type>
       <notnull>false</notnull>
       <length>8</length>
@@ -113,10 +134,16 @@
       <type>text</type>
       <notnull>true</notnull>
     </field>
+    <field>
+      <name>parentid</name>
+      <type>integer</type>
+      <notnull>false</notnull>
+      <length>8</length>
+    </field>
   </declaration>
 </table>
 <table>
-  <name>*dbprefix*invtry_categories_item_mapping</name>
+  <name>*dbprefix*invtry_item_category_mapping</name>
   <declaration>
     <field>
       <name>itemid</name>
@@ -128,13 +155,20 @@
       <type>integer</type>
       <notnull>true</notnull>
     </field>
+  </declaration>
+</table>
+<table>
+  <name>*dbprefix*invtry_item_parent_mapping</name>
+  <declaration>
     <field>
-      <name>categorymappingid</name>
+      <name>itemid</name>
       <type>integer</type>
-      <default>0</default>
       <notnull>true</notnull>
-      <autoincrement>1</autoincrement>
-      <unsigned>true</unsigned>
+    </field>
+    <field>
+      <name>parentid</name>
+      <type>integer</type>
+      <notnull>true</notnull>
     </field>
   </declaration>
 </table>

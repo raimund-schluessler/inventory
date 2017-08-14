@@ -22,18 +22,21 @@
 
 namespace OCA\Inventory\Controller;
 
-use \OCA\Inventory\Service\ItemsService;
-use \OCP\AppFramework\Controller;
-use \OCP\IRequest;
+use OCP\AppFramework\Controller;
+use OCP\IRequest;
+use OCA\Inventory\Service\ItemsService;
+
 
 class ItemsController extends Controller {
 
 	private $itemsService;
+	public $appName;
 
 	use Response;
 
-	public function __construct($appName, IRequest $request, ItemsService $itemsService){
-		parent::__construct($appName, $request);
+	public function __construct($AppName, IRequest $request, ItemsService $itemsService){
+		parent::__construct($AppName, $request);
+		$this->appName = $AppName;
 		$this->itemsService = $itemsService;
 	}
 
