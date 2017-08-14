@@ -26,8 +26,9 @@ use OCP\AppFramework\Db\Entity;
 
 class Category extends Entity {
 
-	public $categoryId;
+	public $id;
 	public $name;
+	public $parentid;
 
     public function __construct() {
         // add types in constructor

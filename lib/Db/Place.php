@@ -26,9 +26,9 @@ use OCP\AppFramework\Db\Entity;
 
 class Place extends Entity {
 
-	public $id;
+		public $id;
     public $name;
-    public $parent;
+    public $parentid;
 
     public function __construct() {
         // add types in constructor
