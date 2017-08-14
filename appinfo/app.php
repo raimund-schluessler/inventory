@@ -22,18 +22,4 @@
 
 namespace OCA\Inventory\AppInfo;
 
-\OC::$server->getNavigationManager()->add(function () {
-	$urlGenerator = \OC::$server->getURLGenerator();
-	return [
-		'id' => 'inventory',
-
-		'order' => 100,
-
-		'href' => $urlGenerator->linkToRoute('inventory.page.index'),
-
-		'icon' => $urlGenerator->imagePath('inventory', 'inventory.svg'),
-
-		'name' => \OC::$server->getL10N('inventory')->t('Inventory'),
-	];
-});
 \OC::$server->getSearch()->registerProvider('OCA\Inventory\Controller\SearchProvider', array('apps' => array('inventory')));

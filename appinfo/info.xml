@@ -2,7 +2,7 @@
 <info>
 	<id>inventory</id>
 	<name>Inventory</name>
-	<version>0.0.4</version>
+	<version>0.0.1</version>
 	<namespace>Inventory</namespace>
 	<category>productivity</category>
 	<licence>AGPL</licence>
