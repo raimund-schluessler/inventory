@@ -19,7 +19,6 @@
  *
  */
 
-
 module.exports = function(grunt) {
 	'use strict';
 
@@ -27,17 +26,15 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-wrap');
-	grunt.loadNpmTasks('grunt-phpunit');
-	grunt.loadNpmTasks('grunt-karma');
-	// grunt.loadNpmTasks('grunt-newer');
-	grunt.loadNpmTasks('grunt-phpdocumentor');
+	// grunt.loadNpmTasks('grunt-karma');
+	grunt.loadNpmTasks('grunt-svg-sprite');
 
 	grunt.initConfig({
 		meta: {
 			pkg: grunt.file.readJSON('package.json'),
 			version: '<%= meta.pkg.version %>',
 			banner: '/**\n' + ' * <%= meta.pkg.description %> - v<%= meta.version %>\n' + ' *\n' + ' * Copyright (c) <%= grunt.template.today("yyyy") %> - ' + '<%= meta.pkg.author.name %> <<%= meta.pkg.author.email %>>\n' + ' *\n' + ' * This file is licensed under the Affero\
- General Public License version 3 or later.\n' + ' * See the COPYING file\n' + ' *\n' + ' */\n\n',
+			 General Public License version 3 or later.\n' + ' * See the COPYING file\n' + ' *\n' + ' */\n\n',
 			build: 'app/',
 			production: 'public/'
 		},
@@ -90,30 +87,37 @@ module.exports = function(grunt) {
 			continuous: {
 				configFile: 'config/karma.js',
 				singleRun: true,
-				browsers: ['PhantomJS'],
 				reporters: ['progress', 'junit'],
 				junitReporter: {
 					outputFile: 'test-results.xml'
 				}
-			},
-			unit_phantom: {
-				configFile: 'config/karma.js',
-				browsers: ['PhantomJS']
 			}
 		},
-		phpunit: {
-			classes: {
-				dir: '../tests'
-			},
-			options: {
-				colors: true
-			}
-		},
-		phpdocumentor: {
-			"default": {
+		svg_sprite: {
+			basic: {
+
+				// Target basics
+				expand: true,
+				cwd: '../img/src',
+				src: ['**/*.svg'],
+				dest: '..',
+
+				// Target options
 				options: {
-					directory: '../appinfo,../db,../controllers,../service',
-					target: '../docs'
+					shape: {
+						transform: []
+					},
+					mode: {
+						css: {		// Activate the «css» mode
+							bust: false,
+							common: 'icon',
+							// dimensions: '',
+							sprite: "../img/sprites.svg",
+							render: {
+								css: true	// Activate CSS output (with default options)
+							}
+						}
+					}
 				}
 			}
 		}
@@ -121,4 +125,5 @@ module.exports = function(grunt) {
 	grunt.registerTask('ci', ['karma:continuous']);
 	grunt.registerTask('js', ['concat', 'wrap']);
 	grunt.registerTask('default', 'js');
+	grunt.registerTask('build', ['concat', 'svg_sprite']);
 };

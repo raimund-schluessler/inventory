@@ -6,6 +6,7 @@
     script('inventory', 'vendor/papaparse/papaparse.min');
     script('inventory', 'public/app');
     style('inventory', 'style');
+    style('inventory', 'sprites');
 ?>
 
 <div ng-app="Inventory" id="app" ng-cloak ng-controller="AppController">
