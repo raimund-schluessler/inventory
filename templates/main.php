@@ -6,7 +6,7 @@
     script('inventory', 'vendor/papaparse/papaparse.min');
     script('inventory', 'public/app');
     style('inventory', 'style');
-    style('inventory', 'sprites');
+    style('inventory', 'sprite');
 ?>
 
 <div ng-app="Inventory" id="app" ng-cloak ng-controller="AppController">
@@ -15,7 +15,7 @@
             <li ng-repeat="view in views"
                 ng-class="{active: route.current.scope.name == view.id}">
                 <a href="#/{{ view.id }}">
-                    <span class="icon {{ view.id }}">
+                    <span class="icon svg-{{ view.id }}">
                     </span>
                     <span class="title">{{ view.name }}</span>
                 </a>

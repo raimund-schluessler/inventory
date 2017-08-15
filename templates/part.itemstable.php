@@ -41,7 +41,7 @@
                     <span class="sort-indicator hidden icon-triangle-s"></span>
                 </a>
                 <a href="#/item/new" id="newItem" ng-show="name == 'items'">
-                    <span class="icon icon-add"></span>
+                    <span class="icon svg-plus"></span>
                     <span class="hidden-visually">Neu</span>
                 </a>
             </th>
