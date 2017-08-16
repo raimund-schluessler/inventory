@@ -28,15 +28,6 @@ $gray_light: #f5f5f5;
   cursor: pointer;
   vertical-align: middle;
   opacity: .5;
-  &.categories {
-    background-position: 0 -20px;
-  }
-  &.places {
-    background-position: -20px -20px;
-  }
-  &.items {
-    background-position: -20px 0;
-  }
 }
 .content-wrapper {
   height: 100%;
