@@ -111,10 +111,10 @@ module.exports = function(grunt) {
 						css: {		// Activate the «css» mode
 							bust: false,
 							common: 'icon',
-							// dimensions: '',
+							dimensions: '',
 							sprite: "../img/sprites.svg",
 							render: {
-								css: true	// Activate CSS output (with default options)
+								scss: true	// Activate CSS output (with default options)
 							}
 						}
 					}
