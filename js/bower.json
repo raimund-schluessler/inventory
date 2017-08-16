@@ -1,5 +1,5 @@
 {
-  "name": "ownCloud Inventory App",
+  "name": "Nextcloud Inventory",
   "version": "0.0.1",
   "dependencies": {
     "angular": "",
@@ -13,7 +13,7 @@
   "devDependencies": {},
   "homepage": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory",
   "authors": [
-    "Raimund Schlüßler <raimund.schluessler@googlemail.com>"
+    "Raimund Schlüßler <raimund.schluessler@mailbox.org>"
   ],
   "description": "",
   "main": "",

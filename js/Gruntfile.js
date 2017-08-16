@@ -1,8 +1,8 @@
 /**
- * ownCloud - Inventory
+ * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2016 Raimund Schlüßler <raimund.schluessler@googlemail.com>
+ * @copyright 2017 Raimund Schlüßler <raimund.schluessler@mailbox.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
 			pkg: grunt.file.readJSON('package.json'),
 			version: '<%= meta.pkg.version %>',
 			banner: '/**\n' + ' * <%= meta.pkg.description %> - v<%= meta.version %>\n' + ' *\n' + ' * Copyright (c) <%= grunt.template.today("yyyy") %> - ' + '<%= meta.pkg.author.name %> <<%= meta.pkg.author.email %>>\n' + ' *\n' + ' * This file is licensed under the Affero\
-			 General Public License version 3 or later.\n' + ' * See the COPYING file\n' + ' *\n' + ' */\n\n',
+ General Public License version 3 or later.\n' + ' * See the COPYING file\n' + ' *\n' + ' */\n\n',
 			build: 'app/',
 			production: 'public/'
 		},

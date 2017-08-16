@@ -1,9 +1,9 @@
 <?php
 /**
-* ownCloud - Inventory
+* Nextcloud - Inventory
 *
 * @author Raimund Schlüßler
-* @copyright 2016 Raimund Schlüßler raimund.schluessler@googlemail.com
+* @copyright 2017 Raimund Schlüßler raimund.schluessler@mailbox.org
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -20,10 +20,10 @@
 *
 */
 return [
-    'routes' => [
-	   ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
-	   ['name' => 'page#templates', 'url' => '/templates/{template}', 'verb' => 'GET'],
-		 ['name' => 'items#get',	'url' => '/items', 		'verb' => 'GET'],
-		 ['name' => 'items#enlist',	'url' => '/item/add',	'verb' => 'POST'],
-    ]
+	'routes' => [
+		['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
+		['name' => 'page#templates', 'url' => '/templates/{template}', 'verb' => 'GET'],
+		['name' => 'items#get',	'url' => '/items', 		'verb' => 'GET'],
+		['name' => 'items#enlist',	'url' => '/item/add',	'verb' => 'POST'],
+	]
 ];

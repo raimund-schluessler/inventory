@@ -1,10 +1,10 @@
 {
   "name": "inventory",
-  "description": "ownCloud Inventory App",
+  "description": "Nextcloud Inventory",
   "version": "0.0.1",
   "author": {
     "name": "Raimund Schlüßler",
-    "email": "raimund.schluessler@googlemail.com"
+    "email": "raimund.schluessler@mailbox.org"
   },
   "private": true,
   "homepage": "",

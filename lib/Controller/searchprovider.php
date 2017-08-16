@@ -1,9 +1,9 @@
 <?php
 /**
- * ownCloud - Inventory
+ * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2016 Raimund Schlüßler raimund.schluessler@googlemail.com
+ * @copyright 2017 Raimund Schlüßler raimund.schluessler@mailbox.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -25,11 +25,11 @@ namespace OCA\Inventory\Controller;
 use OCA\Inventory\AppInfo\Application;
 
 /**
- * Tasks search provider
+ * Inventory search provider
  */
 class SearchProvider extends \OCP\Search\Provider {
 
-	private $tasksService;
+	private $itemsService;
 
 	public function __construct() {
 		$app = new Application();

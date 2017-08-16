@@ -1,9 +1,7 @@
-(function(angular, $, oc_requesttoken, undefined){
-
 /**
- * ownCloud Inventory App - v0.0.1
+ * Nextcloud Inventory - v0.0.1
  *
- * Copyright (c) 2016 - Raimund Schlüßler <raimund.schluessler@googlemail.com>
+ * Copyright (c) 2017 - Raimund Schlüßler <raimund.schluessler@mailbox.org>
  *
  * This file is licensed under the Affero General Public License version 3 or later.
  * See the COPYING file
@@ -809,5 +807,3 @@ angular.module('Inventory').factory('Request', [
 		}
 	]);
 }).call(this);
-
-})(window.angular, window.jQuery, oc_requesttoken);
