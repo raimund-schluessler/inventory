@@ -2,13 +2,13 @@
   "name": "Nextcloud Inventory",
   "version": "0.0.1",
   "dependencies": {
-    "angular": "",
-    "angular-route": "",
-    "angular-animate": "",
-    "angular-sanitize": "",
-    "angular-ui-select": "https://github.com/angular-ui/ui-select.git",
-    "angular-draganddrop": "https://github.com/marceljuenemann/angular-drag-and-drop-lists.git",
-    "papaparse": "https://github.com/mholt/PapaParse.git"
+    "angular": "1.5.6",
+    "angular-route": "1.5.6",
+    "angular-animate": "1.5.6",
+    "angular-sanitize": "1.5.6",
+    "angular-ui-select": "https://github.com/angular-ui/ui-select.git#v0.17.1",
+    "angular-draganddrop": "https://github.com/marceljuenemann/angular-drag-and-drop-lists.git#v1.4.0",
+    "papaparse": "https://github.com/mholt/PapaParse.git#v4.1.2"
   },
   "devDependencies": {},
   "homepage": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory",
