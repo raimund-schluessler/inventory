@@ -15,9 +15,7 @@
             <li ng-repeat="view in views"
                 ng-class="{active: route.current.scope.name == view.id}">
                 <a href="#/{{ view.id }}">
-                    <span class="icon svg-{{ view.id }}">
-                    </span>
-                    <span class="title">{{ view.name }}</span>
+                    <span class="icon svg-{{ view.id }}"></span><span class="title">{{ view.name }}</span>
                 </a>
             </li>
         </ul>

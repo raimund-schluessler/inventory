@@ -37,6 +37,7 @@ $gray_light: #f5f5f5;
     max-height: 100px;
     > a {
       opacity: 1 !important;
+      padding: 0 14px;
       span {
         &.title {
           opacity: 0.57;
@@ -84,7 +85,7 @@ $gray_light: #f5f5f5;
         margin-top: -3px;
       }
       &.title {
-        margin-left: 9px;
+        margin-left: 14px;
       }
     }
   }
@@ -161,11 +162,11 @@ table {
   top: 10px;
   height: 30px;
   width: 30px;
-  padding: 4px;
+  padding: 6px;
   border: 1px solid $gray_dark;
   border-radius: 2px;
   background-color: $gray;
-  line-height: 20px;
+  line-height: 16px;
   &:hover {
     background-color: $gray;
   }
