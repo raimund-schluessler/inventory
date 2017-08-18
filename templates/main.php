@@ -9,10 +9,10 @@
 <div id="app">
     <div id="app-navigation">
         <ul>
-            <li v-for="view in views">
-                <!-- ng-class="{active: route.current.scope.name == view.id}"> -->
+            <li v-for="view in views"
+                v-bind:class="{ active: view.id == active}">
                 <a :href="'#' + view.id">
-                    <span :class="'icon svg-' + view.id"></span><span class="title">{{ view.name }}</span>
+                    <span class="icon" :class="'svg-' + view.id"></span><span class="title">{{ view.name }}</span>
                 </a>
             </li>
         </ul>

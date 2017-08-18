@@ -23,6 +23,7 @@ $(document).ready(function () {
 	OCA.Inventory.App = new Vue({
 		el: '#app',
 		data: {
+			active: 'items',
 			views: [
 				{
 					name: t('inventory', 'Items'),
