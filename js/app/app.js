@@ -19,54 +19,34 @@
  *
  */
 
-(function() {
-	angular.module('Inventory', ['ngRoute']).config([
-		'$provide', '$routeProvider', '$interpolateProvider', '$httpProvider', function($provide, $routeProvider, $interpolateProvider, $httpProvider) {
-			var config;
-			$provide.value('Config', config = {
-				markReadTimeout: 500,
-				taskUpdateInterval: 1000 * 600
-			});
-			$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
-			$routeProvider
-			.when('/items/', {
-				templateUrl: OC.generateUrl('/apps/inventory/templates/part.items', {}),
-				controller: 'ItemsController',
-				name: 'items'
-			})
-			.when('/items/:itemID', {
-				templateUrl: OC.generateUrl('/apps/inventory/templates/part.itemdetails', {}),
-				controller: 'ItemController',
-				name: 'item'
-			})
-			.when('/item/new', {
-				templateUrl: OC.generateUrl('/apps/inventory/templates/part.item.new', {}),
-				controller: 'NewItemController',
-				name: 'newitem'
-			})
-			.when('/places/', {
-				templateUrl: OC.generateUrl('/apps/inventory/templates/part.places', {}),
-				controller: 'PlacesController',
-				name: 'places'
-			})
-			.when('/categories/', {
-				templateUrl: OC.generateUrl('/apps/inventory/templates/part.categories', {}),
-				controller: 'CategoriesController',
-				name: 'categories'
-			})
-			.otherwise({
-				redirectTo: '/items/'
-			});
-		}
-	]);
+if (!OCA.Inventory) {
+	/**
+	 * @namespace OCA.Inventory
+	 */
+	OCA.Inventory = {};
+}
+/**
+* @namespace
+*/
 
-	angular.module('Inventory').run([
-		'$document', '$rootScope', 'Config', '$timeout', 'SearchBusinessLayer', function($document, $rootScope, Config, $timeout, SearchBusinessLayer) {
-			OCA.Search.inventory = SearchBusinessLayer;
-			return $document.click(function(event) {
-				$rootScope.$broadcast('documentClicked', event);
-			});
+$(document).ready(function () {
+	OCA.Inventory.App = new Vue({
+		el: '#app',
+		data: {
+			views: [
+				{
+					name: t('inventory', 'Items'),
+					id: "items"
+				},
+				{
+					name: t('inventory', 'Places'),
+					id: "places"
+				},
+				{
+					name: t('inventory', 'Categories'),
+					id: "categories"
+				}
+			]
 		}
-	]);
-
-}).call(this);
+	})
+});

@@ -123,7 +123,7 @@ module.exports = function(grunt) {
 		}
 	});
 	grunt.registerTask('ci', ['karma:continuous']);
-	grunt.registerTask('js', ['concat', 'wrap']);
+	grunt.registerTask('js', ['concat']);
 	grunt.registerTask('default', 'js');
 	grunt.registerTask('build', ['concat', 'svg_sprite']);
 };

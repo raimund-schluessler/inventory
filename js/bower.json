@@ -2,12 +2,7 @@
   "name": "Nextcloud Inventory",
   "version": "0.0.1",
   "dependencies": {
-    "angular": "1.5.6",
-    "angular-route": "1.5.6",
-    "angular-animate": "1.5.6",
-    "angular-sanitize": "1.5.6",
-    "angular-ui-select": "https://github.com/angular-ui/ui-select.git#v0.17.1",
-    "angular-draganddrop": "https://github.com/marceljuenemann/angular-drag-and-drop-lists.git#v1.4.0",
+    "vue": "2.4.2",
     "papaparse": "https://github.com/mholt/PapaParse.git#v4.1.2"
   },
   "devDependencies": {},
