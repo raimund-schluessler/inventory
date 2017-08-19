@@ -1,6 +1,8 @@
 <?php
     script('inventory', 'vendor/papaparse/papaparse.min');
     script('inventory', 'vendor/vue/dist/vue.min');
+    script('inventory', 'vendor/vue-router/dist/vue-router.min');
+    script('inventory', 'vendor/axios/dist/axios.min');
     script('inventory', 'public/app');
     style('inventory', 'style');
     style('inventory', 'sprite');
