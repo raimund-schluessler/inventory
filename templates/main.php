@@ -20,7 +20,6 @@
                     <span class="icon" :class="'svg-' + view.id"></span><span class="title">{{ view.name }}</span>
                 </a>
             </router-link>
-
         </ul>
     </div>
 
