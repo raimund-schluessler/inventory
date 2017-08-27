@@ -20,8 +20,31 @@ if (!OCA.Inventory) {
 */
 
 $(document).ready(function () {
+
+	const Items = { template: '<div>items</div>' }
+	const Places = { template: '<div>places</div>' }
+	const Categories = { template: '<div>categories</div>' }
+
+	const routes = [
+		// using
+		// { path: '/items', component: Items, alias: '/' },
+		// instead of
+		{ path: '/', redirect: '/items' },
+		{ path: '/items', component: Items},
+		// would also be an option, but it currently does not work
+		// reliably with router-link due to
+		// https://github.com/vuejs/vue-router/issues/419
+		{ path: '/places', component: Places },
+		{ path: '/categories', component: Categories },
+	]
+
+	const router = new VueRouter({
+		routes, // short for `routes: routes`
+	})
+
 	OCA.Inventory.App = new Vue({
 		el: '#app',
+		router,
 		data: {
 			active: 'items',
 			views: [

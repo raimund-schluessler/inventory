@@ -11,17 +11,20 @@
 <div id="app">
     <div id="app-navigation">
         <ul>
-            <li v-for="view in views"
-                v-bind:class="{ active: view.id == active}">
-                <a :href="'#' + view.id">
+            <router-link
+                tag="li"
+                v-for="view in views"
+                :to="'/' + view.id"
+                active-class="active">
+                <a>
                     <span class="icon" :class="'svg-' + view.id"></span><span class="title">{{ view.name }}</span>
                 </a>
-            </li>
+            </router-link>
+
         </ul>
     </div>
 
     <div id="app-content">
-        <!-- <div ng-view class="content-wrapper">
-        </div> -->
+        <router-view class="content-wrapper"></router-view>
     </div>
 </div>
