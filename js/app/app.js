@@ -18,6 +18,7 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+'use strict';
 
 if (!OCA.Inventory) {
 	/**
@@ -31,9 +32,9 @@ if (!OCA.Inventory) {
 
 $(document).ready(function () {
 
-	const Items = { template: '<div>items</div>' }
-	const Places = { template: '<div>places</div>' }
-	const Categories = { template: '<div>categories</div>' }
+	const Items = { template: '<div>items</div>' };
+	const Places = { template: '<div>places</div>' };
+	const Categories = { template: '<div>categories</div>' };
 
 	const routes = [
 		// using
@@ -46,11 +47,11 @@ $(document).ready(function () {
 		// https://github.com/vuejs/vue-router/issues/419
 		{ path: '/places', component: Places },
 		{ path: '/categories', component: Categories },
-	]
+	];
 
 	const router = new VueRouter({
 		routes, // short for `routes: routes`
-	})
+	});
 
 	OCA.Inventory.App = new Vue({
 		el: '#app',
@@ -72,5 +73,5 @@ $(document).ready(function () {
 				}
 			]
 		}
-	})
+	});
 });

@@ -38,6 +38,9 @@
           "exports": true,
           "escapeHTML": true,
           "possible": true,
-          "dav": true
+          "dav": true,
+          "OCA": true,
+          "Vue": true,
+          "VueRouter": true
     }
 }
