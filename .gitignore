@@ -1,3 +1,11 @@
+######################
+## Files build by make
+######################
+/css/src/sprites.scss
+/css/style.scss
+/img/sprites.svg
+/js/public/
+
 #################
 ## Eclipse
 #################
