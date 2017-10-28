@@ -73,7 +73,7 @@ gulp.task('build', ['lint'], () => {
 
 	return gulp.src(jsSources)
 		.pipe(babel({
-			presets: ['es2015'],
+			presets: ['babel-preset-es2015'],
 			compact: false,
 			babelrc: false,
 			ast: false
