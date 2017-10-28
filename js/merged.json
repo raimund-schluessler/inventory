@@ -1,0 +1,7 @@
+[
+  "vendor/papaparse/papaparse.min.js",
+  "vendor/vue/dist/vue.min.js",
+  "vendor/vue-router/dist/vue-router.min.js",
+  "vendor/axios/dist/axios.min.js",
+  "public/app.min.js"
+]
