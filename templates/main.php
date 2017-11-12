@@ -10,6 +10,7 @@
                 tag="li"
                 v-for="view in views"
                 :to="'/' + view.id"
+                :key="view.id"
                 active-class="active">
                 <a>
                     <span class="icon" :class="'svg-' + view.id"></span><span class="title">{{ view.name }}</span>
