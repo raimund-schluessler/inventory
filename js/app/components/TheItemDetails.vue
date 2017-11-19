@@ -32,14 +32,30 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div id="itemdetails">
 			Itemdetails {{ id }}
+			{{ item.maker }}
 		</div>
 	</div>
 </template>
 
 <script>
 	import { mapState } from 'vuex'
+	import { mapActions } from 'vuex'
 
 	export default {
-		props: ['id']
+		props: ['id'],
+		created: function () {
+			this.loadItem(this.id);
+		},
+		computed: mapState({
+			item: state => state.item
+		}),
+		methods: Object.assign({},
+			mapActions(['loadItem']),
+			{
+				toggle() {
+					this.show = !this.show;
+				}
+			}
+		)
 	}
 </script>

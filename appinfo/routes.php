@@ -21,9 +21,10 @@
 */
 return [
 	'routes' => [
-		['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
-		['name' => 'page#templates', 'url' => '/templates/{template}', 'verb' => 'GET'],
-		['name' => 'items#get',	'url' => '/items', 		'verb' => 'GET'],
-		['name' => 'items#enlist',	'url' => '/item/add',	'verb' => 'POST'],
+		['name' => 'page#index',		'url' => '/',				'verb' => 'GET'],
+		['name' => 'page#templates',	'url' => '/templates/{template}', 'verb' => 'GET'],
+		['name' => 'items#getAll',		'url' => '/items',			'verb' => 'GET'],
+		['name' => 'items#get',			'url' => '/item/{itemID}',	'verb' => 'GET'],
+		['name' => 'items#enlist',		'url' => '/item/add',		'verb' => 'POST'],
 	]
 ];

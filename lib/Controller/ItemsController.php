@@ -43,9 +43,18 @@ class ItemsController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	public function get(){
+	public function getAll(){
 		return $this->generateResponse(function () {
-			return ['items' => $this->itemsService->get()];
+			return ['items' => $this->itemsService->getAll()];
+		});
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function get($itemID){
+		return $this->generateResponse(function () use ($itemID) {
+			return ['item' => $this->itemsService->get($itemID)];
 		});
 	}
 

@@ -52,7 +52,7 @@ class ItemsService {
 	 *
 	 * @return array
 	 */
-	public function get() {
+	public function getAll() {
 		$items = $this->itemMapper->findAll();
 		foreach ($items as $nr => $item) {
 			$categories = $this->itemCategoriesMapper->findCategories($item->id);
@@ -77,6 +77,36 @@ class ItemsService {
 			}
 		}
 		return $items;
+	}
+
+	/**
+	 * get items
+	 *
+	 * @return array
+	 */
+	public function get($itemID) {
+		$item = $this->itemMapper->find($itemID);
+		$categories = $this->itemCategoriesMapper->findCategories($item->id);
+		$categoriesNames = array();
+		foreach ($categories as $category) {
+			$name = $this->categoryMapper->findCategory($category->categoryid);
+			$categoriesNames[] = array(
+				'id'	=> $category->categoryid,
+				'name'	=> $name->name
+			);
+		}
+		$items[$nr]->categories = $categoriesNames;
+		$place = $this->placeMapper->findPlace($item->place);
+		if ($place) {
+			$item->place = array(
+				'id'	=> $place->id,
+				'name'	=> $place->name,
+				'parent'=> $place->parent
+			);
+		} else{
+			$item->place = null;
+		}
+		return $item;
 	}
 
 	/**

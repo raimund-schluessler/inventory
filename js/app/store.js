@@ -30,19 +30,37 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		items: [],
+		item: []
 	},
 	mutations: {
 		setItems(state, payload) {
 			state.items = payload.items;
+		},
+		setItem(state, payload) {
+			state.item = payload.item;
 		}
 	},
 	actions: {
-		loadItems( {commit}) {
+		loadItems({commit}) {
 			return new Promise(function(resolve) {
 				Axios.get(OC.generateUrl('apps/inventory/items'))
 				.then(function (response) {
 					commit('setItems' , {
 						items: response.data.data.items
+					});
+					resolve();
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+			});
+		},
+		loadItem({commit}, itemID) {
+			return new Promise(function(resolve) {
+				Axios.get(OC.generateUrl('apps/inventory/item/' + itemID))
+				.then(function (response) {
+					commit('setItem' , {
+						item: response.data.data.item
 					});
 					resolve();
 				})
