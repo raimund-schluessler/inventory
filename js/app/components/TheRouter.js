@@ -24,6 +24,7 @@ import VueRouter from "vue-router";
 
 import TheItemsOverview from "./TheItemsOverview.vue";
 import ItemsNew from "./TheItemsCreator.vue";
+import TheItemDetails from "./TheItemDetails.vue";
 
 const Places = { template: '<div>places</div>' };
 const Categories = { template: '<div>categories</div>' };
@@ -38,6 +39,7 @@ const routes = [
 	// reliably with router-link due to
 	// https://github.com/vuejs/vue-router/issues/419
 	{ path: '/items/new', component: ItemsNew},
+	{ path: '/items/:id', component: TheItemDetails, props: true},
 	{ path: '/places', component: Places },
 	{ path: '/categories', component: Categories },
 ];

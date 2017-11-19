@@ -73,20 +73,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<tr class="handler"
 			v-for="item in items"
 			:key="item.id">
-			<td>{{ item.maker }}</td>
-			<td>{{ item.name }}</td>
-			<td>{{ item.description }}</td>
-			<td>{{ item.place.name }}</td>
-			<td>
-				<ul class="categories">
-					<li v-for='category in item.categories'>
-						<span>{{ category.name }}</span>
-					</li>
-				</ul>
-			</td>
-		</tr>
-	</tbody>
-</table>
+				<td><a v-bind:href="'#/items/' + item.id">{{ item.maker }}</a></td>
+				<td>{{ item.name }}</td>
+				<td>{{ item.description }}</td>
+				<td>{{ item.place.name }}</td>
+				<td>
+					<ul class="categories">
+						<li v-for='category in item.categories'>
+							<span>{{ category.name }}</span>
+						</li>
+					</ul>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </template>
 
 <script>

@@ -21,7 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<div id="controls">
+		<div class="itemnavigation">
 			<div class="breadcrumb">
 				<div data-dir="/" class="crumb svg last">
 					<a href="#/items">
@@ -31,7 +31,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</div>
 		<div id="itemdetails">
-			Itemdetails
+			Itemdetails {{ id }}
 		</div>
 	</div>
 </template>
+
+<script>
+	import { mapState } from 'vuex'
+
+	export default {
+		props: ['id']
+	}
+</script>
