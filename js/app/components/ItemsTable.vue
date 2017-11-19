@@ -23,8 +23,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<table id="itemstable">
 		<thead>
 			<tr>
-				<th id="headerMaker">
-					<div id="headerMaker-container">
+				<th>
+					<div>
 						<input id="select_all_items" class="select-all checkbox" type="checkbox">
 						<label for="select_all_items">
 							<span class="hidden-visually">{{ t('inventory', 'Select All') }}</span>
@@ -35,29 +35,29 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</a>
 					</div>
 				</th>
-				<th id="headerItem">
-					<div id="headerItem-container">
+				<th>
+					<div>
 						<a class="name sort columntitle" data-sort="name">
 							<span>{{ t('inventory', 'Item') }}</span>
 							<span class="sort-indicator icon-triangle-n"></span>
 						</a>
 					</div>
 				</th>
-				<th id="headerDescription">
-					<div id="headerDescription-container">
+				<th>
+					<div>
 						<a class="name sort columntitle" data-sort="description">
 							<span>{{ t('inventory', 'Description') }}</span>
 							<span class="sort-indicator icon-triangle-n"></span>
 						</a>
 					</div>
 				</th>
-				<th id="headerPlace">
+				<th>
 					<a class="size sort columntitle" data-sort="size">
 						<span>{{ t('inventory', 'Place') }}</span>
 						<span class="sort-indicator hidden icon-triangle-s"></span>
 					</a>
 				</th>
-				<th id="headerCategories">
+				<th>
 					<a class="size sort columntitle" data-sort="size">
 						<span>{{ t('inventory', 'Categories') }}</span>
 						<span class="sort-indicator hidden icon-triangle-s"></span>
