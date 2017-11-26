@@ -38,7 +38,7 @@ const routes = [
 	// would also be an option, but it currently does not work
 	// reliably with router-link due to
 	// https://github.com/vuejs/vue-router/issues/419
-	{ path: '/items/new', component: ItemsNew},
+	{ path: '/items/additems', component: ItemsNew},
 	{ path: '/items/:id', component: TheItemDetails, props: true},
 	{ path: '/places', component: Places },
 	{ path: '/categories', component: Categories },

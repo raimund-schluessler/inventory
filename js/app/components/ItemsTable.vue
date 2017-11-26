@@ -62,10 +62,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Categories') }}</span>
 						<span class="sort-indicator hidden icon-triangle-s"></span>
 					</a>
-					<a href="#/items/new" id="newItem" ng-show="name == 'items'">
-						<span class="icon svg-plus"></span>
-						<span class="hidden-visually">{{ t('inventory', 'New') }}</span>
-					</a>
+					<items-table-dropdown></items-table-dropdown>
 				</th>
 			</tr>
 		</thead>
@@ -90,9 +87,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-	import { mapState } from 'vuex'
+	import { mapState } from 'vuex';
+	import ItemsTableDropdown from './ItemsTableDropdown.vue';
 
 	export default {
-		props: ['items']
+		props: ['items'],
+		components: {
+			'items-table-dropdown': ItemsTableDropdown
+		}
 	}
 </script>

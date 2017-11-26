@@ -62,6 +62,7 @@ const svgConfig = {
 			bust: false,
 			common: 'icon',
 			dimensions: '',
+			prefix: '.icon-%s',
 			sprite: "../img/sprites.svg",
 			render: {
 				scss: {

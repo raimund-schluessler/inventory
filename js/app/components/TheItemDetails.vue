@@ -25,7 +25,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="breadcrumb">
 				<div data-dir="/" class="crumb svg last">
 					<a href="#/items">
-						<span class="icon items"></span>
+						<span class="icon icon-items"></span>
 					</a>
 				</div>
 			</div>

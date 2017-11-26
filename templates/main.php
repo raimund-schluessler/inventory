@@ -13,7 +13,7 @@
                 :key="view.id"
                 active-class="active">
                 <a>
-                    <span class="icon" :class="'svg-' + view.id"></span><span class="title">{{ view.name }}</span>
+                    <span class="icon" :class="'icon-' + view.id"></span><span class="title">{{ view.name }}</span>
                 </a>
             </router-link>
         </ul>
