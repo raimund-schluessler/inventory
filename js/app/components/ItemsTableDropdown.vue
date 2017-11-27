@@ -20,7 +20,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div class="dropdown-container">
+	<div class="dropdown-container" ref="dropdownMenu">
 		<div class="app-navigation-entry-utils" v-on:click="toggle()">
 			<div class="app-navigation-entry-utils-menu-button">
 				<button class="dropdown-button">
@@ -57,8 +57,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		methods: {
 			toggle: function () {
 				this.open = !this.open;
-				console.log(this.open);
+			},
+			documentClick: function (e) {
+				let el = this.$refs.dropdownMenu;
+				let target = e.target;
+				if (( el !== target) && !el.contains(target)) {
+					this.open = false;
+				}
 			}
+		},
+		created () {
+			document.addEventListener('click', this.documentClick)
+		},
+		destroyed () {
+			document.removeEventListener('click', this.documentClick)
 		}
 	}
 </script>
