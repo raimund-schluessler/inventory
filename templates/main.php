@@ -11,9 +11,10 @@
                 v-for="view in views"
                 :to="'/' + view.id"
                 :key="view.id"
+                :class="'icon-' + view.id"
                 active-class="active">
-                <a>
-                    <span class="icon" :class="'icon-' + view.id"></span><span class="title">{{ view.name }}</span>
+                <a class="sprite">
+                    <span class="title">{{ view.name }}</span>
                 </a>
             </router-link>
         </ul>

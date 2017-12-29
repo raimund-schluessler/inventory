@@ -27,100 +27,26 @@ $gray_light: #f5f5f5;
 }
 
 #app-navigation {
-	li {
-		max-height: 100px;
+	> ul {
+		> li {
+			background-image: unset;
 
-		> a {
-			opacity: 1 !important;
-			padding: 0 14px;
-
-			span {
-				&.title {
-					opacity: .57;
-				}
-
-				&.icon {
-					opacity: .57;
-				}
-			}
-		}
-
-		&.edit {
 			> a {
-				display: none;
+				background-image: unset;
+				background-position: inherit;
 			}
 
-			.app-navigation-entry-utils {
-				display: none;
+			.sprite::before {
+				content: '';
+				position: absolute;
+				z-index: -1;
+				width: 16px;
+				height: 16px;
+				background: url('../../../apps/inventory/css/../img/sprites.svg') no-repeat;
+				margin: 14px;
+				margin-left: -30px;
+				background-position: inherit;
 			}
-
-			.app-navigation-entry-menu {
-				display: none;
-			}
-
-			.app-navigation-entry-edit {
-				display: inline-block;
-			}
-		}
-
-		.app-navigation-entry-edit {
-			display: none;
-		}
-
-		&.active > a span {
-			&.title {
-				opacity: 1;
-			}
-
-			&.icon {
-				opacity: 1;
-			}
-		}
-
-		&:hover > a span {
-			&.title {
-				opacity: 1;
-			}
-
-			&.icon {
-				opacity: 1;
-			}
-		}
-
-		a > span {
-			&.icon {
-				margin-top: -3px;
-			}
-
-			&.title {
-				margin-left: 14px;
-			}
-		}
-	}
-
-	.app-navigation-entry-menu li {
-		float: inherit;
-		width: auto !important;
-		padding: 10px;
-		opacity: .5;
-		cursor: pointer;
-
-		img {
-			cursor: pointer;
-			margin-right: 5px;
-			vertical-align: text-bottom;
-		}
-
-		span {
-			cursor: pointer;
-		}
-
-		&:hover {
-			opacity: 1 !important;
-		}
-
-		button {
-			float: inherit;
 		}
 	}
 }
