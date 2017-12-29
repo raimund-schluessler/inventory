@@ -4,6 +4,7 @@ OC.L10N.register(
     "Inventory" : "Inventar",
     "places" : "Orte",
     "Places" : "Orte",
-    "Items" : "Objekte"
+    "Items" : "Objekte",
+	"Description" : "Beschreibung"
 },
 "nplurals=2; plural=(n != 1);");

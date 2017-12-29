@@ -18,55 +18,48 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+'use strict';
 
-(function() {
-	angular.module('Inventory', ['ngRoute']).config([
-		'$provide', '$routeProvider', '$interpolateProvider', '$httpProvider', function($provide, $routeProvider, $interpolateProvider, $httpProvider) {
-			var config;
-			$provide.value('Config', config = {
-				markReadTimeout: 500,
-				taskUpdateInterval: 1000 * 600
-			});
-			$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
-			$routeProvider
-			.when('/items/', {
-				templateUrl: OC.generateUrl('/apps/inventory/templates/part.items', {}),
-				controller: 'ItemsController',
-				name: 'items'
-			})
-			.when('/items/:itemID', {
-				templateUrl: OC.generateUrl('/apps/inventory/templates/part.itemdetails', {}),
-				controller: 'ItemController',
-				name: 'item'
-			})
-			.when('/item/new', {
-				templateUrl: OC.generateUrl('/apps/inventory/templates/part.item.new', {}),
-				controller: 'NewItemController',
-				name: 'newitem'
-			})
-			.when('/places/', {
-				templateUrl: OC.generateUrl('/apps/inventory/templates/part.places', {}),
-				controller: 'PlacesController',
-				name: 'places'
-			})
-			.when('/categories/', {
-				templateUrl: OC.generateUrl('/apps/inventory/templates/part.categories', {}),
-				controller: 'CategoriesController',
-				name: 'categories'
-			})
-			.otherwise({
-				redirectTo: '/items/'
-			});
-		}
-	]);
+import Vue from 'vue';
+import Vuex from 'vuex';
+import VueRouter from 'vue-router';
 
-	angular.module('Inventory').run([
-		'$document', '$rootScope', 'Config', '$timeout', 'SearchBusinessLayer', function($document, $rootScope, Config, $timeout, SearchBusinessLayer) {
-			OCA.Search.inventory = SearchBusinessLayer;
-			return $document.click(function(event) {
-				$rootScope.$broadcast('documentClicked', event);
-			});
-		}
-	]);
+import router from './components/TheRouter.js';
+import store from './store';
 
-}).call(this);
+export class App {
+	start() {
+		Vue.mixin({
+			methods: {
+				t: function (app, string) {
+					return t(app, string);
+				}
+			}
+		});
+
+		let appView = new Vue({
+			el: '#app',
+			router: router,
+			store: store,
+			data: {
+				active: 'items',
+				views: [
+					{
+						name: t('inventory', 'Items'),
+						id: "items"
+					},
+					{
+						name: t('inventory', 'Places'),
+						id: "places"
+					},
+					{
+						name: t('inventory', 'Categories'),
+						id: "categories"
+					}
+				]
+			}
+		});
+
+		store.dispatch('loadItems');
+	}
+}
