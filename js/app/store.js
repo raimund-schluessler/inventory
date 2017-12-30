@@ -30,7 +30,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		items: [],
-		item: []
+		item: [],
+		relatedItems: [],
+		parentItems: []
 	},
 	mutations: {
 		setItems(state, payload) {
@@ -38,6 +40,12 @@ export default new Vuex.Store({
 		},
 		setItem(state, payload) {
 			state.item = payload.item;
+		},
+		setRelatedItems(state, payload) {
+			state.relatedItems = payload.relatedItems;
+		},
+		setParentItems(state, payload) {
+			state.parentItems = payload.parentItems;
 		}
 	},
 	actions: {
@@ -61,6 +69,34 @@ export default new Vuex.Store({
 				.then(function (response) {
 					commit('setItem' , {
 						item: response.data.data.item
+					});
+					resolve();
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+			});
+		},
+		loadRelatedItems({commit}, itemID) {
+			return new Promise(function(resolve) {
+				Axios.get(OC.generateUrl('apps/inventory/items'))
+				.then(function (response) {
+					commit('setRelatedItems' , {
+						relatedItems: response.data.data.items
+					});
+					resolve();
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+			});
+		},
+		loadParentItems({commit}, itemID) {
+			return new Promise(function(resolve) {
+				Axios.get(OC.generateUrl('apps/inventory/items'))
+				.then(function (response) {
+					commit('setParentItems' , {
+						parentItems: response.data.data.items
 					});
 					resolve();
 				})
