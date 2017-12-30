@@ -27,24 +27,25 @@ use OCA\Inventory\Db\Item;
 use OCA\Inventory\Db\ItemMapper;
 use OCA\Inventory\Db\CategoryMapper;
 use OCA\Inventory\Db\ItemcategoriesMapper;
-use OCA\Inventory\Db\PlaceMapper;
+use OCA\Inventory\Service\IteminstanceService;
 
 class ItemsService {
 
 	private $userId;
 	private $AppName;
 	private $itemMapper;
+	private $iteminstanceMapper;
 	private $categoryMapper;
 	private $itemCategoriesMapper;
 
-	public function __construct($userId, $AppName, ItemMapper $itemMapper, CategoryMapper $categoryMapper,
-		ItemcategoriesMapper $itemcategoriesMapper, PlaceMapper $placeMapper) {
+	public function __construct($userId, $AppName, ItemMapper $itemMapper, IteminstanceService $iteminstanceService,
+		CategoryMapper $categoryMapper, ItemcategoriesMapper $itemcategoriesMapper) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->itemMapper = $itemMapper;
 		$this->categoryMapper = $categoryMapper;
 		$this->itemCategoriesMapper = $itemcategoriesMapper;
-		$this->placeMapper = $placeMapper;
+		$this->iteminstanceService = $iteminstanceService;
 	}
 
 	/**
@@ -65,16 +66,7 @@ class ItemsService {
 				);
 			}
 			$items[$nr]->categories = $categoriesNames;
-			$place = $this->placeMapper->findPlace($item->place);
-			if ($place) {
-				$item->place = array(
-					'id'	=> $place->id,
-					'name'	=> $place->name,
-					'parent'=> $place->parent
-				);
-			} else{
-				$item->place = null;
-			}
+			$items[$nr]->instances = $this->iteminstanceService->getByItemID($item->id);
 		}
 		return $items;
 	}
@@ -95,17 +87,8 @@ class ItemsService {
 				'name'	=> $name->name
 			);
 		}
-		$items[$nr]->categories = $categoriesNames;
-		$place = $this->placeMapper->findPlace($item->place);
-		if ($place) {
-			$item->place = array(
-				'id'	=> $place->id,
-				'name'	=> $place->name,
-				'parent'=> $place->parent
-			);
-		} else{
-			$item->place = null;
-		}
+		$item->categories = $categoriesNames;
+		$item->instances = $this->iteminstanceService->getByItemID($item->id);
 		return $item;
 	}
 

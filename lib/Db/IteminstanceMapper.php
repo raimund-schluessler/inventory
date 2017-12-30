@@ -24,12 +24,12 @@ namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\Mapper;
-use \OCA\Inventory\Db\Item;
+use \OCA\Inventory\Db\Iteminstance;
 
-class ItemMapper extends Mapper {
+class IteminstanceMapper extends Mapper {
 
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, 'invtry_items');
+		parent::__construct($db, 'invtry_item_instances');
 	}
 
 	/**
@@ -37,31 +37,30 @@ class ItemMapper extends Mapper {
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
 	public function find($id) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_items` ' .
+		$sql = 'SELECT * FROM `*PREFIX*invtry_item_instances` ' .
 			'WHERE `id` = ?';
 		return $this->findEntity($sql, [$id]);
 	}
 
-	public function findAll($limit=null, $offset=null) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_items`';
-		return $this->findEntities($sql, [], $limit, $offset);
-	}
-
-	public function itemCount($name) {
-		$sql = 'SELECT COUNT(*) AS `count` FROM `*PREFIX*invtry_items`';
-		$stmt = $this->execute($sql);
-
-		$row = $stmt->fetch();
-		$stmt->closeCursor();
-		return $row['count'];
+	/**
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
+	 */
+	public function findByItemID($itemid, $limit=null, $offset=null) {
+		$sql = 'SELECT * FROM `*PREFIX*invtry_item_instances`' .
+			'WHERE `itemid` = ?';
+		return $this->findEntities($sql, [$itemid], $limit, $offset);
 	}
 
 	public function add($params) {
-		$item = new Item();
-		$item->setName($params['name']);
-		$item->setMaker($params['maker']);
-		$item->setDescription($params['description']);
-		$item->setLink($params['link']);
-		return $this->insert($item);
+		$itemInstance = new Iteminstance();
+		$itemInstance->setId($params['id']);
+		$itemInstance->setItemID($params['itemid']);
+		$itemInstance->setCount($params['count']);
+		$itemInstance->setAvailable($params['available']);
+		$itemInstance->setPrice($params['price']);
+		$itemInstance->setDate($params['date']);
+		$itemInstance->setPlaceID($params['placeid']);
+		$itemInstance->setVendor($params['vendor']);
+		return $this->insert($itemInstance);
 	}
 }

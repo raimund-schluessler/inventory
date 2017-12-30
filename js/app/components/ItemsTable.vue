@@ -53,12 +53,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</th>
 				<th>
 					<a class="size sort columntitle" data-sort="size">
-						<span>{{ t('inventory', 'Place') }}</span>
-						<span class="sort-indicator hidden icon-triangle-s"></span>
-					</a>
-				</th>
-				<th>
-					<a class="size sort columntitle" data-sort="size">
 						<span>{{ t('inventory', 'Categories') }}</span>
 						<span class="sort-indicator hidden icon-triangle-s"></span>
 					</a>
@@ -73,7 +67,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<td><a v-bind:href="'#/items/' + item.id">{{ item.maker }}</a></td>
 				<td>{{ item.name }}</td>
 				<td>{{ item.description }}</td>
-				<td>{{ item.place.name }}</td>
 				<td>
 					<ul class="categories">
 						<li v-for='category in item.categories'>

@@ -31,15 +31,10 @@ class Item extends Entity {
 	public $name;
 	public $maker;
 	public $description;
-	public $place;
 	public $related;
 	public $itemNumber;
-	public $price;
 	public $link;
-	public $vendor;
-	public $date;
 	public $ean;
-	public $count;
 	public $details;
 	public $comment;
 
