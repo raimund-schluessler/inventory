@@ -20,7 +20,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<table id="itemstable">
+	<table class="itemstable">
 		<thead>
 			<tr>
 				<th>
@@ -65,8 +65,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			v-for="item in items"
 			:key="item.id">
 				<td><a v-bind:href="'#/items/' + item.id">{{ item.maker }}</a></td>
-				<td>{{ item.name }}</td>
-				<td>{{ item.description }}</td>
+				<td><a v-bind:href="'#/items/' + item.id">{{ item.name }}</a></td>
+				<td><a v-bind:href="'#/items/' + item.id">{{ item.description }}</a></td>
 				<td>
 					<ul class="categories">
 						<li v-for='category in item.categories'>

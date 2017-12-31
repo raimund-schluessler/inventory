@@ -51,7 +51,7 @@ $gray_light: #f5f5f5;
 	}
 }
 
-#itemstable {
+.itemstable {
 	width: 100%;
 	position: relative;
 
@@ -69,6 +69,13 @@ $gray_light: #f5f5f5;
 
 			&:first-child {
 				padding-left: 73px;
+			}
+
+			a {
+				height: 100%;
+				width: 100%;
+				display: inline-block;
+				line-height: 40px;
 			}
 		}
 	}
