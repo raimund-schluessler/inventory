@@ -169,6 +169,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		components: {
 			'items-table': ItemsTable
 		},
+		beforeRouteUpdate (to, from, next) {
+			this.loadItem(to.params.id);
+			this.loadRelatedItems(to.params.id);
+			this.loadParentItems(to.params.id);
+			next();
+		},
 		computed: mapState({
 			item:			state => state.item,
 			relatedItems:	state => state.relatedItems,
