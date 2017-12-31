@@ -89,33 +89,45 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ item.details }}</span>
 					</td>
 				</tr>
+				<tr>
+					<td>
+						<span>{{ t('inventory', 'Categories') }}</span>
+					</td>
+					<td>
+						<ul class="categories">
+							<li v-for='category in item.categories'>
+								<span>{{ category.name }}</span>
+							</li>
+						</ul>
+					</td>
+				</tr>
 			</table>
 			<br/>
 			<span>{{ t('inventory', 'Instances') }}</span>
 			<table>
 				<thead>
-					<th>
-						<span>{{ t('inventory', 'Count') }}</span>
-					</th>
-					<th>
-						<span>{{ t('inventory', 'Available') }}</span>
-					</th>
-					<th>
-						<span>{{ t('inventory', 'Price') }}</span>
-					</th>
-					<th>
-						<span>{{ t('inventory', 'Date') }}</span>
-					</th>
-					<th>
-						<span>{{ t('inventory', 'Vendor') }}</span>
-					</th>
-					<th>
-						<span>{{ t('inventory', 'Place') }}</span>
-					</th>
-					<th>
-						<span>{{ t('inventory', 'Comment') }}</span>
-					</th>
 					<tr>
+						<th>
+							<span>{{ t('inventory', 'Count') }}</span>
+						</th>
+						<th>
+							<span>{{ t('inventory', 'Available') }}</span>
+						</th>
+						<th>
+							<span>{{ t('inventory', 'Price') }}</span>
+						</th>
+						<th>
+							<span>{{ t('inventory', 'Date') }}</span>
+						</th>
+						<th>
+							<span>{{ t('inventory', 'Vendor') }}</span>
+						</th>
+						<th>
+							<span>{{ t('inventory', 'Place') }}</span>
+						</th>
+						<th>
+							<span>{{ t('inventory', 'Comment') }}</span>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
