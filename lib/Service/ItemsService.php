@@ -27,6 +27,7 @@ use OCA\Inventory\Db\Item;
 use OCA\Inventory\Db\ItemMapper;
 use OCA\Inventory\Db\CategoryMapper;
 use OCA\Inventory\Db\ItemcategoriesMapper;
+use OCA\Inventory\Db\ItemparentMapper;
 use OCA\Inventory\Service\IteminstanceService;
 
 class ItemsService {
@@ -34,18 +35,20 @@ class ItemsService {
 	private $userId;
 	private $AppName;
 	private $itemMapper;
-	private $iteminstanceMapper;
 	private $categoryMapper;
 	private $itemCategoriesMapper;
+	private $iteminstanceService;
+	private $itemParentMapper;
 
 	public function __construct($userId, $AppName, ItemMapper $itemMapper, IteminstanceService $iteminstanceService,
-		CategoryMapper $categoryMapper, ItemcategoriesMapper $itemcategoriesMapper) {
+		CategoryMapper $categoryMapper, ItemcategoriesMapper $itemcategoriesMapper, ItemparentMapper $itemParentMapper) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->itemMapper = $itemMapper;
 		$this->categoryMapper = $categoryMapper;
 		$this->itemCategoriesMapper = $itemcategoriesMapper;
 		$this->iteminstanceService = $iteminstanceService;
+		$this->itemParentMapper = $itemParentMapper;
 	}
 
 	/**
@@ -90,6 +93,56 @@ class ItemsService {
 		$item->categories = $categoriesNames;
 		$item->instances = $this->iteminstanceService->getByItemID($item->id);
 		return $item;
+	}
+
+	/**
+	 * get related items
+	 *
+	 * @return array
+	 */
+	public function getRelated($itemID) {
+		$relations = $this->itemParentMapper->findRelated($itemID);
+		foreach ($relations as $relation) {
+			$item = $this->itemMapper->find($relation->itemid);
+			$categories = $this->itemCategoriesMapper->findCategories($item->id);
+			$categoriesNames = array();
+			foreach ($categories as $category) {
+				$name = $this->categoryMapper->findCategory($category->categoryid);
+				$categoriesNames[] = array(
+					'id'	=> $category->categoryid,
+					'name'	=> $name->name
+				);
+			}
+			$item->categories = $categoriesNames;
+			$item->instances = $this->iteminstanceService->getByItemID($item->id);
+			$items[] = $item;
+		}
+		return $items;
+	}
+
+	/**
+	 * get parent items
+	 *
+	 * @return array
+	 */
+	public function getParent($itemID) {
+		$relations = $this->itemParentMapper->findParent($itemID);
+		foreach ($relations as $relation) {
+			$item = $this->itemMapper->find($relation->parentid);
+			$categories = $this->itemCategoriesMapper->findCategories($item->id);
+			$categoriesNames = array();
+			foreach ($categories as $category) {
+				$name = $this->categoryMapper->findCategory($category->categoryid);
+				$categoriesNames[] = array(
+					'id'	=> $category->categoryid,
+					'name'	=> $name->name
+				);
+			}
+			$item->categories = $categoriesNames;
+			$item->instances = $this->iteminstanceService->getByItemID($item->id);
+			$items[] = $item;
+		}
+		return $items;
 	}
 
 	/**

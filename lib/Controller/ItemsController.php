@@ -61,6 +61,24 @@ class ItemsController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
+	public function getRelated($itemID){
+		return $this->generateResponse(function () use ($itemID) {
+			return ['items' => $this->itemsService->getRelated($itemID)];
+		});
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function getParent($itemID){
+		return $this->generateResponse(function () use ($itemID) {
+			return ['items' => $this->itemsService->getParent($itemID)];
+		});
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
 	public function enlist($item){
 		return $this->generateResponse(function () use ($item) {
 			return $this->itemsService->enlist($item);

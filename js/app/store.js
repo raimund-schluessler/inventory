@@ -79,7 +79,7 @@ export default new Vuex.Store({
 		},
 		loadRelatedItems({commit}, itemID) {
 			return new Promise(function(resolve) {
-				Axios.get(OC.generateUrl('apps/inventory/items'))
+				Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/related'))
 				.then(function (response) {
 					commit('setRelatedItems' , {
 						relatedItems: response.data.data.items
@@ -93,7 +93,7 @@ export default new Vuex.Store({
 		},
 		loadParentItems({commit}, itemID) {
 			return new Promise(function(resolve) {
-				Axios.get(OC.generateUrl('apps/inventory/items'))
+				Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/parent'))
 				.then(function (response) {
 					commit('setParentItems' , {
 						parentItems: response.data.data.items
