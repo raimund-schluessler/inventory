@@ -62,7 +62,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Item Number') }}</span>
 					</td>
 					<td>
-						<span>{{ item.item_number }}</span>
+						<span>{{ item.itemNumber }}</span>
 					</td>
 				</tr>
 				<tr>
