@@ -29,16 +29,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<label for="select_all_items">
 							<span class="hidden-visually">{{ t('inventory', 'Select All') }}</span>
 						</label>
-						<a class="maker sort columntitle" data-sort="maker">
-							<span>{{ t('inventory', 'Maker') }}</span>
+						<a class="name sort columntitle" data-sort="name">
+							<span>{{ t('inventory', 'Name') }}</span>
 							<span class="sort-indicator icon-triangle-n"></span>
 						</a>
 					</div>
 				</th>
 				<th>
 					<div>
-						<a class="name sort columntitle" data-sort="name">
-							<span>{{ t('inventory', 'Item') }}</span>
+						<a class="maker sort columntitle" data-sort="maker">
+							<span>{{ t('inventory', 'Maker') }}</span>
 							<span class="sort-indicator icon-triangle-n"></span>
 						</a>
 					</div>
@@ -64,8 +64,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<tr class="handler"
 			v-for="item in items"
 			:key="item.id">
-				<td><a v-bind:href="'#/items/' + item.id">{{ item.maker }}</a></td>
 				<td><a v-bind:href="'#/items/' + item.id">{{ item.name }}</a></td>
+				<td><a v-bind:href="'#/items/' + item.id">{{ item.maker }}</a></td>
 				<td><a v-bind:href="'#/items/' + item.id">{{ item.description }}</a></td>
 				<td>
 					<ul class="categories">
