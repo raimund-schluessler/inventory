@@ -70,7 +70,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Link') }}</span>
 					</td>
 					<td>
-						<span>{{ item.link }}</span>
+						<span><a v-bind:href="item.link">{{ item.link }}</a></span>
 					</td>
 				</tr>
 				<tr>
@@ -87,6 +87,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</td>
 					<td>
 						<span>{{ item.details }}</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span>{{ t('inventory', 'Comment') }}</span>
+					</td>
+					<td>
+						<span>{{ item.comment }}</span>
 					</td>
 				</tr>
 				<tr>
