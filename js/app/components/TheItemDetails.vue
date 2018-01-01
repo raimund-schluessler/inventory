@@ -70,7 +70,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Link') }}</span>
 					</td>
 					<td>
-						<span><a v-bind:href="item.link">{{ item.link }}</a></span>
+						<span><a target="_blank" v-bind:href="item.link">{{ item.link }}</a></span>
 					</td>
 				</tr>
 				<tr>
