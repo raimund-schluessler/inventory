@@ -30,7 +30,6 @@ const gulp = require('gulp'),
 	stylelint = require('gulp-stylelint'),
 	sourcemaps = require('gulp-sourcemaps'),
 	svgSprite = require('gulp-svg-sprite'),
-	npmFiles = require('gulp-npm-files'),
 	webpack = require('webpack'),
 	webpackStream = require('webpack-stream'),
 	webpackConfig = require('./webpack.config.js');
