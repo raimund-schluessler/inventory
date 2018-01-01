@@ -45,10 +45,10 @@
 
 app_name=$(notdir $(CURDIR))
 build_tools_directory=$(CURDIR)/build/tools
-source_build_directory=$(CURDIR)/build/source/tasks
+source_build_directory=$(CURDIR)/build/source/inventory
 source_artifact_directory=$(CURDIR)/build/artifacts/source
 source_package_name=$(source_artifact_directory)/$(app_name)
-appstore_build_directory=$(CURDIR)/build/appstore/tasks
+appstore_build_directory=$(CURDIR)/build/appstore/inventory
 appstore_artifact_directory=$(CURDIR)/build/artifacts/appstore
 appstore_package_name=$(appstore_artifact_directory)/$(app_name)
 npm5=$(shell which npm5 2> /dev/null)
@@ -63,17 +63,17 @@ endif
 # code signing
 # assumes the following:
 # * the app is inside the nextcloud/apps folder
-# * the private key is located in ~/.nextcloud/tasks.key
-# * the certificate is located in ~/.nextcloud/tasks.crt
+# * the private key is located in ~/.nextcloud/inventory.key
+# * the certificate is located in ~/.nextcloud/inventory.crt
 occ=$(CURDIR)/../../occ
 configdir=$(CURDIR)/../../config
 private_key=$(HOME)/.nextcloud/$(app_name).key
 certificate=$(HOME)/.nextcloud/$(app_name).crt
 sign=php -f $(occ) integrity:sign-app --privateKey="$(private_key)" --certificate="$(certificate)"
 sign_skip_msg="Skipping signing, either no key and certificate found in $(private_key) and $(certificate) or occ can not be found at $(occ)"
-ifneq (,$(wildcard $(private_key)))
-ifneq (,$(wildcard $(certificate)))
-ifneq (,$(wildcard $(occ)))
+ifneq ("$(wildcard $(private_key))","") #(,$(wildcard $(private_key)))
+ifneq ("$(wildcard $(certificate))","")#(,$(wildcard $(certificate)))
+ifneq ("$(wildcard $(occ))","")#(,$(wildcard $(occ)))
 	CAN_SIGN=true
 endif
 endif
@@ -138,6 +138,7 @@ appstore:
 	mkdir -p $(appstore_build_directory) $(appstore_artifact_directory)
 	rsync -av .	$(appstore_build_directory) \
 	--exclude=/tests \
+	--exclude=/.git \
 	--exclude=/.idea \
 	--exclude=/.editorconfig \
 	--exclude=/.gitattributes \
@@ -146,14 +147,19 @@ appstore:
 	--exclude=/.travis.yml \
 	--exclude=/build.xml \
 	--exclude=/CONTRIBUTING.md \
-	--exclude=/inventory.sublime-project \
-	--exclude=/inventory.sublime-workspace \
 	--exclude=/issue_template.md \
 	--exclude=/Makefile \
 	--exclude=/phpunit.xml \
 	--exclude=/README.md \
 	--exclude=/build \
-	--exclude=/img/source \
+	--exclude=/css/src \
+	--exclude=/img/src \
+	--exclude=/.jshintrc \
+	--exclude=/.stylelintrc \
+	--exclude=/gulpfile.js \
+	--exclude=/webpack.config.js \
+	--exclude=/package.json \
+	--exclude=/package-lock.json \
 	--exclude=/js/.bowerrc \
 	--exclude=/js/README.md \
 	--exclude=/js/.jshintrc \
@@ -163,7 +169,7 @@ appstore:
 	--exclude=/js/README.mkdir \
 	--exclude=/js/app \
 	--exclude=/js/config \
-	--exclude=/js/node_modules \
+	--exclude=/node_modules \
 	--exclude=/js/vendor/**/.bower.json \
 	--exclude=/js/vendor/**/.npm5ignore \
 	--exclude=/js/vendor/**/bower.json \
@@ -182,7 +188,12 @@ endif
 	cd $(appstore_build_directory)/../; \
 	zip -r $(appstore_package_name).zip $(app_name)
 	tar -czf $(appstore_package_name).tar.gz -C $(appstore_build_directory)/../ $(app_name)
+# create hash
+ifdef CAN_SIGN
 	openssl dgst -sha512 -sign $(private_key) $(appstore_package_name).tar.gz | openssl base64 -out $(appstore_artifact_directory)/$(app_name).sha512
+else
+	@echo "Skipping hashing, no key found in $(private_key)."
+endif
 
 
 # Command for running JS and PHP tests. Works for package.json files in the js/
