@@ -33,29 +33,31 @@ class CategoryMapper extends Mapper {
 		parent::__construct($db, 'invtry_categories');
 	}
 
-	public function findCategory($categoryId) {
+	public function findCategory($categoryId, $uid) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_categories` ' .
-			'WHERE `id` = ?';
+			'WHERE `id` = ? AND `uid` = ?';
 		try {
-			return $this->findEntity($sql, [$categoryId]);
+			return $this->findEntity($sql, [$categoryId, $uid]);
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
 	}
 
-	public function findCategoryByName($categoryName) {
+	public function findCategoryByName($categoryName, $uid) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_categories` ' .
-			'WHERE `name` = ?';
+			'WHERE `name` = ? AND `uid` = ?';
 		try {
-			return $this->findEntity($sql, [$categoryName]);
+			return $this->findEntity($sql, [$categoryName, $uid]);
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
 	}
 
-	public function add($name) {
+	public function add($name, $uid, $parentID=NULL) {
 		$category = new Category();
 		$category->setName($name);
+		$category->setUid($uid);
+		$category->setParentid($parentID);
 		return $this->insert($category);
 	}
 }

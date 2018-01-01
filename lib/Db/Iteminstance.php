@@ -27,6 +27,7 @@ use OCP\AppFramework\Db\Entity;
 class Iteminstance extends Entity {
 
 	public $id;
+	public $uid;
 	public $itemid;
 	public $count;
 	public $available;
@@ -40,5 +41,6 @@ class Iteminstance extends Entity {
 		// add types in constructor
 		$this->addType('id', 'integer');
 		$this->addType('itemid', 'integer');
+		$this->addType('placeid', 'integer');
 	}
 }

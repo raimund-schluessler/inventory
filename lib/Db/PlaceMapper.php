@@ -33,29 +33,31 @@ class PlaceMapper extends Mapper {
 		parent::__construct($db, 'invtry_places');
 	}
 
-	public function findPlace($placeId) {
+	public function findPlace($placeId, $uid) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_places` ' .
-			'WHERE `id` = ?';
+			'WHERE `id` = ? AND `uid` = ?';
 		try {
-			return $this->findEntity($sql, [$placeId]);
+			return $this->findEntity($sql, [$placeId, $uid]);
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
 	}
 
-	public function findPlaceByName($placeName) {
+	public function findPlaceByName($placeName, $uid) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_places` ' .
-			'WHERE `name` = ?';
+			'WHERE `name` = ? AND `uid` = ?';
 		try {
-			return $this->findEntity($sql, [$placeName]);
+			return $this->findEntity($sql, [$placeName, $uid]);
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
 	}
 
-	public function add($name) {
+	public function add($name, $uid, $parentID=NULL) {
 		$place = new Place();
 		$place->setName($name);
+		$place->setUid($uid);
+		$place->setParentid($parentID);
 		return $this->insert($place);
 	}
 }

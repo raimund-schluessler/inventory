@@ -28,6 +28,7 @@ class ItemCategories extends Entity {
 
 	public $categorymappingid;
 	public $categoryid;
+	public $uid;
 	public $itemid;
 
     public function __construct() {

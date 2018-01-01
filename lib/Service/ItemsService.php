@@ -57,12 +57,12 @@ class ItemsService {
 	 * @return array
 	 */
 	public function getAll() {
-		$items = $this->itemMapper->findAll();
+		$items = $this->itemMapper->findAll($this->userId);
 		foreach ($items as $nr => $item) {
-			$categories = $this->itemCategoriesMapper->findCategories($item->id);
+			$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
 			$categoriesNames = array();
 			foreach ($categories as $category) {
-				$name = $this->categoryMapper->findCategory($category->categoryid);
+				$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
 				$categoriesNames[] = array(
 					'id'	=> $category->categoryid,
 					'name'	=> $name->name
@@ -80,11 +80,11 @@ class ItemsService {
 	 * @return array
 	 */
 	public function get($itemID) {
-		$item = $this->itemMapper->find($itemID);
-		$categories = $this->itemCategoriesMapper->findCategories($item->id);
+		$item = $this->itemMapper->find($itemID, $this->userId);
+		$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
 		$categoriesNames = array();
 		foreach ($categories as $category) {
-			$name = $this->categoryMapper->findCategory($category->categoryid);
+			$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
 			$categoriesNames[] = array(
 				'id'	=> $category->categoryid,
 				'name'	=> $name->name
@@ -103,11 +103,11 @@ class ItemsService {
 	public function getRelated($itemID) {
 		$relations = $this->itemParentMapper->findRelated($itemID);
 		foreach ($relations as $relation) {
-			$item = $this->itemMapper->find($relation->itemid);
-			$categories = $this->itemCategoriesMapper->findCategories($item->id);
+			$item = $this->itemMapper->find($relation->itemid, $this->userId);
+			$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
 			$categoriesNames = array();
 			foreach ($categories as $category) {
-				$name = $this->categoryMapper->findCategory($category->categoryid);
+				$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
 				$categoriesNames[] = array(
 					'id'	=> $category->categoryid,
 					'name'	=> $name->name
@@ -128,11 +128,11 @@ class ItemsService {
 	public function getParent($itemID) {
 		$relations = $this->itemParentMapper->findParent($itemID);
 		foreach ($relations as $relation) {
-			$item = $this->itemMapper->find($relation->parentid);
-			$categories = $this->itemCategoriesMapper->findCategories($item->id);
+			$item = $this->itemMapper->find($relation->parentid, $this->userId);
+			$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
 			$categoriesNames = array();
 			foreach ($categories as $category) {
-				$name = $this->categoryMapper->findCategory($category->categoryid);
+				$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
 				$categoriesNames[] = array(
 					'id'	=> $category->categoryid,
 					'name'	=> $name->name
@@ -151,22 +151,24 @@ class ItemsService {
 	 * @return array
 	 */
 	public function enlist($item) {
-		$place = $this->placeMapper->findPlaceByName($item['place']['name']);
-		if (!$place) {
-			$place = $this->placeMapper->add($item['place']['name']);
-		}
-		$item['place'] = $place->id;
-
+		$item['uid'] = $this->userId;
 		$added = $this->itemMapper->add($item);
 
 		foreach ($item['categories'] as $category) {
-			$categoryEntity = $this->categoryMapper->findCategoryByName($category['name']);
+			$categoryEntity = $this->categoryMapper->findCategoryByName($category['name'], $this->userId);
 			if (!$categoryEntity) {
-				$categoryEntity = $this->categoryMapper->add($category['name']);
+				$categoryEntity = $this->categoryMapper->add($category['name'], $this->userId);
 			}
-			$mapping = $this->itemCategoriesMapper->add(array(	'itemid' => $added->id,
-																'categoryid' => $categoryEntity->id)
-			);
+			$mapping = $this->itemCategoriesMapper->add(array(
+				'itemid' => $added->id,
+				'uid' => $this->userId,
+				'categoryid' => $categoryEntity->id
+			));
+		}
+
+		foreach ($item['instances'] as $instance) {
+			$instance['itemid'] = $added->id;
+			$this->iteminstanceService->add($instance);
 		}
 	}
 }

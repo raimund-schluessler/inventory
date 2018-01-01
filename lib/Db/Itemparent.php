@@ -28,6 +28,7 @@ class ItemParent extends Entity {
 
 	public $itemid;
 	public $parentid;
+	public $uid;
 
     public function __construct() {
         // add types in constructor

@@ -27,11 +27,13 @@ use OCP\AppFramework\Db\Entity;
 class Place extends Entity {
 
 	public $id;
+	public $uid;
     public $name;
     public $parentid;
 
     public function __construct() {
         // add types in constructor
         $this->addType('id', 'integer');
+        $this->addType('parentid', 'integer');
     }
 }

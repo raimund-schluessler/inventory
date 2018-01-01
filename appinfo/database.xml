@@ -16,7 +16,7 @@
       <length>8</length>
     </field>
     <field>
-      <name>owner</name>
+      <name>uid</name>
       <type>text</type>
       <notnull>true</notnull>
       <length>64</length>
@@ -51,8 +51,8 @@
       <notnull>false</notnull>
     </field>
     <field>
-      <name>ean</name>
-      <type>integer</type>
+      <name>gtin</name>
+      <type>text</type>
       <notnull>false</notnull>
       <length>13</length>
     </field>
@@ -85,6 +85,12 @@
       <default>0</default>
       <notnull>true</notnull>
       <length>8</length>
+    </field>
+    <field>
+      <name>uid</name>
+      <type>text</type>
+      <notnull>true</notnull>
+      <length>64</length>
     </field>
     <field>
       <name>placeid</name>
@@ -136,6 +142,12 @@
       <length>8</length>
     </field>
     <field>
+      <name>uid</name>
+      <type>text</type>
+      <notnull>true</notnull>
+      <length>64</length>
+    </field>
+    <field>
       <name>name</name>
       <type>text</type>
       <notnull>true</notnull>
@@ -158,6 +170,12 @@
       <notnull>true</notnull>
       <autoincrement>1</autoincrement>
       <length>8</length>
+    </field>
+    <field>
+      <name>uid</name>
+      <type>text</type>
+      <notnull>true</notnull>
+      <length>64</length>
     </field>
     <field>
       <name>name</name>
@@ -185,6 +203,12 @@
       <type>integer</type>
       <notnull>true</notnull>
     </field>
+    <field>
+      <name>uid</name>
+      <type>text</type>
+      <notnull>true</notnull>
+      <length>64</length>
+    </field>
   </declaration>
  </table>
  <table>
@@ -199,6 +223,12 @@
       <name>parentid</name>
       <type>integer</type>
       <notnull>true</notnull>
+    </field>
+    <field>
+      <name>uid</name>
+      <type>text</type>
+      <notnull>true</notnull>
+      <length>64</length>
     </field>
   </declaration>
  </table>

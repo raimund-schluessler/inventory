@@ -36,15 +36,16 @@ class ItemMapper extends Mapper {
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
-	public function find($id) {
+	public function find($id, $uid) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_items` ' .
-			'WHERE `id` = ?';
-		return $this->findEntity($sql, [$id]);
+			'WHERE `id` = ? AND `uid` = ?';
+		return $this->findEntity($sql, [$id, $uid]);
 	}
 
-	public function findAll($limit=null, $offset=null) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_items`';
-		return $this->findEntities($sql, [], $limit, $offset);
+	public function findAll($uid, $limit=null, $offset=null) {
+		$sql = 'SELECT * FROM `*PREFIX*invtry_items` ' .
+			'WHERE `uid` = ?';
+		return $this->findEntities($sql, [$uid], $limit, $offset);
 	}
 
 	public function itemCount($name) {
@@ -58,10 +59,15 @@ class ItemMapper extends Mapper {
 
 	public function add($params) {
 		$item = new Item();
+		$item->setUid($params['uid']);
 		$item->setName($params['name']);
 		$item->setMaker($params['maker']);
 		$item->setDescription($params['description']);
+		$item->setItemNumber($params['item_number']);
 		$item->setLink($params['link']);
+		$item->setGtin($params['gtin']);
+		$item->setDetails($params['details']);
+		$item->setComment($params['comment']);
 		return $this->insert($item);
 	}
 }

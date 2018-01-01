@@ -27,6 +27,7 @@ use OCP\AppFramework\Db\Entity;
 class Category extends Entity {
 
 	public $id;
+	public $uid;
 	public $name;
 	public $parentid;
 

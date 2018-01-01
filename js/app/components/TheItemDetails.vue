@@ -75,10 +75,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</tr>
 				<tr>
 					<td>
-						<span>{{ t('inventory', 'EAN') }}</span>
+						<span>{{ t('inventory', 'GTIN') }}</span>
 					</td>
 					<td>
-						<span>{{ item.ean }}</span>
+						<span>{{ item.gtin }}</span>
 					</td>
 				</tr>
 				<tr>

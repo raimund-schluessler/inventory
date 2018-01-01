@@ -47,9 +47,9 @@ class IteminstanceService {
 	 * @return array
 	 */
 	public function getByItemID($itemid) {
-		$iteminstances = $this->iteminstanceMapper->findByItemID($itemid);
+		$iteminstances = $this->iteminstanceMapper->findByItemID($itemid, $this->userId);
 		foreach ($iteminstances as $nr => $iteminstance) {
-			$place = $this->placeMapper->findPlace($iteminstance->placeid);
+			$place = $this->placeMapper->findPlace($iteminstance->placeid, $this->userId);
 			if ($place) {
 				$iteminstance->place = array(
 					'id'	=> $place->id,
@@ -61,5 +61,18 @@ class IteminstanceService {
 			}
 		}
 		return $iteminstances;
+	}
+
+	/**
+	 * add an instance
+	 */
+	public function add($instance) {
+		$place = $this->placeMapper->findPlaceByName($instance['place'], $this->userId);
+		if (!$place) {
+			$place = $this->placeMapper->add($instance['place'], $this->userId);
+		}
+		$instance['placeid'] = $place->id;
+		$instance['uid'] = $this->userId;
+		$this->iteminstanceMapper->add($instance);
 	}
 }

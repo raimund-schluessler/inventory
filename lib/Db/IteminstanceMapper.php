@@ -36,31 +36,32 @@ class IteminstanceMapper extends Mapper {
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
-	public function find($id) {
+	public function find($id, $uid) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_item_instances` ' .
-			'WHERE `id` = ?';
-		return $this->findEntity($sql, [$id]);
+			'WHERE `id` = ? AND `uid` = ?';
+		return $this->findEntity($sql, [$id, $uid]);
 	}
 
 	/**
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 */
-	public function findByItemID($itemid, $limit=null, $offset=null) {
+	public function findByItemID($itemid, $uid, $limit=null, $offset=null) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_item_instances`' .
-			'WHERE `itemid` = ?';
-		return $this->findEntities($sql, [$itemid], $limit, $offset);
+			'WHERE `itemid` = ? AND `uid` = ?';
+		return $this->findEntities($sql, [$itemid, $uid], $limit, $offset);
 	}
 
 	public function add($params) {
 		$itemInstance = new Iteminstance();
-		$itemInstance->setId($params['id']);
-		$itemInstance->setItemID($params['itemid']);
+		$itemInstance->setUid($params['uid']);
+		$itemInstance->setItemid($params['itemid']);
 		$itemInstance->setCount($params['count']);
 		$itemInstance->setAvailable($params['available']);
 		$itemInstance->setPrice($params['price']);
 		$itemInstance->setDate($params['date']);
-		$itemInstance->setPlaceID($params['placeid']);
+		$itemInstance->setPlaceid($params['placeid']);
 		$itemInstance->setVendor($params['vendor']);
+		$itemInstance->setComment($params['comment']);
 		return $this->insert($itemInstance);
 	}
 }

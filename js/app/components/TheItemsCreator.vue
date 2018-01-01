@@ -26,7 +26,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<span v-for='field in fields'>
 			&lt;{{ field }}&gt;;
 		</span>
-		<form id="newItems" ng-submit="enlist()">
+		<form id="newItems" v-on:submit.prevent="enlist">
 			<textarea v-model="rawInput"></textarea>
 			Parsed items:
 			<div>
@@ -39,6 +39,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 	import { mapState } from 'vuex';
+	import Axios from 'axios';
 	import Papa from 'papaparse';
 	import ItemsTable from './ItemsTable.vue';
 
@@ -47,11 +48,21 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			return {
 				rawInput: 'RawData',
 				parsedItems: [],
-				fields: ['id', 'name', 'maker', 'description', 'item_number', 'link', 'EAN', 'details', 'place', 'price', 'count', 'available', 'vendor', 'date', 'categories', 'related']
+				fields: ['name', 'maker', 'description', 'item_number', 'link', 'EAN', 'details', 'comment', 'place', 'price', 'count', 'available', 'vendor', 'date', 'categories', 'related']
 			}
 		},
 		components: {
 			'items-table': ItemsTable
+		},
+		methods: {
+			enlist() {
+				for (i = 0; i < this.parsedItems.length; i++) {
+					Axios.post(OC.generateUrl('apps/inventory/item/add'), {
+						item: this.parsedItems[i]
+					})
+				}
+				// this.parsedItems = [];
+			}
 		},
 		watch: {
 			rawInput: function(val, oldVal) {
@@ -60,33 +71,34 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				for (i = 0; i < results.data.length; i++) {
 					var it = results.data[i];
 					var item = {
-						'id':			it[0],
-						'name':			it[1],
-						'maker':		it[2],
-						'description':	it[3],
-						'item_number':	it[4],
-						'link':			it[5],
-						'ean':			it[6],
-						'details':		it[7],
-						'instances': {
+						'name':			it[0],
+						'maker':		it[1],
+						'description':	it[2],
+						'item_number':	it[3],
+						'link':			it[4],
+						'gtin':			it[5],
+						'details':		it[6],
+						'comment':		it[7],
+						'instances': [{
 							'place':	it[8],
 							'price':	it[9],
 							'count':	it[10],
 							'available':it[11],
 							'vendor':	it[12],
 							'date':		it[13],
-						},
-						'categories':	it[14].split(',').map(function(s) {
-							return {'name':	String.prototype.trim.apply(s)};
-						}),
-						'related':		it[15].split(',').map(function(s) {
-							return {'parentid':	String.prototype.trim.apply(s)};
-						})
+							'comment':	''
+						}]
 					}
+					var c = it[14].split(','), categories = [], name;
+					for (var j = 0; j < c.length; j++) {
+						name = String.prototype.trim.apply(c[j]);
+						if (name.length) {
+							categories.push({'name': name});
+						}
+					}
+					item.categories = categories;
 					this.parsedItems.push(item);
-					console.log(item);
 				}
-				console.log(this.parsedItems);
 			}
 		}
 	}

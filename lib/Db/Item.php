@@ -27,20 +27,18 @@ use OCP\AppFramework\Db\Entity;
 class Item extends Entity {
 
 	public $id;
-	public $owner;
+	public $uid;
 	public $name;
 	public $maker;
 	public $description;
-	public $related;
 	public $itemNumber;
 	public $link;
-	public $ean;
+	public $gtin;
 	public $details;
 	public $comment;
 
 	public function __construct() {
 		// add types in constructor
 		$this->addType('id', 'integer');
-		$this->addType('owner', 'integer');
 	}
 }
