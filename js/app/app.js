@@ -37,12 +37,13 @@ export class App {
 			}
 		});
 
-		let appView = new Vue({
+		OCA.Inventory.App.Vue = new Vue({
 			el: '#app',
 			router: router,
 			store: store,
 			data: {
 				active: 'items',
+				searchString: '',
 				views: [
 					{
 						name: t('inventory', 'Items'),
@@ -57,6 +58,11 @@ export class App {
 						id: "categories"
 					}
 				]
+			},
+			methods: {
+				filter(query) {
+					this.searchString = query;
+				}
 			}
 		});
 

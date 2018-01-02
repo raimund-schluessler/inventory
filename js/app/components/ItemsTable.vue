@@ -62,7 +62,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</thead>
 		<tbody>
 			<tr class="handler"
-			v-for="item in items"
+			v-for="item in filteredItems"
 			:key="item.id">
 				<td><a v-bind:href="'#/items/' + item.id">{{ item.name }}</a></td>
 				<td><a v-bind:href="'#/items/' + item.id">{{ item.maker }}</a></td>
@@ -87,6 +87,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		props: ['items'],
 		components: {
 			'items-table-dropdown': ItemsTableDropdown
+		},
+		computed: {
+			filteredItems() {
+				if (!this.items) {
+					return;
+				}
+				return this.items.filter(item => {
+					return item.maker.toLowerCase().indexOf(this.$root.searchString.toLowerCase()) > -1
+				})
+			}
 		}
 	}
 </script>

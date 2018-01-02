@@ -28,6 +28,7 @@ if (!OCA.Inventory) {
 	 */
 	OCA.Inventory = {};
 }
+
 /**
 * @namespace
 */
@@ -35,4 +36,12 @@ if (!OCA.Inventory) {
 $(document).ready(function () {
 	OCA.Inventory.App = new App();
 	OCA.Inventory.App.start();
+
+	OCA.Inventory.App.Search = {
+		attach: function (search) {
+			search.setFilter('inventory', OCA.Inventory.App.Vue.filter);
+		}
+	};
+
+	OC.Plugins.register('OCA.Search', OCA.Inventory.App.Search);
 });
