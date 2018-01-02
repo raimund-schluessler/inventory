@@ -54,7 +54,7 @@ class IteminstanceService {
 				$iteminstance->place = array(
 					'id'	=> $place->id,
 					'name'	=> $place->name,
-					'parent'=> $place->parent
+					'parent'=> $place->parentid
 				);
 			} else{
 				$iteminstance->place = null;
