@@ -127,6 +127,7 @@ class ItemsService {
 	 */
 	public function getParent($itemID) {
 		$relations = $this->itemParentMapper->findParent($itemID);
+		$items = [];
 		foreach ($relations as $relation) {
 			$item = $this->itemMapper->find($relation->parentid, $this->userId);
 			$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
