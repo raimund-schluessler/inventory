@@ -82,6 +82,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 	import { mapState } from 'vuex';
 	import ItemsTableDropdown from './ItemsTableDropdown.vue';
+	import searchQueryParser from 'search-query-parser';
 
 	export default {
 		props: ['items'],
@@ -93,8 +94,78 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				if (!this.items) {
 					return;
 				}
+				if (!this.$root.searchString) {
+					return this.items;
+				}
+
+				var options = {keywords: ['maker', 'name', 'description', 'categories', 'itemNumber', 'gtin', 'details', 'comment']};
+
+				var searchQueryObj = searchQueryParser.parse(this.$root.searchString, options);
+				// bring into same structure if no keywords were matched
+				if (Object.prototype.toString.call(searchQueryObj) === "[object String]") {
+					searchQueryObj = {text: searchQueryObj};
+				}
+
+				if (searchQueryObj.hasOwnProperty('text')) {
+					// split strings at whitespace, except when in quotes
+					searchQueryObj.searchTerms = searchQueryObj.text.match(/\w+|"(?:\\"|[^"])+"/g);
+				}
+
 				return this.items.filter(item => {
-					return item.maker.toLowerCase().indexOf(this.$root.searchString.toLowerCase()) > -1
+					var isResult = true;
+
+					var keyword;
+					var found = false;
+					for (var i = 0; i < options.keywords.length; i++) {
+						keyword = options.keywords[i];
+						// check if keywords were given, if yes, check if value is found
+						if (searchQueryObj.hasOwnProperty(keyword)) {
+							if (keyword === 'categories') {
+								found = false;
+								for (var jj = 0; jj < item.categories.length; jj++) {
+									if (item.categories[jj].name.toLowerCase().indexOf(searchQueryObj[keyword].toLowerCase()) > -1) {
+										found = true;
+										break;
+									}
+								}
+								if (!found) {
+									return false;
+								}
+							} else {
+								if (item[keyword].toLowerCase().indexOf(searchQueryObj[keyword].toLowerCase()) < 0) {
+									return false;
+								}
+							}
+						}
+					}
+
+					// check if text is matched
+					if (searchQueryObj.hasOwnProperty('searchTerms')) {
+						// console.log(searchQueryObj);
+						for (var jj = 0; jj < searchQueryObj.searchTerms.length; jj++) {
+							found = false;
+							for (var i = 0; i < options.keywords.length; i++) {
+								keyword = options.keywords[i];
+								if (keyword === 'categories') {
+									for (var kk = 0; kk < item.categories.length; kk++) {
+										if (item.categories[kk].name.toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
+											found = true;
+											break
+										}
+									}
+								} else {
+									if (item[keyword].toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
+										found = true;
+										break;
+									}
+								}
+							}
+							if (!found) {
+								return false;
+							}
+						}
+					}
+					return true;
 				})
 			}
 		}
