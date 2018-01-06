@@ -96,12 +96,12 @@ class ItemsService {
 	}
 
 	/**
-	 * get related items
+	 * get subitems
 	 *
 	 * @return array
 	 */
-	public function getRelated($itemID) {
-		$relations = $this->itemParentMapper->findRelated($itemID);
+	public function getSub($itemID) {
+		$relations = $this->itemParentMapper->findSub($itemID);
 		foreach ($relations as $relation) {
 			$item = $this->itemMapper->find($relation->itemid, $this->userId);
 			$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);

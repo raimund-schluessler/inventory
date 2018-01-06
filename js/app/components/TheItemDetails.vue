@@ -153,8 +153,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</tbody>
 			</table>
 			<br/>
-			<span>{{ t('inventory', 'Related items') }}</span>
-			<items-table v-bind:items="relatedItems"></items-table>
+			<span>{{ t('inventory', 'Subitems') }}</span>
+			<items-table v-bind:items="subItems"></items-table>
 			<br/>
 			<span>{{ t('inventory', 'Parent items') }}</span>
 			<items-table v-bind:items="parentItems"></items-table>
@@ -171,7 +171,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		props: ['id'],
 		created: function () {
 			this.loadItem(this.id);
-			this.loadRelatedItems(this.id);
+			this.loadSubItems(this.id);
 			this.loadParentItems(this.id);
 		},
 		components: {
@@ -179,18 +179,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		},
 		beforeRouteUpdate (to, from, next) {
 			this.loadItem(to.params.id);
-			this.loadRelatedItems(to.params.id);
+			this.loadSubItems(to.params.id);
 			this.loadParentItems(to.params.id);
 			next();
 		},
 		computed: mapState({
 			item:			state => state.item,
-			relatedItems:	state => state.relatedItems,
+			subItems:	state => state.subItems,
 			parentItems:	state => state.parentItems
 		}),
 		methods: Object.assign({},
 			mapActions(['loadItem']),
-			mapActions(['loadRelatedItems']),
+			mapActions(['loadSubItems']),
 			mapActions(['loadParentItems'])
 		)
 	}

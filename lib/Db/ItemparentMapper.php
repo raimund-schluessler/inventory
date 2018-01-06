@@ -31,7 +31,7 @@ class ItemparentMapper extends Mapper {
 		parent::__construct($db, 'invtry_item_parent_mapping');
 	}
 
-	public function findRelated($itemID) {
+	public function findSub($itemID) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_item_parent_mapping` ' .
 			'WHERE `parentid` = ?';
 		return $this->findEntities($sql, [$itemID]);

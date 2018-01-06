@@ -61,9 +61,9 @@ class ItemsController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	public function getRelated($itemID){
+	public function getSub($itemID){
 		return $this->generateResponse(function () use ($itemID) {
-			return ['items' => $this->itemsService->getRelated($itemID)];
+			return ['items' => $this->itemsService->getSub($itemID)];
 		});
 	}
 
