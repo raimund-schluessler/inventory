@@ -147,7 +147,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<td>{{ instance.price }}</td>
 						<td>{{ instance.date }}</td>
 						<td>{{ instance.vendor }}</td>
-						<td>{{ instance.place.name }}</td>
+						<td>{{ getPlace(instance) }}</td>
 						<td>{{ instance.comment }}</td>
 					</tr>
 				</tbody>
@@ -188,7 +188,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			subItems:	state => state.subItems,
 			parentItems:	state => state.parentItems
 		}),
-		methods: Object.assign({},
+		methods: Object.assign({
+			getPlace(instance) {
+				if (instance.place) {
+					return instance.place.name;
+				} else {
+					return '';
+				}
+			}
+			},
 			mapActions(['loadItem']),
 			mapActions(['loadSubItems']),
 			mapActions(['loadParentItems'])
