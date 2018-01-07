@@ -158,6 +158,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<br/>
 			<span>{{ t('inventory', 'Parent items') }}</span>
 			<items-table v-bind:items="parentItems"></items-table>
+			<br/>
+			<span>{{ t('inventory', 'Related items') }}</span>
+			<items-table v-bind:items="relatedItems"></items-table>
 		</div>
 	</div>
 </template>
@@ -173,6 +176,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			this.loadItem(this.id);
 			this.loadSubItems(this.id);
 			this.loadParentItems(this.id);
+			this.loadRelatedItems(this.id);
 		},
 		components: {
 			'items-table': ItemsTable
@@ -181,12 +185,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			this.loadItem(to.params.id);
 			this.loadSubItems(to.params.id);
 			this.loadParentItems(to.params.id);
+			this.loadRelatedItems(to.params.id);
 			next();
 		},
 		computed: mapState({
 			item:			state => state.item,
-			subItems:	state => state.subItems,
-			parentItems:	state => state.parentItems
+			subItems:		state => state.subItems,
+			parentItems:	state => state.parentItems,
+			relatedItems:	state => state.relatedItems
 		}),
 		methods: Object.assign({
 			getPlace(instance) {
@@ -199,7 +205,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			},
 			mapActions(['loadItem']),
 			mapActions(['loadSubItems']),
-			mapActions(['loadParentItems'])
+			mapActions(['loadParentItems']),
+			mapActions(['loadRelatedItems'])
 		)
 	}
 </script>
