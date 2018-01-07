@@ -203,4 +203,15 @@ class ItemsService {
 			$this->iteminstanceService->add($instance);
 		}
 	}
+
+	/**
+	 * finds items by query
+	 *
+	 * @return array
+	 */
+	public function findByQuery($query) {
+		// to be done
+		// will be necessary once pagination is implemented on the client side
+		return [];
+	}
 }
