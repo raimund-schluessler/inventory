@@ -120,6 +120,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						keyword = options.keywords[i];
 						// check if keywords were given, if yes, check if value is found
 						if (searchQueryObj.hasOwnProperty(keyword)) {
+							if (!item[keyword]) {
+								return false;
+							}
 							if (keyword === 'categories') {
 								found = false;
 								for (var jj = 0; jj < item.categories.length; jj++) {
@@ -146,6 +149,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							found = false;
 							for (var i = 0; i < options.keywords.length; i++) {
 								keyword = options.keywords[i];
+								if (!item[keyword]) {
+									continue;
+								}
 								if (keyword === 'categories') {
 									for (var kk = 0; kk < item.categories.length; kk++) {
 										if (item.categories[kk].name.toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
