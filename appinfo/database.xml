@@ -260,12 +260,12 @@
       <length>8</length>
     </field>
     <field>
-      <name>itemid_1</name>
+      <name>itemid1</name>
       <type>integer</type>
       <notnull>true</notnull>
     </field>
     <field>
-      <name>itemid_2</name>
+      <name>itemid2</name>
       <type>integer</type>
       <notnull>true</notnull>
     </field>
