@@ -60,18 +60,35 @@ $gray_light: #f5f5f5;
 			height: 50px;
 
 			&:first-child div {
-				padding-left: 50px;
+				padding-left: 40px;
 			}
 		}
 
 		td {
 			height: 40px;
 
-			&:first-child {
-				padding-left: 73px;
+			&:first-child a span{
+				padding-left: 60px;
 			}
 
 			a {
+				.thumbnail-wrapper {
+					position: absolute;
+					height: 40px;
+					width: 40px;
+
+					.thumbnail {
+						height: 32px;
+						width: 32px;
+						margin: 4px;
+						opacity: 0.57;
+
+						&.default {
+							background: url('../../../apps/inventory/css/../img/item-icons/default.svg') no-repeat;
+						}
+					}
+				}
+
 				height: 100%;
 				width: 100%;
 				display: inline-block;

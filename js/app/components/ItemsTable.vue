@@ -64,7 +64,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<tr class="handler"
 			v-for="item in filteredItems"
 			:key="item.id">
-				<td><a v-bind:href="'#/items/' + item.id">{{ item.name }}</a></td>
+				<td>
+					<a v-bind:href="'#/items/' + item.id">
+						<div class="thumbnail-wrapper">
+							<div class="thumbnail default"></div>
+						</div>
+						<span>{{ item.name }}</span>
+					</a>
+				</td>
 				<td><a v-bind:href="'#/items/' + item.id">{{ item.maker }}</a></td>
 				<td><a v-bind:href="'#/items/' + item.id">{{ item.description }}</a></td>
 				<td>
