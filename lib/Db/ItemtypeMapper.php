@@ -24,12 +24,12 @@ namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\Mapper;
-use \OCA\Inventory\Db\Item;
+use \OCA\Inventory\Db\Itemtype;
 
-class ItemMapper extends Mapper {
+class ItemtypeMapper extends Mapper {
 
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, 'invtry_items');
+		parent::__construct($db, 'invtry_item_types');
 	}
 
 	/**
@@ -37,7 +37,7 @@ class ItemMapper extends Mapper {
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
 	public function find($id, $uid) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_items` ' .
+		$sql = 'SELECT * FROM `*PREFIX*invtry_item_types` ' .
 			'WHERE `id` = ? AND `uid` = ?';
 		return $this->findEntity($sql, [$id, $uid]);
 	}
@@ -58,17 +58,10 @@ class ItemMapper extends Mapper {
 	}
 
 	public function add($params) {
-		$item = new Item();
+		$item = new Itemtype();
 		$item->setUid($params['uid']);
+		$item->setIcon($params['icon']);
 		$item->setName($params['name']);
-		$item->setMaker($params['maker']);
-		$item->setDescription($params['description']);
-		$item->setItemNumber($params['item_number']);
-		$item->setLink($params['link']);
-		$item->setGtin($params['gtin']);
-		$item->setDetails($params['details']);
-		$item->setComment($params['comment']);
-		$item->setType($params['type']);
 		return $this->insert($item);
 	}
 }

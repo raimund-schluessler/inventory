@@ -67,7 +67,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<td>
 					<a v-bind:href="'#/items/' + item.id">
 						<div class="thumbnail-wrapper">
-							<div class="thumbnail default"></div>
+							<div class="thumbnail default" v-bind:style="{ backgroundImage: 'url(' + getIconUrl(item) + ')' }"></div>
 						</div>
 						<span>{{ item.name }}</span>
 					</a>
@@ -95,6 +95,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		props: ['items'],
 		components: {
 			'items-table-dropdown': ItemsTableDropdown
+		},
+		methods: {
+			getIconUrl: function (item) {
+				if (!item.iconurl) {
+					return OC.generateUrl('/../apps/inventory/img/item-icons/' + item.icon + '.svg');
+				} else {
+					return item.iconurl;
+				}
+			}
 		},
 		computed: {
 			filteredItems() {

@@ -30,6 +30,7 @@ use OCA\Inventory\Db\ItemcategoriesMapper;
 use OCA\Inventory\Db\ItemparentMapper;
 use OCA\Inventory\Service\IteminstanceService;
 use OCA\Inventory\Db\ItemrelationMapper;
+use OCA\Inventory\Db\ItemtypeMapper;
 
 class ItemsService {
 
@@ -41,10 +42,11 @@ class ItemsService {
 	private $iteminstanceService;
 	private $itemParentMapper;
 	private $itemRelationMapper;
+	private $itemtypeMapper;
 
 	public function __construct($userId, $AppName, ItemMapper $itemMapper, IteminstanceService $iteminstanceService,
 		CategoryMapper $categoryMapper, ItemcategoriesMapper $itemcategoriesMapper, ItemparentMapper $itemParentMapper,
-		ItemRelationMapper $itemRelationMapper) {
+		ItemRelationMapper $itemRelationMapper, ItemtypeMapper $itemtypeMapper) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->itemMapper = $itemMapper;
@@ -53,6 +55,7 @@ class ItemsService {
 		$this->iteminstanceService = $iteminstanceService;
 		$this->itemParentMapper = $itemParentMapper;
 		$this->itemRelationMapper = $itemRelationMapper;
+		$this->itemtypeMapper = $itemtypeMapper;
 	}
 
 	/**
@@ -72,6 +75,9 @@ class ItemsService {
 					'name'	=> $name->name
 				);
 			}
+			$type = $this->itemtypeMapper->find($item->type, $this->userId);
+			$items[$nr]->icon = $type->icon;
+			$items[$nr]->type = $type->name;
 			$items[$nr]->categories = $categoriesNames;
 			$items[$nr]->instances = $this->iteminstanceService->getByItemID($item->id);
 		}
@@ -94,6 +100,9 @@ class ItemsService {
 				'name'	=> $name->name
 			);
 		}
+		$type = $this->itemtypeMapper->find($item->type, $this->userId);
+		$item->icon = $type->icon;
+		$item->type = $type->name;
 		$item->categories = $categoriesNames;
 		$item->instances = $this->iteminstanceService->getByItemID($item->id);
 		return $item;
@@ -118,6 +127,9 @@ class ItemsService {
 					'name'	=> $name->name
 				);
 			}
+			$type = $this->itemtypeMapper->find($item->type, $this->userId);
+			$item->icon = $type->icon;
+			$item->type = $type->name;
 			$item->categories = $categoriesNames;
 			$item->instances = $this->iteminstanceService->getByItemID($item->id);
 			$items[] = $item;
@@ -144,6 +156,9 @@ class ItemsService {
 					'name'	=> $name->name
 				);
 			}
+			$type = $this->itemtypeMapper->find($item->type, $this->userId);
+			$item->icon = $type->icon;
+			$item->type = $type->name;
 			$item->categories = $categoriesNames;
 			$item->instances = $this->iteminstanceService->getByItemID($item->id);
 			$items[] = $item;
@@ -170,6 +185,9 @@ class ItemsService {
 					'name'	=> $name->name
 				);
 			}
+			$type = $this->itemtypeMapper->find($item->type, $this->userId);
+			$item->icon = $type->icon;
+			$item->type = $type->name;
 			$item->categories = $categoriesNames;
 			$item->instances = $this->iteminstanceService->getByItemID($item->id);
 			$items[] = $item;

@@ -48,7 +48,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			return {
 				rawInput: 'RawData',
 				parsedItems: [],
-				fields: ['name', 'maker', 'description', 'item_number', 'link', 'EAN', 'details', 'comment', 'place', 'price', 'count', 'available', 'vendor', 'date', 'categories', 'related']
+				fields: ['name', 'maker', 'description', 'item_number', 'link', 'EAN', 'details', 'comment', 'type', 'place', 'price', 'count', 'available', 'vendor', 'date', 'categories', 'related']
 			}
 		},
 		components: {
@@ -79,17 +79,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						'gtin':			it[5],
 						'details':		it[6],
 						'comment':		it[7],
+						'type':			it[8],
 						'instances': [{
-							'place':	it[8],
-							'price':	it[9],
-							'count':	it[10],
-							'available':it[11],
-							'vendor':	it[12],
-							'date':		it[13],
+							'place':	it[9],
+							'price':	it[10],
+							'count':	it[11],
+							'available':it[12],
+							'vendor':	it[13],
+							'date':		it[14],
 							'comment':	''
 						}]
 					}
-					var c = it[14].split(','), categories = [], name;
+					var c = it[15].split(','), categories = [], name;
 					for (var j = 0; j < c.length; j++) {
 						name = String.prototype.trim.apply(c[j]);
 						if (name.length) {
