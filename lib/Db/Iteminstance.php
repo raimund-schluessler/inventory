@@ -27,14 +27,14 @@ use OCP\AppFramework\Db\Entity;
 class Iteminstance extends Entity {
 
 	public $id;
-	public $uid;
 	public $itemid;
+	public $uid;
+	public $placeid;
+	public $price;
 	public $count;
 	public $available;
-	public $price;
-	public $date;
-	public $placeid;
 	public $vendor;
+	public $date;
 	public $comment;
 
 	public function __construct() {

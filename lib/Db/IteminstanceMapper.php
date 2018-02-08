@@ -53,14 +53,14 @@ class IteminstanceMapper extends Mapper {
 
 	public function add($params) {
 		$itemInstance = new Iteminstance();
-		$itemInstance->setUid($params['uid']);
 		$itemInstance->setItemid($params['itemid']);
+		$itemInstance->setUid($params['uid']);
+		$itemInstance->setPlaceid($params['placeid']);
+		$itemInstance->setPrice($params['price']);
 		$itemInstance->setCount($params['count']);
 		$itemInstance->setAvailable($params['available']);
-		$itemInstance->setPrice($params['price']);
-		$itemInstance->setDate($params['date']);
-		$itemInstance->setPlaceid($params['placeid']);
 		$itemInstance->setVendor($params['vendor']);
+		$itemInstance->setDate($params['date']);
 		$itemInstance->setComment($params['comment']);
 		return $this->insert($itemInstance);
 	}

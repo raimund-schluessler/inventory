@@ -71,8 +71,8 @@ class IteminstanceService {
 		if (!$place) {
 			$place = $this->placeMapper->add($instance['place'], $this->userId);
 		}
-		$instance['placeid'] = $place->id;
 		$instance['uid'] = $this->userId;
+		$instance['placeid'] = $place->id;
 		$this->iteminstanceMapper->add($instance);
 	}
 }

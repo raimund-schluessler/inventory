@@ -48,7 +48,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			return {
 				rawInput: 'RawData',
 				parsedItems: [],
-				fields: ['name', 'maker', 'description', 'item_number', 'link', 'EAN', 'details', 'comment', 'type', 'place', 'price', 'count', 'available', 'vendor', 'date', 'categories', 'related']
+				fields: ['name', 'maker', 'description', 'item_number', 'link', 'GTIN', 'details', 'comment', 'type', 'place', 'price', 'count', 'available', 'vendor', 'date', 'categories', 'related']
 			}
 		},
 		components: {
