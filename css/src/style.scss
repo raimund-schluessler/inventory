@@ -67,7 +67,7 @@ $gray_light: #f5f5f5;
 		td {
 			height: 40px;
 
-			&:first-child a span{
+			&:first-child a span {
 				padding-left: 60px;
 			}
 
@@ -81,7 +81,7 @@ $gray_light: #f5f5f5;
 						height: 32px;
 						width: 32px;
 						margin: 4px;
-						opacity: 0.57;
+						opacity: .57;
 
 						&.default {
 							background: url('../../../apps/inventory/css/../img/item-icons/default.svg') no-repeat;
