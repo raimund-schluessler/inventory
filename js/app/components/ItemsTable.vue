@@ -124,7 +124,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 				if (searchQueryObj.hasOwnProperty('text')) {
 					// split strings at whitespace, except when in quotes
-					searchQueryObj.searchTerms = searchQueryObj.text.match(/\w+|"(?:\\"|[^"])+"/g);
+					// Note: The regex is not optimal yet and works mostly for English and German.
+					// It should rather read something like (/[\p{L}\d]+|"(?:\\"|[^"])+"/g), 
+					// but \p{L} is not supported in ECMA script by now.
+					// Could be overcome by http://xregexp.com/
+					searchQueryObj.searchTerms = searchQueryObj.text.match(/[\wäöüß]+|"(?:\\"|[^"])+"/g);
 				}
 
 				return this.items.filter(item => {
