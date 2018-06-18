@@ -103,7 +103,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</td>
 					<td>
 						<ul class="categories">
-							<li v-for='category in item.categories'>
+								<li v-for='category in item.categories' :key='category.id'>
 								<span>{{ category.name }}</span>
 							</li>
 						</ul>
@@ -141,7 +141,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<tbody>
 					<tr class="handler"
 					v-for="instance in item.instances"
-					:key="item.id">
+						:key="instance.id">
 						<td>{{ instance.count }}</td>
 						<td>{{ instance.available }}</td>
 						<td>{{ instance.price }}</td>
