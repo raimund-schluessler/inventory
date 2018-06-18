@@ -76,7 +76,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<td><a v-bind:href="'#/items/' + item.id">{{ item.description }}</a></td>
 				<td>
 					<ul class="categories">
-						<li v-for='category in item.categories'>
+						<li v-for='category in item.categories' :key='category.id'>
 							<span>{{ category.name }}</span>
 						</li>
 					</ul>
