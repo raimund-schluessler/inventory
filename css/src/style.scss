@@ -106,6 +106,14 @@ table {
 		font-weight: normal;
 		line-height: 30px;
 	}
+
+	&.instances,
+	&.properties {
+		th,
+		td {
+			padding: 5px 10px;
+		}
+	}
 }
 
 #newItemsView {
@@ -128,6 +136,12 @@ table {
 	input[type="submit"] {
 		float: right;
 		margin: 10px 0;
+	}
+}
+
+#itemdetails {
+	.paragraph {
+		margin: 0 10px;
 	}
 }
 

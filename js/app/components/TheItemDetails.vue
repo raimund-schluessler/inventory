@@ -23,10 +23,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div class="itemnavigation">
 			<div class="breadcrumb">
-				<div data-dir="/" class="crumb svg last">
+				<div data-dir="/" class="crumb svg">
 					<a href="#/items">
 						<span class="icon icon-items"></span>
 					</a>
+				</div>
+				<div class="crumb svg">
+					<a v-bind:href="'#/items/' + item.id">{{ item.description }}</a>
 				</div>
 			</div>
 		</div>
@@ -35,90 +38,96 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<img src="/nextcloud/index.php/../apps/inventory/img/inventory.svg"/>
 			</div>
 			<div>
-				<span>{{ t('inventory', 'Properties') }}</span>
-				<table>
-					<tr>
-						<td>
-							<span>{{ t('inventory', 'Name') }}</span>
-						</td>
-						<td>
-							<span>{{ item.name }}</span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span>{{ t('inventory', 'Maker') }}</span>
-						</td>
-						<td>
-							<span>{{ item.maker }}</span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span>{{ t('inventory', 'Description') }}</span>
-						</td>
-						<td>
-							<span>{{ item.description }}</span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span>{{ t('inventory', 'Item Number') }}</span>
-						</td>
-						<td>
-							<span>{{ item.itemNumber }}</span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span>{{ t('inventory', 'Link') }}</span>
-						</td>
-						<td>
-							<span><a target="_blank" v-bind:href="item.link">{{ item.link }}</a></span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span>{{ t('inventory', 'GTIN') }}</span>
-						</td>
-						<td>
-							<span>{{ item.gtin }}</span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span>{{ t('inventory', 'Details') }}</span>
-						</td>
-						<td>
-							<span>{{ item.details }}</span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span>{{ t('inventory', 'Comment') }}</span>
-						</td>
-						<td>
-							<span>{{ item.comment }}</span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span>{{ t('inventory', 'Categories') }}</span>
-						</td>
-						<td>
-							<ul class="categories">
-								<li v-for='category in item.categories' :key='category.id'>
-									<span>{{ category.name }}</span>
-								</li>
-							</ul>
-						</td>
-					</tr>
+				<h3>
+					<span>{{ t('inventory', 'Properties') }}</span>
+				</h3>
+				<table class="properties">
+					<tbody>
+						<tr>
+							<td>
+								<span>{{ t('inventory', 'Name') }}</span>
+							</td>
+							<td>
+								<span>{{ item.name }}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>{{ t('inventory', 'Maker') }}</span>
+							</td>
+							<td>
+								<span>{{ item.maker }}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>{{ t('inventory', 'Description') }}</span>
+							</td>
+							<td>
+								<span>{{ item.description }}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>{{ t('inventory', 'Item Number') }}</span>
+							</td>
+							<td>
+								<span>{{ item.itemNumber }}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>{{ t('inventory', 'Link') }}</span>
+							</td>
+							<td>
+								<span><a target="_blank" v-bind:href="item.link">{{ item.link }}</a></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>{{ t('inventory', 'GTIN') }}</span>
+							</td>
+							<td>
+								<span>{{ item.gtin }}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>{{ t('inventory', 'Details') }}</span>
+							</td>
+							<td>
+								<span>{{ item.details }}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>{{ t('inventory', 'Comment') }}</span>
+							</td>
+							<td>
+								<span>{{ item.comment }}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span>{{ t('inventory', 'Categories') }}</span>
+							</td>
+							<td>
+								<ul class="categories">
+									<li v-for='category in item.categories' :key='category.id'>
+										<span>{{ category.name }}</span>
+									</li>
+								</ul>
+							</td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 			<br/>
-			<div>
-				<span>{{ t('inventory', 'Instances') }}</span>
-				<table>
+			<div class="paragraph">
+				<h3>
+					<span>{{ t('inventory', 'Instances') }}</span>
+				</h3>
+				<table class="instances">
 					<thead>
 						<tr>
 							<th>
@@ -160,14 +169,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</table>
 			</div>
 			<br/>
-			<div>
-				<span>{{ t('inventory', 'Subitems') }}</span>
+			<div class="paragraph">
+				<h3>
+					<span>{{ t('inventory', 'Subitems') }}</span>
+				</h3>
 				<items-table v-bind:items="subItems"></items-table>
 				<br/>
-				<span>{{ t('inventory', 'Parent items') }}</span>
+				<h3>
+					<span>{{ t('inventory', 'Parent items') }}</span>
+				</h3>
 				<items-table v-bind:items="parentItems"></items-table>
 				<br/>
-				<span>{{ t('inventory', 'Related items') }}</span>
+				<h3>
+					<span>{{ t('inventory', 'Related items') }}</span>
+				</h3>
 				<items-table v-bind:items="relatedItems"></items-table>
 			</div>
 		</div>
