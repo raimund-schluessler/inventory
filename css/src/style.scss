@@ -204,3 +204,17 @@ table {
 		}
 	}
 }
+
+.item_images{
+	width: 30%;
+	float: left;
+	margin: 0 30px;
+	max-width: 400px;
+	min-width: 200px;
+	
+	img {
+		width: 100%;
+		filter: invert(100%);
+		opacity: .3;
+	}
+}
