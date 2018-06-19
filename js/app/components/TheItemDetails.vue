@@ -169,17 +169,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</table>
 			</div>
 			<br/>
-			<div class="paragraph">
+			<div class="paragraph" v-if="subItems.length">
 				<h3>
 					<span>{{ t('inventory', 'Subitems') }}</span>
 				</h3>
 				<items-table v-bind:items="subItems"></items-table>
-				<br/>
+			</div>
+			<div class="paragraph" v-if="parentItems.length">
 				<h3>
 					<span>{{ t('inventory', 'Parent items') }}</span>
 				</h3>
 				<items-table v-bind:items="parentItems"></items-table>
-				<br/>
+			</div>
+			<div class="paragraph" v-if="relatedItems.length">
 				<h3>
 					<span>{{ t('inventory', 'Related items') }}</span>
 				</h3>
