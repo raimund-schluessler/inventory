@@ -30,18 +30,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div class="app-navigation-entry-menu bubble table-dropdown" v-bind:class="{ open:open }">
 			<ul>
-				<li>
-					<a href="#/items/additem">
-						<span class="icon icon-plus"></span>
-						<span class="label">{{ t('inventory', 'Add single item') }}</span>
-					</a>
-				</li>
-				<li>
-					<a href="#/items/additems">
-						<span class="icon icon-plus"></span>
-						<span class="label">{{ t('inventory', 'Add multiple items') }}</span>
-					</a>
-				</li>
+				<slot></slot>
 			</ul>
 		</div>
 	</div>
@@ -91,5 +80,4 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	padding: 0;
 	cursor: pointer;
 }
-
 </style>

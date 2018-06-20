@@ -32,6 +32,32 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<a v-bind:href="'#/items/' + item.id">{{ item.description }}</a>
 				</div>
 			</div>
+			<dropdown>
+				<li>
+					<a href="">
+						<span class="icon icon-plus"></span>
+						<span class="label">{{ t('inventory', 'Add item instance') }}</span>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<span class="icon icon-plus"></span>
+						<span class="label">{{ t('inventory', 'Add item parent') }}</span>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<span class="icon icon-plus"></span>
+						<span class="label">{{ t('inventory', 'Add related item') }}</span>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<span class="icon icon-plus"></span>
+						<span class="label">{{ t('inventory', 'Add subitem') }}</span>
+					</a>
+				</li>
+			</dropdown>
 		</div>
 		<div id="itemdetails">
 			<div class="item_images">
@@ -173,19 +199,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<h3>
 					<span>{{ t('inventory', 'Subitems') }}</span>
 				</h3>
-				<items-table v-bind:items="subItems"></items-table>
+				<items-table v-bind:items="subItems" v-bind:showDropdown="false"></items-table>
 			</div>
 			<div class="paragraph" v-if="parentItems.length">
 				<h3>
 					<span>{{ t('inventory', 'Parent items') }}</span>
 				</h3>
-				<items-table v-bind:items="parentItems"></items-table>
+				<items-table v-bind:items="parentItems" v-bind:showDropdown="false"></items-table>
 			</div>
 			<div class="paragraph" v-if="relatedItems.length">
 				<h3>
 					<span>{{ t('inventory', 'Related items') }}</span>
 				</h3>
-				<items-table v-bind:items="relatedItems"></items-table>
+				<items-table v-bind:items="relatedItems" v-bind:showDropdown="false"></items-table>
 			</div>
 		</div>
 	</div>
@@ -195,6 +221,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	import { mapState } from 'vuex';
 	import { mapActions } from 'vuex';
 	import ItemsTable from './ItemsTable.vue';
+	import Dropdown from './Dropdown.vue';
 
 	export default {
 		props: ['id'],
@@ -205,7 +232,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			this.loadRelatedItems(this.id);
 		},
 		components: {
-			'items-table': ItemsTable
+			'items-table': ItemsTable,
+			'dropdown': Dropdown
 		},
 		beforeRouteUpdate (to, from, next) {
 			this.loadItem(to.params.id);

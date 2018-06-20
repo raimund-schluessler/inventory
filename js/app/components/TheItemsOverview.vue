@@ -21,7 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<items-table v-bind:items="items"></items-table>
+		<items-table v-bind:items="items" v-bind:showDropdown="true"></items-table>
 	</div>
 </template>
 

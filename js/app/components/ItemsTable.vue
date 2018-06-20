@@ -56,7 +56,22 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Categories') }}</span>
 						<span class="sort-indicator hidden icon-triangle-s"></span>
 					</a>
-					<items-table-dropdown></items-table-dropdown>
+					
+					{{ showDropdown }}
+					<dropdown v-if="showDropdown">
+						<li>
+							<a href="#/items/additem">
+								<span class="icon icon-plus"></span>
+								<span class="label">{{ t('inventory', 'Add single item') }}</span>
+							</a>
+						</li>
+						<li>
+							<a href="#/items/additems">
+								<span class="icon icon-plus"></span>
+								<span class="label">{{ t('inventory', 'Add multiple items') }}</span>
+							</a>
+						</li>
+					</dropdown>
 				</th>
 			</tr>
 		</thead>
@@ -88,13 +103,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 	import { mapState } from 'vuex';
-	import ItemsTableDropdown from './ItemsTableDropdown.vue';
+	import Dropdown from './Dropdown.vue';
 	import searchQueryParser from 'search-query-parser';
 
 	export default {
-		props: ['items'],
+		props: [
+			'items',
+			'showDropdown'
+		],
 		components: {
-			'items-table-dropdown': ItemsTableDropdown
+			'dropdown': Dropdown
 		},
 		methods: {
 			getIconUrl: function (item) {
