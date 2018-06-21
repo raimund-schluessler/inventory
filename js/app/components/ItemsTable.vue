@@ -56,8 +56,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Categories') }}</span>
 						<span class="sort-indicator hidden icon-triangle-s"></span>
 					</a>
-					
-					{{ showDropdown }}
 					<dropdown v-if="showDropdown">
 						<li>
 							<a href="#/items/additem">
