@@ -23,7 +23,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="newItemsView">
 		Add multiple new items (as comma separated list).<br/>
 		Expects csv with the fields:
-		<span v-for='field in fields'>
+		<span v-for='field in fields' :key="field">
 			&lt;{{ field }}&gt;;
 		</span>
 		<form id="newItems" v-on:submit.prevent="enlist">
