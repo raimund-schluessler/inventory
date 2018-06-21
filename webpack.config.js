@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+var VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
 	entry: './js/app/init.js',
@@ -9,6 +10,9 @@ module.exports = {
 		publicPath: '/public/',
 		filename: 'build.js'
 	},
+	plugins: [
+		new VueLoaderPlugin()
+	],
 	module: {
 		rules: [
 			{
@@ -31,6 +35,13 @@ module.exports = {
 				options: {
 					name: '[name].[ext]?[hash]'
 				}
+			},
+			{
+			  test: /\.css$/,
+			  use: [
+				'vue-style-loader',
+				'css-loader'
+			  ]
 			}
 		]
 	},

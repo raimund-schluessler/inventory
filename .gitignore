@@ -225,6 +225,7 @@ pip-log.txt
 Node.js
 #######
 node_modules
+.v8flags*.json
 
 #######
 Sublime Text
