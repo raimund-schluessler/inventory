@@ -47,7 +47,8 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
-			'vue$': 'vue/dist/vue.esm.js'
+			'vue$': 'vue/dist/vue.esm.js',
+			'@': path.resolve(__dirname, 'js/app')
 		}
 	},
 	devServer: {
@@ -76,3 +77,9 @@ if (process.env.NODE_ENV === 'production') {
 		})
 	]);
 }
+
+// test specific setups
+if (process.env.NODE_ENV === 'test') {
+	module.exports.externals = [require('webpack-node-externals')()]
+	module.exports.devtool = 'eval'
+  }

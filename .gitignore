@@ -240,3 +240,5 @@ Various
 *.rej
 
 build/
+.nyc_output
+coverage
