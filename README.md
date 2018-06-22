@@ -1,8 +1,6 @@
 # Inventory
 
-[![pipeline status](https://gitlab.rschluessler.com/raimund.schluessler/Inventory/badges/master/pipeline.svg)](https://gitlab.rschluessler.com/raimund.schluessler/Inventory/commits/master)
-
-[![coverage report](https://gitlab.rschluessler.com/raimund.schluessler/Inventory/badges/master/coverage.svg)](https://gitlab.rschluessler.com/raimund.schluessler/Inventory/commits/master)
+[![pipeline status](https://gitlab.rschluessler.com/raimund.schluessler/Inventory/badges/master/pipeline.svg)](https://gitlab.rschluessler.com/raimund.schluessler/Inventory/commits/master) [![coverage report](https://gitlab.rschluessler.com/raimund.schluessler/Inventory/badges/master/coverage.svg)](https://gitlab.rschluessler.com/raimund.schluessler/Inventory/commits/master)
 
 **An inventory app for [Nextcloud](http://nextcloud.com). Manage your inventory.**
 
