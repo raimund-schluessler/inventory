@@ -13,7 +13,7 @@
     "test": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha-webpack --webpack-config webpack.config.js --require ./test/setup.js ./test/**/*.spec.js",
     "prebuild": "npm install && npm upgrade",
     "build": "node node_modules/gulp-cli/bin/gulp.js",
-    "buildjs": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "buildjs": "cross-env webpack --mode production --progress --hide-modules"
   },
   "repository": {
     "type": "git",
@@ -66,6 +66,7 @@
     "vue-loader": "^15.2.4",
     "vue-template-compiler": "^2.5.16",
     "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4",
     "webpack-node-externals": "^1.6.0",
     "webpack-stream": "^4.0.3"

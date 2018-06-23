@@ -19,8 +19,7 @@ module.exports = {
 				test: /\.vue$/,
 				loader: 'vue-loader',
 				options: {
-					loaders: {
-					}
+					mode: 'development'
 					// other vue-loader options go here
 				}
 			},
@@ -64,6 +63,7 @@ module.exports = {
 
 if (process.env.NODE_ENV === 'production') {
 	module.exports.devtool = '#source-map';
+	module.exports.mode = "production";
 	// http://vue-loader.vuejs.org/en/workflow/production.html
 	module.exports.plugins = (module.exports.plugins || []).concat([
 		new webpack.DefinePlugin({
@@ -80,6 +80,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // test specific setups
 if (process.env.NODE_ENV === 'test') {
+	module.exports.mode = "production";
 	module.exports.externals = [require('webpack-node-externals')()];
 	module.exports.devtool = 'eval';
   }
