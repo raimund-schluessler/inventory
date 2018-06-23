@@ -7,4 +7,11 @@ describe('Dropdown.vue', () => {
 		wrapper.find('.app-navigation-entry-utils').trigger('click');
 		expect(wrapper.vm.open).toBe(true);
 	})
+	
+	it('closes on background click', () => {
+		const wrapper = shallowMount(Dropdown);
+		wrapper.find('.app-navigation-entry-utils').trigger('click');
+		document.body.click();
+		expect(wrapper.vm.open).toBe(false);
+	})
 })
