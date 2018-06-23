@@ -13,7 +13,7 @@
     "test": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha-webpack --webpack-config webpack.config.js --require ./test/setup.js ./test/**/*.spec.js",
     "prebuild": "npm install && npm upgrade",
     "build": "node node_modules/gulp-cli/bin/gulp.js",
-    "buildjs": "cross-env webpack --mode production --progress --hide-modules"
+    "buildjs": "cross-env NODE_ENV=production webpack --mode production --progress --hide-modules"
   },
   "repository": {
     "type": "git",
