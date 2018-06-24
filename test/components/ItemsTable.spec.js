@@ -29,7 +29,9 @@ describe('ItemsTable.vue', () => {
 	it('returns all items when search is empty', () => {
 		const wrapper = shallowMount(ItemsTable, {
 			propsData: {
-				items: items
+				items: items,
+				showDropdown: false,
+				searchString: ''
 			},
 			methods: {
 				t: function (app, string) {
@@ -39,5 +41,39 @@ describe('ItemsTable.vue', () => {
 		});
 		var itemsFound = wrapper.vm.filteredItems;
 		expect(itemsFound.length).toBe(3);
+	})
+	
+	it('returns filtered items when search is "Maker1"', () => {
+		const wrapper = shallowMount(ItemsTable, {
+			propsData: {
+				items: items,
+				showDropdown: false,
+				searchString: 'Maker1'
+			},
+			methods: {
+				t: function (app, string) {
+					return string;
+				}
+			}
+		});
+		var itemsFound = wrapper.vm.filteredItems;
+		expect(itemsFound.length).toBe(2);
+	})
+	
+	it('returns no items when items are empty', () => {
+		const wrapper = shallowMount(ItemsTable, {
+			propsData: {
+				items: [],
+				showDropdown: false,
+				searchString: ''
+			},
+			methods: {
+				t: function (app, string) {
+					return string;
+				}
+			}
+		});
+		var itemsFound = wrapper.vm.filteredItems;
+		expect(itemsFound.length).toBe(0);
 	})
 })
