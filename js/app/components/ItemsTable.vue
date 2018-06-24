@@ -107,7 +107,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	export default {
 		props: [
 			'items',
-			'showDropdown'
+			'showDropdown',
+			'searchString'
 		],
 		components: {
 			'dropdown': Dropdown
@@ -126,13 +127,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				if (!this.items) {
 					return;
 				}
-				if (!this.$root.searchString) {
+				if (!this.searchString) {
 					return this.items;
 				}
 
 				var options = {keywords: ['maker', 'name', 'description', 'categories', 'itemNumber', 'gtin', 'details', 'comment']};
 
-				var searchQueryObj = searchQueryParser.parse(this.$root.searchString, options);
+				var searchQueryObj = searchQueryParser.parse(this.searchString, options);
 				// bring into same structure if no keywords were matched
 				if (Object.prototype.toString.call(searchQueryObj) === "[object String]") {
 					searchQueryObj = {text: searchQueryObj};

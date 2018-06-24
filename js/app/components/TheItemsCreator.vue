@@ -30,7 +30,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<textarea v-model="rawInput"></textarea>
 			Parsed items:
 			<div>
-				<items-table v-bind:items="parsedItems" v-bind:showDropdown="false"></items-table>
+				<items-table v-bind:items="parsedItems" v-bind:showDropdown="false" v-bind:searchString="$root.searchString"></items-table>
 			</div>
 			<input type="submit" :value="t('inventory', 'Enlist')">
 		</form>
