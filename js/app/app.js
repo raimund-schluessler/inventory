@@ -27,16 +27,11 @@ import VueRouter from 'vue-router';
 import router from './components/TheRouter.js';
 import store from './store';
 
+Vue.prototype.OC = OC;
+Vue.prototype.t = t;
+
 export class App {
 	start() {
-		Vue.mixin({
-			methods: {
-				t: function (app, string) {
-					return t(app, string);
-				}
-			}
-		});
-
 		OCA.Inventory.App.Vue = new Vue({
 			el: '#app',
 			router: router,
