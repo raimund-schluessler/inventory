@@ -32,7 +32,7 @@ const gulp = require('gulp'),
 	svgSprite = require('gulp-svg-sprite'),
 	webpack = require('webpack'),
 	webpackStream = require('webpack-stream'),
-	webpackConfig = require('./webpack.config.js');
+	webpackConfig = require('./webpack.common.js');
 
 // configure
 const buildTarget = 'app.min.js';
