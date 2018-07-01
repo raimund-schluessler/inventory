@@ -2,6 +2,7 @@ var path = require('path');
 var VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
+	mode: 'development',
 	entry: './js/app/init.js',
 	output: {
 		path: path.resolve(__dirname, './js/public'),

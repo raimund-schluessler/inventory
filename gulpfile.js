@@ -19,26 +19,17 @@
 
 // get plugins
 const gulp = require('gulp'),
-	uglify = require('gulp-uglify'),
 	jshint = require('gulp-jshint'),
-	gutil = require('gulp-util'),
-	KarmaServer = require('karma').Server,
 	concat = require('gulp-concat'),
-	wrap = require('gulp-wrap'),
-	strip = require('gulp-strip-banner'),
-	babel = require('gulp-babel'),
 	stylelint = require('gulp-stylelint'),
-	sourcemaps = require('gulp-sourcemaps'),
 	svgSprite = require('gulp-svg-sprite'),
-	webpack = require('webpack'),
 	webpackStream = require('webpack-stream'),
-	webpackConfig = require('./webpack.common.js');
+	webpackDevelopmentConfig = require('./webpack.common.js'),
+	webpackProductionConfig = require('./webpack.prod.js');
 
 // configure
-const buildTarget = 'app.min.js';
-const scssBuildTarget = 'style.scss';
-const karmaConfig = __dirname + '/tests/js/config/karma.js';
 const destinationFolder = __dirname + '/js/public/';
+const scssBuildTarget = 'style.scss';
 const scssDestinationFolder = __dirname + '/css/';
 
 const jsSources = [
@@ -47,10 +38,12 @@ const jsSources = [
 const scssSources = [
 	'css/src/*.scss'
 ];
+const testSources = [
+	'test/**/*.js'
+];
 
-const testSources = ['tests/js/unit/**/*.js'];
 const lintSources = jsSources.concat(testSources).concat(['*.js']);
-const watchSources = lintSources.concat(['*js/app/**/*.vue']);
+const watchSources = jsSources.concat(['js/app/**/*.vue']);
 
 const svgConfig = {
 	shape: {
@@ -73,36 +66,27 @@ const svgConfig = {
 };
 
 // tasks
-// gulp.task('build', ['lint'], () => {
-	// return gulp.pipe(webpackStream( require('./webpack.config.js') ), webpack);
-// 	return gulp.src(jsSources)
-// 		.pipe(babel({
-// 			presets: ['babel-preset-env'],
-// 			compact: false,
-// 			babelrc: false,
-// 			ast: false
-// 		}))
-// 		.pipe(strip())
-// 		.pipe(sourcemaps.init({identityMap: true}))
-// 		.pipe(concat(buildTarget))
-// 		.pipe(wrap(`(function($, oc_requesttoken, undefined){
-// 	'use strict';
-//
-// 	<%= contents %>
-// })(jQuery, oc_requesttoken);`))
-// 		.pipe(uglify())
-// 		.pipe(sourcemaps.write('./'))
-// 		.pipe(gulp.dest(destinationFolder));
-// });
-gulp.task('build', ['lint'], function(callback) {
-	return webpackStream(webpackConfig)
+
+gulp.task('default', ['build']);
+
+gulp.task('build', ['lint', 'scssConcat'], function(callback) {
+	return webpackStream(webpackProductionConfig, require('webpack'))
 	.pipe(gulp.dest(destinationFolder));
 });
 
+gulp.task('development', ['lint', 'scssConcat'], function(callback) {
+	return webpackStream(webpackDevelopmentConfig, require('webpack'))
+	.pipe(gulp.dest(destinationFolder));
+});
 
-gulp.task('default', ['build', 'scsslint', 'scssConcat']);
+gulp.task('jsWatch', ['jslint'], function(callback) {
+	return webpackStream(webpackDevelopmentConfig, require('webpack'))
+	.pipe(gulp.dest(destinationFolder));
+});
 
-gulp.task('lint', () => {
+gulp.task('lint', ['jslint', 'scsslint']);
+
+gulp.task('jslint', () => {
 	return gulp.src(lintSources)
 		.pipe(jshint('.jshintrc'))
 		.pipe(jshint.reporter('default'))
@@ -125,33 +109,15 @@ gulp.task('scssConcat', ['svg_sprite'], () => {
 		.pipe(gulp.dest(scssDestinationFolder));
 });
 
-gulp.task('scssConcatWatch', () => {
+gulp.task('scssConcatWatch', ['scsslint'], () => {
 	return gulp.src(scssSources)
 		.pipe(concat(scssBuildTarget))
 		.pipe(gulp.dest(scssDestinationFolder));
 });
 
 gulp.task('watch', () => {
-	gulp.watch(watchSources, ['build']);
+	gulp.watch(watchSources, ['jsWatch']);
 	gulp.watch(scssSources, ['scssConcatWatch']);
-});
-
-gulp.task('karma', (done) => {
-	new KarmaServer({
-		configFile: karmaConfig,
-		singleRun: true,
-		browsers: ['Firefox'],
-		reporters: ['progress', 'coverage']
-	}, done).start();
-});
-
-gulp.task('watch-karma', (done) => {
-	new KarmaServer({
-		configFile: karmaConfig,
-		autoWatch: true,
-		browsers: ['Firefox'],
-		reporters: ['progress', 'coverage']
-	}, done).start();
 });
 
 gulp.task('svg_sprite', () => {

@@ -5,7 +5,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = merge(common, {
 	devtool: 'none',
-	mode: "production",
+	mode: 'production',
 	// http://vue-loader.vuejs.org/en/workflow/production.html
 	plugins: [
 		new UglifyJSPlugin(),
