@@ -1,6 +1,6 @@
-import { shallowMount } from '@vue/test-utils'
-import ItemsTable from '@/components/ItemsTable.vue'
-import {OC} from '../OC.js'
+import { shallowMount } from '@vue/test-utils';
+import ItemsTable from '@/components/ItemsTable.vue';
+import {OC} from '../OC.js';
 
 global.OC = new OC();
 
@@ -49,6 +49,8 @@ var items = [
 ];
 
 describe('ItemsTable.vue', () => {
+	"use strict";
+
 	it('returns all items when search is empty', () => {
 		const wrapper = shallowMount(ItemsTable, {
 			propsData: {
@@ -64,7 +66,7 @@ describe('ItemsTable.vue', () => {
 		});
 		var itemsFound = wrapper.vm.filteredItems;
 		expect(itemsFound.length).toBe(3);
-	})
+	});
 	
 	it('finds items when searching with text in categories "Cat1"', () => {
 		const wrapper = shallowMount(ItemsTable, {
@@ -81,7 +83,7 @@ describe('ItemsTable.vue', () => {
 		});
 		var itemsFound = wrapper.vm.filteredItems;
 		expect(itemsFound.length).toBe(2);
-	})
+	});
 	
 	it('returns filtered items when search is "Maker1"', () => {
 		const wrapper = shallowMount(ItemsTable, {
@@ -98,7 +100,7 @@ describe('ItemsTable.vue', () => {
 		});
 		var itemsFound = wrapper.vm.filteredItems;
 		expect(itemsFound.length).toBe(2);
-	})
+	});
 	
 	it('searches in categories "categories:Cat1"', () => {
 		const wrapper = shallowMount(ItemsTable, {
@@ -115,7 +117,7 @@ describe('ItemsTable.vue', () => {
 		});
 		var itemsFound = wrapper.vm.filteredItems;
 		expect(itemsFound.length).toBe(2);
-	})
+	});
 	
 	it('searches only in given keywords "comment:Maker1"', () => {
 		const wrapper = shallowMount(ItemsTable, {
@@ -132,7 +134,7 @@ describe('ItemsTable.vue', () => {
 		});
 		var itemsFound = wrapper.vm.filteredItems;
 		expect(itemsFound.length).toBe(1);
-	})
+	});
 	
 	it('handles if item has not entry with given keyword "itemNumber:42"', () => {
 		const wrapper = shallowMount(ItemsTable, {
@@ -149,7 +151,7 @@ describe('ItemsTable.vue', () => {
 		});
 		var itemsFound = wrapper.vm.filteredItems;
 		expect(itemsFound.length).toBe(0);
-	})
+	});
 	
 	it('returns no items when items are empty', () => {
 		const wrapper = shallowMount(ItemsTable, {
@@ -165,5 +167,5 @@ describe('ItemsTable.vue', () => {
 		});
 		var itemsFound = wrapper.vm.filteredItems;
 		expect(itemsFound).toBe(undefined);
-	})
-})
+	});
+});
