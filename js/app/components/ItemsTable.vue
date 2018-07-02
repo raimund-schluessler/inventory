@@ -116,7 +116,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		methods: {
 			getIconUrl: function (item) {
 				if (!item.iconurl) {
-					return OC.generateUrl('/../apps/inventory/img/item-icons/' + item.icon + '.svg');
+					return OC.imagePath('inventory', 'item-icons/' + item.icon + '.svg');
 				} else {
 					return item.iconurl;
 				}

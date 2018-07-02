@@ -61,7 +61,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div id="itemdetails">
 			<div class="item_images">
-				<img src="/nextcloud/index.php/../apps/inventory/img/inventory.svg"/>
+				<img v-bind:src="OC.imagePath('inventory', 'inventory.svg')"/>
 			</div>
 			<div>
 				<h3>
