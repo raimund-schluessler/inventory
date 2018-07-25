@@ -34,25 +34,25 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<dropdown>
 				<li>
-					<a href="">
+					<a>
 						<span class="icon icon-plus"></span>
 						<span class="label">{{ t('inventory', 'Add item instance') }}</span>
 					</a>
 				</li>
 				<li>
-					<a href="">
+					<a v-on:click="openModal('parent')">
 						<span class="icon icon-plus"></span>
 						<span class="label">{{ t('inventory', 'Add item parent') }}</span>
 					</a>
 				</li>
 				<li>
-					<a href="">
+					<a v-on:click="openModal('related')">
 						<span class="icon icon-plus"></span>
 						<span class="label">{{ t('inventory', 'Add related item') }}</span>
 					</a>
 				</li>
 				<li>
-					<a href="">
+					<a v-on:click="openModal('sub')">
 						<span class="icon icon-plus"></span>
 						<span class="label">{{ t('inventory', 'Add subitem') }}</span>
 					</a>
@@ -214,6 +214,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<items-table v-bind:items="relatedItems" v-bind:showDropdown="false" v-bind:searchString="$root.searchString"></items-table>
 			</div>
 		</div>
+		<modal v-if="showModal" @close="showModal = false" v-on:selectedItems="saveItems" v-bind="{ 'itemType': itemType }"></modal>
 	</div>
 </template>
 
@@ -222,8 +223,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	import { mapActions } from 'vuex';
 	import ItemsTable from './ItemsTable.vue';
 	import Dropdown from './Dropdown.vue';
+	import Modal from './Modal.vue';
 
 	export default {
+		data: function () {
+			return {
+				showModal: false,
+				itemType: ""
+			}
+		},
 		props: ['id'],
 		created: function () {
 			this.loadItem(this.id);
@@ -233,7 +241,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		},
 		components: {
 			'items-table': ItemsTable,
-			'dropdown': Dropdown
+			'dropdown': Dropdown,
+			'modal': Modal
 		},
 		beforeRouteUpdate (to, from, next) {
 			this.loadItem(to.params.id);
@@ -249,13 +258,21 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			relatedItems:	state => state.relatedItems
 		}),
 		methods: Object.assign({
-			getPlace(instance) {
-				if (instance.place) {
-					return instance.place.name;
-				} else {
-					return '';
+				getPlace(instance) {
+					if (instance.place) {
+						return instance.place.name;
+					} else {
+						return '';
+					}
+				},
+				saveItems: function (type, itemIDs) {
+					console.log("Adding " + itemIDs.length + " items as " + type + " items.");
+					this.showModal = false;
+				},
+				openModal: function (type) {
+					this.showModal = true;
+					this.itemType = type;
 				}
-			}
 			},
 			mapActions(['loadItem']),
 			mapActions(['loadSubItems']),
