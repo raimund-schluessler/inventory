@@ -76,7 +76,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<tbody>
 			<tr class="handler"
 			v-for="item in filteredItems"
-			:key="item.id">
+			:key="item.id" @click="selectItem(item)" v-bind:class="{ selected: isSelected(item) }">
 				<td>
 					<a v-bind:href="'#/items/' + item.id">
 						<div class="thumbnail-wrapper">
@@ -110,6 +110,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			'showDropdown',
 			'searchString'
 		],
+		data: function () {
+			return {
+				selectedItems: []
+			}
+		},
 		components: {
 			'dropdown': Dropdown
 		},
@@ -120,6 +125,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				} else {
 					return item.iconurl;
 				}
+			},
+			selectItem: function (item) {
+				if (this.isSelected(item)) {
+					var index = this.selectedItems.indexOf(item.id);
+					if (index !== -1) {
+						this.selectedItems.splice(index, 1);
+					}
+				} else {
+					this.selectedItems.push(item.id);
+				}
+				console.log(this.selectedItems);
+			},
+			isSelected: function (item) {
+				return this.selectedItems.includes(item.id);
 			}
 		},
 		computed: {
@@ -214,3 +233,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	}
 </script>
+
+<style>
+.selected {
+	background-color: #b5e5ff !important;
+}
+</style>
