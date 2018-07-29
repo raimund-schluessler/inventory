@@ -34,7 +34,7 @@ export default new Vuex.Store({
 		subItems: [],
 		parentItems: [],
 		relatedItems: [],
-		itemCandidates: [10,13,14]
+		itemCandidates: []
 	},
 	mutations: {
 		setItems(state, payload) {
