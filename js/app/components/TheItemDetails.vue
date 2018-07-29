@@ -214,7 +214,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<items-table v-bind:items="relatedItems" v-bind:showDropdown="false" v-bind:searchString="$root.searchString"></items-table>
 			</div>
 		</div>
-		<modal v-if="showModal" @close="showModal = false" v-on:selectedItems="saveItems" v-bind="{ 'itemType': itemType }"></modal>
+		<modal v-if="showModal" @close="showModal = false" v-on:selectedItems="saveItems" v-bind="{ 'relationType': relationType, 'itemID': id }"></modal>
 	</div>
 </template>
 
@@ -229,7 +229,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		data: function () {
 			return {
 				showModal: false,
-				itemType: ""
+				relationType: ""
 			}
 		},
 		props: ['id'],
@@ -269,9 +269,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					console.log("Adding " + itemIDs.length + " items as " + type + " items.");
 					this.showModal = false;
 				},
-				openModal: function (type) {
+				openModal: function (relationType) {
 					this.showModal = true;
-					this.itemType = type;
+					this.relationType = relationType;
 				}
 			},
 			mapActions(['loadItem']),

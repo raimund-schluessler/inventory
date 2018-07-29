@@ -33,7 +33,8 @@ export default new Vuex.Store({
 		item: [],
 		subItems: [],
 		parentItems: [],
-		relatedItems: []
+		relatedItems: [],
+		itemCandidates: [10,13,14]
 	},
 	mutations: {
 		setItems(state, payload) {
@@ -50,6 +51,9 @@ export default new Vuex.Store({
 		},
 		setRelatedItems(state, payload) {
 			state.relatedItems = payload.relatedItems;
+		},
+		setItemCandidates(state, payload) {
+			state.itemCandidates = payload.itemCandidates;
 		}
 	},
 	actions: {
@@ -115,6 +119,20 @@ export default new Vuex.Store({
 				.then(function (response) {
 					commit('setRelatedItems' , {
 						relatedItems: response.data.data.items
+					});
+					resolve();
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+			});
+		},
+		loadItemCandidates({commit}, parameters) {
+			return new Promise(function(resolve) {
+				Axios.get(OC.generateUrl('apps/inventory/item/' + parameters.itemID + '/candidates/'+ parameters.relationType))
+				.then(function (response) {
+					commit('setItemCandidates' , {
+						itemCandidates: response.data.data.items
 					});
 					resolve();
 				})

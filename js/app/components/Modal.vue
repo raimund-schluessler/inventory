@@ -22,28 +22,27 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<transition name="modal">
 		<div class="modal-mask">
-			<div class="modal-wrapper">
-				<div class="modal-container">
+			<div class="modal-wrapper" @click="closeModal">
+				<div class="modal-outer-container">
+					<div class="modal-container">
+						<div class="modal-header">
+							{{ t('inventory', headerString) }}
+						</div>
 
-					<div class="modal-header">
-						{{ t('inventory', headerString) }}
-					</div>
+						<div class="modal-body">
+							<items-table v-bind:items="items" v-bind:showDropdown="false" v-bind:searchString="searchString"></items-table>
+						</div>
 
-					<div class="modal-body">
-						<slot name="body">
-							default body
-						</slot>
-					</div>
-
-					<div class="modal-footer">
-						<slot name="footer">
-							<button class="modal-default-button" @click="$emit('close')">
-								Cancel
-							</button>
-							<button class="modal-default-button" @click="$emit('selectedItems', itemType, itemIDs)">
-								Select
-							</button>
-						</slot>
+						<div class="modal-footer">
+							<slot name="footer">
+								<button class="modal-default-button" @click="closeModal">
+									Cancel
+								</button>
+								<button class="modal-default-button" @click="$emit('selectedItems', relationType, items)">
+									Select
+								</button>
+							</slot>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -52,24 +51,42 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
+	import { mapState } from 'vuex';
+	import { mapActions } from 'vuex';
+	import ItemsTable from './ItemsTable.vue';
+	import Dropdown from './Dropdown.vue';
+
 	export default {
 		data: function () {
 			return {
-				itemIDs: [1, 2, 3, 4]
+				selectedItemIDs: [1, 2, 3, 4],
+				searchString: ""
 			}
+		},
+		props: [
+			'relationType',
+			'itemID'
+		],
+		components: {
+			'items-table': ItemsTable,
+			'dropdown': Dropdown
 		},
 		created () {
-			console.log(this.itemType);
+			this.loadItemCandidates({itemID: this.itemID, relationType: this.relationType});
 		},
-		props: ['itemType'],
-		methods: {
-			testModal: function (type) {
-				console.log('test');
-			}
-		},
-		computed: {
+		methods: Object.assign(
+			{
+				closeModal: function (event) {
+					if (event.target === event.currentTarget) {
+						this.$emit('close');
+					}
+				}
+			},
+			mapActions(['loadItemCandidates'])
+		),
+		computed: Object.assign({
 			headerString: function () {
-				switch(this.itemType) {
+				switch(this.relationType) {
 					case "parent":
 						return "Please select the parent items:";
 						break;
@@ -80,47 +97,62 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						return "Please select the subitems:";
 						break;
 				}
-			}
-		}
+			}},
+			mapState({
+				items:	function(state) {
+					return state.itemCandidates;
+				}
+			})
+		)
 	}
 </script>
 
 <style>
 .modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, .5);
-  display: table;
-  transition: opacity .3s ease;
+	position: fixed;
+	z-index: 9998;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .5);
+	display: table;
+	transition: opacity .3s ease;
 }
 
 .modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
+	display: table-cell;
+	vertical-align: middle;
+	height: 100%;
+}
+
+.modal-outer-container {
+	width: calc(100% - 200px);
+	height: calc(100% - 200px);
+	margin: 0 auto;
 }
 
 .modal-container {
-  width: 300px;
-  margin: 0px auto;
-  padding: 20px 30px;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-  transition: all .3s ease;
-  font-family: Helvetica, Arial, sans-serif;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 20px 30px;
+	background-color: #fff;
+	border-radius: 2px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+	transition: all .3s ease;
+	font-family: Helvetica, Arial, sans-serif;
 }
 
 .modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
+	margin-top: 0;
+	color: #42b983;
 }
 
 .modal-body {
-  margin: 20px 0;
+	display: flex;
+	flex: 1;
+	overflow-y: auto;
 }
 
 .modal-footer {
@@ -128,7 +160,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 }
 
 .modal-default-button {
-  float: right;
+	float: right;
 }
 
 /*
@@ -141,16 +173,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 .modal-enter {
-  opacity: 0;
+	opacity: 0;
 }
 
 .modal-leave-active {
-  opacity: 0;
+	opacity: 0;
 }
 
 .modal-enter .modal-container,
 .modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+	-webkit-transform: scale(1.1);
+	transform: scale(1.1);
 }
 </style>
