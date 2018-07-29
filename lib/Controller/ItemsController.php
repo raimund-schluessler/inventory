@@ -93,13 +93,4 @@ class ItemsController extends Controller {
 			return $this->itemsService->enlist($item);
 		});
 	}
-
-	/**
-	 * @NoAdminRequired
-	 */
-	public function getCandidates($itemID, $relationType){
-		return $this->generateResponse(function () use ($itemID, $relationType) {
-			return ['items' => $this->itemsService->getRelated($itemID)];
-		});
-	}
 }
