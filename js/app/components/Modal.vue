@@ -21,28 +21,26 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<transition name="modal">
-		<div class="modal-mask">
-			<div class="modal-wrapper" @click="closeModal">
-				<div class="modal-outer-container">
-					<div class="modal-container">
-						<div class="modal-header">
-							{{ t('inventory', headerString) }}
-						</div>
+		<div class="modal-mask" @click="closeModal">
+			<div class="modal-wrapper">
+				<div class="modal-container">
+					<div class="modal-header">
+						{{ t('inventory', headerString) }}
+					</div>
 
-						<div class="modal-body">
-							<items-table v-bind:items="items" v-bind:showDropdown="false" v-bind:searchString="searchString"></items-table>
-						</div>
+					<div class="modal-body">
+						<items-table v-bind:items="items" v-bind:showDropdown="false" v-bind:searchString="searchString"></items-table>
+					</div>
 
-						<div class="modal-footer">
-							<slot name="footer">
-								<button class="modal-default-button" @click="closeModal">
-									Cancel
-								</button>
-								<button class="modal-default-button" @click="$emit('selectedItems', relationType, items)">
-									Select
-								</button>
-							</slot>
-						</div>
+					<div class="modal-footer">
+						<slot name="footer">
+							<button class="modal-default-button" @click="closeModal">
+								Cancel
+							</button>
+							<button class="modal-default-button" @click="$emit('selectedItems', relationType, items)">
+								Select
+							</button>
+						</slot>
 					</div>
 				</div>
 			</div>
@@ -121,15 +119,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 }
 
 .modal-wrapper {
-	display: table-cell;
-	vertical-align: middle;
+	display: inline-block;
 	height: 100%;
-}
-
-.modal-outer-container {
-	width: calc(100% - 200px);
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 	height: calc(100% - 200px);
-	margin: 0 auto;
+	width: calc(100% - 200px);
 }
 
 .modal-container {
