@@ -25,7 +25,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="modal-wrapper">
 				<div class="modal-container">
 					<div class="modal-header">
-						{{ t('inventory', headerString) }}
+						<span class="title">{{ t('inventory', headerString) }}</span>
+						<form class="searchbox" action="#" method="post" role="search" novalidate="">
+							<label for="searchbox" class="hidden-visually">
+								{{ t('inventory', 'Search') }}
+							</label>
+							<input id="modalSearchbox" name="query" value="" v-model="searchString" required="" autocomplete="off" type="search">
+							<button class="icon-close-white" type="reset" @click="searchString=''">
+								<span class="hidden-visually">{{ t('inventory', 'Reset search') }}</span>
+							</button>
+						</form>
 					</div>
 
 					<div class="modal-body">
@@ -141,9 +150,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	font-family: Helvetica, Arial, sans-serif;
 }
 
-.modal-header h3 {
-	margin-top: 0;
-	color: #42b983;
+.modal-header .title {
+	line-height: 38px;
+	padding-left: 20px;
+	font-size: 14px;
+	color: white;
+}
+
+.modal-header {
+	background-color: #0082c9;
 }
 
 .modal-body {
@@ -181,5 +196,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 .modal-leave-active .modal-container {
 	-webkit-transform: scale(1.1);
 	transform: scale(1.1);
+}
+
+.searchbox {
+	float: right;
 }
 </style>
