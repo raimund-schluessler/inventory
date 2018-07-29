@@ -28,7 +28,7 @@ return [
 		['name' => 'items#getSub',		'url' => '/item/{itemID}/sub',		'verb' => 'GET'],
 		['name' => 'items#getParent',	'url' => '/item/{itemID}/parent',	'verb' => 'GET'],
 		['name' => 'items#getRelated',	'url' => '/item/{itemID}/related',	'verb' => 'GET'],
-		['name' => 'items#getAll',		'url' => '/item/{itemID}/candidates/{relationType}', 'verb' => 'GET'],
+		['name' => 'items#getCandidates',	'url' => '/item/{itemID}/candidates/{relationType}', 'verb' => 'GET'],
 		['name' => 'items#enlist',		'url' => '/item/add',				'verb' => 'POST'],
 	]
 ];
