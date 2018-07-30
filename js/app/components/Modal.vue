@@ -38,7 +38,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="modal-body">
-						<items-table v-bind:items="items" v-bind:showDropdown="false" v-bind:searchString="searchString"></items-table>
+						<items-table  v-on:selectedItemIDsChanged="selectedItemIDsChanged" v-bind:items="items" v-bind:showDropdown="false" v-bind:searchString="searchString"></items-table>
 					</div>
 
 					<div class="modal-footer">
@@ -46,7 +46,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<button class="modal-default-button" @click="closeModal">
 								Cancel
 							</button>
-							<button class="modal-default-button" @click="$emit('selectedItems', relationType, items)">
+							<button class="modal-default-button" @click="$emit('selectedItems', relationType, selectedItemIDs)">
 								Select
 							</button>
 						</slot>
@@ -66,7 +66,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	export default {
 		data: function () {
 			return {
-				selectedItemIDs: [1, 2, 3, 4],
+				selectedItemIDs: [],
 				searchString: ""
 			}
 		},
@@ -87,6 +87,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					if (event.target === event.currentTarget) {
 						this.$emit('close');
 					}
+				},
+				selectedItemIDsChanged: function(selectedItemIDs) {
+					this.selectedItemIDs = selectedItemIDs;
 				}
 			},
 			mapActions(['loadItemCandidates'])

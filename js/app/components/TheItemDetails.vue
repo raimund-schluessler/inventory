@@ -214,7 +214,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<items-table v-bind:items="relatedItems" v-bind:showDropdown="false" v-bind:searchString="$root.searchString"></items-table>
 			</div>
 		</div>
-		<modal v-if="showModal" @close="showModal = false" v-on:selectedItems="saveItems" v-bind="{ 'relationType': relationType, 'itemID': id }"></modal>
+		<modal v-if="showModal" @close="showModal = false" v-on:selectedItems="linkItems" v-bind="{ 'relationType': relationType, 'itemID': id }"></modal>
 	</div>
 </template>
 
@@ -224,6 +224,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	import ItemsTable from './ItemsTable.vue';
 	import Dropdown from './Dropdown.vue';
 	import Modal from './Modal.vue';
+	import Axios from 'axios';
 
 	export default {
 		data: function () {
@@ -265,13 +266,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						return '';
 					}
 				},
-				saveItems: function (type, itemIDs) {
-					console.log("Adding " + itemIDs.length + " items as " + type + " items.");
-					this.showModal = false;
-				},
 				openModal: function (relationType) {
 					this.showModal = true;
 					this.relationType = relationType;
+				},
+				linkItems(relationType, itemIDs) {
+					this.showModal = false;
+					Axios.post(OC.generateUrl('apps/inventory/item/'+ this.item.id + '/link/' + relationType ), {
+						itemIDs: itemIDs 
+					})
 				}
 			},
 			mapActions(['loadItem']),

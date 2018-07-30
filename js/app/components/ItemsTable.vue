@@ -112,7 +112,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		],
 		data: function () {
 			return {
-				selectedItems: []
+				selectedItemIDs: []
 			}
 		},
 		components: {
@@ -128,17 +128,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			},
 			selectItem: function (item) {
 				if (this.isSelected(item)) {
-					var index = this.selectedItems.indexOf(item.id);
+					var index = this.selectedItemIDs.indexOf(item.id);
 					if (index !== -1) {
-						this.selectedItems.splice(index, 1);
+						this.selectedItemIDs.splice(index, 1);
 					}
 				} else {
-					this.selectedItems.push(item.id);
+					this.selectedItemIDs.push(item.id);
 				}
-				console.log(this.selectedItems);
+				this.$emit('selectedItemIDsChanged', this.selectedItemIDs);
 			},
 			isSelected: function (item) {
-				return this.selectedItems.includes(item.id);
+				return this.selectedItemIDs.includes(item.id);
 			}
 		},
 		computed: {
