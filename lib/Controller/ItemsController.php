@@ -98,9 +98,8 @@ class ItemsController extends Controller {
 	 * @NoAdminRequired
 	 */
 	public function link($itemID, $relationType, $itemIDs){
-		return $this->generateResponse(function () use ($itemIDs, $relationType) {
-			return ['itemCount' => count($itemIDs)];
-			// return $this->itemsService->enlist($item);
+		return $this->generateResponse(function () use ($itemID, $itemIDs, $relationType) {
+			return $this->itemsService->link($itemID, $itemIDs, $relationType);
 		});
 	}
 

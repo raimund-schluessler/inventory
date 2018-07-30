@@ -223,6 +223,38 @@ class ItemsService {
 	}
 
 	/**
+	 * add item relations
+	 *
+	 * @return array
+	 */
+	public function link($mainItemID, $itemIDs, $relationType) {
+		foreach ($itemIDs as $itemID) {
+			if ($relationType == 'parent') {
+				$map = array(
+					'parentid' => $itemID,
+					'itemid' => $mainItemID,
+					'uid' => $this->userId
+				);
+				$this->itemParentMapper->add($map);
+			} elseif ($relationType == 'sub') {
+				$map = array(
+					'parentid' => $mainItemID,
+					'itemid' => $itemID,
+					'uid' => $this->userId
+				);
+				$this->itemParentMapper->add($map);
+			} elseif ($relationType == 'related') {
+				$map = array(
+					'itemid1' => $mainItemID,
+					'itemid2' => $itemID,
+					'uid' => $this->userId
+				);
+				$this->itemRelationMapper->add($map);
+			}
+		}
+	}
+
+	/**
 	 * finds items by query
 	 *
 	 * @return array

@@ -42,7 +42,7 @@ class ItemrelationMapper extends Mapper {
 
 	public function add($mapping) {
 		$sql = 'INSERT INTO `*PREFIX*invtry_item_relation_mapping` (itemid1, itemid2, uid)'.
-				' Values(?, ?)';
+				' Values(?, ?, ?)';
 		return $this->execute($sql, array($mapping['itemid1'], $mapping['itemid2'], $mapping['uid']));
 	}
 }

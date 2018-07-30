@@ -44,8 +44,8 @@ class ItemparentMapper extends Mapper {
 	}
 
 	public function add($mapping) {
-		$sql = 'INSERT INTO `*PREFIX*invtry_item_parent_mapping` (itemid, parentid)'.
-				' Values(?, ?)';
-		return $this->execute($sql, array($mapping['itemid'], $mapping['parentid']));
+		$sql = 'INSERT INTO `*PREFIX*invtry_item_parent_mapping` (itemid, parentid, uid)'.
+				' Values(?, ?, ?)';
+		return $this->execute($sql, array($mapping['itemid'], $mapping['parentid'], $mapping['uid']));
 	}
 }
