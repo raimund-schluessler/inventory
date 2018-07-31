@@ -229,6 +229,9 @@ class ItemsService {
 	 */
 	public function link($mainItemID, $itemIDs, $relationType) {
 		foreach ($itemIDs as $itemID) {
+			if ($itemID == $mainItemID) {
+				continue;
+			}
 			if ($relationType == 'parent') {
 				$map = array(
 					'parentid' => $itemID,
