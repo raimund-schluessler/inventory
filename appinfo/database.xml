@@ -252,6 +252,16 @@
       <notnull>true</notnull>
       <length>64</length>
     </field>
+    <index>
+      <name>item_parent_itemid_parentid_uid</name>
+      <unique>true</unique>
+      <field>
+          <name>itemid</name>
+          <name>parentid</name>
+          <name>uid</name>
+          <sorting>ascending</sorting>
+      </field>
+    </index>
   </declaration>
  </table>
  <table>
@@ -281,6 +291,16 @@
       <notnull>true</notnull>
       <length>64</length>
     </field>
+    <index>
+      <name>item_relation_itemid1_itemid2_uid</name>
+      <unique>true</unique>
+      <field>
+          <name>itemid1</name>
+          <name>itemid2</name>
+          <name>uid</name>
+          <sorting>ascending</sorting>
+      </field>
+    </index>
   </declaration>
  </table>
  <table>

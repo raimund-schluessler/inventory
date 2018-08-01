@@ -228,31 +228,61 @@ class ItemsService {
 	 * @return array
 	 */
 	public function link($mainItemID, $itemIDs, $relationType) {
-		foreach ($itemIDs as $itemID) {
-			if ($itemID == $mainItemID) {
-				continue;
-			}
-			if ($relationType == 'parent') {
+		if ($relationType == 'parent') {
+			foreach ($itemIDs as $itemID) {
+				if ($itemID == $mainItemID) {
+					continue;
+				}
 				$map = array(
 					'parentid' => $itemID,
 					'itemid' => $mainItemID,
 					'uid' => $this->userId
 				);
-				$this->itemParentMapper->add($map);
-			} elseif ($relationType == 'sub') {
+				try {
+					$this->itemParentMapper->add($map);
+				} catch (\Exception $e) {
+
+				}
+			}
+		} elseif ($relationType == 'sub') {
+			foreach ($itemIDs as $itemID) {
+				if ($itemID == $mainItemID) {
+					continue;
+				}
 				$map = array(
 					'parentid' => $mainItemID,
 					'itemid' => $itemID,
 					'uid' => $this->userId
 				);
-				$this->itemParentMapper->add($map);
-			} elseif ($relationType == 'related') {
+				try {
+					$this->itemParentMapper->add($map);
+				} catch (\Exception $e) {
+
+				}
+			}
+		} elseif ($relationType == 'related') {
+			foreach ($itemIDs as $itemID) {
+				if ($itemID == $mainItemID) {
+					continue;
+				}
+				// sort IDs so that $itemID1 is smaller than $itemID2
+				if ($mainItemID <= $itemID) {
+					$itemID1 = $mainItemID;
+					$itemID2 = $itemID;
+				} else {
+					$itemID1 = $itemID;
+					$itemID2 = $mainItemID;
+				}
 				$map = array(
-					'itemid1' => $mainItemID,
-					'itemid2' => $itemID,
+					'itemid1' => $itemID1,
+					'itemid2' => $itemID2,
 					'uid' => $this->userId
 				);
-				$this->itemRelationMapper->add($map);
+				try {
+					$this->itemRelationMapper->add($map);
+				} catch (\Exception $e) {
+
+				}
 			}
 		}
 	}
