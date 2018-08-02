@@ -43,6 +43,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 					<div class="modal-footer">
 						<slot name="footer">
+							<span class="item-adding-status">{{ statusString }}</span>
 							<button class="modal-default-button" @click="closeModal">
 								Cancel
 							</button>
@@ -96,17 +97,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		),
 		computed: Object.assign({
 			headerString: function () {
-				switch(this.relationType) {
-					case "parent":
-						return "Please select the parent items:";
-						break;
-					case "related":
-						return "Please select the related items:";
-						break;
-					case "sub":
-						return "Please select the subitems:";
-						break;
-				}
+				return "Please select the " + this.relationType + " items:";
+			},
+			statusString: function() {
+				var singular = "Add %n item as " + this.relationType + " item.";
+				var plural = "Add %n items as " + this.relationType + " items.";
+				return n('inventory', singular, plural, this.selectedItemIDs.length );
 			}},
 			mapState({
 				items:	function(state) {

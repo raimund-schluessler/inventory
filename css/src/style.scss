@@ -294,6 +294,12 @@ table {
 .modal-footer {
 	height: 56px;
 	padding: 8px;
+
+	.item-adding-status {
+		line-height: 40px;
+		font-size: 13px;
+		padding-left: 20px;
+	}
 }
 
 .modal-default-button {

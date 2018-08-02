@@ -42,7 +42,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<li>
 					<a v-on:click="openModal('parent')">
 						<span class="icon icon-plus"></span>
-						<span class="label">{{ t('inventory', 'Add item parent') }}</span>
+						<span class="label">{{ t('inventory', 'Add parent item') }}</span>
 					</a>
 				</li>
 				<li>
@@ -54,7 +54,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<li>
 					<a v-on:click="openModal('sub')">
 						<span class="icon icon-plus"></span>
-						<span class="label">{{ t('inventory', 'Add subitem') }}</span>
+						<span class="label">{{ t('inventory', 'Add sub item') }}</span>
 					</a>
 				</li>
 			</dropdown>
@@ -195,17 +195,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</table>
 			</div>
 			<br/>
-			<div class="paragraph" v-if="subItems.length">
-				<h3>
-					<span>{{ t('inventory', 'Subitems') }}</span>
-				</h3>
-				<items-table v-bind:items="subItems" v-bind:showDropdown="false" v-bind:searchString="$root.searchString"></items-table>
-			</div>
 			<div class="paragraph" v-if="parentItems.length">
 				<h3>
 					<span>{{ t('inventory', 'Parent items') }}</span>
 				</h3>
 				<items-table v-bind:items="parentItems" v-bind:showDropdown="false" v-bind:searchString="$root.searchString"></items-table>
+			</div>
+			<div class="paragraph" v-if="subItems.length">
+				<h3>
+					<span>{{ t('inventory', 'Sub items') }}</span>
+				</h3>
+				<items-table v-bind:items="subItems" v-bind:showDropdown="false" v-bind:searchString="$root.searchString"></items-table>
 			</div>
 			<div class="paragraph" v-if="relatedItems.length">
 				<h3>

@@ -29,6 +29,7 @@ import store from './store';
 
 Vue.prototype.OC = OC;
 Vue.prototype.t = t;
+Vue.prototype.n = n;
 
 export class App {
 	start() {
