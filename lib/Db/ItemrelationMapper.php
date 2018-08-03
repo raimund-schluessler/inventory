@@ -28,20 +28,20 @@ use OCP\AppFramework\Db\Mapper;
 class ItemrelationMapper extends Mapper {
 
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, 'invtry_item_relation_mapping');
+		parent::__construct($db, 'invtry_rel_map');
 	}
 
 	public function findRelation($itemID, $userID) {
-		$sql = 'SELECT itemid1 FROM `*PREFIX*invtry_item_relation_mapping` ' .
+		$sql = 'SELECT itemid1 FROM `*PREFIX*invtry_rel_map` ' .
 			'WHERE `itemid2` = ? AND `uid` = ? ' .
 			'UNION ' .
-			'SELECT itemid2 FROM `*PREFIX*invtry_item_relation_mapping` ' .
+			'SELECT itemid2 FROM `*PREFIX*invtry_rel_map` ' .
 			'WHERE `itemid1` = ? AND `uid` = ?';
 		return $this->findEntities($sql, [$itemID, $userID, $itemID, $userID]);
 	}
 
 	public function add($mapping) {
-		$sql = 'INSERT INTO `*PREFIX*invtry_item_relation_mapping` (itemid1, itemid2, uid)'.
+		$sql = 'INSERT INTO `*PREFIX*invtry_rel_map` (itemid1, itemid2, uid)'.
 				' Values(?, ?, ?)';
 		return $this->execute($sql, array($mapping['itemid1'], $mapping['itemid2'], $mapping['uid']));
 	}

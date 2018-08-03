@@ -22,6 +22,10 @@ $gray_light: #f5f5f5;
 	opacity: .5;
 }
 
+#app-content {
+	z-index: 1500;
+}
+
 .content-wrapper {
 	height: 100%;
 }
@@ -251,7 +255,7 @@ table {
 .modal-wrapper {
 	display: inline-block;
 	position: fixed;
-	top: 50%;
+	top: calc(50% + 20px);
 	left: 50%;
 	transform: translate(-50%, -50%);
 	height: calc(100% - 200px);

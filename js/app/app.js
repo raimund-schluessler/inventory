@@ -34,7 +34,7 @@ Vue.prototype.n = n;
 export class App {
 	start() {
 		OCA.Inventory.App.Vue = new Vue({
-			el: '#app',
+			el: '.app-inventory',
 			router: router,
 			store: store,
 			data: {

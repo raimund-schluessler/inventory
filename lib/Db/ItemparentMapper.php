@@ -28,23 +28,23 @@ use OCP\AppFramework\Db\Mapper;
 class ItemparentMapper extends Mapper {
 
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, 'invtry_item_parent_mapping');
+		parent::__construct($db, 'invtry_parent_map');
 	}
 
 	public function findSub($itemID) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_item_parent_mapping` ' .
+		$sql = 'SELECT * FROM `*PREFIX*invtry_parent_map` ' .
 			'WHERE `parentid` = ?';
 		return $this->findEntities($sql, [$itemID]);
 	}
 
 	public function findParent($itemID) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_item_parent_mapping` ' .
+		$sql = 'SELECT * FROM `*PREFIX*invtry_parent_map` ' .
 			'WHERE `itemid` = ?';
 		return $this->findEntities($sql, [$itemID]);
 	}
 
 	public function add($mapping) {
-		$sql = 'INSERT INTO `*PREFIX*invtry_item_parent_mapping` (itemid, parentid, uid)'.
+		$sql = 'INSERT INTO `*PREFIX*invtry_parent_map` (itemid, parentid, uid)'.
 				' Values(?, ?, ?)';
 		return $this->execute($sql, array($mapping['itemid'], $mapping['parentid'], $mapping['uid']));
 	}

@@ -28,17 +28,17 @@ use OCP\AppFramework\Db\Mapper;
 class ItemcategoriesMapper extends Mapper {
 
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, 'invtry_item_category_mapping');
+		parent::__construct($db, 'invtry_cat_map');
 	}
 
 	public function findCategories($itemId, $uid) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_item_category_mapping` ' .
+		$sql = 'SELECT * FROM `*PREFIX*invtry_cat_map` ' .
 			'WHERE `itemid` = ? AND `uid` = ?';
 		return $this->findEntities($sql, [$itemId, $uid]);
 	}
 
 	public function add($mapping) {
-		$sql = 'INSERT INTO `*PREFIX*invtry_item_category_mapping` (itemid, uid, categoryid)'.
+		$sql = 'INSERT INTO `*PREFIX*invtry_cat_map` (itemid, uid, categoryid)'.
 				' Values(?, ?, ?)';
 		return $this->execute($sql, array(
 			$mapping['itemid'],
