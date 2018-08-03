@@ -214,7 +214,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<items-table v-bind:items="relatedItems" v-bind:showDropdown="false" v-bind:searchString="$root.searchString"></items-table>
 			</div>
 		</div>
-		<modal v-if="showModal" @close="showModal = false" v-on:selectedItems="linkItems" v-bind="{ 'relationType': relationType, 'itemID': id }"></modal>
 	</div>
 </template>
 
@@ -223,6 +222,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	import { mapActions } from 'vuex';
 	import ItemsTable from './ItemsTable.vue';
 	import Dropdown from './Dropdown.vue';
+	import Vue from 'vue';
 	import Modal from './Modal.vue';
 	import Axios from 'axios';
 
@@ -267,8 +267,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					}
 				},
 				openModal: function (relationType) {
-					this.showModal = true;
 					this.relationType = relationType;
+					this.showModal = true;
+					const ModalInstance = new Vue( Object.assign({}, Modal, {
+						propsData: { 'link': this.linkItems, 'relationType': this.relationType, 'itemID': this.id },
+						store: this.$store
+					}));
+					const modalContainer = document.createElement('div');
+					document.getElementById('content').appendChild(modalContainer);
+					ModalInstance.$mount(modalContainer);
 				},
 				linkItems(relationType, itemIDs) {
 					this.showModal = false;

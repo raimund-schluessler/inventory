@@ -47,7 +47,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<button class="modal-default-button" @click="closeModal">
 								Cancel
 							</button>
-							<button class="modal-default-button" @click="$emit('selectedItems', relationType, selectedItemIDs)">
+							<button class="modal-default-button" @click="selectItems">
 								Select
 							</button>
 						</slot>
@@ -72,6 +72,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			}
 		},
 		props: [
+			'link',
 			'relationType',
 			'itemID'
 		],
@@ -85,9 +86,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		methods: Object.assign(
 			{
 				closeModal: function (event) {
-					if (event.target === event.currentTarget) {
+					if (event === undefined || event.target === event.currentTarget) {
 						this.$emit('close');
+						this.$el.remove();
+						// this.$el.innerHTML = '' // remove inner content
+						this.$destroy() // cleanup in component
 					}
+				},
+				selectItems: function (event) {
+					this.link(this.relationType, this.selectedItemIDs);
+					this.closeModal();
 				},
 				selectedItemIDsChanged: function(selectedItemIDs) {
 					this.selectedItemIDs = selectedItemIDs;
