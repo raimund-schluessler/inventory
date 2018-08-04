@@ -235,6 +235,12 @@ table {
 	}
 }
 
+@media only screen and (max-width: 768px) {
+	.itemnavigation {
+		padding-left: 44px;
+	}
+}
+
 // item selection modal
 #app-modal {
 	position: absolute;
