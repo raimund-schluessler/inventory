@@ -229,7 +229,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	export default {
 		data: function () {
 			return {
-				showModal: false,
 				relationType: ""
 			}
 		},
@@ -268,14 +267,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				},
 				openModal: function (relationType) {
 					this.relationType = relationType;
-					this.showModal = true;
 					const ModalInstance = new Vue( Object.assign({}, Modal, {
 						propsData: { 'link': this.linkItems, 'relationType': this.relationType, 'itemID': this.id },
 						store: this.$store
 					}));
-					const modalContainer = document.createElement('div');
-					document.getElementById('content').appendChild(modalContainer);
-					ModalInstance.$mount(modalContainer);
 				},
 				linkItems(relationType, itemIDs) {
 					this.showModal = false;

@@ -22,3 +22,8 @@
 <div id="app-content">
     <router-view class="content-wrapper"></router-view>
 </div>
+
+<transition name="modal">
+    <div id="app-modal" v-show="showModal" @click="showModal = false">
+    </div>
+</transition>

@@ -20,42 +20,40 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<transition name="modal">
-		<div class="modal-mask" @click="closeModal">
-			<div class="modal-wrapper">
-				<div class="modal-container">
-					<div class="modal-header">
-						<span class="title">{{ t('inventory', headerString) }}</span>
-						<form class="searchbox" action="#" method="post" role="search" novalidate="">
-							<label for="searchbox" class="hidden-visually">
-								{{ t('inventory', 'Search') }}
-							</label>
-							<input id="modalSearchbox" name="query" value="" v-model="searchString" required="" autocomplete="off" type="search">
-							<button class="icon-close-white" type="reset" @click="searchString=''">
-								<span class="hidden-visually">{{ t('inventory', 'Reset search') }}</span>
-							</button>
-						</form>
-					</div>
+	<div class="modal-mask" @click="closeModal">
+		<div class="modal-wrapper">
+			<div class="modal-container">
+				<div class="modal-header">
+					<span class="title">{{ t('inventory', headerString) }}</span>
+					<form class="searchbox" action="#" method="post" role="search" novalidate="">
+						<label for="searchbox" class="hidden-visually">
+							{{ t('inventory', 'Search') }}
+						</label>
+						<input id="modalSearchbox" name="query" value="" v-model="searchString" required="" autocomplete="off" type="search">
+						<button class="icon-close-white" type="reset" @click="searchString=''">
+							<span class="hidden-visually">{{ t('inventory', 'Reset search') }}</span>
+						</button>
+					</form>
+				</div>
 
-					<div class="modal-body">
-						<items-table  v-on:selectedItemIDsChanged="selectedItemIDsChanged" v-bind:items="items" v-bind:showDropdown="false" v-bind:searchString="searchString"></items-table>
-					</div>
+				<div class="modal-body">
+					<items-table  v-on:selectedItemIDsChanged="selectedItemIDsChanged" v-bind:items="items" v-bind:showDropdown="false" v-bind:searchString="searchString"></items-table>
+				</div>
 
-					<div class="modal-footer">
-						<slot name="footer">
-							<span class="item-adding-status">{{ statusString }}</span>
-							<button class="modal-default-button" @click="closeModal">
-								Cancel
-							</button>
-							<button class="modal-default-button" @click="selectItems">
-								Select
-							</button>
-						</slot>
-					</div>
+				<div class="modal-footer">
+					<slot name="footer">
+						<span class="item-adding-status">{{ statusString }}</span>
+						<button class="modal-default-button" @click="closeModal">
+							Cancel
+						</button>
+						<button class="modal-default-button" @click="selectItems">
+							Select
+						</button>
+					</slot>
 				</div>
 			</div>
 		</div>
-	</transition>
+	</div>
 </template>
 
 <script>
@@ -81,13 +79,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			'dropdown': Dropdown
 		},
 		created () {
+			this.showModal = true;
+			const modalContainer = document.createElement('div');
+			document.getElementById('app-modal').appendChild(modalContainer);
+			this.$mount(modalContainer);
 			this.loadItemCandidates({itemID: this.itemID, relationType: this.relationType});
 		},
 		methods: Object.assign(
 			{
 				closeModal: function (event) {
 					if (event === undefined || event.target === event.currentTarget) {
-						this.$emit('close');
+						this.showModal = false;
 						this.$el.remove();
 						// this.$el.innerHTML = '' // remove inner content
 						this.$destroy() // cleanup in component
@@ -111,11 +113,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				var singular = "Add %n item as " + this.relationType + " item.";
 				var plural = "Add %n items as " + this.relationType + " items.";
 				return n('inventory', singular, plural, this.selectedItemIDs.length );
+			},
+			showModal: {
+				set(show) {
+					this.$store.commit('setShowModal', show);
+				},
+				get() {
+					return state.showModal;
+				}
 			}},
 			mapState({
-				items:	function(state) {
-					return state.itemCandidates;
-				}
+				items: state => state.itemCandidates
 			})
 		)
 	}

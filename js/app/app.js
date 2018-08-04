@@ -22,6 +22,7 @@
 
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { mapState } from 'vuex';
 import VueRouter from 'vue-router';
 
 import router from './components/TheRouter.js';
@@ -59,7 +60,10 @@ export class App {
 				filter(query) {
 					this.searchString = query;
 				}
-			}
+			},
+			computed: mapState({
+				showModal: state => state.showModal
+			})
 		});
 
 		store.dispatch('loadItems');

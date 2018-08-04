@@ -236,7 +236,7 @@ table {
 }
 
 // item selection modal
-.modal-mask {
+#app-modal {
 	position: absolute;
 	z-index: 1000;
 	width: 100%;
@@ -244,6 +244,12 @@ table {
 	bottom: 0;
 	background-color: rgba(0, 0, 0, .5);
 	transition: opacity .3s ease;
+}
+
+.modal-mask {
+	position: relative;
+	height: 100%;
+	width: 100%;
 }
 
 .modal-wrapper {
