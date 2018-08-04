@@ -1,6 +1,11 @@
 <?php
     script('inventory', 'merged');
     style('inventory', 'style');
+
+    if ($OC_Version[0] < 14) {
+        style('inventory', 'style13');
+    }
+
 ?>
 
 <div id="app-navigation">
@@ -24,6 +29,5 @@
 </div>
 
 <transition name="modal">
-    <div id="app-modal" v-show="showModal" @click="showModal = false">
-    </div>
+    <div id="app-modal" v-show="showModal" @click="showModal = false" v-cloak></div>
 </transition>

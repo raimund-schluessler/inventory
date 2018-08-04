@@ -9,6 +9,10 @@ $gray_light: #f5f5f5;
 	text-decoration: none;
 }
 
+[v-cloak] {
+	display: none;
+}
+
 .visibility-hidden {
 	visibility: hidden;
 }
@@ -302,7 +306,7 @@ table {
 }
 
 .modal-footer {
-	height: 56px;
+	height: 38px;
 	padding: 8px;
 
 	.item-adding-status {
