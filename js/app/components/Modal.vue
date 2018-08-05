@@ -37,7 +37,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 
 				<div class="modal-body">
-					<items-table  v-on:selectedItemIDsChanged="selectedItemIDsChanged" v-bind:items="items" v-bind:showDropdown="false" v-bind:searchString="searchString"></items-table>
+					<items-table  v-on:selectedItemIDsChanged="selectedItemIDsChanged" v-bind:items="items" v-bind:showDropdown="false"
+					v-bind:searchString="searchString" v-bind:mode="'selection'"></items-table>
 				</div>
 
 				<div class="modal-footer">

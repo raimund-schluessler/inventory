@@ -71,11 +71,15 @@ $gray_light: #f5f5f5;
 		td {
 			height: 40px;
 
-			&:first-child a span {
-				padding-left: 60px;
+			&:first-child {
+				a span,
+				div span {
+					padding-left: 60px;
+				}
 			}
 
-			a {
+			a,
+			div {
 				.thumbnail-wrapper {
 					position: absolute;
 					height: 40px;

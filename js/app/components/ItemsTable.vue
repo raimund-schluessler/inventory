@@ -76,7 +76,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<tbody>
 			<tr class="handler"
 			v-for="item in filteredItems"
-			:key="item.id" @click="selectItem(item)" v-bind:class="{ selected: isSelected(item) }">
+			:key="item.id" v-bind:class="{ selected: isSelected(item) }" v-if="mode === 'navigation'">
 				<td>
 					<a v-bind:href="'#/items/' + item.id">
 						<div class="thumbnail-wrapper">
@@ -95,6 +95,27 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</ul>
 				</td>
 			</tr>
+			<tr class="handler"
+			v-for="item in filteredItems"
+			:key="item.id" @click="selectItem(item)" v-bind:class="{ selected: isSelected(item) }" v-if="mode === 'selection'">
+				<td>
+					<div>
+						<div class="thumbnail-wrapper">
+							<div class="thumbnail default" v-bind:style="{ backgroundImage: 'url(' + getIconUrl(item) + ')' }"></div>
+						</div>
+						<span>{{ item.name }}</span>
+					</div>
+				</td>
+				<td>{{ item.maker }}</td>
+				<td>{{ item.description }}</td>
+				<td>
+					<ul class="categories">
+						<li v-for='category in item.categories' :key='category.id'>
+							<span>{{ category.name }}</span>
+						</li>
+					</ul>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </template>
@@ -105,11 +126,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	import searchQueryParser from 'search-query-parser';
 
 	export default {
-		props: [
-			'items',
-			'showDropdown',
-			'searchString'
-		],
+		props: {
+			mode: {
+				type: String,
+				default: 'navigation'
+			},
+			items: Array,
+			showDropdown: Boolean,
+			searchString: String
+		},
 		data: function () {
 			return {
 				selectedItemIDs: []
