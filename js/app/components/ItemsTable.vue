@@ -311,9 +311,3 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		}
 	}
 </script>
-
-<style>
-.selected {
-	background-color: #b5e5ff !important;
-}
-</style>
