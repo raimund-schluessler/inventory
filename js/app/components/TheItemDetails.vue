@@ -273,6 +273,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					}));
 				},
 				linkItems(relationType, itemIDs) {
+					if (!Array.isArray(itemIDs) || !itemIDs.length) {
+						return;
+					}
 					Axios.post(OC.generateUrl('apps/inventory/item/'+ this.item.id + '/link/' + relationType ), {
 						itemIDs: itemIDs 
 					})
