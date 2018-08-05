@@ -147,7 +147,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				type: String,
 				default: 'navigation'
 			},
-			items: Array,
+			items: {
+				type: Array,
+				default: () => [],
+				required: true
+			},
 			showDropdown: Boolean,
 			searchString: String
 		},

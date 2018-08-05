@@ -153,11 +153,12 @@ describe('ItemsTable.vue', () => {
 		expect(itemsFound.length).toBe(0);
 	});
 	
-	it('returns no items when items are empty', () => {
+	it('requires items to be of type array', () => {
 		const wrapper = shallowMount(ItemsTable, {
 			propsData: {
 				showDropdown: false,
-				searchString: ''
+				searchString: '',
+				items: 23
 			},
 			methods: {
 				t: function (app, string) {
@@ -165,7 +166,8 @@ describe('ItemsTable.vue', () => {
 				}
 			}
 		});
-		var itemsFound = wrapper.vm.filteredItems;
-		expect(itemsFound).toBe(undefined);
+		const items = wrapper.vm.$options.props.items;
+		expect(items.required).toBeTruthy();
+  		expect(items.type).toBe(Array);
 	});
 });
