@@ -29,5 +29,5 @@
 </div>
 
 <transition name="modal">
-    <div id="app-modal" v-show="showModal" @click="showModal = false" v-cloak></div>
+    <div id="app-modal" v-show="showModal" v-cloak></div>
 </transition>
