@@ -24,7 +24,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<thead>
 			<tr>
 				<th v-bind:id="'headerSelection-' + _uid" class="column-selection">
-					<input v-bind:id="'select_all_items-' + _uid" class="select-all checkbox" type="checkbox">
+					<input v-bind:id="'select_all_items-' + _uid" class="select-all checkbox" type="checkbox" v-model="allVisibleItemsSelected">
 					<label v-bind:for="'select_all_items-' + _uid">
 						<span class="hidden-visually">{{ t('inventory', 'Select all') }}</span>
 					</label>
@@ -183,6 +183,39 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			}
 		},
 		computed: {
+			allVisibleItemsSelected: {
+				set(select) {
+					if (select) {
+						// add all filteredItems to selectedItemIDs
+						for(var i = 0; i < this.filteredItems.length; i++) {
+							var index = this.selectedItemIDs.indexOf(this.filteredItems[i].id);
+							if (index === -1) {
+								this.selectedItemIDs.push(this.filteredItems[i].id);
+							}
+						}
+					} else {
+						// remove all filteredItems from selectedItemIDs
+						for(var i = 0; i < this.filteredItems.length; i++) {
+							var index = this.selectedItemIDs.indexOf(this.filteredItems[i].id);
+							if (index !== -1) {
+								this.selectedItemIDs.splice(index, 1);
+							}
+						}
+					}
+				},
+				get() {
+					for(var i = 0; i < this.filteredItems.length; i++) {
+						var index = this.selectedItemIDs.indexOf(this.filteredItems[i].id);
+						if (index === -1) {
+							return false;
+						}
+					}
+					if (!Array.isArray(this.filteredItems) || !this.filteredItems.length) {
+						return false;
+					}
+					return true;
+				}
+			},
 			filteredItems() {
 				if (!this.items) {
 					return;
