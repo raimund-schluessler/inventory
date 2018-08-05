@@ -278,6 +278,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					}
 					Axios.post(OC.generateUrl('apps/inventory/item/'+ this.item.id + '/link/' + relationType ), {
 						itemIDs: itemIDs 
+					}).then(response => {
+						if (response.data.status === 'success') {
+							if (this.relationType === 'parent') {
+								this.loadParentItems(this.item.id);
+							} else if (this.relationType === 'sub') {
+								this.loadSubItems(this.item.id);
+							} else if (this.relationType === 'related') {
+								this.loadRelatedItems(this.item.id);
+							}
+						}
 					})
 				}
 			},
