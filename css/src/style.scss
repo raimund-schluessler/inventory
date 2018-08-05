@@ -63,25 +63,31 @@ $gray_light: #f5f5f5;
 		th {
 			height: 50px;
 
-			&:first-child div {
+			a.name {
 				padding-left: 40px;
+			}
+
+			&.column-selection label {
+				padding: 16px 11px;
 			}
 		}
 
 		td {
 			height: 40px;
 
-			&:first-child {
-				a span,
-				div span {
-					padding-left: 60px;
+			&.selection {
+				min-width: 40px;
+				max-width: 40px;
+				width: 0;
+
+				label {
+					padding: 11px;
 				}
 			}
 
 			a,
 			div {
 				.thumbnail-wrapper {
-					position: absolute;
 					height: 40px;
 					width: 40px;
 
@@ -97,9 +103,13 @@ $gray_light: #f5f5f5;
 					}
 				}
 
+				.nametext {
+					flex-grow: 1;
+				}
+
 				height: 100%;
 				width: 100%;
-				display: inline-block;
+				display: flex;
 				line-height: 40px;
 			}
 		}

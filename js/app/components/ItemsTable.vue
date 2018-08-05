@@ -23,12 +23,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<table class="itemstable">
 		<thead>
 			<tr>
+				<th v-bind:id="'headerSelection-' + _uid" class="column-selection">
+					<input v-bind:id="'select_all_items-' + _uid" class="select-all checkbox" type="checkbox">
+					<label v-bind:for="'select_all_items-' + _uid">
+						<span class="hidden-visually">{{ t('inventory', 'Select all') }}</span>
+					</label>
+				</th>
 				<th>
 					<div>
-						<input id="select_all_items" class="select-all checkbox" type="checkbox">
-						<label for="select_all_items">
-							<span class="hidden-visually">{{ t('inventory', 'Select All') }}</span>
-						</label>
 						<a class="name sort columntitle" data-sort="name">
 							<span>{{ t('inventory', 'Name') }}</span>
 							<span class="sort-indicator icon-triangle-n"></span>
@@ -45,14 +47,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</th>
 				<th>
 					<div>
-						<a class="name sort columntitle" data-sort="description">
+						<a class="description sort columntitle" data-sort="description">
 							<span>{{ t('inventory', 'Description') }}</span>
 							<span class="sort-indicator icon-triangle-n"></span>
 						</a>
 					</div>
 				</th>
 				<th>
-					<a class="size sort columntitle" data-sort="size">
+					<a class="categories sort columntitle" data-sort="categories">
 						<span>{{ t('inventory', 'Categories') }}</span>
 						<span class="sort-indicator hidden icon-triangle-s"></span>
 					</a>
@@ -77,6 +79,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<tr class="handler"
 			v-for="item in filteredItems"
 			:key="item.id" v-bind:class="{ selected: isSelected(item) }" v-if="mode === 'navigation'">
+				<td class="selection">
+					<input v-bind:id="'select-item-' + item.id + '-' + _uid" class="selectCheckBox checkbox" type="checkbox"
+					 v-bind:value="item.id" v-model="selectedItemIDs">
+					<label v-bind:for="'select-item-' + item.id + '-' + _uid" @click="selectItem(item)">
+						<span class="hidden-visually">{{ t('inventory', 'Select') }}</span>
+					</label>
+				</td>
 				<td>
 					<a v-bind:href="'#/items/' + item.id">
 						<div class="thumbnail-wrapper">
@@ -98,6 +107,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<tr class="handler"
 			v-for="item in filteredItems"
 			:key="item.id" @click="selectItem(item)" v-bind:class="{ selected: isSelected(item) }" v-if="mode === 'selection'">
+				<td class="selection">
+					<input v-bind:id="'select-item-' + item.id + '-' + _uid" class="selectCheckBox checkbox" type="checkbox"
+					 v-bind:value="item.id" v-model="selectedItemIDs">
+					<label v-bind:for="'select-item-' + item.id + '-' + _uid" @click="selectItem(item)">
+						<span class="hidden-visually">{{ t('inventory', 'Select') }}</span>
+					</label>
+				</td>
 				<td>
 					<div>
 						<div class="thumbnail-wrapper">
