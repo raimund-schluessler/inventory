@@ -206,6 +206,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							}
 						}
 					}
+					this.$emit('selectedItemIDsChanged', this.selectedItemIDs);
 				},
 				get() {
 					for(var i = 0; i < this.filteredItems.length; i++) {
