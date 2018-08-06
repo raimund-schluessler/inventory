@@ -123,6 +123,10 @@ $gray_light: #f5f5f5;
 }
 
 table {
+	tr {
+		transition: background-color .3s ease;
+	}
+
 	th,
 	td {
 		border-bottom: 1px solid $gray;
