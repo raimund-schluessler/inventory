@@ -89,6 +89,35 @@ class ItemsService {
 	 *
 	 * @return array
 	 */
+	public function getCandidates($itemID, $relationType) {
+
+		$excludeIDs = array($itemID);
+
+		$items = $this->itemMapper->findCandidates($itemID, $excludeIDs, $this->userId);
+		foreach ($items as $nr => $item) {
+			$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
+			$categoriesNames = array();
+			foreach ($categories as $category) {
+				$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
+				$categoriesNames[] = array(
+					'id'	=> $category->categoryid,
+					'name'	=> $name->name
+				);
+			}
+			$type = $this->itemtypeMapper->find($item->type, $this->userId);
+			$items[$nr]->icon = $type->icon;
+			$items[$nr]->type = $type->name;
+			$items[$nr]->categories = $categoriesNames;
+			$items[$nr]->instances = $this->iteminstanceService->getByItemID($item->id);
+		}
+		return $items;
+	}
+
+	/**
+	 * get items
+	 *
+	 * @return array
+	 */
 	public function get($itemID) {
 		$item = $this->itemMapper->find($itemID, $this->userId);
 		$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);

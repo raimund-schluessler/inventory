@@ -90,7 +90,7 @@ class ItemsController extends Controller {
 	 */
 	public function getCandidates($itemID, $relationType){
 		return $this->generateResponse(function () use ($itemID, $relationType) {
-			return ['items' => $this->itemsService->getAll()];
+			return ['items' => $this->itemsService->getCandidates($itemID, $relationType)];
 		});
 	}
 

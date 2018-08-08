@@ -48,6 +48,12 @@ class ItemMapper extends Mapper {
 		return $this->findEntities($sql, [$uid], $limit, $offset);
 	}
 
+	public function findCandidates($itemID, $excludeIDs, $uid, $limit=null, $offset=null) {
+		$sql = 'SELECT * FROM `*PREFIX*invtry_items` ' .
+			'WHERE `uid` = ? AND `id` NOT IN (?)';
+		return $this->findEntities($sql, [$uid, implode(',', $excludeIDs)], $limit, $offset);
+	}
+
 	public function itemCount($name) {
 		$sql = 'SELECT COUNT(*) AS `count` FROM `*PREFIX*invtry_items`';
 		$stmt = $this->execute($sql);
