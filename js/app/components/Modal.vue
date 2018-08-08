@@ -26,10 +26,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="modal-header">
 					<span class="title">{{ t('inventory', headerString) }}</span>
 					<form class="searchbox" action="#" method="post" role="search" novalidate="">
-						<label for="searchbox" class="hidden-visually">
+						<label for="modalSearchbox" class="hidden-visually">
 							{{ t('inventory', 'Search') }}
 						</label>
-						<input id="modalSearchbox" name="query" value="" v-model="searchString" required="" autocomplete="off" type="search">
+						<input id="modalSearchbox" class="icon-search-white" name="query" value="" v-model="searchString" required="" autocomplete="off" type="search">
 						<button class="icon-close-white" type="reset" @click="searchString=''">
 							<span class="hidden-visually">{{ t('inventory', 'Reset search') }}</span>
 						</button>

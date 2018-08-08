@@ -37,11 +37,17 @@ $(document).ready(function () {
 	OCA.Inventory.App = new App();
 	OCA.Inventory.App.start();
 
-	OCA.Inventory.App.Search = {
-		attach: function (search) {
-			search.setFilter('inventory', OCA.Inventory.App.Vue.filter);
-		}
-	};
+	var version = OC.config.version.split('.');
 
-	OC.Plugins.register('OCA.Search', OCA.Inventory.App.Search);
+	if (version[0] >= 14) {
+		OC.Search = new OCA.Search(OCA.Inventory.App.Vue.filter, OCA.Inventory.App.Vue.cleanSearch);
+	} else {
+		OCA.Inventory.App.Search = {
+			attach: function (search) {
+				search.setFilter('inventory', OCA.Inventory.App.Vue.filter);
+			}
+		};
+
+		OC.Plugins.register('OCA.Search', OCA.Inventory.App.Search);
+	}
 });

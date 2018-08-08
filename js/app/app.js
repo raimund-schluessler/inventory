@@ -59,6 +59,9 @@ export class App {
 			methods: {
 				filter(query) {
 					this.searchString = query;
+				},
+				cleanSearch() {
+					this.searchString = '';
 				}
 			},
 			computed: mapState({
