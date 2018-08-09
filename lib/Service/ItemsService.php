@@ -91,7 +91,17 @@ class ItemsService {
 	 */
 	public function getCandidates($itemID, $relationType) {
 
-		$excludeIDs = array($itemID);
+		$excludeIDs = array();
+		if ($relationType == 'sub') {
+			$excludeIDs = $this->itemParentMapper->findSubIDs($itemID);
+		} elseif ($relationType == 'parent') {
+			$excludeIDs = $this->itemParentMapper->findParentIDs($itemID);
+		} elseif ($relationType == 'related') {
+			$excludeIDs = $this->itemRelationMapper->findRelatedIDs($itemID, $this->userId);
+		}
+		
+		// add the item itself
+		array_push($excludeIDs, $itemID);
 
 		$items = $this->itemMapper->findCandidates($itemID, $excludeIDs, $this->userId);
 		foreach ($items as $nr => $item) {

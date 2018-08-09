@@ -40,6 +40,21 @@ class ItemrelationMapper extends Mapper {
 		return $this->findEntities($sql, [$itemID, $userID, $itemID, $userID]);
 	}
 
+	public function findRelatedIDs($itemID, $userID) {
+		$sql = 'SELECT itemid1 FROM `*PREFIX*invtry_rel_map` ' .
+			'WHERE `itemid2` = ? AND `uid` = ? ' .
+			'UNION ' .
+			'SELECT itemid2 FROM `*PREFIX*invtry_rel_map` ' .
+			'WHERE `itemid1` = ? AND `uid` = ?';
+		$stmt =  $this->execute($sql, [$itemID, $userID, $itemID, $userID]);
+		$relatedIDs = array();
+		while ($row = $stmt->fetch()) {
+			array_push($relatedIDs, $row['itemid1']);
+		};
+		$stmt->closeCursor();
+		return $relatedIDs;
+	}
+
 	public function add($mapping) {
 		$sql = 'INSERT INTO `*PREFIX*invtry_rel_map` (itemid1, itemid2, uid)'.
 				' Values(?, ?, ?)';

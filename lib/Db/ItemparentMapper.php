@@ -37,10 +37,34 @@ class ItemparentMapper extends Mapper {
 		return $this->findEntities($sql, [$itemID]);
 	}
 
+	public function findSubIDs($itemID) {
+		$sql = 'SELECT itemid FROM `*PREFIX*invtry_parent_map` ' .
+			'WHERE `parentid` = ?';
+		$stmt =  $this->execute($sql, [$itemID]);
+		$subIDs = array();
+		while ($row = $stmt->fetch()) {
+			array_push($subIDs, $row['itemid']);
+		};
+		$stmt->closeCursor();
+		return $subIDs;
+	}
+
 	public function findParent($itemID) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_parent_map` ' .
 			'WHERE `itemid` = ?';
 		return $this->findEntities($sql, [$itemID]);
+	}
+
+	public function findParentIDs($itemID) {
+		$sql = 'SELECT parentid FROM `*PREFIX*invtry_parent_map` ' .
+			'WHERE `itemid` = ?';
+		$stmt =  $this->execute($sql, [$itemID]);
+		$subIDs = array();
+		while ($row = $stmt->fetch()) {
+			array_push($subIDs, $row['parentid']);
+		};
+		$stmt->closeCursor();
+		return $subIDs;
 	}
 
 	public function add($mapping) {
