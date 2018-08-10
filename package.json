@@ -10,7 +10,7 @@
   "private": true,
   "homepage": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory",
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha-webpack --webpack-config webpack.test.js --require ./test/setup.js ./test/**/*.spec.js",
+    "test": "jest",
     "prebuild": "npm install && npm upgrade",
     "build": "node node_modules/gulp-cli/bin/gulp.js build",
     "development": "node node_modules/gulp-cli/bin/gulp.js development",
@@ -33,12 +33,12 @@
   "devDependencies": {
     "@vue/test-utils": "^1.0.0-beta.24",
     "babel-core": "^6.26.3",
+    "babel-jest": "^23.4.2",
     "babel-loader": "^7.1.5",
-    "babel-plugin-istanbul": "^4.1.5",
     "babel-preset-env": "^1.7.0",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
-    "expect": "^23.4.0",
+    "expect": "^23.5.0",
     "file-loader": "^1.1.11",
     "gulp": "^3.9.1",
     "gulp-cli": "^2.0.1",
@@ -46,16 +46,16 @@
     "gulp-jshint": "^2.1.0",
     "gulp-stylelint": "^7.0.0",
     "gulp-svg-sprite": "1.4.0",
+    "jest": "^23.5.0",
+    "jest-serializer-vue": "^2.0.2",
     "jsdom": "^11.12.0",
     "jsdom-global": "^3.0.2",
     "jshint": "^2.9.6",
-    "mocha": "^5.2.0",
-    "mocha-webpack": "^2.0.0-beta.0",
-    "nyc": "^12.0.2",
     "stylelint": "^9.4.0",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-scss": "^3.2.0",
     "uglifyjs-webpack-plugin": "^1.2.7",
+    "vue-jest": "^2.6.0",
     "vue-loader": "^15.3.0",
     "vue-template-compiler": "^2.5.17",
     "webpack": "^4.16.5",
@@ -68,12 +68,27 @@
   "engines": {
     "node": ">=6"
   },
-  "nyc": {
-    "include": [
-      "./js/app/**/*.(js|vue)"
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "vue"
     ],
-    "instrument": true,
-    "sourceMap": false,
-    "all": true
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/js/app/$1"
+    },
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
+    },
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/jest-serializer-vue"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "<rootDir>/js/app/**/*.{js,vue}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ],
+    "coverageReporters": ["json", "lcov", "html"]
   }
 }
