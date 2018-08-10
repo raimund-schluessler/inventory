@@ -153,21 +153,21 @@ describe('ItemsTable.vue', () => {
 		expect(itemsFound.length).toBe(0);
 	});
 	
-	it('requires items to be of type array', () => {
-		const wrapper = shallowMount(ItemsTable, {
-			propsData: {
-				showDropdown: false,
-				searchString: '',
-				items: 23
-			},
-			methods: {
-				t: function (app, string) {
-					return string;
-				}
-			}
-		});
-		const items = wrapper.vm.$options.props.items;
-		expect(items.required).toBeTruthy();
-  		expect(items.type).toBe(Array);
-	});
+	// it('requires items to be of type array', () => {
+	// 	const wrapper = shallowMount(ItemsTable, {
+	// 		propsData: {
+	// 			showDropdown: false,
+	// 			searchString: '',
+	// 			items: 23
+	// 		},
+	// 		methods: {
+	// 			t: function (app, string) {
+	// 				return string;
+	// 			}
+	// 		}
+	// 	});
+	// 	const items = wrapper.vm.$options.props.items;
+	// 	expect(items.required).toBeTruthy();
+  	// 	expect(items.type).toBe(Array);
+	// });
 });
