@@ -153,21 +153,90 @@ describe('ItemsTable.vue', () => {
 		expect(itemsFound.length).toBe(0);
 	});
 	
-	// it('requires items to be of type array', () => {
-	// 	const wrapper = shallowMount(ItemsTable, {
-	// 		propsData: {
-	// 			showDropdown: false,
-	// 			searchString: '',
-	// 			items: 23
-	// 		},
-	// 		methods: {
-	// 			t: function (app, string) {
-	// 				return string;
-	// 			}
-	// 		}
-	// 	});
-	// 	const items = wrapper.vm.$options.props.items;
-	// 	expect(items.required).toBeTruthy();
-  	// 	expect(items.type).toBe(Array);
-	// });
+	it('does not fail when no items are passed', () => {
+		const wrapper = shallowMount(ItemsTable, {
+			propsData: {
+				showDropdown: false,
+				searchString: ''
+			},
+			methods: {
+				t: function (app, string) {
+					return string;
+				}
+			}
+		});
+		var itemsFound = wrapper.vm.filteredItems;
+		expect(itemsFound.length).toBe(0);
+	});
+	
+	it('selects item when clicked', () => {
+		const wrapper = shallowMount(ItemsTable, {
+			propsData: {
+				items: items,
+				showDropdown: false,
+				searchString: ''
+			},
+			methods: {
+				t: function (app, string) {
+					return string;
+				}
+			}
+		});
+		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click');
+		wrapper.find('label[for="select-item-2-' + wrapper.vm._uid + '"]').trigger('click');
+		wrapper.find('label[for="select-item-3-' + wrapper.vm._uid + '"]').trigger('click');
+		var itemsFound = wrapper.vm.selectedItemIDs;
+		var allSelected = wrapper.vm.allVisibleItemsSelected;
+		expect(itemsFound.length).toBe(3);
+		expect(allSelected).toBe(true);
+	});
+	
+	it('selects all items on checkbox click and unselects on second click', () => {
+		const wrapper = shallowMount(ItemsTable, {
+			propsData: {
+				items: items,
+				showDropdown: false,
+				searchString: ''
+			},
+			methods: {
+				t: function (app, string) {
+					return string;
+				}
+			}
+		});
+		wrapper.find('input.select-all.checkbox').trigger('click');
+		var itemsFound = wrapper.vm.selectedItemIDs;
+		var allSelected = wrapper.vm.allVisibleItemsSelected;
+		expect(itemsFound.length).toBe(3);
+		expect(allSelected).toBe(true);
+		wrapper.find('input.select-all.checkbox').trigger('click');
+		itemsFound = wrapper.vm.selectedItemIDs;
+		allSelected = wrapper.vm.allVisibleItemsSelected;
+		expect(itemsFound.length).toBe(0);
+		expect(allSelected).toBe(false);
+	});
+	
+	it('selects item when clicked on label', () => {
+		const wrapper = shallowMount(ItemsTable, {
+			propsData: {
+				items: items,
+				showDropdown: false,
+				searchString: ''
+			},
+			methods: {
+				t: function (app, string) {
+					return string;
+				}
+			}
+		});
+		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click');
+		var selectedItemIDs = wrapper.vm.selectedItemIDs;
+		var allSelected = wrapper.vm.allVisibleItemsSelected;
+		expect(selectedItemIDs.length).toBe(1);
+		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click');
+		selectedItemIDs = wrapper.vm.selectedItemIDs;
+		allSelected = wrapper.vm.allVisibleItemsSelected;
+		expect(selectedItemIDs.length).toBe(0);
+		expect(allSelected).toBe(false);
+	});
 });
