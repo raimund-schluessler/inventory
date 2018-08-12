@@ -10,7 +10,7 @@
   "private": true,
   "homepage": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory",
   "scripts": {
-    "test": "jest",
+    "test": "jest --verbose",
     "prebuild": "npm install && npm upgrade",
     "build": "node node_modules/gulp-cli/bin/gulp.js build",
     "development": "node node_modules/gulp-cli/bin/gulp.js development",
@@ -89,6 +89,6 @@
       "!**/node_modules/**",
       "!**/vendor/**"
     ],
-    "coverageReporters": ["json", "lcov", "html"]
+    "coverageReporters": ["json", "text", "html"]
   }
 }
