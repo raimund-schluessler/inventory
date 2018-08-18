@@ -41,6 +41,7 @@ export class App {
 			data: {
 				active: 'items',
 				searchString: '',
+				snap: false,
 				views: [
 					{
 						name: t('inventory', 'Items'),
@@ -62,7 +63,45 @@ export class App {
 				},
 				cleanSearch() {
 					this.searchString = '';
+				},
+				toggleSnapperOnButton() {
+					this.snap = !this.snap;
+					this.showHideSnapper();
+				},
+				showHideSnapper() {
+					if (this.snap) {
+						$('#body-user').addClass('snapjs-left');
+						$('#app-content').css("transition", "all 0.3s ease 0s");
+						$('#app-content').css("transform", "translate3d(300px, 0px, 0px)");
+						setTimeout(function(){$('#app-content').css("transition", "none");}, 300);
+					} else {
+						$('#body-user').removeClass('snapjs-left');
+						$('#app-content').css("transition", "all 0.3s ease 0s");
+						$('#app-content').css("transform", "none");
+						setTimeout(function(){$('#app-content').css("transition", "none");}, 300);
+					}
+				},
+				documentClick: function (e) {
+					let el = $('#app-navigation');
+					let target = e.target;
+					var toggleButton = $("#app-navigation-toggle");
+					if (( el !== target) && !$.contains(el[0], target) && (toggleButton[0] !== target)) {
+						this.snap = false;
+						this.showHideSnapper();
+					}
 				}
+			},
+			mounted: function() {
+				// re-bind app-navigation-toggle events since Vue removed them
+				$('#app-navigation-toggle').click(function() {
+					OCA.Inventory.App.Vue.toggleSnapperOnButton();
+				});
+				$('#app-navigation-toggle').keypress(function(e) {
+					if(e.which === 13) {
+						OCA.Inventory.App.Vue.toggleSnapperOnButton();
+					}
+				});
+				document.addEventListener('click', this.documentClick);
 			},
 			computed: mapState({
 				showModal: state => state.showModal
