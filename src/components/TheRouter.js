@@ -19,33 +19,33 @@
  *
  */
 
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
-import TheItemsOverview from "./TheItemsOverview.vue";
-import ItemsNew from "./TheItemsCreator.vue";
-import TheItemDetails from "./TheItemDetails.vue";
+import TheItemsOverview from './TheItemsOverview.vue'
+import ItemsNew from './TheItemsCreator.vue'
+import TheItemDetails from './TheItemDetails.vue'
 
-const Places = { template: '<div>places</div>' };
-const Categories = { template: '<div>categories</div>' };
+const Places = { template: '<div>places</div>' }
+const Categories = { template: '<div>categories</div>' }
 
 const routes = [
 	// using
 	// { path: '/items', component: Items, alias: '/' },
 	// instead of
 	{ path: '/', redirect: '/items' },
-	{ path: '/items', component: TheItemsOverview},
+	{ path: '/items', component: TheItemsOverview },
 	// would also be an option, but it currently does not work
 	// reliably with router-link due to
 	// https://github.com/vuejs/vue-router/issues/419
-	{ path: '/items/additems', component: ItemsNew},
-	{ path: '/items/:id', component: TheItemDetails, props: true},
+	{ path: '/items/additems', component: ItemsNew },
+	{ path: '/items/:id', component: TheItemDetails, props: true },
 	{ path: '/places', component: Places },
-	{ path: '/categories', component: Categories },
-];
+	{ path: '/categories', component: Categories }
+]
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 export default new VueRouter({
-	routes, // short for `routes: routes`
-});
+	routes // short for `routes: routes`
+})

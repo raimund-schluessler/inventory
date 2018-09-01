@@ -21,20 +21,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<items-table v-bind:items="items" v-bind:showDropdown="true" v-bind:searchString="$root.searchString"></items-table>
+		<items-table :items="items" :show-dropdown="true" :search-string="$root.searchString" />
 	</div>
 </template>
 
 <script>
-	import { mapState } from 'vuex';
-	import ItemsTable from './ItemsTable.vue';
+import { mapState } from 'vuex'
+import ItemsTable from './ItemsTable.vue'
 
-	export default {
-		computed: mapState({
-			items: state => state.items
-		}),
-		components: {
-			'items-table': ItemsTable
-		}
-	}
+export default {
+	components: {
+		'items-table': ItemsTable
+	},
+	computed: mapState({
+		items: state => state.items
+	})
+}
 </script>

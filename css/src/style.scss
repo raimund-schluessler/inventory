@@ -112,7 +112,6 @@ $gray_light: #f5f5f5;
 				.nametext {
 					flex-grow: 1;
 				}
-
 				height: 100%;
 				width: 100%;
 				display: flex;
@@ -161,7 +160,7 @@ table {
 		resize: none;
 	}
 
-	input[type="submit"] {
+	input[type='submit'] {
 		float: right;
 		margin: 10px 0;
 	}
@@ -237,7 +236,7 @@ table {
 		& > a span {
 			opacity: 1 !important;
 
-			&[class*=" icon-"] {
+			&[class*=' icon-'] {
 				padding: 0;
 				background-size: auto;
 				margin: 12px 8px;

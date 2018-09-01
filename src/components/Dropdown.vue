@@ -20,48 +20,48 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div class="dropdown-container" ref="dropdownMenu">
-		<div class="app-navigation-entry-utils" v-on:click="toggle()">
+	<div ref="dropdownMenu" class="dropdown-container">
+		<div class="app-navigation-entry-utils" @click="toggle()">
 			<div class="app-navigation-entry-utils-menu-button">
 				<button class="dropdown-button">
-					<span class="icon icon-list"></span>
+					<span class="icon icon-list" />
 				</button>
 			</div>
 		</div>
-		<div class="app-navigation-entry-menu bubble table-dropdown" v-bind:class="{ open:open }">
+		<div :class="{ open:open }" class="app-navigation-entry-menu bubble table-dropdown">
 			<ul>
-				<slot></slot>
+				<slot />
 			</ul>
 		</div>
 	</div>
 </template>
 
 <script>
-	export default {
-		data: function () {
-			return {
-				open: false
+export default {
+	data: function() {
+		return {
+			open: false
+		}
+	},
+	created() {
+		document.addEventListener('click', this.documentClick)
+	},
+	destroyed() {
+		document.removeEventListener('click', this.documentClick)
+	},
+	methods: {
+		toggle: function() {
+			this.open = !this.open
+		},
+		documentClick: function(e) {
+			let el = this.$refs.dropdownMenu
+			let target = e.target
+			if ((el !== target) && !el.contains(target)) {
+				this.open = false
 			}
-		},
-		methods: {
-			toggle: function () {
-				this.open = !this.open;
-			},
-			documentClick: function (e) {
-				let el = this.$refs.dropdownMenu;
-				let target = e.target;
-				if (( el !== target) && !el.contains(target)) {
-					this.open = false;
-				}
-			}
-		},
-		created () {
-			document.addEventListener('click', this.documentClick)
-		},
-		destroyed () {
-			document.removeEventListener('click', this.documentClick)
 		}
 	}
+}
 </script>
 
 <style>
