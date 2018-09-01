@@ -1,0 +1,106 @@
+<!--
+Nextcloud - Inventory
+
+@author Raimund Schlüßler
+@copyright 2017 Raimund Schlüßler <raimund.schluessler@mailbox.org>
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+License as published by the Free Software Foundation; either
+version 3 of the License, or any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+
+You should have received a copy of the GNU Affero General Public
+License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<template>
+	<div id="newItemsView">
+		Add multiple new items (as comma separated list).<br>
+		Expects csv with the fields:
+		<span v-for="field in fields" :key="field">
+			&lt;{{ field }}&gt;;
+		</span>
+		<form id="newItems" @submit.prevent="enlist">
+			<textarea v-model="rawInput" />
+			Parsed items:
+			<div>
+				<items-table :items="parsedItems" :show-dropdown="false" :search-string="$root.searchString" />
+			</div>
+			<input :value="t('inventory', 'Enlist')" type="submit">
+		</form>
+	</div>
+</template>
+
+<script>
+import Axios from 'axios'
+import Papa from 'papaparse'
+import ItemsTable from './ItemsTable.vue'
+
+export default {
+	components: {
+		'items-table': ItemsTable
+	},
+	data: function() {
+		return {
+			rawInput: 'RawData',
+			parsedItems: [],
+			fields: ['name', 'maker', 'description', 'item_number', 'link', 'GTIN', 'details', 'comment', 'type', 'place', 'price', 'count', 'available', 'vendor', 'date', 'categories', 'related']
+		}
+	},
+	watch: {
+		rawInput: function(val, oldVal) {
+			var results = Papa.parse(val, { delimiter: ';', newline: '\n' })
+			this.parsedItems = []
+			for (var i = 0; i < results.data.length; i++) {
+				var it = results.data[i]
+				var item = {
+					'name':	it[0],
+					'maker':	it[1],
+					'description':	it[2],
+					'item_number':	it[3],
+					'link':	it[4],
+					'gtin':	it[5],
+					'details':	it[6],
+					'comment':	it[7],
+					'type':	it[8],
+					'instances': [{
+						'place':	it[9],
+						'price':	it[10],
+						'count':	it[11],
+						'available': it[12],
+						'vendor':	it[13],
+						'date':	it[14],
+						'comment':	''
+					}]
+				}
+				var c = it[15].split(',')
+				var categories = []
+				var name
+				for (var j = 0; j < c.length; j++) {
+					name = String.prototype.trim.apply(c[j])
+					if (name.length) {
+						categories.push({ 'name': name })
+					}
+				}
+				item.categories = categories
+				this.parsedItems.push(item)
+			}
+		}
+	},
+	methods: {
+		enlist() {
+			for (var i = 0; i < this.parsedItems.length; i++) {
+				Axios.post(OC.generateUrl('apps/inventory/item/add'), {
+					item: this.parsedItems[i]
+				})
+			}
+		}
+	}
+}
+</script>

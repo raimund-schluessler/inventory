@@ -18,17 +18,17 @@ You should have received a copy of the GNU Affero General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
- 
+
 <template>
 	<div id="content" class="app-inventory">
 		<div id="app-navigation">
 			<ul>
 				<router-link
-					tag="li"
 					v-for="view in views"
 					:to="'/' + view.id"
 					:key="view.id"
 					:class="'icon-' + view.id"
+					tag="li"
 					active-class="active">
 					<a class="sprite">
 						<span class="title">{{ view.name }}</span>
@@ -38,38 +38,38 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 
 		<div id="app-content">
-			<router-view class="content-wrapper"></router-view>
+			<router-view class="content-wrapper" />
 		</div>
 
 		<transition name="modal">
-			<div id="app-modal" v-show="showModal" v-cloak></div>
+			<div v-show="showModal" v-cloak id="app-modal" />
 		</transition>
 	</div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 
 export default {
-	name: 'app',
-	data: function () {
+	name: 'App',
+	data: function() {
 		return {
 			active: 'items',
 			views: [
 				{
 					name: t('inventory', 'Items'),
-					id: "items"
+					id: 'items'
 				},
 				{
 					name: t('inventory', 'Places'),
-					id: "places"
+					id: 'places'
 				},
 				{
 					name: t('inventory', 'Categories'),
-					id: "categories"
+					id: 'categories'
 				}
 			]
-		};
+		}
 	},
 	computed: mapState({
 		showModal: state => state.showModal

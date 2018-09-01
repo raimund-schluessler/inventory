@@ -25,35 +25,35 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="breadcrumb">
 				<div data-dir="/" class="crumb svg">
 					<a href="#/items">
-						<span class="icon icon-items"></span>
+						<span class="icon icon-items" />
 					</a>
 				</div>
 				<div class="crumb svg">
-					<a v-bind:href="'#/items/' + item.id">{{ item.description }}</a>
+					<a :href="'#/items/' + item.id">{{ item.description }}</a>
 				</div>
 			</div>
 			<dropdown>
 				<li>
 					<a>
-						<span class="icon icon-plus"></span>
+						<span class="icon icon-plus" />
 						<span class="label">{{ t('inventory', 'Add item instance') }}</span>
 					</a>
 				</li>
 				<li>
-					<a v-on:click="openModal('parent')">
-						<span class="icon icon-plus"></span>
+					<a @click="openModal('parent')">
+						<span class="icon icon-plus" />
 						<span class="label">{{ t('inventory', 'Add parent item') }}</span>
 					</a>
 				</li>
 				<li>
-					<a v-on:click="openModal('related')">
-						<span class="icon icon-plus"></span>
+					<a @click="openModal('related')">
+						<span class="icon icon-plus" />
 						<span class="label">{{ t('inventory', 'Add related item') }}</span>
 					</a>
 				</li>
 				<li>
-					<a v-on:click="openModal('sub')">
-						<span class="icon icon-plus"></span>
+					<a @click="openModal('sub')">
+						<span class="icon icon-plus" />
 						<span class="label">{{ t('inventory', 'Add sub item') }}</span>
 					</a>
 				</li>
@@ -61,7 +61,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div id="itemdetails">
 			<div class="item_images">
-				<img v-bind:src="OC.imagePath('inventory', 'inventory.svg')"/>
+				<img :src="OC.imagePath('inventory', 'inventory.svg')">
 			</div>
 			<div>
 				<h3>
@@ -106,7 +106,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								<span>{{ t('inventory', 'Link') }}</span>
 							</td>
 							<td>
-								<span><a target="_blank" v-bind:href="item.link">{{ item.link }}</a></span>
+								<span><a :href="item.link" target="_blank">{{ item.link }}</a></span>
 							</td>
 						</tr>
 						<tr>
@@ -139,7 +139,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</td>
 							<td>
 								<ul class="categories">
-									<li v-for='category in item.categories' :key='category.id'>
+									<li v-for="category in item.categories" :key="category.id">
 										<span>{{ category.name }}</span>
 									</li>
 								</ul>
@@ -148,7 +148,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</tbody>
 				</table>
 			</div>
-			<br/>
+			<br>
 			<div class="paragraph">
 				<h3>
 					<span>{{ t('inventory', 'Instances') }}</span>
@@ -180,9 +180,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="handler"
-						v-for="instance in item.instances"
-						:key="instance.id">
+						<tr v-for="instance in item.instances"
+							:key="instance.id"
+							class="handler">
 							<td>{{ instance.count }}</td>
 							<td>{{ instance.available }}</td>
 							<td>{{ instance.price }}</td>
@@ -194,104 +194,108 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</tbody>
 				</table>
 			</div>
-			<br/>
-			<div class="paragraph" v-if="parentItems.length">
+			<br>
+			<div v-if="parentItems.length" class="paragraph">
 				<h3>
 					<span>{{ t('inventory', 'Parent items') }}</span>
 				</h3>
-				<items-table v-bind:items="parentItems" v-bind:showDropdown="false" v-bind:searchString="$root.searchString"></items-table>
+				<items-table :items="parentItems" :show-dropdown="false" :search-string="$root.searchString" />
 			</div>
-			<div class="paragraph" v-if="subItems.length">
+			<div v-if="subItems.length" class="paragraph">
 				<h3>
 					<span>{{ t('inventory', 'Sub items') }}</span>
 				</h3>
-				<items-table v-bind:items="subItems" v-bind:showDropdown="false" v-bind:searchString="$root.searchString"></items-table>
+				<items-table :items="subItems" :show-dropdown="false" :search-string="$root.searchString" />
 			</div>
-			<div class="paragraph" v-if="relatedItems.length">
+			<div v-if="relatedItems.length" class="paragraph">
 				<h3>
 					<span>{{ t('inventory', 'Related items') }}</span>
 				</h3>
-				<items-table v-bind:items="relatedItems" v-bind:showDropdown="false" v-bind:searchString="$root.searchString"></items-table>
+				<items-table :items="relatedItems" :show-dropdown="false" :search-string="$root.searchString" />
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-	import { mapState } from 'vuex';
-	import { mapActions } from 'vuex';
-	import ItemsTable from './ItemsTable.vue';
-	import Dropdown from './Dropdown.vue';
-	import Vue from 'vue';
-	import Modal from './Modal.vue';
-	import Axios from 'axios';
+import { mapActions, mapState } from 'vuex'
+import ItemsTable from './ItemsTable.vue'
+import Dropdown from './Dropdown.vue'
+import Vue from 'vue'
+import Modal from './Modal.vue'
+import Axios from 'axios'
 
-	export default {
-		data: function () {
-			return {
-				relationType: ""
+export default {
+	components: {
+		'items-table': ItemsTable,
+		'dropdown': Dropdown,
+		'modal': Modal
+	},
+	props: {
+		id: {
+			type: String,
+			default: '0'
+		}
+	},
+	data: function() {
+		return {
+			relationType: ''
+		}
+	},
+	computed: mapState({
+		item:	state => state.item,
+		subItems:	state => state.subItems,
+		parentItems:	state => state.parentItems,
+		relatedItems:	state => state.relatedItems
+	}),
+	created: function() {
+		this.loadItem(this.id)
+		this.loadSubItems(this.id)
+		this.loadParentItems(this.id)
+		this.loadRelatedItems(this.id)
+	},
+	beforeRouteUpdate(to, from, next) {
+		this.loadItem(to.params.id)
+		this.loadSubItems(to.params.id)
+		this.loadParentItems(to.params.id)
+		this.loadRelatedItems(to.params.id)
+		next()
+	},
+	methods: Object.assign({
+		getPlace(instance) {
+			if (instance.place) {
+				return instance.place.name
+			} else {
+				return ''
 			}
 		},
-		props: ['id'],
-		created: function () {
-			this.loadItem(this.id);
-			this.loadSubItems(this.id);
-			this.loadParentItems(this.id);
-			this.loadRelatedItems(this.id);
+		openModal: function(relationType) {
+			this.relationType = relationType
+			void new Vue(Object.assign({}, Modal, {
+				propsData: { 'link': this.linkItems, 'relationType': this.relationType, 'itemID': this.id },
+				store: this.$store
+			}))
 		},
-		components: {
-			'items-table': ItemsTable,
-			'dropdown': Dropdown,
-			'modal': Modal
-		},
-		beforeRouteUpdate (to, from, next) {
-			this.loadItem(to.params.id);
-			this.loadSubItems(to.params.id);
-			this.loadParentItems(to.params.id);
-			this.loadRelatedItems(to.params.id);
-			next();
-		},
-		computed: mapState({
-			item:			state => state.item,
-			subItems:		state => state.subItems,
-			parentItems:	state => state.parentItems,
-			relatedItems:	state => state.relatedItems
-		}),
-		methods: Object.assign({
-				getPlace(instance) {
-					if (instance.place) {
-						return instance.place.name;
-					} else {
-						return '';
+		linkItems(relationType, itemIDs) {
+			if (!Array.isArray(itemIDs) || !itemIDs.length) {
+				return
+			}
+			Axios.post(OC.generateUrl('apps/inventory/item/' + this.item.id + '/link/' + relationType), {
+				itemIDs: itemIDs
+			}).then(response => {
+				if (response.data.status === 'success') {
+					if (this.relationType === 'parent') {
+						this.loadParentItems(this.item.id)
+					} else if (this.relationType === 'sub') {
+						this.loadSubItems(this.item.id)
+					} else if (this.relationType === 'related') {
+						this.loadRelatedItems(this.item.id)
 					}
-				},
-				openModal: function (relationType) {
-					this.relationType = relationType;
-					const ModalInstance = new Vue( Object.assign({}, Modal, {
-						propsData: { 'link': this.linkItems, 'relationType': this.relationType, 'itemID': this.id },
-						store: this.$store
-					}));
-				},
-				linkItems(relationType, itemIDs) {
-					if (!Array.isArray(itemIDs) || !itemIDs.length) {
-						return;
-					}
-					Axios.post(OC.generateUrl('apps/inventory/item/'+ this.item.id + '/link/' + relationType ), {
-						itemIDs: itemIDs 
-					}).then(response => {
-						if (response.data.status === 'success') {
-							if (this.relationType === 'parent') {
-								this.loadParentItems(this.item.id);
-							} else if (this.relationType === 'sub') {
-								this.loadSubItems(this.item.id);
-							} else if (this.relationType === 'related') {
-								this.loadRelatedItems(this.item.id);
-							}
-						}
-					})
 				}
-			},
-			mapActions(['loadItem', 'loadSubItems', 'loadParentItems', 'loadRelatedItems'])
-		)
-	}
+			})
+		}
+	},
+	mapActions(['loadItem', 'loadSubItems', 'loadParentItems', 'loadRelatedItems'])
+	)
+}
 </script>

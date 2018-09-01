@@ -1,9 +1,9 @@
 <?php
-    script('inventory', 'merged');
-    style('inventory', 'style');
+    script('inventory', 'inventory');
+    style('inventory', 'inventory');
 
     if ($OC_Version[0] < 14) {
-        style('inventory', 'style13');
+        style('inventory', 'inventory13');
     }
 
 ?>
