@@ -1,9 +1,10 @@
-const path = require('path');
-const { VueLoaderPlugin } = require('vue-loader');
-const StyleLintPlugin = require('stylelint-webpack-plugin');
+const path = require('path')
+const webpack = require('webpack')
+const { VueLoaderPlugin } = require('vue-loader')
+const StyleLintPlugin = require('stylelint-webpack-plugin')
 
 module.exports = {
-	entry: ['babel-polyfill', path.join(__dirname, 'src', 'main.js')],
+	entry: path.join(__dirname, 'src', 'main.js'),
 	output: {
 		path: path.resolve(__dirname, './js'),
 		publicPath: '/js/',
@@ -44,9 +45,6 @@ module.exports = {
 	},
 	plugins: [new VueLoaderPlugin(), new StyleLintPlugin()],
 	resolve: {
-		alias: {
-			vue$: 'vue/dist/vue.esm.js'
-		},
 		extensions: ['*', '.js', '.vue', '.json']
 	}
-};
+}
