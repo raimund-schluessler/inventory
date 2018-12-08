@@ -25,9 +25,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<tr>
 				<th :id="'headerSelection-' + _uid" class="column-selection">
 					<input :id="'select_all_items-' + _uid" v-model="allVisibleItemsSelected" class="select-all checkbox"
-						type="checkbox">
+						type="checkbox"
+					>
 					<label :for="'select_all_items-' + _uid">
-						<span class="hidden-visually">{{ t('inventory', 'Select all') }}</span>
+						<span class="hidden-visually">
+							{{ t('inventory', 'Select all') }}
+						</span>
 					</label>
 				</th>
 				<th>
@@ -59,31 +62,39 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Categories') }}</span>
 						<span class="sort-indicator hidden icon-triangle-s" />
 					</a>
-					<dropdown v-if="showDropdown">
+					<Dropdown v-if="showDropdown">
 						<li>
 							<a href="#/items/additem">
 								<span class="icon icon-plus" />
-								<span class="label">{{ t('inventory', 'Add single item') }}</span>
+								<span class="label">
+									{{ t('inventory', 'Add single item') }}
+								</span>
 							</a>
 						</li>
 						<li>
 							<a href="#/items/additems">
 								<span class="icon icon-plus" />
-								<span class="label">{{ t('inventory', 'Add multiple items') }}</span>
+								<span class="label">
+									{{ t('inventory', 'Add multiple items') }}
+								</span>
 							</a>
 						</li>
-					</dropdown>
+					</Dropdown>
 				</th>
 			</tr>
 		</thead>
 		<tbody v-if="mode === 'navigation'">
 			<tr v-for="item in filteredItems"
-				:key="item.id" :class="{ selected: isSelected(item) }" class="handler">
+				:key="item.id" :class="{ selected: isSelected(item) }" class="handler"
+			>
 				<td class="selection">
 					<input :id="'select-item-' + item.id + '-' + _uid" :value="item.id" :checked="isSelected(item)"
-						class="selectCheckBox checkbox" type="checkbox">
+						class="selectCheckBox checkbox" type="checkbox"
+					>
 					<label :for="'select-item-' + item.id + '-' + _uid" @click="selectItem(item)">
-						<span class="hidden-visually">{{ t('inventory', 'Select') }}</span>
+						<span class="hidden-visually">
+							{{ t('inventory', 'Select') }}
+						</span>
 					</label>
 				</td>
 				<td>
@@ -94,8 +105,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ item.name }}</span>
 					</a>
 				</td>
-				<td><a :href="'#/items/' + item.id">{{ item.maker }}</a></td>
-				<td><a :href="'#/items/' + item.id">{{ item.description }}</a></td>
+				<td>
+					<a :href="'#/items/' + item.id">
+						{{ item.maker }}
+					</a>
+				</td>
+				<td>
+					<a :href="'#/items/' + item.id">
+						{{ item.description }}
+					</a>
+				</td>
 				<td>
 					<ul class="categories">
 						<li v-for="category in item.categories" :key="category.id">
@@ -108,12 +127,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<tbody v-if="mode === 'selection'">
 			<tr v-for="item in filteredItems"
 				:key="item.id" :class="{ selected: isSelected(item) }" class="handler"
-				@click="selectItem(item)">
+				@click="selectItem(item)"
+			>
 				<td class="selection">
 					<input :id="'select-item-' + item.id + '-' + _uid" :value="item.id" :checked="isSelected(item)"
-						class="selectCheckBox checkbox" type="checkbox">
+						class="selectCheckBox checkbox" type="checkbox"
+					>
 					<label :for="'select-item-' + item.id + '-' + _uid" @click.prevent>
-						<span class="hidden-visually">{{ t('inventory', 'Select') }}</span>
+						<span class="hidden-visually">
+							{{ t('inventory', 'Select') }}
+						</span>
 					</label>
 				</td>
 				<td>
@@ -144,7 +167,7 @@ import searchQueryParser from 'search-query-parser'
 
 export default {
 	components: {
-		'dropdown': Dropdown
+		'Dropdown': Dropdown
 	},
 	props: {
 		mode: {

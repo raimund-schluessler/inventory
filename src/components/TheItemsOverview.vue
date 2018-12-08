@@ -21,7 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<items-table :items="items" :show-dropdown="true" :search-string="$root.searchString" />
+		<ItemsTable :items="items" :show-dropdown="true" :search-string="$root.searchString" />
 	</div>
 </template>
 
@@ -31,7 +31,7 @@ import ItemsTable from './ItemsTable.vue'
 
 export default {
 	components: {
-		'items-table': ItemsTable
+		'ItemsTable': ItemsTable
 	},
 	computed: mapState({
 		items: state => state.items

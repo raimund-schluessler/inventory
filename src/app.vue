@@ -23,27 +23,30 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="content" class="app-inventory">
 		<div id="app-navigation">
 			<ul>
-				<router-link
+				<RouterLink
 					v-for="view in views"
-					:to="'/' + view.id"
 					:key="view.id"
+					:to="'/' + view.id"
 					:class="'icon-' + view.id"
 					tag="li"
-					active-class="active">
+					active-class="active"
+				>
 					<a class="sprite">
-						<span class="title">{{ view.name }}</span>
+						<span class="title">
+							{{ view.name }}
+						</span>
 					</a>
-				</router-link>
+				</RouterLink>
 			</ul>
 		</div>
 
 		<div id="app-content">
-			<router-view class="content-wrapper" />
+			<RouterView class="content-wrapper" />
 		</div>
 
-		<transition name="modal">
+		<Transition name="modal">
 			<div v-show="showModal" v-cloak id="app-modal" />
-		</transition>
+		</Transition>
 	</div>
 </template>
 

@@ -29,35 +29,45 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</a>
 				</div>
 				<div class="crumb svg">
-					<a :href="'#/items/' + item.id">{{ item.description }}</a>
+					<a :href="'#/items/' + item.id">
+						{{ item.description }}
+					</a>
 				</div>
 			</div>
-			<dropdown>
+			<Dropdown>
 				<li>
 					<a>
 						<span class="icon icon-plus" />
-						<span class="label">{{ t('inventory', 'Add item instance') }}</span>
+						<span class="label">
+							{{ t('inventory', 'Add item instance') }}
+						</span>
 					</a>
 				</li>
 				<li>
 					<a @click="openModal('parent')">
 						<span class="icon icon-plus" />
-						<span class="label">{{ t('inventory', 'Add parent item') }}</span>
+						<span class="label">
+							{{ t('inventory', 'Add parent item') }}
+						</span>
 					</a>
 				</li>
 				<li>
 					<a @click="openModal('related')">
 						<span class="icon icon-plus" />
-						<span class="label">{{ t('inventory', 'Add related item') }}</span>
+						<span class="label">
+							{{ t('inventory', 'Add related item') }}
+						</span>
 					</a>
 				</li>
 				<li>
 					<a @click="openModal('sub')">
 						<span class="icon icon-plus" />
-						<span class="label">{{ t('inventory', 'Add sub item') }}</span>
+						<span class="label">
+							{{ t('inventory', 'Add sub item') }}
+						</span>
 					</a>
 				</li>
-			</dropdown>
+			</Dropdown>
 		</div>
 		<div id="itemdetails">
 			<div class="item_images">
@@ -106,7 +116,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								<span>{{ t('inventory', 'Link') }}</span>
 							</td>
 							<td>
-								<span><a :href="item.link" target="_blank">{{ item.link }}</a></span>
+								<span>
+									<a :href="item.link" target="_blank">
+										{{ item.link }}
+									</a>
+								</span>
 							</td>
 						</tr>
 						<tr>
@@ -182,7 +196,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<tbody>
 						<tr v-for="instance in item.instances"
 							:key="instance.id"
-							class="handler">
+							class="handler"
+						>
 							<td>{{ instance.count }}</td>
 							<td>{{ instance.available }}</td>
 							<td>{{ instance.price }}</td>
@@ -199,19 +214,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<h3>
 					<span>{{ t('inventory', 'Parent items') }}</span>
 				</h3>
-				<items-table :items="parentItems" :show-dropdown="false" :search-string="$root.searchString" />
+				<ItemsTable :items="parentItems" :show-dropdown="false" :search-string="$root.searchString" />
 			</div>
 			<div v-if="subItems.length" class="paragraph">
 				<h3>
 					<span>{{ t('inventory', 'Sub items') }}</span>
 				</h3>
-				<items-table :items="subItems" :show-dropdown="false" :search-string="$root.searchString" />
+				<ItemsTable :items="subItems" :show-dropdown="false" :search-string="$root.searchString" />
 			</div>
 			<div v-if="relatedItems.length" class="paragraph">
 				<h3>
 					<span>{{ t('inventory', 'Related items') }}</span>
 				</h3>
-				<items-table :items="relatedItems" :show-dropdown="false" :search-string="$root.searchString" />
+				<ItemsTable :items="relatedItems" :show-dropdown="false" :search-string="$root.searchString" />
 			</div>
 		</div>
 	</div>
@@ -227,9 +242,8 @@ import Axios from 'axios'
 
 export default {
 	components: {
-		'items-table': ItemsTable,
-		'dropdown': Dropdown,
-		'modal': Modal
+		'ItemsTable': ItemsTable,
+		'Dropdown': Dropdown
 	},
 	props: {
 		id: {

@@ -24,29 +24,38 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="modal-wrapper">
 			<div class="modal-container">
 				<div class="modal-header">
-					<span class="title">{{ t('inventory', headerString) }}</span>
+					<span class="title">
+						{{ t('inventory', headerString) }}
+					</span>
 					<form class="searchbox" action="#" method="post"
-						role="search" novalidate="">
+						role="search" novalidate=""
+					>
 						<label for="modalSearchbox" class="hidden-visually">
 							{{ t('inventory', 'Search') }}
 						</label>
 						<input id="modalSearchbox" v-model="searchString" class="icon-search-white"
 							name="query" value="" required=""
-							autocomplete="off" type="search">
+							autocomplete="off" type="search"
+						>
 						<button class="icon-close-white" type="reset" @click="searchString=''">
-							<span class="hidden-visually">{{ t('inventory', 'Reset search') }}</span>
+							<span class="hidden-visually">
+								{{ t('inventory', 'Reset search') }}
+							</span>
 						</button>
 					</form>
 				</div>
 
 				<div class="modal-body">
-					<items-table :items="items" :show-dropdown="false" :search-string="searchString"
-						:mode="'selection'" @selectedItemIDsChanged="selectedItemIDsChanged" />
+					<ItemsTable :items="items" :show-dropdown="false" :search-string="searchString"
+						:mode="'selection'" @selectedItemIDsChanged="selectedItemIDsChanged"
+					/>
 				</div>
 
 				<div class="modal-footer">
 					<slot name="footer">
-						<span class="item-adding-status">{{ statusString }}</span>
+						<span class="item-adding-status">
+							{{ statusString }}
+						</span>
 						<button class="modal-default-button" @click="closeModal">
 							Cancel
 						</button>
@@ -63,12 +72,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import { mapActions, mapState } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
-import Dropdown from './Dropdown.vue'
 
 export default {
 	components: {
-		'items-table': ItemsTable,
-		'dropdown': Dropdown
+		'ItemsTable': ItemsTable
 	},
 	props: {
 		link: {

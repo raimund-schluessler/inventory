@@ -22,18 +22,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div id="newItemsView">
 		Add multiple new items (as comma separated list).<br>
-		Expects csv with the fields:
-		<span v-for="field in fields" :key="field">
-			&lt;{{ field }}&gt;;
-		</span>
-		<form id="newItems" @submit.prevent="enlist">
-			<textarea v-model="rawInput" />
-			Parsed items:
-			<div>
-				<items-table :items="parsedItems" :show-dropdown="false" :search-string="$root.searchString" />
-			</div>
-			<input :value="t('inventory', 'Enlist')" type="submit">
-		</form>
+			Expects csv with the fields:
+			<span v-for="field in fields" :key="field">
+				&lt;{{ field }}&gt;;
+			</span>
+			<form id="newItems" @submit.prevent="enlist">
+				<textarea v-model="rawInput" />
+				Parsed items:
+				<div>
+					<ItemsTable :items="parsedItems" :show-dropdown="false" :search-string="$root.searchString" />
+				</div>
+				<input :value="t('inventory', 'Enlist')" type="submit">
+			</form>
 	</div>
 </template>
 
@@ -44,7 +44,7 @@ import ItemsTable from './ItemsTable.vue'
 
 export default {
 	components: {
-		'items-table': ItemsTable
+		'ItemsTable': ItemsTable
 	},
 	data: function() {
 		return {
