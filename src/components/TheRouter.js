@@ -26,8 +26,8 @@ import TheItemsOverview from './TheItemsOverview.vue'
 import ItemsNew from './TheItemsCreator.vue'
 import TheItemDetails from './TheItemDetails.vue'
 
-const Places = { template: '<div>places</div>' }
-const Categories = { template: '<div>categories</div>' }
+import Places from './Places.vue'
+import Categories from './Categories.vue'
 
 const routes = [
 	// using
