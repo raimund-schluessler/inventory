@@ -71,7 +71,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div id="itemdetails">
 			<div class="item_images">
-				<img :src="OC.imagePath('inventory', 'inventory.svg')">
+				<img :src="OC.generateUrl('svg/inventory/inventory')">
 			</div>
 			<div>
 				<h3>

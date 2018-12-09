@@ -104,7 +104,7 @@ $gray_light: #f5f5f5;
 						opacity: .57;
 
 						&.default {
-							background: url('../../../apps/inventory/css/../img/item-icons/default.svg') no-repeat;
+							background: url('../../svg/inventory/inventory') no-repeat;
 						}
 					}
 				}
@@ -258,7 +258,6 @@ table {
 
 	img {
 		width: 100%;
-		filter: invert(100%);
 		opacity: .3;
 	}
 }

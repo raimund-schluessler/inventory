@@ -315,7 +315,7 @@ export default {
 	methods: {
 		getIconUrl: function(item) {
 			if (!item.iconurl) {
-				return OC.imagePath('inventory', 'item-icons/' + item.icon + '.svg')
+				return OC.generateUrl('svg/inventory/item_' + item.icon)
 			} else {
 				return item.iconurl
 			}
