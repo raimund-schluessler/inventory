@@ -25,7 +25,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="breadcrumb">
 				<div data-dir="/" class="crumb svg">
 					<a href="#/items">
-						<span class="icon icon-items" />
+						<span class="icon icon-bw icon-items" />
 					</a>
 				</div>
 				<div class="crumb svg">
@@ -37,7 +37,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<Dropdown>
 				<li>
 					<a>
-						<span class="icon icon-plus" />
+						<span class="icon icon-bw icon-plus" />
 						<span class="label">
 							{{ t('inventory', 'Add item instance') }}
 						</span>
@@ -45,7 +45,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 				<li>
 					<a @click="openModal('parent')">
-						<span class="icon icon-plus" />
+						<span class="icon icon-bw icon-plus" />
 						<span class="label">
 							{{ t('inventory', 'Add parent item') }}
 						</span>
@@ -53,7 +53,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 				<li>
 					<a @click="openModal('related')">
-						<span class="icon icon-plus" />
+						<span class="icon icon-bw icon-plus" />
 						<span class="label">
 							{{ t('inventory', 'Add related item') }}
 						</span>
@@ -61,7 +61,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 				<li>
 					<a @click="openModal('sub')">
-						<span class="icon icon-plus" />
+						<span class="icon icon-bw icon-plus" />
 						<span class="label">
 							{{ t('inventory', 'Add sub item') }}
 						</span>

@@ -46,7 +46,7 @@ $gray_light: #f5f5f5;
 				z-index: -1;
 				width: 16px;
 				height: 16px;
-				background: url('../../../apps/inventory/css/../img/sprites.svg') no-repeat;
+				background: var(--icon-inventory-bw-000) no-repeat;
 				margin: 14px;
 				margin-left: -30px;
 				background-position: inherit;

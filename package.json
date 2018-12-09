@@ -10,13 +10,13 @@
 	"private": true,
 	"homepage": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory",
 	"scripts": {
-		"dev": "npm run svg_sprite && webpack --config webpack.dev.js",
+		"dev": "npm run sprites && webpack --config webpack.dev.js",
 		"watch": "webpack --progress --watch --config webpack.dev.js",
-		"build": "npm run svg_sprite && webpack --progress --hide-modules --config webpack.prod.js",
+		"build": "npm run sprites && webpack --progress --hide-modules --config webpack.prod.js",
 		"lint": "eslint --ext .js,.vue src tests",
 		"lint:fix": "eslint --ext .js,.vue src tests --fix",
 		"test": "jest --verbose",
-		"svg_sprite": "svg-sprite --config svg-sprite.json img/src/**/*.svg"
+		"sprites": "svg-sprite --config svg-sprite-bw.json img/src/bw/*.svg"
 	},
 	"repository": {
 		"type": "git",

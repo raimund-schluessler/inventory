@@ -1,14 +1,9 @@
-{{#hasMixin}}@mixin {{mixinName}} {
-	background: url('{{{sprite}}}') no-repeat;
-}
-
+{{#hasMixin}}
 {{#hasCommon}}.{{commonName}} {
 	@include {{mixinName}};
 }
-
-{{/hasCommon}}{{/hasMixin}}{{^hasMixin}}{{#hasCommon}}.{{/hasCommon}}{{^hasCommon}}%{{/hasCommon}}{{commonName}} {
-	background: url('{{{sprite}}}') no-repeat;
-}
+{{/hasCommon}}{{/hasMixin}}{{^hasMixin}}{{#hasCommon}}{{/hasCommon}}{{^hasCommon}}%{{/hasCommon}}
+@include icon-black-white('bw', 'inventory', 1, false);
 
 {{/hasMixin}}{{#shapes}}{{#selector.shape}}{{expression}}{{^last}},
 {{/last}}{{/selector.shape}} {

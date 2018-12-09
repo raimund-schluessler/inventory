@@ -24,7 +24,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="app-navigation-entry-utils" @click="toggle()">
 			<div class="app-navigation-entry-utils-menu-button">
 				<button class="dropdown-button">
-					<span class="icon icon-list" />
+					<span class="icon icon-bw icon-list" />
 				</button>
 			</div>
 		</div>

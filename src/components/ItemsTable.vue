@@ -65,7 +65,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<Dropdown v-if="showDropdown">
 						<li>
 							<a href="#/items/additem">
-								<span class="icon icon-plus" />
+								<span class="icon icon-bw icon-plus" />
 								<span class="label">
 									{{ t('inventory', 'Add single item') }}
 								</span>
@@ -73,7 +73,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</li>
 						<li>
 							<a href="#/items/additems">
-								<span class="icon icon-plus" />
+								<span class="icon icon-bw icon-plus" />
 								<span class="label">
 									{{ t('inventory', 'Add multiple items') }}
 								</span>
