@@ -65,7 +65,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<Dropdown v-if="showDropdown">
 						<li>
 							<a href="#/items/additem">
-								<span class="icon icon-plus" />
+								<span class="icon icon-bw icon-plus" />
 								<span class="label">
 									{{ t('inventory', 'Add single item') }}
 								</span>
@@ -73,7 +73,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</li>
 						<li>
 							<a href="#/items/additems">
-								<span class="icon icon-plus" />
+								<span class="icon icon-bw icon-plus" />
 								<span class="label">
 									{{ t('inventory', 'Add multiple items') }}
 								</span>
@@ -315,7 +315,7 @@ export default {
 	methods: {
 		getIconUrl: function(item) {
 			if (!item.iconurl) {
-				return OC.imagePath('inventory', 'item-icons/' + item.icon + '.svg')
+				return OC.generateUrl('svg/inventory/item_' + item.icon)
 			} else {
 				return item.iconurl
 			}

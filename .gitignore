@@ -1,9 +1,10 @@
 ######################
 ## Files build by make
 ######################
-/css/src/sprites.scss
-/css/style.scss
-/img/sprites.svg
+/css/src/sprites-bw.scss
+/css/src/sprites-color.scss
+/img/bw.svg
+/img/color.svg
 /js/
 
 #################
