@@ -72,8 +72,6 @@ export default {
 }
 
 .dropdown-button {
-	background-color: #f7f7f7;
-	border: 1px solid #ccc;
 	width: 42px;
 	height: 34px;
 	margin: 0 0 14px 0;
