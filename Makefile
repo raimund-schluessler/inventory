@@ -79,7 +79,9 @@ development:
 .PHONY: clean
 clean:
 	rm -f ./css/src/sprites.scss
+	rm -f ./css/src/sprites-bw.scss
 	rm -f ./img/sprites.svg
+	rm -f ./img/bw.svg
 	rm -f ./js/inventory.js
 	rm -f ./js/inventory.js.map
 	rm -rf $(build_directory)
@@ -101,6 +103,7 @@ appstore: clean build
 	rsync -av .	$(appstore_build_directory) \
 	--exclude=/.git \
 	--exclude=/.babelrc \
+	--exclude=/.babelrc.js \
 	--exclude=/.editorconfig \
 	--exclude=/.eslintrc.js \
 	--exclude=/.gitattributes \
@@ -120,6 +123,8 @@ appstore: clean build
 	--exclude=/package-lock.json \
 	--exclude=/package.json \
 	--exclude=/README.md \
+	--exclude=/svg-sprite-bw.json \
+	--exclude=/svg-sprite-bw.tmpl \
 	--exclude=/webpack.common.js \
 	--exclude=/webpack.prod.js \
 	--exclude=/webpack.dev.js \
@@ -129,7 +134,8 @@ appstore: clean build
 	--exclude=/src \
 	--exclude=/node_modules \
 	--exclude=/screenshots/ \
-	--exclude=/test
+	--exclude=/test \
+	--exclude=/tests
 ifdef CAN_SIGN
 	mv $(configdir)/config.php $(configdir)/config-2.php
 	$(sign) --path="$(appstore_build_directory)"
