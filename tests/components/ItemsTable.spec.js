@@ -1,8 +1,10 @@
 import { shallowMount } from '@vue/test-utils'
 import ItemsTable from '@/components/ItemsTable.vue'
 import { OC } from '../OC.js'
+import OCA from '../OCA.js'
 
 global.OC = new OC()
+global.OCA = OCA
 
 var items = [
 	{
