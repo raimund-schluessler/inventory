@@ -315,7 +315,8 @@ export default {
 	methods: {
 		getIconUrl: function(item) {
 			if (!item.iconurl) {
-				return OC.generateUrl('svg/inventory/item_' + item.icon)
+				return OC.generateUrl('svg/inventory/item_' + item.icon + '?color=')
+					+ (OCA.Accessibility.theme === 'themedark' ? 'fff' : '000')
 			} else {
 				return item.iconurl
 			}

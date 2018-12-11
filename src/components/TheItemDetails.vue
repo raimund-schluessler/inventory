@@ -71,7 +71,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div id="itemdetails">
 			<div class="item_images">
-				<img :src="OC.generateUrl('svg/inventory/inventory')">
+				<img :src="OC.generateUrl('svg/inventory/inventory') + '?color='
+					+ (OCA.Accessibility.theme === 'themedark' ? 'fff' : '000')"
+				>
 			</div>
 			<div>
 				<h3>
