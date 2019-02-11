@@ -67,7 +67,7 @@
 		"stylelint-scss": "3.5.3",
 		"stylelint-webpack-plugin": "0.10.5",
 		"svg-sprite": "1.5.0",
-		"vue-jest": "3.0.1",
+		"vue-jest": "3.0.3",
 		"vue-loader": "15.4.2",
 		"vue-template-compiler": "2.5.20",
 		"webpack": "4.27.1",
