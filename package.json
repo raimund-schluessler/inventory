@@ -25,7 +25,7 @@
 	"bugs": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory/issues",
 	"contributors": [],
 	"dependencies": {
-		"@babel/polyfill": "7.0.0",
+		"@babel/polyfill": "7.2.5",
 		"axios": "0.18.0",
 		"papaparse": "4.6.2",
 		"search-query-parser": "1.4.0",
@@ -35,9 +35,9 @@
 		"vuex-router-sync": "5.0.0"
 	},
 	"devDependencies": {
-		"@babel/core": "7.2.0",
+		"@babel/core": "7.2.2",
 		"@babel/plugin-syntax-dynamic-import": "7.2.0",
-		"@babel/preset-env": "7.2.0",
+		"@babel/preset-env": "7.3.1",
 		"@vue/test-utils": "1.0.0-beta.27",
 		"babel-core": "7.0.0-bridge.0",
 		"babel-eslint": "10.0.1",
