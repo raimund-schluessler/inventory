@@ -27,7 +27,7 @@
 	"dependencies": {
 		"@babel/polyfill": "7.2.5",
 		"axios": "0.18.0",
-		"papaparse": "4.6.2",
+		"papaparse": "4.6.3",
 		"search-query-parser": "1.4.1",
 		"vue": "2.5.20",
 		"vue-router": "3.0.2",
