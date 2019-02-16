@@ -277,7 +277,7 @@ export default {
 		this.loadRelatedItems(to.params.id)
 		next()
 	},
-	methods: Object.assign({
+	methods: {
 		getPlace(instance) {
 			if (instance.place) {
 				return instance.place.name
@@ -309,9 +309,8 @@ export default {
 					}
 				}
 			})
-		}
-	},
-	mapActions(['loadItem', 'loadSubItems', 'loadParentItems', 'loadRelatedItems'])
-	)
+		},
+		...mapActions(['loadItem', 'loadSubItems', 'loadParentItems', 'loadRelatedItems'])
+	}
 }
 </script>

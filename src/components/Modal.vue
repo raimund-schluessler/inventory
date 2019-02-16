@@ -97,7 +97,7 @@ export default {
 			searchString: ''
 		}
 	},
-	computed: Object.assign({
+	computed: {
 		headerString: function() {
 			return 'Please select the ' + this.relationType + ' items:'
 		},
@@ -113,11 +113,11 @@ export default {
 			get() {
 				return this.$store.state.showModal
 			}
-		} },
-	mapState({
-		items: state => state.itemCandidates
-	})
-	),
+		},
+		...mapState({
+			items: state => state.itemCandidates
+		})
+	},
 	created() {
 		this.showModal = true
 		const modalContainer = document.createElement('div')
@@ -125,25 +125,23 @@ export default {
 		this.$mount(modalContainer)
 		this.loadItemCandidates({ itemID: this.itemID, relationType: this.relationType })
 	},
-	methods: Object.assign(
-		{
-			closeModal: function(event) {
-				if (event === undefined || event.target === event.currentTarget) {
-					this.showModal = false
-					this.$el.remove()
-					// this.$el.innerHTML = '' // remove inner content
-					this.$destroy() // cleanup in component
-				}
-			},
-			selectItems: function(event) {
-				this.link(this.relationType, this.selectedItemIDs)
-				this.closeModal()
-			},
-			selectedItemIDsChanged: function(selectedItemIDs) {
-				this.selectedItemIDs = selectedItemIDs
+	methods: {
+		closeModal: function(event) {
+			if (event === undefined || event.target === event.currentTarget) {
+				this.showModal = false
+				this.$el.remove()
+				// this.$el.innerHTML = '' // remove inner content
+				this.$destroy() // cleanup in component
 			}
 		},
-		mapActions(['loadItemCandidates'])
-	)
+		selectItems: function(event) {
+			this.link(this.relationType, this.selectedItemIDs)
+			this.closeModal()
+		},
+		selectedItemIDsChanged: function(selectedItemIDs) {
+			this.selectedItemIDs = selectedItemIDs
+		},
+		...mapActions(['loadItemCandidates'])
+	}
 }
 </script>
