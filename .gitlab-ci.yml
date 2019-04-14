@@ -1,5 +1,5 @@
 build site:
-  image: node:6
+  image: node:10
   stage: build
   script:
     - npm install --progress=false
@@ -10,7 +10,7 @@ build site:
       - dist
 
 unit test:
-  image: node:6
+  image: node:10
   stage: test
   script:
     - npm install --progress=false
