@@ -31,7 +31,7 @@
 		"search-query-parser": "1.5.2",
 		"vue": "2.6.10",
 		"vue-router": "3.0.6",
-		"vuex": "3.1.0",
+		"vuex": "3.1.1",
 		"vuex-router-sync": "5.0.0"
 	},
 	"devDependencies": {
