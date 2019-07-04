@@ -241,7 +241,7 @@ export default {
 				searchQueryObj = { text: searchQueryObj }
 			}
 
-			if (searchQueryObj.hasOwnProperty('text')) {
+			if (Object.prototype.hasOwnProperty.call(searchQueryObj, 'text')) {
 				// split strings at whitespace, except when in quotes
 				// Note: The regex is not optimal yet and works mostly for English and German.
 				// It should rather read something like (/[\p{L}\d]+|"(?:\\"|[^"])+"/g),
@@ -256,7 +256,7 @@ export default {
 				for (var i = 0; i < options.keywords.length; i++) {
 					keyword = options.keywords[i]
 					// check if keywords were given, if yes, check if value is found
-					if (searchQueryObj.hasOwnProperty(keyword)) {
+					if (Object.prototype.hasOwnProperty.call(searchQueryObj, keyword)) {
 						if (!item[keyword]) {
 							return false
 						}
@@ -280,7 +280,7 @@ export default {
 				}
 
 				// check if text is matched
-				if (searchQueryObj.hasOwnProperty('searchTerms')) {
+				if (Object.prototype.hasOwnProperty.call(searchQueryObj, 'searchTerms')) {
 					// console.log(searchQueryObj);
 					for (jj = 0; jj < searchQueryObj.searchTerms.length; jj++) {
 						found = false
