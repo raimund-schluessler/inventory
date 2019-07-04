@@ -7,16 +7,15 @@
 	<category>productivity</category>
 	<licence>AGPL</licence>
 	<author>Raimund Schlüßler</author>
-	<requiremin>8.1</requiremin>
 	<description>Inventory App</description>
 	<ocsid></ocsid>
 	<navigations>
-			<navigation>
-					<name>Inventory</name>
-					<route>inventory.page.index</route>
-			</navigation>
+		<navigation>
+				<name>Inventory</name>
+				<route>inventory.page.index</route>
+		</navigation>
 	</navigations>
 	<dependencies>
-			<nextcloud min-version="12" max-version="16"/>
+		<nextcloud min-version="12" max-version="17"/>
 	</dependencies>
 </info>
