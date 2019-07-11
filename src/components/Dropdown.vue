@@ -54,8 +54,8 @@ export default {
 			this.open = !this.open
 		},
 		documentClick: function(e) {
-			let el = this.$refs.dropdownMenu
-			let target = e.target
+			const el = this.$refs.dropdownMenu
+			const target = e.target
 			if ((el !== target) && !el.contains(target)) {
 				this.open = false
 			}
