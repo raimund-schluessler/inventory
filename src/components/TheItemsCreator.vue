@@ -44,7 +44,7 @@ import ItemsTable from './ItemsTable.vue'
 
 export default {
 	components: {
-		'ItemsTable': ItemsTable
+		ItemsTable: ItemsTable
 	},
 	data: function() {
 		return {
@@ -60,23 +60,23 @@ export default {
 			for (var i = 0; i < results.data.length; i++) {
 				var it = results.data[i]
 				var item = {
-					'name':	it[0],
-					'maker':	it[1],
-					'description':	it[2],
-					'item_number':	it[3],
-					'link':	it[4],
-					'gtin':	it[5],
-					'details':	it[6],
-					'comment':	it[7],
-					'type':	it[8],
-					'instances': [{
-						'place':	it[9],
-						'price':	it[10],
-						'count':	it[11],
-						'available': it[12],
-						'vendor':	it[13],
-						'date':	it[14],
-						'comment':	''
+					name:	it[0],
+					maker:	it[1],
+					description:	it[2],
+					item_number:	it[3],
+					link:	it[4],
+					gtin:	it[5],
+					details:	it[6],
+					comment:	it[7],
+					type:	it[8],
+					instances: [{
+						place:	it[9],
+						price:	it[10],
+						count:	it[11],
+						available: it[12],
+						vendor:	it[13],
+						date:	it[14],
+						comment:	''
 					}]
 				}
 				var c = it[15].split(',')
@@ -85,7 +85,7 @@ export default {
 				for (var j = 0; j < c.length; j++) {
 					name = String.prototype.trim.apply(c[j])
 					if (name.length) {
-						categories.push({ 'name': name })
+						categories.push({ name: name })
 					}
 				}
 				item.categories = categories

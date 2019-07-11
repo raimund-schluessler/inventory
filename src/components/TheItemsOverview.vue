@@ -31,7 +31,7 @@ import ItemsTable from './ItemsTable.vue'
 
 export default {
 	components: {
-		'ItemsTable': ItemsTable
+		ItemsTable: ItemsTable
 	},
 	computed: mapState({
 		items: state => state.items

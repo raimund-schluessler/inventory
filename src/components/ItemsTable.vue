@@ -167,7 +167,7 @@ import searchQueryParser from 'search-query-parser'
 
 export default {
 	components: {
-		'Dropdown': Dropdown
+		Dropdown: Dropdown
 	},
 	props: {
 		mode: {
