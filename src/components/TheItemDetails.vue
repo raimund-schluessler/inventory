@@ -244,8 +244,8 @@ import Axios from 'axios'
 
 export default {
 	components: {
-		'ItemsTable': ItemsTable,
-		'Dropdown': Dropdown
+		ItemsTable: ItemsTable,
+		Dropdown: Dropdown
 	},
 	props: {
 		id: {
@@ -288,7 +288,7 @@ export default {
 		openModal: function(relationType) {
 			this.relationType = relationType
 			void new Vue(Object.assign({}, Modal, {
-				propsData: { 'link': this.linkItems, 'relationType': this.relationType, 'itemID': this.id },
+				propsData: { link: this.linkItems, relationType: this.relationType, itemID: this.id },
 				store: this.$store
 			}))
 		},

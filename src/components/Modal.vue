@@ -75,7 +75,7 @@ import ItemsTable from './ItemsTable.vue'
 
 export default {
 	components: {
-		'ItemsTable': ItemsTable
+		ItemsTable: ItemsTable
 	},
 	props: {
 		link: {
