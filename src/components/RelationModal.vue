@@ -28,7 +28,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="relation-modal-content">
 			<div class="header">
 				<span class="title">
-					{{ t('inventory', headerString) }}
+					{{ headerString }}
 				</span>
 				<form class="searchbox" action="#" method="post"
 					role="search" novalidate=""
@@ -59,10 +59,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ statusString }}
 				</span>
 				<button class="default-button" @click="closeModal">
-					Cancel
+					{{ t('inventory', 'Cancel') }}
 				</button>
 				<button class="default-button" @click="selectItems">
-					Select
+					{{ t('inventory', 'Select') }}
 				</button>
 			</div>
 		</div>
@@ -105,12 +105,37 @@ export default {
 	},
 	computed: {
 		headerString: function() {
-			return 'Please select the ' + this.relationType + ' items:'
+			switch (this.relationType) {
+			case 'parent':
+				return this.t('inventory', 'Please select the parent items:')
+			case 'related':
+				return this.t('inventory', 'Please select the related items:')
+			case 'sub':
+				return this.t('inventory', 'Please select the sub items:')
+			default:
+				return this.t('inventory', 'Please select the items:')
+			}
 		},
 		statusString: function() {
-			var singular = 'Add %n item as ' + this.relationType + ' item.'
-			var plural = 'Add %n items as ' + this.relationType + ' items.'
-			return n('inventory', singular, plural, this.selectedItemIDs.length)
+			var singular, plural
+			switch (this.relationType) {
+			case 'parent':
+				singular = 'Add %n item as parent item.'
+				plural = 'Add %n items as parent items.'
+				return this.n('inventory', singular, plural, this.selectedItemIDs.length)
+			case 'related':
+				singular = 'Add %n item as related item.'
+				plural = 'Add %n items as related items.'
+				return this.n('inventory', singular, plural, this.selectedItemIDs.length)
+			case 'sub':
+				singular = 'Add %n item as sub item.'
+				plural = 'Add %n items as sub items.'
+				return this.n('inventory', singular, plural, this.selectedItemIDs.length)
+			default:
+				singular = 'Add %n item.'
+				plural = 'Add %n items.'
+				return this.n('inventory', singular, plural, this.selectedItemIDs.length)
+			}
 		},
 		...mapState({
 			items: state => state.itemCandidates
