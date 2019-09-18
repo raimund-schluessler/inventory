@@ -16,6 +16,6 @@
 		</navigation>
 	</navigations>
 	<dependencies>
-		<nextcloud min-version="12" max-version="17"/>
+		<nextcloud min-version="16" max-version="18"/>
 	</dependencies>
 </info>
