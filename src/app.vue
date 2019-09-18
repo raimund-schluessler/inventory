@@ -43,10 +43,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="app-content">
 			<RouterView class="content-wrapper" />
 		</div>
-
-		<Transition name="modal">
-			<div v-show="showModal" v-cloak id="app-modal" />
-		</Transition>
 	</div>
 </template>
 

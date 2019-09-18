@@ -231,6 +231,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<ItemsTable :items="relatedItems" :show-dropdown="false" :search-string="$root.searchString" />
 			</div>
 		</div>
+		<RelationModal :modal-open.sync="modalOpen" :link="linkItems"
+			:relation-type="relationType" :item-id="id"
+		/>
 	</div>
 </template>
 
@@ -238,14 +241,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import { mapActions, mapState } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 import Dropdown from './Dropdown.vue'
-import Vue from 'vue'
-import Modal from './Modal.vue'
+import RelationModal from './RelationModal.vue'
 import Axios from 'axios'
 
 export default {
 	components: {
 		ItemsTable: ItemsTable,
-		Dropdown: Dropdown
+		Dropdown: Dropdown,
+		RelationModal,
 	},
 	props: {
 		id: {
@@ -255,7 +258,8 @@ export default {
 	},
 	data: function() {
 		return {
-			relationType: ''
+			relationType: '',
+			modalOpen: false,
 		}
 	},
 	computed: mapState({
@@ -286,11 +290,9 @@ export default {
 			}
 		},
 		openModal: function(relationType) {
+			this.loadItemCandidates({ itemID: this.id, relationType: relationType })
 			this.relationType = relationType
-			void new Vue(Object.assign({}, Modal, {
-				propsData: { link: this.linkItems, relationType: this.relationType, itemID: this.id },
-				store: this.$store
-			}))
+			this.modalOpen = true
 		},
 		linkItems(relationType, itemIDs) {
 			if (!Array.isArray(itemIDs) || !itemIDs.length) {
@@ -310,7 +312,13 @@ export default {
 				}
 			})
 		},
-		...mapActions(['loadItem', 'loadSubItems', 'loadParentItems', 'loadRelatedItems'])
+		...mapActions([
+			'loadItem',
+			'loadSubItems',
+			'loadParentItems',
+			'loadRelatedItems',
+			'loadItemCandidates',
+		])
 	}
 }
 </script>
