@@ -63,19 +63,7 @@ OCA.Inventory.App = new Vue({
 		}
 	},
 	mounted: function() {
-		var version = OC.config.version.split('.')
-
-		if (version[0] >= 14) {
-			OC.Search = new OCA.Search(this.filter, this.cleanSearch)
-		} else {
-			OCA.Inventory.Search = {
-				attach: function(search) {
-					search.setFilter('inventory', this.filter)
-				}
-			}
-
-			OC.Plugins.register('OCA.Search', OCA.Inventory.Search)
-		}
+		OC.Search = new OCA.Search(this.filter, this.cleanSearch)
 	},
 	beforeMount() {
 		this.$store.dispatch('loadItems')
