@@ -315,8 +315,11 @@ export default {
 	methods: {
 		getIconUrl: function(item) {
 			if (!item.iconurl) {
-				return OC.generateUrl('svg/inventory/item_' + item.icon + '?color=')
-					+ (OCA.Accessibility.theme === 'themedark' ? 'fff' : '000')
+				let color = '000'
+				if (OCA.Accessibility) {
+					color = (OCA.Accessibility.theme === 'themedark' ? 'fff' : '000')
+				}
+				return OC.generateUrl('svg/inventory/item_' + item.icon + '?color=' + color)
 			} else {
 				return item.iconurl
 			}
