@@ -12,6 +12,8 @@
 	visibility: hidden;
 }
 
+@include icon-black-white('inventory', 'inventory', 1, false);
+
 .icon {
 	height: 16px;
 	width: 16px;
@@ -26,6 +28,9 @@
 }
 
 #app-navigation {
+	&:not(.vue) > ul > li > a {
+		background-position: inherit;
+	}
 	> ul {
 		> li {
 			background-image: unset;
@@ -164,6 +169,29 @@ table {
 #itemdetails {
 	margin-bottom: 50px;
 
+	.item_images {
+		width: 30%;
+		float: left;
+		margin: 0 30px;
+		max-width: 400px;
+		min-width: 200px;
+		background: var(--icon-inventory-inventory-000) no-repeat;
+		background-size: cover;
+		opacity: .3;
+
+		// Make the item_images square
+		&:after {
+			content: '';
+			display: block;
+			padding-bottom: 100%;
+		}
+	
+		img {
+			width: 100%;
+			opacity: .3;
+		}
+	}
+
 	.paragraph {
 		margin: 0 10px;
 	}
@@ -217,19 +245,6 @@ table {
 				}
 			}
 		}
-	}
-}
-
-.item_images {
-	width: 30%;
-	float: left;
-	margin: 0 30px;
-	max-width: 400px;
-	min-width: 200px;
-
-	img {
-		width: 100%;
-		opacity: .3;
 	}
 }
 
