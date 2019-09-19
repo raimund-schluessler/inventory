@@ -22,7 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<Modal v-if="modalOpen"
 		:out-transition="true"
-		:size="'large'"
+		:size="'full'"
 		@close="closeModal"
 	>
 		<div class="relation-modal-content">
