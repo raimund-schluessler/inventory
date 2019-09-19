@@ -70,11 +70,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</Dropdown>
 		</div>
 		<div id="itemdetails">
-			<div class="item_images">
-				<img :src="OC.generateUrl('svg/inventory/inventory') + '?color='
-					+ (OCA.Accessibility.theme === 'themedark' ? 'fff' : '000')"
-				>
-			</div>
+			<div class="item_images" />
 			<div>
 				<h3>
 					<span>{{ t('inventory', 'Properties') }}</span>
