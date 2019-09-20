@@ -61,71 +61,29 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-		loadItems({ commit }) {
-			return new Promise(function(resolve) {
-				Axios.get(OC.generateUrl('apps/inventory/items'))
-					.then(function(response) {
-						commit('setItems', {
-							items: response.data.data.items
-						})
-						resolve()
-					})
-			})
+		async loadItems({ commit }) {
+			const response = await Axios.get(OC.generateUrl('apps/inventory/items'))
+			commit('setItems', { items: response.data.data.items })
 		},
-		loadItem({ commit }, itemID) {
-			return new Promise(function(resolve) {
-				Axios.get(OC.generateUrl('apps/inventory/item/' + itemID))
-					.then(function(response) {
-						commit('setItem', {
-							item: response.data.data.item
-						})
-						resolve()
-					})
-			})
+		async loadItem({ commit }, itemID) {
+			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID))
+			commit('setItem', { item: response.data.data.item })
 		},
-		loadSubItems({ commit }, itemID) {
-			return new Promise(function(resolve) {
-				Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/sub'))
-					.then(function(response) {
-						commit('setSubItems', {
-							subItems: response.data.data.items
-						})
-						resolve()
-					})
-			})
+		async loadSubItems({ commit }, itemID) {
+			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/sub'))
+			commit('setSubItems', { subItems: response.data.data.items })
 		},
-		loadParentItems({ commit }, itemID) {
-			return new Promise(function(resolve) {
-				Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/parent'))
-					.then(function(response) {
-						commit('setParentItems', {
-							parentItems: response.data.data.items
-						})
-						resolve()
-					})
-			})
+		async loadParentItems({ commit }, itemID) {
+			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/parent'))
+			commit('setParentItems', { parentItems: response.data.data.items })
 		},
-		loadRelatedItems({ commit }, itemID) {
-			return new Promise(function(resolve) {
-				Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/related'))
-					.then(function(response) {
-						commit('setRelatedItems', {
-							relatedItems: response.data.data.items
-						})
-						resolve()
-					})
-			})
+		async loadRelatedItems({ commit }, itemID) {
+			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/related'))
+			commit('setRelatedItems', { relatedItems: response.data.data.items })
 		},
-		loadItemCandidates({ commit }, parameters) {
-			return new Promise(function(resolve) {
-				Axios.get(OC.generateUrl('apps/inventory/item/' + parameters.itemID + '/candidates/' + parameters.relationType))
-					.then(function(response) {
-						commit('setItemCandidates', {
-							itemCandidates: response.data.data.items
-						})
-						resolve()
-					})
-			})
+		async loadItemCandidates({ commit }, parameters) {
+			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + parameters.itemID + '/candidates/' + parameters.relationType))
+			commit('setItemCandidates', { itemCandidates: response.data.data.items })
 		}
 	}
 })
