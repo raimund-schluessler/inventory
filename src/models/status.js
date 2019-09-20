@@ -1,5 +1,5 @@
 /**
- * Nextcloud - Tasks
+ * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
  * @copyright 2018 Raimund Schlüßler <raimund.schluessler@mailbox.org>
@@ -19,6 +19,39 @@
  *
  */
 
-@import './src/sprites-bw';
-@import './src/sprites-color';
-@import './src/style';
+export default class Status {
+
+	/**
+	 * Creates an instance of a status
+	 *
+	 * @param {String} type The type of the status
+	 * @param {String} message The type of the status
+	 * @param {String} action The type of the status
+	 * @memberof Status
+	 */
+	constructor(type, message, action = null) {
+
+		this.duration = -1
+		this.type = type
+
+		switch (type) {
+		case 'refresh':
+			this.cssClass = 'refresh'
+			break
+		case 'sync':
+			this.cssClass = 'icon-loading-small-dark'
+			break
+		case 'success':
+			this.cssClass = 'success'
+			this.duration = 5000		// timeout in ms
+			break
+		case 'created':
+			this.cssClass = 'success'
+			break
+		}
+
+		this.action = action
+		this.message = message
+	}
+
+}

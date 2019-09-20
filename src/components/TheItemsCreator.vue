@@ -43,6 +43,8 @@ import Axios from 'axios'
 import Papa from 'papaparse'
 import ItemsTable from './ItemsTable.vue'
 import Item from '../models/item'
+import Status from '../models/status'
+import PQueue from 'p-queue'
 
 export default {
 	components: {
@@ -62,6 +64,7 @@ export default {
 			for (var i = 0; i < results.data.length; i++) {
 				var it = results.data[i]
 				var item = {
+					id: i,
 					name:	it[0],
 					maker:	it[1],
 					description:	it[2],
@@ -97,12 +100,15 @@ export default {
 		}
 	},
 	methods: {
-		enlist() {
-			for (var i = 0; i < this.parsedItems.length; i++) {
-				Axios.post(OC.generateUrl('apps/inventory/item/add'), {
-					item: this.parsedItems[i]
+		async enlist() {
+			const queue = new PQueue({ concurrency: 5 })
+			this.parsedItems.forEach(async(item) => {
+				await queue.add(async() => {
+					await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item })
+					// item.saved = true // eslint-disable-line require-atomic-updates
+					item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
 				})
-			}
+			})
 		}
 	}
 }

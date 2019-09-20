@@ -27,6 +27,7 @@ import Vue from 'vue'
 import router from './components/TheRouter'
 import store from './store/store'
 import { sync } from 'vuex-router-sync'
+import VTooltip from 'v-tooltip'
 
 // CSP config for webpack dynamic chunk loading
 // eslint-disable-next-line
@@ -40,6 +41,8 @@ __webpack_nonce__ = btoa(OC.requestToken)
 __webpack_public_path__ = OC.linkTo('inventory', 'js/')
 
 sync(store, router)
+
+Vue.use(VTooltip)
 
 if (!OCA.Inventory) {
 	/**

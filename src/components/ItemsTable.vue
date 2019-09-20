@@ -81,6 +81,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</li>
 					</Dropdown>
 				</th>
+				<th />
 			</tr>
 		</thead>
 		<tbody v-if="mode === 'navigation'">
@@ -122,6 +123,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</li>
 					</ul>
 				</td>
+				<td>
+					<ItemStatusDisplay :item="item" />
+				</td>
 			</tr>
 		</tbody>
 		<tbody v-if="mode === 'selection'">
@@ -156,6 +160,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</li>
 					</ul>
 				</td>
+				<td>
+					<ItemStatusDisplay :item="item" />
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -163,11 +170,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import Dropdown from './Dropdown.vue'
+import ItemStatusDisplay from './ItemStatusDisplay'
 import searchQueryParser from 'search-query-parser'
 
 export default {
 	components: {
-		Dropdown: Dropdown
+		Dropdown: Dropdown,
+		ItemStatusDisplay,
 	},
 	props: {
 		mode: {
