@@ -21,14 +21,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div id="newItemsView">
-		Add multiple new items (as comma separated list).<br>
-		Expects csv with the fields:
+		{{ t('inventory', 'Add multiple new items (as comma separated list).') }}
+		<br>
+		{{ t('inventory', 'Expects csv with the fields:') }}
 		<span v-for="field in fields" :key="field">
 			&lt;{{ field }}&gt;;
 		</span>
 		<form id="newItems" @submit.prevent="enlist">
 			<textarea v-model="rawInput" />
-			Parsed items:
+			{{ t('inventory', 'Parsed items:') }}
 			<div>
 				<ItemsTable :items="parsedItems" :show-dropdown="false" :search-string="$root.searchString" />
 			</div>
