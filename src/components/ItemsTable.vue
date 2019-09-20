@@ -92,7 +92,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<input :id="'select-item-' + item.id + '-' + _uid" :value="item.id" :checked="isSelected(item)"
 						class="selectCheckBox checkbox" type="checkbox"
 					>
-					<label :for="'select-item-' + item.id + '-' + _uid" @click="selectItem(item)">
+					<label :for="'select-item-' + item.id + '-' + _uid" @click.prevent="selectItem(item)">
 						<span class="hidden-visually">
 							{{ t('inventory', 'Select') }}
 						</span>
