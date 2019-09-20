@@ -42,6 +42,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import Axios from 'axios'
 import Papa from 'papaparse'
 import ItemsTable from './ItemsTable.vue'
+import Item from '../models/item'
 
 export default {
 	components: {
@@ -86,10 +87,11 @@ export default {
 				for (var j = 0; j < c.length; j++) {
 					name = String.prototype.trim.apply(c[j])
 					if (name.length) {
-						categories.push({ name: name })
+						categories.push({ name })
 					}
 				}
 				item.categories = categories
+				item = new Item(item)
 				this.parsedItems.push(item)
 			}
 		}
