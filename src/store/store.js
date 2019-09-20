@@ -22,6 +22,7 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Item from '../models/item.js'
 import Axios from 'axios'
 Axios.defaults.headers.common.requesttoken = OC.requestToken
 
@@ -59,27 +60,48 @@ export default new Vuex.Store({
 	actions: {
 		async loadItems({ commit }) {
 			const response = await Axios.get(OC.generateUrl('apps/inventory/items'))
-			commit('setItems', { items: response.data.data.items })
+			const items = response.data.data.items.map(payload => {
+				const item = new Item(payload)
+				return item
+			})
+			commit('setItems', { items })
 		},
 		async loadItem({ commit }, itemID) {
 			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID))
-			commit('setItem', { item: response.data.data.item })
+			const item = new Item(response.data.data.item)
+			commit('setItem', { item })
 		},
 		async loadSubItems({ commit }, itemID) {
 			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/sub'))
-			commit('setSubItems', { subItems: response.data.data.items })
+			const subItems = response.data.data.items.map(payload => {
+				const item = new Item(payload)
+				return item
+			})
+			commit('setSubItems', { subItems })
 		},
 		async loadParentItems({ commit }, itemID) {
 			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/parent'))
-			commit('setParentItems', { parentItems: response.data.data.items })
+			const parentItems = response.data.data.items.map(payload => {
+				const item = new Item(payload)
+				return item
+			})
+			commit('setParentItems', { parentItems })
 		},
 		async loadRelatedItems({ commit }, itemID) {
 			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/related'))
-			commit('setRelatedItems', { relatedItems: response.data.data.items })
+			const relatedItems = response.data.data.items.map(payload => {
+				const item = new Item(payload)
+				return item
+			})
+			commit('setRelatedItems', { relatedItems })
 		},
 		async loadItemCandidates({ commit }, parameters) {
 			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + parameters.itemID + '/candidates/' + parameters.relationType))
-			commit('setItemCandidates', { itemCandidates: response.data.data.items })
+			const itemCandidates = response.data.data.items.map(payload => {
+				const item = new Item(payload)
+				return item
+			})
+			commit('setItemCandidates', { itemCandidates })
 		}
 	}
 })
