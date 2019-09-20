@@ -29,7 +29,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		showModal: false,
 		items: [],
 		item: [],
 		subItems: [],
@@ -56,9 +55,6 @@ export default new Vuex.Store({
 		setItemCandidates(state, payload) {
 			state.itemCandidates = payload.itemCandidates
 		},
-		setShowModal(state, show) {
-			state.showModal = show
-		}
 	},
 	actions: {
 		async loadItems({ commit }) {

@@ -47,8 +47,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
 	name: 'App',
 	data: function() {
@@ -70,8 +68,5 @@ export default {
 			]
 		}
 	},
-	computed: mapState({
-		showModal: state => state.showModal
-	})
 }
 </script>
