@@ -52,7 +52,7 @@ export default {
 	},
 	data: function() {
 		return {
-			rawInput: 'RawData',
+			rawInput: '',
 			enlisted: false,
 			items: [],
 			fields: ['name', 'maker', 'description', 'item_number', 'link', 'GTIN', 'details', 'comment', 'type', 'place', 'price', 'count', 'available', 'vendor', 'date', 'categories', 'related']
