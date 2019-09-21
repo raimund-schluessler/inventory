@@ -29,11 +29,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</span>
 		<form id="newItems" @submit.prevent="enlist">
 			<textarea v-model="rawInput" />
-			{{ t('inventory', 'Parsed items:') }}
+			{{ t('inventory', 'Items:') }}
 			<div>
-				<ItemsTable :items="parsedItems" :show-dropdown="false" :search-string="$root.searchString" />
+				<ItemsTable :items="items" :show-dropdown="false" :search-string="$root.searchString" />
 			</div>
-			<input :value="t('inventory', 'Enlist')" type="submit">
+			<input :value="t('inventory', 'Enlist')" type="submit" :disabled="!canEnlist">
 		</form>
 	</div>
 </template>
@@ -53,14 +53,21 @@ export default {
 	data: function() {
 		return {
 			rawInput: 'RawData',
-			parsedItems: [],
+			enlisted: false,
+			items: [],
 			fields: ['name', 'maker', 'description', 'item_number', 'link', 'GTIN', 'details', 'comment', 'type', 'place', 'price', 'count', 'available', 'vendor', 'date', 'categories', 'related']
+		}
+	},
+	computed: {
+		canEnlist() {
+			return !this.enlisted && this.items.length
 		}
 	},
 	watch: {
 		rawInput: function(val, oldVal) {
+			this.enlisted = false
 			var results = Papa.parse(val, { delimiter: ';', newline: '\n' })
-			this.parsedItems = []
+			this.items = []
 			for (var i = 0; i < results.data.length; i++) {
 				var it = results.data[i]
 				if (it.length < 15) {
@@ -98,19 +105,20 @@ export default {
 				}
 				item.categories = categories
 				item = new Item(item)
-				this.parsedItems.push(item)
+				this.items.push(item)
 			}
 		}
 	},
 	methods: {
 		async enlist() {
 			const queue = new PQueue({ concurrency: 5 })
-			this.parsedItems.forEach(async(item) => {
+			this.items.forEach(async(item) => {
 				await queue.add(async() => {
 					await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item })
 					item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
 				})
 			})
+			this.enlisted = true
 		}
 	}
 }
