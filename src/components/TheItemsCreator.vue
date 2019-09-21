@@ -114,7 +114,7 @@ export default {
 			const queue = new PQueue({ concurrency: 5 })
 			this.items.forEach(async(item) => {
 				await queue.add(async() => {
-					const response = await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item })
+					const response = await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item: item.response })
 					if (response.data.status === 'success') {
 						item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
 					} else {
