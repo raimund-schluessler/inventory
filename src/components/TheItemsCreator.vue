@@ -63,6 +63,9 @@ export default {
 			this.parsedItems = []
 			for (var i = 0; i < results.data.length; i++) {
 				var it = results.data[i]
+				if (it.length < 15) {
+					continue
+				}
 				var item = {
 					id: i,
 					name:	it[0],
