@@ -105,7 +105,6 @@ export default {
 			this.parsedItems.forEach(async(item) => {
 				await queue.add(async() => {
 					await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item })
-					// item.saved = true // eslint-disable-line require-atomic-updates
 					item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
 				})
 			})
