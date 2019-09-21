@@ -84,9 +84,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<th />
 			</tr>
 		</thead>
-		<tbody v-if="mode === 'navigation'">
+		<tbody>
 			<tr v-for="item in filteredItems"
 				:key="item.id" :class="{ selected: isSelected(item) }" class="handler"
+				@click.ctrl="selectItem(item)"
 			>
 				<td class="selection">
 					<input :id="'select-item-' + item.id + '-' + _uid" :value="item.id" :checked="isSelected(item)"
@@ -99,7 +100,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</label>
 				</td>
 				<td>
-					<a :href="'#/items/' + item.id">
+					<a :href="itemRoute(item)" @click.ctrl.prevent>
 						<div class="thumbnail-wrapper">
 							<div :style="{ backgroundImage: 'url(' + getIconUrl(item) + ')' }" class="thumbnail default" />
 						</div>
@@ -107,52 +108,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</a>
 				</td>
 				<td>
-					<a :href="'#/items/' + item.id">
+					<a :href="itemRoute(item)" @click.ctrl.prevent>
 						{{ item.maker }}
 					</a>
 				</td>
 				<td>
-					<a :href="'#/items/' + item.id">
+					<a :href="itemRoute(item)" @click.ctrl.prevent>
 						{{ item.description }}
 					</a>
 				</td>
-				<td>
-					<ul class="categories">
-						<li v-for="category in item.categories" :key="category.id">
-							<span>{{ category.name }}</span>
-						</li>
-					</ul>
-				</td>
-				<td>
-					<ItemStatusDisplay :item="item" />
-				</td>
-			</tr>
-		</tbody>
-		<tbody v-if="mode === 'selection'">
-			<tr v-for="item in filteredItems"
-				:key="item.id" :class="{ selected: isSelected(item) }" class="handler"
-				@click="selectItem(item)"
-			>
-				<td class="selection">
-					<input :id="'select-item-' + item.id + '-' + _uid" :value="item.id" :checked="isSelected(item)"
-						class="selectCheckBox checkbox" type="checkbox"
-					>
-					<label :for="'select-item-' + item.id + '-' + _uid" @click.prevent>
-						<span class="hidden-visually">
-							{{ t('inventory', 'Select') }}
-						</span>
-					</label>
-				</td>
-				<td>
-					<div>
-						<div class="thumbnail-wrapper">
-							<div :style="{ backgroundImage: 'url(' + getIconUrl(item) + ')' }" class="thumbnail default" />
-						</div>
-						<span>{{ item.name }}</span>
-					</div>
-				</td>
-				<td>{{ item.maker }}</td>
-				<td>{{ item.description }}</td>
 				<td>
 					<ul class="categories">
 						<li v-for="category in item.categories" :key="category.id">
@@ -346,7 +310,10 @@ export default {
 		},
 		isSelected: function(item) {
 			return this.selectedItemIDs.includes(item.id)
-		}
+		},
+		itemRoute(item) {
+			return (this.mode === 'selection') ? null : '#/items/' + item.id
+		},
 	}
 }
 </script>
