@@ -67,7 +67,7 @@
 		"regenerator-runtime": "0.13.3",
 		"sass-loader": "8.0.0",
 		"stylelint": "11.0.0",
-		"stylelint-config-recommended-scss": "3.3.0",
+		"stylelint-config-recommended-scss": "4.0.0",
 		"stylelint-scss": "3.11.0",
 		"stylelint-webpack-plugin": "0.10.5",
 		"svg-sprite": "1.5.0",
