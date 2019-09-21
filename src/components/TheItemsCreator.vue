@@ -114,8 +114,12 @@ export default {
 			const queue = new PQueue({ concurrency: 5 })
 			this.items.forEach(async(item) => {
 				await queue.add(async() => {
-					await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item })
-					item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
+					const response = await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item })
+					if (response.data.status === 'success') {
+						item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
+					} else {
+						item.syncstatus = new Status('error', 'Item creation failed.') // eslint-disable-line require-atomic-updates
+					}
 				})
 			})
 			this.enlisted = true

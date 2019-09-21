@@ -320,6 +320,11 @@ table {
 		@extend .icon-checkmark-color;
 	}
 
+	&.error {
+		@extend .icon-color;
+		@extend .icon-error-color;
+	}
+
 	&.refresh {
 		background-image: var(--icon-history-000);
 		animation: pulse 2s infinite;

@@ -48,6 +48,9 @@ export default class Status {
 		case 'created':
 			this.cssClass = 'success'
 			break
+		case 'error':
+			this.cssClass = 'error'
+			break
 		}
 
 		this.action = action
