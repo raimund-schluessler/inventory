@@ -64,6 +64,7 @@
 		"node-sass": "4.12.0",
 		"prettier-eslint": "9.0.0",
 		"raw-loader": "3.1.0",
+		"regenerator-runtime": "0.13.3",
 		"sass-loader": "8.0.0",
 		"stylelint": "11.0.0",
 		"stylelint-config-recommended-scss": "3.3.0",
@@ -95,6 +96,7 @@
 		"snapshotSerializers": [
 			"<rootDir>/node_modules/jest-serializer-vue"
 		],
+		"setupFilesAfterEnv": ["./tests/setup.js"],
 		"collectCoverage": true,
 		"collectCoverageFrom": [
 			"<rootDir>/src/**/*.{js,vue}",

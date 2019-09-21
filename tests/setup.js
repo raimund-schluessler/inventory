@@ -1,3 +1,3 @@
-require('jsdom-global')()
+import 'regenerator-runtime/runtime'
 
 global.expect = require('expect')
