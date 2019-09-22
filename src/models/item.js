@@ -63,6 +63,15 @@ export default class Item {
 	}
 
 	/**
+	 * Update internal data of this item
+	 *
+	 * @memberof Item
+	 */
+	updateItem() {
+		this.initItem()
+	}
+
+	/**
 	 * Return the id
 	 *
 	 * @readonly

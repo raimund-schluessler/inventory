@@ -259,6 +259,7 @@ class ItemsService {
 			$instance['itemid'] = $added->id;
 			$this->iteminstanceService->add($instance);
 		}
+		return $this->get($added->id);
 	}
 
 	/**
