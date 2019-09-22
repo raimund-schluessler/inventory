@@ -23,6 +23,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Item from '../models/item.js'
+import PQueue from 'p-queue'
+import Status from '../models/status'
 import Axios from 'axios'
 Axios.defaults.headers.common.requesttoken = OC.requestToken
 
@@ -38,9 +40,34 @@ export default new Vuex.Store({
 		itemCandidates: []
 	},
 	mutations: {
-		setItems(state, payload) {
-			state.items = payload.items
+
+		/**
+		 * Adds multiple items to the store
+		 *
+		 * @param {Object} state Default state
+		 * @param {Array<Item>} items The items to add
+		 */
+		addItems(state, items = []) {
+			state.items = items.reduce(function(list, item) {
+				if (item instanceof Item) {
+					Vue.set(list, item.id, item)
+				} else {
+					console.error('Wrong item object', item)
+				}
+				return list
+			}, state.items)
 		},
+
+		/**
+		 * Adds an item to the store
+		 *
+		 * @param {Object} state Default state
+		 * @param {Item} item The item to add
+		 */
+		addItem(state, item) {
+			Vue.set(state.items, item.id, item)
+		},
+
 		setItem(state, payload) {
 			state.item = payload.item
 		},
@@ -57,15 +84,49 @@ export default new Vuex.Store({
 			state.itemCandidates = payload.itemCandidates
 		},
 	},
+
+	getters: {
+
+		/**
+		 * Returns all items in the store
+		 *
+		 * @param {Object} state The store data
+		 * @param {Object} getters The store getters
+		 * @param {Object} rootState The store root state
+		 * @returns {Array} All items in store
+		 */
+		getAllItems: (state, getters, rootState) => {
+			return Object.values(state.items)
+		},
+	},
+
 	actions: {
+
 		async loadItems({ commit }) {
 			const response = await Axios.get(OC.generateUrl('apps/inventory/items'))
 			const items = response.data.data.items.map(payload => {
 				const item = new Item(payload)
 				return item
 			})
-			commit('setItems', { items })
+			commit('addItems', items)
 		},
+
+		async createItems(context, items) {
+			const queue = new PQueue({ concurrency: 5 })
+			items.forEach(async(item) => {
+				await queue.add(async() => {
+					const response = await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item: item.response })
+					if (response.data.status === 'success') {
+						Vue.set(item, 'response', response.data.data)
+						item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
+						context.commit('addItem', item)
+					} else {
+						item.syncstatus = new Status('error', 'Item creation failed.') // eslint-disable-line require-atomic-updates
+					}
+				})
+			})
+		},
+
 		async loadItem({ commit }, itemID) {
 			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID))
 			const item = new Item(response.data.data.item)

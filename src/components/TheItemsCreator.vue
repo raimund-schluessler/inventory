@@ -39,12 +39,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import Axios from 'axios'
 import Papa from 'papaparse'
 import ItemsTable from './ItemsTable.vue'
 import Item from '../models/item'
-import Status from '../models/status'
-import PQueue from 'p-queue'
+import { mapActions } from 'vuex'
 
 export default {
 	components: {
@@ -110,18 +108,12 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions([
+			'createItems'
+		]),
+
 		async enlist() {
-			const queue = new PQueue({ concurrency: 5 })
-			this.items.forEach(async(item) => {
-				await queue.add(async() => {
-					const response = await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item: item.response })
-					if (response.data.status === 'success') {
-						item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
-					} else {
-						item.syncstatus = new Status('error', 'Item creation failed.') // eslint-disable-line require-atomic-updates
-					}
-				})
-			})
+			await this.createItems(this.items)
 			this.enlisted = true
 		}
 	}

@@ -26,15 +26,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 
 export default {
 	components: {
 		ItemsTable: ItemsTable
 	},
-	computed: mapState({
-		items: state => state.items
+	computed: mapGetters({
+		items: 'getAllItems'
 	})
 }
 </script>
