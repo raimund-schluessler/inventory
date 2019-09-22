@@ -18,6 +18,7 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+import Status from './status'
 
 export default class Item {
 
@@ -38,9 +39,9 @@ export default class Item {
 		this.parentItems = {}
 		this.relatedItems = {}
 
-		this.initItem()
-
 		this.syncstatus = null
+
+		this.initItem()
 	}
 
 	initItem() {
@@ -60,6 +61,9 @@ export default class Item {
 		this._icon = this.response.icon || ''
 		this._categories = this.response.categories || []
 		this._instances = this.response.instances || []
+		if (this.response.syncstatus) {
+			this.syncstatus = new Status(this.response.syncstatus.type, this.response.syncstatus.message)
+		}
 	}
 
 	/**

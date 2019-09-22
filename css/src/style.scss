@@ -325,6 +325,11 @@ table {
 		@extend .icon-error-color;
 	}
 
+	&.unsynced {
+		@extend .icon-color;
+		@extend .icon-warning-color;
+	}
+
 	&.refresh {
 		background-image: var(--icon-history-000);
 		animation: pulse 2s infinite;

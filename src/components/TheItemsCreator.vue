@@ -101,6 +101,10 @@ export default {
 						categories.push({ name })
 					}
 				}
+				item.syncstatus = {
+					type: 'unsynced',
+					message: 'The item has not been saved to the server yet.',
+				}
 				item.categories = categories
 				item = new Item(item)
 				this.items.push(item)

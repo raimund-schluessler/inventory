@@ -312,7 +312,8 @@ export default {
 			return this.selectedItemIDs.includes(item.id)
 		},
 		itemRoute(item) {
-			return (this.mode === 'selection') ? null : '#/items/' + item.id
+			const itemStatus = item.syncstatus ? item.syncstatus.type : null
+			return (this.mode === 'selection' || itemStatus === 'unsynced') ? null : '#/items/' + item.id
 		},
 	}
 }

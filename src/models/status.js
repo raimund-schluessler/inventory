@@ -51,6 +51,9 @@ export default class Status {
 		case 'error':
 			this.cssClass = 'error'
 			break
+		case 'unsynced':
+			this.cssClass = 'unsynced'
+			break
 		}
 
 		this.action = action
