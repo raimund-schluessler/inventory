@@ -115,13 +115,17 @@ export default new Vuex.Store({
 			const queue = new PQueue({ concurrency: 5 })
 			items.forEach(async(item) => {
 				await queue.add(async() => {
-					const response = await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item: item.response })
-					if (response.data.status === 'success') {
-						Vue.set(item, 'response', response.data.data)
-						item.updateItem()
-						item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
-						context.commit('addItem', item)
-					} else {
+					try {
+						const response = await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item: item.response })
+						if (response.data.status === 'success') {
+							Vue.set(item, 'response', response.data.data)
+							item.updateItem()
+							item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
+							context.commit('addItem', item)
+						} else {
+							throw Error
+						}
+					} catch {
 						item.syncstatus = new Status('error', 'Item creation failed.') // eslint-disable-line require-atomic-updates
 					}
 				})
