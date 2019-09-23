@@ -2,13 +2,18 @@
 <info>
 	<id>inventory</id>
 	<name>Inventory</name>
-	<version>0.0.1</version>
-	<namespace>Inventory</namespace>
-	<category>productivity</category>
-	<licence>AGPL</licence>
-	<author>Raimund Schlüßler</author>
+	<summary>The inventory app for Nextcloud</summary>
 	<description>Inventory App</description>
-	<ocsid></ocsid>
+	<version>0.0.1</version>
+	<licence>agpl</licence>
+	<author mail="raimund.schluessler@mailbox.org">Raimund Schlüßler</author>
+	<namespace>Inventory</namespace>
+	<category>organization</category>
+	<website>https://gitlab.rschluessler.com/raimund.schluessler/Inventory</website>
+	<bugs>https://gitlab.rschluessler.com/raimund.schluessler/Inventory/issues</bugs>
+	<dependencies>
+		<nextcloud min-version="16" max-version="18"/>
+	</dependencies>
 	<navigations>
 		<navigation>
 			<id>inventory</id>
@@ -18,7 +23,4 @@
 			<order>100</order>
 		</navigation>
 	</navigations>
-	<dependencies>
-		<nextcloud min-version="16" max-version="18"/>
-	</dependencies>
 </info>

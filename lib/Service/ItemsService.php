@@ -92,11 +92,11 @@ class ItemsService {
 	public function getCandidates($itemID, $relationType) {
 
 		$excludeIDs = array();
-		if ($relationType == 'sub') {
+		if ($relationType === 'sub') {
 			$excludeIDs = $this->itemParentMapper->findSubIDs($itemID);
-		} elseif ($relationType == 'parent') {
+		} elseif ($relationType === 'parent') {
 			$excludeIDs = $this->itemParentMapper->findParentIDs($itemID);
-		} elseif ($relationType == 'related') {
+		} elseif ($relationType === 'related') {
 			$excludeIDs = $this->itemRelationMapper->findRelatedIDs($itemID, $this->userId);
 		}
 		
@@ -268,9 +268,9 @@ class ItemsService {
 	 * @return array
 	 */
 	public function link($mainItemID, $itemIDs, $relationType) {
-		if ($relationType == 'parent') {
+		if ($relationType === 'parent') {
 			foreach ($itemIDs as $itemID) {
-				if ($itemID == $mainItemID) {
+				if ($itemID === $mainItemID) {
 					continue;
 				}
 				$map = array(
@@ -284,9 +284,9 @@ class ItemsService {
 
 				}
 			}
-		} elseif ($relationType == 'sub') {
+		} elseif ($relationType === 'sub') {
 			foreach ($itemIDs as $itemID) {
-				if ($itemID == $mainItemID) {
+				if ($itemID === $mainItemID) {
 					continue;
 				}
 				$map = array(
@@ -300,9 +300,9 @@ class ItemsService {
 
 				}
 			}
-		} elseif ($relationType == 'related') {
+		} elseif ($relationType === 'related') {
 			foreach ($itemIDs as $itemID) {
-				if ($itemID == $mainItemID) {
+				if ($itemID === $mainItemID) {
 					continue;
 				}
 				// sort IDs so that $itemID1 is smaller than $itemID2
