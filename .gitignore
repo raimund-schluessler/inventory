@@ -242,3 +242,4 @@ Various
 build/
 .nyc_output
 coverage
+.phpunit.result.cache
