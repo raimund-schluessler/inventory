@@ -38,7 +38,7 @@ class PageControllerTest extends Base {
 			'inventory',
 			$request,
 			'admin',
-			$config,
+			$config
 		);
 	}
 
