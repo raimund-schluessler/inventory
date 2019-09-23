@@ -14,8 +14,8 @@
 			<id>inventory</id>
 			<name>Inventory</name>
 			<route>inventory.page.index</route>
-			<order>100</order>
 			<icon>inventory.svg</icon>
+			<order>100</order>
 		</navigation>
 	</navigations>
 	<dependencies>
