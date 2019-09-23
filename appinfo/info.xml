@@ -11,8 +11,11 @@
 	<ocsid></ocsid>
 	<navigations>
 		<navigation>
-				<name>Inventory</name>
-				<route>inventory.page.index</route>
+			<id>inventory</id>
+			<name>Inventory</name>
+			<route>inventory.page.index</route>
+			<order>100</order>
+			<icon>inventory.svg</icon>
 		</navigation>
 	</navigations>
 	<dependencies>
