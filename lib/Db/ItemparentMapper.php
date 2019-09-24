@@ -31,6 +31,12 @@ class ItemparentMapper extends Mapper {
 		parent::__construct($db, 'invtry_parent_map');
 	}
 
+	public function find($itemID) {
+		$sql = 'SELECT * FROM `*PREFIX*invtry_parent_map` ' .
+			'WHERE `parentid` = ? OR `itemid` = ?';
+		return $this->findEntities($sql, [$itemID, $itemID]);
+	}
+
 	public function findSub($itemID) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_parent_map` ' .
 			'WHERE `parentid` = ?';
@@ -71,5 +77,11 @@ class ItemparentMapper extends Mapper {
 		$sql = 'INSERT INTO `*PREFIX*invtry_parent_map` (itemid, parentid, uid)'.
 				' Values(?, ?, ?)';
 		return $this->execute($sql, array($mapping['itemid'], $mapping['parentid'], $mapping['uid']));
+	}
+
+	public function deleteRelations($relations) {
+		foreach ($relations as $relation) {
+			$this->delete($relation);
+		}
 	}
 }

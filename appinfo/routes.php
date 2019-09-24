@@ -21,14 +21,15 @@
 */
 return [
 	'routes' => [
-		['name' => 'page#index',		'url' => '/',						'verb' => 'GET'],
-		['name' => 'items#getAll',		'url' => '/items',					'verb' => 'GET'],
-		['name' => 'items#get',			'url' => '/item/{itemID}',			'verb' => 'GET'],
-		['name' => 'items#getSub',		'url' => '/item/{itemID}/sub',		'verb' => 'GET'],
-		['name' => 'items#getParent',	'url' => '/item/{itemID}/parent',	'verb' => 'GET'],
-		['name' => 'items#getRelated',	'url' => '/item/{itemID}/related',	'verb' => 'GET'],
-		['name' => 'items#getCandidates',	'url' => '/item/{itemID}/candidates/{relationType}', 'verb' => 'GET'],
-		['name' => 'items#link',		'url' => '/item/{itemID}/link/{relationType}', 'verb' => 'POST'],
-		['name' => 'items#enlist',		'url' => '/item/add',				'verb' => 'POST'],
+		['name' => 'page#index',			'url' => '/',											'verb' => 'GET'],
+		['name' => 'items#getAll',			'url' => '/items',										'verb' => 'GET'],
+		['name' => 'items#get',				'url' => '/item/{itemID}',								'verb' => 'GET'],
+		['name' => 'items#getSub',			'url' => '/item/{itemID}/sub',							'verb' => 'GET'],
+		['name' => 'items#getParent',		'url' => '/item/{itemID}/parent',						'verb' => 'GET'],
+		['name' => 'items#getRelated',		'url' => '/item/{itemID}/related',						'verb' => 'GET'],
+		['name' => 'items#getCandidates',	'url' => '/item/{itemID}/candidates/{relationType}',	'verb' => 'GET'],
+		['name' => 'items#link',			'url' => '/item/{itemID}/link/{relationType}',			'verb' => 'POST'],
+		['name' => 'items#enlist',			'url' => '/item/add',									'verb' => 'POST'],
+		['name' => 'items#delete',			'url' => '/item/{itemID}/delete',						'verb' => 'DELETE'],
 	]
 ];

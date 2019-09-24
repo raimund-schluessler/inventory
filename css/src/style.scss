@@ -243,6 +243,10 @@ table {
 				&.icon-plus {
 					@extend .icon-plus;
 				}
+
+				&.icon-trash {
+					@extend .icon-trash;
+				}
 			}
 		}
 	}

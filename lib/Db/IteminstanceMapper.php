@@ -64,4 +64,10 @@ class IteminstanceMapper extends Mapper {
 		$itemInstance->setComment($params['comment']);
 		return $this->insert($itemInstance);
 	}
+
+	public function deleteInstances(Array $instances) {
+		foreach ($instances as $instance) {
+			$this->delete($instance);
+		}
+	}
 }

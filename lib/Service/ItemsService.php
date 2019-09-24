@@ -263,6 +263,34 @@ class ItemsService {
 	}
 
 	/**
+	 * delete item
+	 *
+	 * @return array
+	 */
+	public function delete($itemId) {
+		// Find the item by Id
+		$item = $this->itemMapper->find($itemId, $this->userId);
+
+		// Delete all instances belonging to this item
+		$this->iteminstanceService->deleteAllInstancesOfItem($itemId);
+
+		// Delete all links to categories
+		$itemCategories = $this->itemCategoriesMapper->findCategories($itemId, $this->userId);
+		$this->itemCategoriesMapper->deleteItemCategories($itemCategories);
+
+		// Delete all relations including this item
+		// Parent
+		$relations = $this->itemParentMapper->find($itemId);
+		$this->itemParentMapper->deleteRelations($relations);
+		// Related
+		$relations = $this->itemRelationMapper->find($itemId, $this->userId);
+		$this->itemRelationMapper->deleteRelations($relations);
+
+		// Delete the item itself
+		$this->itemMapper->delete($item);
+	}
+
+	/**
 	 * add item relations
 	 *
 	 * @return array

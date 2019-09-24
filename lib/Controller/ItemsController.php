@@ -111,4 +111,13 @@ class ItemsController extends Controller {
 			return $this->itemsService->enlist($item);
 		});
 	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function delete($itemID){
+		return $this->generateResponse(function () use ($itemID) {
+			return $this->itemsService->delete($itemID);
+		});
+	}
 }

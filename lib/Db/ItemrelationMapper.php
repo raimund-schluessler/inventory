@@ -31,6 +31,12 @@ class ItemrelationMapper extends Mapper {
 		parent::__construct($db, 'invtry_rel_map');
 	}
 
+	public function find($itemID, $userID) {
+		$sql = 'SELECT * FROM `*PREFIX*invtry_rel_map` ' .
+			'WHERE `itemid1` = ? OR `itemid2` = ? AND `uid` = ?';
+		return $this->findEntities($sql, [$itemID, $itemID, $userID]);
+	}
+
 	public function findRelation($itemID, $userID) {
 		$sql = 'SELECT itemid1 FROM `*PREFIX*invtry_rel_map` ' .
 			'WHERE `itemid2` = ? AND `uid` = ? ' .
@@ -59,5 +65,11 @@ class ItemrelationMapper extends Mapper {
 		$sql = 'INSERT INTO `*PREFIX*invtry_rel_map` (itemid1, itemid2, uid)'.
 				' Values(?, ?, ?)';
 		return $this->execute($sql, array($mapping['itemid1'], $mapping['itemid2'], $mapping['uid']));
+	}
+
+	public function deleteRelations($relations) {
+		foreach ($relations as $relation) {
+			$this->delete($relation);
+		}
 	}
 }

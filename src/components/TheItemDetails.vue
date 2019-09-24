@@ -67,6 +67,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</span>
 					</a>
 				</li>
+				<li>
+					<a @click="removeItem()">
+						<span class="icon icon-bw icon-trash" />
+						<span class="label">
+							{{ t('inventory', 'Delete item') }}
+						</span>
+					</a>
+				</li>
 			</Dropdown>
 		</div>
 		<div id="itemdetails">
@@ -308,12 +316,23 @@ export default {
 				}
 			})
 		},
+
+		removeItem: function() {
+			this.deleteItem(this.item)
+			this.closeDetails()
+		},
+
+		closeDetails: function() {
+			this.$router.push('/items')
+		},
+
 		...mapActions([
 			'loadItem',
 			'loadSubItems',
 			'loadParentItems',
 			'loadRelatedItems',
 			'loadItemCandidates',
+			'deleteItem',
 		])
 	}
 }

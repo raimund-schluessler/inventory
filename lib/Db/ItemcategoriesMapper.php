@@ -46,4 +46,10 @@ class ItemcategoriesMapper extends Mapper {
 			$mapping['categoryid'])
 		);
 	}
+
+	public function deleteItemCategories($itemCategories) {
+		foreach ($itemCategories as $itemCategory) {
+			$this->delete($itemCategory);
+		}
+	}
 }
