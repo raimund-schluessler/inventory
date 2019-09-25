@@ -187,7 +187,7 @@ describe('ItemsTable.vue', () => {
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		wrapper.find('label[for="select-item-2-' + wrapper.vm._uid + '"]').trigger('click')
 		wrapper.find('label[for="select-item-3-' + wrapper.vm._uid + '"]').trigger('click')
-		var itemsFound = wrapper.vm.selectedItemIDs
+		var itemsFound = wrapper.vm.selectedItems
 		var allSelected = wrapper.vm.allVisibleItemsSelected
 		expect(itemsFound.length).toBe(3)
 		expect(allSelected).toBe(true)
@@ -207,12 +207,12 @@ describe('ItemsTable.vue', () => {
 			}
 		})
 		wrapper.find('input.select-all.checkbox').trigger('click')
-		var itemsFound = wrapper.vm.selectedItemIDs
+		var itemsFound = wrapper.vm.selectedItems
 		var allSelected = wrapper.vm.allVisibleItemsSelected
 		expect(itemsFound.length).toBe(3)
 		expect(allSelected).toBe(true)
 		wrapper.find('input.select-all.checkbox').trigger('click')
-		itemsFound = wrapper.vm.selectedItemIDs
+		itemsFound = wrapper.vm.selectedItems
 		allSelected = wrapper.vm.allVisibleItemsSelected
 		expect(itemsFound.length).toBe(0)
 		expect(allSelected).toBe(false)
@@ -232,13 +232,13 @@ describe('ItemsTable.vue', () => {
 			}
 		})
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
-		var selectedItemIDs = wrapper.vm.selectedItemIDs
+		var selectedItems = wrapper.vm.selectedItems
 		var allSelected = wrapper.vm.allVisibleItemsSelected
-		expect(selectedItemIDs.length).toBe(1)
+		expect(selectedItems.length).toBe(1)
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
-		selectedItemIDs = wrapper.vm.selectedItemIDs
+		selectedItems = wrapper.vm.selectedItems
 		allSelected = wrapper.vm.allVisibleItemsSelected
-		expect(selectedItemIDs.length).toBe(0)
+		expect(selectedItems.length).toBe(0)
 		expect(allSelected).toBe(false)
 	})
 })

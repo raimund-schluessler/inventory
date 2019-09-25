@@ -32,7 +32,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		items: [],
+		items: {},
 		item: [],
 		subItems: [],
 		parentItems: [],
@@ -66,6 +66,18 @@ export default new Vuex.Store({
 		 */
 		addItem(state, item) {
 			Vue.set(state.items, item.id, item)
+		},
+
+		/**
+		 * Deletes an item from the store
+		 *
+		 * @param {Object} state Default state
+		 * @param {Item} item The item to delete
+		 */
+		deleteItem(state, item) {
+			if (state.items[item.id] && item instanceof Item) {
+				Vue.delete(state.items, item.id)
+			}
 		},
 
 		setItem(state, payload) {
@@ -168,6 +180,18 @@ export default new Vuex.Store({
 				return item
 			})
 			commit('setItemCandidates', { itemCandidates })
-		}
+		},
+		async deleteItem({ commit }, item) {
+			const response = await Axios.delete(OC.generateUrl('apps/inventory/item/' + item.id + '/delete'))
+			if (response.data.status === 'success') {
+				commit('deleteItem', item)
+			}
+		},
+		async deleteItems(context, items) {
+			const queue = new PQueue({ concurrency: 5 })
+			items.forEach(async(item) => {
+				await queue.add(() => context.dispatch('deleteItem', item))
+			})
+		},
 	}
 })

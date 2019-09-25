@@ -75,4 +75,12 @@ class IteminstanceService {
 		$instance['placeid'] = $place->id;
 		$this->iteminstanceMapper->add($instance);
 	}
+
+	/**
+	 * Deletes all instances of an item
+	 */
+	public function deleteAllInstancesOfItem($itemId) {
+		$instances = $this->iteminstanceMapper->findByItemID($itemId, $this->userId);
+		$this->iteminstanceMapper->deleteInstances($instances);
+	}
 }

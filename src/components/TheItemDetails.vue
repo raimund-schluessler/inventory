@@ -67,6 +67,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</span>
 					</a>
 				</li>
+				<li>
+					<a @click="removeItem()">
+						<span class="icon icon-bw icon-trash" />
+						<span class="label">
+							{{ t('inventory', 'Delete item') }}
+						</span>
+					</a>
+				</li>
 			</Dropdown>
 		</div>
 		<div id="itemdetails">
@@ -290,12 +298,14 @@ export default {
 			this.relationType = relationType
 			this.modalOpen = true
 		},
-		linkItems(relationType, itemIDs) {
-			if (!Array.isArray(itemIDs) || !itemIDs.length) {
+		linkItems(relationType, items) {
+			if (!Array.isArray(items) || !items.length) {
 				return
 			}
+			// Extract itemIDs from items array
+			const itemIDs = items.map((item) => { return item.id })
 			Axios.post(OC.generateUrl('apps/inventory/item/' + this.item.id + '/link/' + relationType), {
-				itemIDs: itemIDs
+				itemIDs
 			}).then(response => {
 				if (response.data.status === 'success') {
 					if (this.relationType === 'parent') {
@@ -308,12 +318,23 @@ export default {
 				}
 			})
 		},
+
+		removeItem: function() {
+			this.deleteItem(this.item)
+			this.closeDetails()
+		},
+
+		closeDetails: function() {
+			this.$router.push('/items')
+		},
+
 		...mapActions([
 			'loadItem',
 			'loadSubItems',
 			'loadParentItems',
 			'loadRelatedItems',
 			'loadItemCandidates',
+			'deleteItem',
 		])
 	}
 }
