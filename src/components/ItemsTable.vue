@@ -79,7 +79,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								</span>
 							</a>
 						</li>
-						<li v-if="selectedItemIDs.length">
+						<li v-if="selectedItems.length">
 							<a @click="removeItems">
 								<span class="icon icon-bw icon-trash" />
 								<span class="label">
@@ -172,34 +172,34 @@ export default {
 	},
 	data: function() {
 		return {
-			selectedItemIDs: []
+			selectedItems: []
 		}
 	},
 	computed: {
 		allVisibleItemsSelected: {
 			set(select) {
 				if (select) {
-					// add all filteredItems to selectedItemIDs
+					// add all filteredItems to selectedItems
 					for (var i = 0; i < this.filteredItems.length; i++) {
-						var index = this.selectedItemIDs.indexOf(this.filteredItems[i].id)
+						var index = this.selectedItems.indexOf(this.filteredItems[i])
 						if (index === -1) {
-							this.selectedItemIDs.push(this.filteredItems[i].id)
+							this.selectedItems.push(this.filteredItems[i])
 						}
 					}
 				} else {
-					// remove all filteredItems from selectedItemIDs
+					// remove all filteredItems from selectedItems
 					for (i = 0; i < this.filteredItems.length; i++) {
-						index = this.selectedItemIDs.indexOf(this.filteredItems[i].id)
+						index = this.selectedItems.indexOf(this.filteredItems[i])
 						if (index !== -1) {
-							this.selectedItemIDs.splice(index, 1)
+							this.selectedItems.splice(index, 1)
 						}
 					}
 				}
-				this.$emit('selectedItemIDsChanged', this.selectedItemIDs)
+				this.$emit('selectedItemsChanged', this.selectedItems)
 			},
 			get() {
 				for (var i = 0; i < this.filteredItems.length; i++) {
-					var index = this.selectedItemIDs.indexOf(this.filteredItems[i].id)
+					var index = this.selectedItems.indexOf(this.filteredItems[i])
 					if (index === -1) {
 						return false
 					}
@@ -312,25 +312,25 @@ export default {
 		},
 		selectItem: function(item) {
 			if (this.isSelected(item)) {
-				var index = this.selectedItemIDs.indexOf(item.id)
+				var index = this.selectedItems.indexOf(item)
 				if (index !== -1) {
-					this.selectedItemIDs.splice(index, 1)
+					this.selectedItems.splice(index, 1)
 				}
 			} else {
-				this.selectedItemIDs.push(item.id)
+				this.selectedItems.push(item)
 			}
-			this.$emit('selectedItemIDsChanged', this.selectedItemIDs)
+			this.$emit('selectedItemsChanged', this.selectedItems)
 		},
 		isSelected: function(item) {
-			return this.selectedItemIDs.includes(item.id)
+			return this.selectedItems.includes(item)
 		},
 		itemRoute(item) {
 			const itemStatus = item.syncstatus ? item.syncstatus.type : null
 			return (this.mode === 'selection' || itemStatus === 'unsynced') ? null : '#/items/' + item.id
 		},
 		async removeItems() {
-			await this.deleteItems(this.selectedItemIDs)
-			this.selectedItemIDs = []
+			await this.deleteItems(this.selectedItems)
+			this.selectedItems = []
 		},
 	}
 }

@@ -50,7 +50,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 			<div class="body">
 				<ItemsTable :items="items" :show-dropdown="false" :search-string="searchString"
-					:mode="'selection'" @selectedItemIDsChanged="selectedItemIDsChanged"
+					:mode="'selection'" @selectedItemsChanged="selectedItemsChanged"
 				/>
 			</div>
 
@@ -99,7 +99,7 @@ export default {
 	},
 	data: function() {
 		return {
-			selectedItemIDs: [],
+			selectedItems: [],
 			searchString: ''
 		}
 	},
@@ -122,19 +122,19 @@ export default {
 			case 'parent':
 				singular = 'Add %n item as parent item.'
 				plural = 'Add %n items as parent items.'
-				return this.n('inventory', singular, plural, this.selectedItemIDs.length)
+				return this.n('inventory', singular, plural, this.selectedItems.length)
 			case 'related':
 				singular = 'Add %n item as related item.'
 				plural = 'Add %n items as related items.'
-				return this.n('inventory', singular, plural, this.selectedItemIDs.length)
+				return this.n('inventory', singular, plural, this.selectedItems.length)
 			case 'sub':
 				singular = 'Add %n item as sub item.'
 				plural = 'Add %n items as sub items.'
-				return this.n('inventory', singular, plural, this.selectedItemIDs.length)
+				return this.n('inventory', singular, plural, this.selectedItems.length)
 			default:
 				singular = 'Add %n item.'
 				plural = 'Add %n items.'
-				return this.n('inventory', singular, plural, this.selectedItemIDs.length)
+				return this.n('inventory', singular, plural, this.selectedItems.length)
 			}
 		},
 		...mapState({
@@ -146,11 +146,11 @@ export default {
 			this.$emit('update:modalOpen', false)
 		},
 		selectItems: function(event) {
-			this.link(this.relationType, this.selectedItemIDs)
+			this.link(this.relationType, this.selectedItems)
 			this.closeModal()
 		},
-		selectedItemIDsChanged: function(selectedItemIDs) {
-			this.selectedItemIDs = selectedItemIDs
+		selectedItemsChanged: function(selectedItems) {
+			this.selectedItems = selectedItems
 		},
 	}
 }

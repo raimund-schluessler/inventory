@@ -298,12 +298,14 @@ export default {
 			this.relationType = relationType
 			this.modalOpen = true
 		},
-		linkItems(relationType, itemIDs) {
-			if (!Array.isArray(itemIDs) || !itemIDs.length) {
+		linkItems(relationType, items) {
+			if (!Array.isArray(items) || !items.length) {
 				return
 			}
+			// Extract itemIDs from items array
+			const itemIDs = items.map((item) => { return item.id })
 			Axios.post(OC.generateUrl('apps/inventory/item/' + this.item.id + '/link/' + relationType), {
-				itemIDs: itemIDs
+				itemIDs
 			}).then(response => {
 				if (response.data.status === 'success') {
 					if (this.relationType === 'parent') {
