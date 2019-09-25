@@ -34,6 +34,7 @@ export default new Vuex.Store({
 	state: {
 		items: {},
 		item: null,
+		loadingItems: false,
 		subItems: [],
 		parentItems: [],
 		relatedItems: [],
@@ -110,16 +111,30 @@ export default new Vuex.Store({
 		getAllItems: (state, getters, rootState) => {
 			return Object.values(state.items)
 		},
+
+		/**
+		 * Returns whether we currently load items from the server
+		 *
+		 * @param {Object} state The store data
+		 * @param {Object} getters The store getters
+		 * @param {Object} rootState The store root state
+		 * @returns {Boolean} Are we loading items
+		 */
+		loadingItems: (state, getters, rootState) => {
+			return state.loadingItems
+		},
 	},
 
 	actions: {
 
-		async loadItems({ commit }) {
+		async loadItems({ commit, state }) {
+			state.loadingItems = true
 			const response = await Axios.get(OC.generateUrl('apps/inventory/items'))
 			const items = response.data.map(payload => {
 				return new Item(payload)
 			})
 			commit('addItems', items)
+			state.loadingItems = false
 		},
 
 		async createItems(context, items) {

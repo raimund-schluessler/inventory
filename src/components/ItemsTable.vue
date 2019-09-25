@@ -93,7 +93,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="item in filteredItems"
+			<tr v-if="!filteredItems.length">
+				<td class="center" colspan="5">
+					{{ emptyListMessage }}
+				</td>
+			</tr>
+			<tr v-for="item in filteredItems" v-else
 				:key="item.id" :class="{ selected: isSelected(item) }" class="handler"
 				@click.ctrl="selectItem(item)"
 			>
@@ -160,6 +165,11 @@ export default {
 			type: Array,
 			default: () => [],
 			required: true
+		},
+		loading: {
+			type: Boolean,
+			default: false,
+			required: false
 		},
 		showDropdown: {
 			type: Boolean,
@@ -292,7 +302,16 @@ export default {
 				}
 				return true
 			})
-		}
+		},
+		emptyListMessage() {
+			if (this.loading) {
+				return t('inventory', 'Loading items from server.')
+			} else if (this.searchString && this.items.length) {
+				return t('inventory', 'No item found.')
+			} else {
+				return t('inventory', 'The item list is empty.')
+			}
+		},
 	},
 	methods: {
 		...mapActions([

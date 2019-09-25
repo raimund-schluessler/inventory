@@ -90,6 +90,10 @@
 		td {
 			height: 40px;
 
+			&.center {
+				text-align: center;
+			}
+
 			&.selection {
 				min-width: 40px;
 				max-width: 40px;

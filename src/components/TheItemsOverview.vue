@@ -21,7 +21,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<ItemsTable :items="items" :show-dropdown="true" :search-string="$root.searchString" />
+		<ItemsTable :items="items" :loading="loading" :show-dropdown="true"
+			:search-string="$root.searchString"
+		/>
 	</div>
 </template>
 
@@ -34,7 +36,8 @@ export default {
 		ItemsTable: ItemsTable
 	},
 	computed: mapGetters({
-		items: 'getAllItems'
+		items: 'getAllItems',
+		loading: 'loadingItems',
 	})
 }
 </script>
