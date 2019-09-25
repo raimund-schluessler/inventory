@@ -25,6 +25,15 @@
 
 .content-wrapper {
 	height: 100%;
+
+	.notice {
+		color: $gray;
+		font-size: 16px;
+		position: absolute;
+		text-align: center;
+		top: 50%;
+		width: 100%;
+	}
 }
 
 #app-navigation {

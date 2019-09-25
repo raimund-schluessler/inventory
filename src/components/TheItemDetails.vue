@@ -21,223 +21,229 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<div class="itemnavigation">
-			<div class="breadcrumb">
-				<div data-dir="/" class="crumb svg">
-					<a href="#/items">
-						<span class="icon icon-bw icon-items" />
-					</a>
+		<div v-if="item">
+			<div class="itemnavigation">
+				<div class="breadcrumb">
+					<div data-dir="/" class="crumb svg">
+						<a href="#/items">
+							<span class="icon icon-bw icon-items" />
+						</a>
+					</div>
+					<div class="crumb svg">
+						<a :href="'#/items/' + item.id">
+							{{ item.description }}
+						</a>
+					</div>
 				</div>
-				<div class="crumb svg">
-					<a :href="'#/items/' + item.id">
-						{{ item.description }}
-					</a>
+				<Dropdown>
+					<li>
+						<a>
+							<span class="icon icon-bw icon-plus" />
+							<span class="label">
+								{{ t('inventory', 'Add item instance') }}
+							</span>
+						</a>
+					</li>
+					<li>
+						<a @click="openModal('parent')">
+							<span class="icon icon-bw icon-plus" />
+							<span class="label">
+								{{ t('inventory', 'Add parent item') }}
+							</span>
+						</a>
+					</li>
+					<li>
+						<a @click="openModal('related')">
+							<span class="icon icon-bw icon-plus" />
+							<span class="label">
+								{{ t('inventory', 'Add related item') }}
+							</span>
+						</a>
+					</li>
+					<li>
+						<a @click="openModal('sub')">
+							<span class="icon icon-bw icon-plus" />
+							<span class="label">
+								{{ t('inventory', 'Add sub item') }}
+							</span>
+						</a>
+					</li>
+					<li>
+						<a @click="removeItem()">
+							<span class="icon icon-bw icon-trash" />
+							<span class="label">
+								{{ t('inventory', 'Delete item') }}
+							</span>
+						</a>
+					</li>
+				</Dropdown>
+			</div>
+			<div id="itemdetails">
+				<div class="item_images" />
+				<div>
+					<h3>
+						<span>{{ t('inventory', 'Properties') }}</span>
+					</h3>
+					<table class="properties">
+						<tbody>
+							<tr>
+								<td>
+									<span>{{ t('inventory', 'Name') }}</span>
+								</td>
+								<td>
+									<span>{{ item.name }}</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span>{{ t('inventory', 'Maker') }}</span>
+								</td>
+								<td>
+									<span>{{ item.maker }}</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span>{{ t('inventory', 'Description') }}</span>
+								</td>
+								<td>
+									<span>{{ item.description }}</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span>{{ t('inventory', 'Item Number') }}</span>
+								</td>
+								<td>
+									<span>{{ item.itemNumber }}</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span>{{ t('inventory', 'Link') }}</span>
+								</td>
+								<td>
+									<span>
+										<a :href="item.link" target="_blank">
+											{{ item.link }}
+										</a>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span>{{ t('inventory', 'GTIN') }}</span>
+								</td>
+								<td>
+									<span>{{ item.gtin }}</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span>{{ t('inventory', 'Details') }}</span>
+								</td>
+								<td>
+									<span>{{ item.details }}</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span>{{ t('inventory', 'Comment') }}</span>
+								</td>
+								<td>
+									<span>{{ item.comment }}</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span>{{ t('inventory', 'Categories') }}</span>
+								</td>
+								<td>
+									<ul class="categories">
+										<li v-for="category in item.categories" :key="category.id">
+											<span>{{ category.name }}</span>
+										</li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br>
+				<div class="paragraph">
+					<h3>
+						<span>{{ t('inventory', 'Instances') }}</span>
+					</h3>
+					<table class="instances">
+						<thead>
+							<tr>
+								<th>
+									<span>{{ t('inventory', 'Count') }}</span>
+								</th>
+								<th>
+									<span>{{ t('inventory', 'Available') }}</span>
+								</th>
+								<th>
+									<span>{{ t('inventory', 'Price') }}</span>
+								</th>
+								<th>
+									<span>{{ t('inventory', 'Date') }}</span>
+								</th>
+								<th>
+									<span>{{ t('inventory', 'Vendor') }}</span>
+								</th>
+								<th>
+									<span>{{ t('inventory', 'Place') }}</span>
+								</th>
+								<th>
+									<span>{{ t('inventory', 'Comment') }}</span>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="instance in item.instances"
+								:key="instance.id"
+								class="handler"
+							>
+								<td>{{ instance.count }}</td>
+								<td>{{ instance.available }}</td>
+								<td>{{ instance.price }}</td>
+								<td>{{ instance.date }}</td>
+								<td>{{ instance.vendor }}</td>
+								<td>{{ getPlace(instance) }}</td>
+								<td>{{ instance.comment }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br>
+				<div v-if="parentItems.length" class="paragraph">
+					<h3>
+						<span>{{ t('inventory', 'Parent items') }}</span>
+					</h3>
+					<ItemsTable :items="parentItems" :show-dropdown="false" :search-string="$root.searchString" />
+				</div>
+				<div v-if="subItems.length" class="paragraph">
+					<h3>
+						<span>{{ t('inventory', 'Sub items') }}</span>
+					</h3>
+					<ItemsTable :items="subItems" :show-dropdown="false" :search-string="$root.searchString" />
+				</div>
+				<div v-if="relatedItems.length" class="paragraph">
+					<h3>
+						<span>{{ t('inventory', 'Related items') }}</span>
+					</h3>
+					<ItemsTable :items="relatedItems" :show-dropdown="false" :search-string="$root.searchString" />
 				</div>
 			</div>
-			<Dropdown>
-				<li>
-					<a>
-						<span class="icon icon-bw icon-plus" />
-						<span class="label">
-							{{ t('inventory', 'Add item instance') }}
-						</span>
-					</a>
-				</li>
-				<li>
-					<a @click="openModal('parent')">
-						<span class="icon icon-bw icon-plus" />
-						<span class="label">
-							{{ t('inventory', 'Add parent item') }}
-						</span>
-					</a>
-				</li>
-				<li>
-					<a @click="openModal('related')">
-						<span class="icon icon-bw icon-plus" />
-						<span class="label">
-							{{ t('inventory', 'Add related item') }}
-						</span>
-					</a>
-				</li>
-				<li>
-					<a @click="openModal('sub')">
-						<span class="icon icon-bw icon-plus" />
-						<span class="label">
-							{{ t('inventory', 'Add sub item') }}
-						</span>
-					</a>
-				</li>
-				<li>
-					<a @click="removeItem()">
-						<span class="icon icon-bw icon-trash" />
-						<span class="label">
-							{{ t('inventory', 'Delete item') }}
-						</span>
-					</a>
-				</li>
-			</Dropdown>
+			<RelationModal :modal-open.sync="modalOpen" :link="linkItems"
+				:relation-type="relationType" :item-id="id"
+			/>
 		</div>
-		<div id="itemdetails">
-			<div class="item_images" />
-			<div>
-				<h3>
-					<span>{{ t('inventory', 'Properties') }}</span>
-				</h3>
-				<table class="properties">
-					<tbody>
-						<tr>
-							<td>
-								<span>{{ t('inventory', 'Name') }}</span>
-							</td>
-							<td>
-								<span>{{ item.name }}</span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<span>{{ t('inventory', 'Maker') }}</span>
-							</td>
-							<td>
-								<span>{{ item.maker }}</span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<span>{{ t('inventory', 'Description') }}</span>
-							</td>
-							<td>
-								<span>{{ item.description }}</span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<span>{{ t('inventory', 'Item Number') }}</span>
-							</td>
-							<td>
-								<span>{{ item.itemNumber }}</span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<span>{{ t('inventory', 'Link') }}</span>
-							</td>
-							<td>
-								<span>
-									<a :href="item.link" target="_blank">
-										{{ item.link }}
-									</a>
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<span>{{ t('inventory', 'GTIN') }}</span>
-							</td>
-							<td>
-								<span>{{ item.gtin }}</span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<span>{{ t('inventory', 'Details') }}</span>
-							</td>
-							<td>
-								<span>{{ item.details }}</span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<span>{{ t('inventory', 'Comment') }}</span>
-							</td>
-							<td>
-								<span>{{ item.comment }}</span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<span>{{ t('inventory', 'Categories') }}</span>
-							</td>
-							<td>
-								<ul class="categories">
-									<li v-for="category in item.categories" :key="category.id">
-										<span>{{ category.name }}</span>
-									</li>
-								</ul>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<br>
-			<div class="paragraph">
-				<h3>
-					<span>{{ t('inventory', 'Instances') }}</span>
-				</h3>
-				<table class="instances">
-					<thead>
-						<tr>
-							<th>
-								<span>{{ t('inventory', 'Count') }}</span>
-							</th>
-							<th>
-								<span>{{ t('inventory', 'Available') }}</span>
-							</th>
-							<th>
-								<span>{{ t('inventory', 'Price') }}</span>
-							</th>
-							<th>
-								<span>{{ t('inventory', 'Date') }}</span>
-							</th>
-							<th>
-								<span>{{ t('inventory', 'Vendor') }}</span>
-							</th>
-							<th>
-								<span>{{ t('inventory', 'Place') }}</span>
-							</th>
-							<th>
-								<span>{{ t('inventory', 'Comment') }}</span>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="instance in item.instances"
-							:key="instance.id"
-							class="handler"
-						>
-							<td>{{ instance.count }}</td>
-							<td>{{ instance.available }}</td>
-							<td>{{ instance.price }}</td>
-							<td>{{ instance.date }}</td>
-							<td>{{ instance.vendor }}</td>
-							<td>{{ getPlace(instance) }}</td>
-							<td>{{ instance.comment }}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<br>
-			<div v-if="parentItems.length" class="paragraph">
-				<h3>
-					<span>{{ t('inventory', 'Parent items') }}</span>
-				</h3>
-				<ItemsTable :items="parentItems" :show-dropdown="false" :search-string="$root.searchString" />
-			</div>
-			<div v-if="subItems.length" class="paragraph">
-				<h3>
-					<span>{{ t('inventory', 'Sub items') }}</span>
-				</h3>
-				<ItemsTable :items="subItems" :show-dropdown="false" :search-string="$root.searchString" />
-			</div>
-			<div v-if="relatedItems.length" class="paragraph">
-				<h3>
-					<span>{{ t('inventory', 'Related items') }}</span>
-				</h3>
-				<ItemsTable :items="relatedItems" :show-dropdown="false" :search-string="$root.searchString" />
-			</div>
+		<div v-else class="notice">
+			<span v-if="loading">{{ t('inventory', 'Loading item from server.') }}</span>
+			<span v-else>{{ t('inventory', 'Item not found!') }}</span>
 		</div>
-		<RelationModal :modal-open.sync="modalOpen" :link="linkItems"
-			:relation-type="relationType" :item-id="id"
-		/>
 	</div>
 </template>
 
@@ -264,6 +270,7 @@ export default {
 		return {
 			relationType: '',
 			modalOpen: false,
+			loading: false,
 		}
 	},
 	computed: mapState({
@@ -286,6 +293,11 @@ export default {
 		next()
 	},
 	methods: {
+		async loadItem(itemID) {
+			this.loading = true
+			await this.getItemById(itemID)
+			this.loading = false
+		},
 		getPlace(instance) {
 			if (instance.place) {
 				return instance.place.name
@@ -298,25 +310,24 @@ export default {
 			this.relationType = relationType
 			this.modalOpen = true
 		},
-		linkItems(relationType, items) {
+		async linkItems(relationType, items) {
 			if (!Array.isArray(items) || !items.length) {
 				return
 			}
-			// Extract itemIDs from items array
-			const itemIDs = items.map((item) => { return item.id })
-			Axios.post(OC.generateUrl('apps/inventory/item/' + this.item.id + '/link/' + relationType), {
-				itemIDs
-			}).then(response => {
-				if (response.data.status === 'success') {
-					if (this.relationType === 'parent') {
-						this.loadParentItems(this.item.id)
-					} else if (this.relationType === 'sub') {
-						this.loadSubItems(this.item.id)
-					} else if (this.relationType === 'related') {
-						this.loadRelatedItems(this.item.id)
-					}
+			try {
+				// Extract itemIDs from items array
+				const itemIDs = items.map((item) => { return item.id })
+				await Axios.post(OC.generateUrl('apps/inventory/item/' + this.item.id + '/link/' + relationType), { itemIDs })
+				if (this.relationType === 'parent') {
+					this.loadParentItems(this.item.id)
+				} else if (this.relationType === 'sub') {
+					this.loadSubItems(this.item.id)
+				} else if (this.relationType === 'related') {
+					this.loadRelatedItems(this.item.id)
 				}
-			})
+			} catch {
+				console.debug('Linking items failed.')
+			}
 		},
 
 		removeItem: function() {
@@ -329,7 +340,7 @@ export default {
 		},
 
 		...mapActions([
-			'loadItem',
+			'getItemById',
 			'loadSubItems',
 			'loadParentItems',
 			'loadRelatedItems',

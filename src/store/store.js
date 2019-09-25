@@ -33,7 +33,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	state: {
 		items: {},
-		item: [],
+		item: null,
 		subItems: [],
 		parentItems: [],
 		relatedItems: [],
@@ -116,9 +116,8 @@ export default new Vuex.Store({
 
 		async loadItems({ commit }) {
 			const response = await Axios.get(OC.generateUrl('apps/inventory/items'))
-			const items = response.data.data.items.map(payload => {
-				const item = new Item(payload)
-				return item
+			const items = response.data.map(payload => {
+				return new Item(payload)
 			})
 			commit('addItems', items)
 		},
@@ -129,14 +128,10 @@ export default new Vuex.Store({
 				await queue.add(async() => {
 					try {
 						const response = await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item: item.response })
-						if (response.data.status === 'success') {
-							Vue.set(item, 'response', response.data.data)
-							item.updateItem()
-							item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
-							context.commit('addItem', item)
-						} else {
-							throw Error
-						}
+						Vue.set(item, 'response', response.data)
+						item.updateItem()
+						item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
+						context.commit('addItem', item)
 					} catch {
 						item.syncstatus = new Status('error', 'Item creation failed.') // eslint-disable-line require-atomic-updates
 					}
@@ -144,47 +139,65 @@ export default new Vuex.Store({
 			})
 		},
 
-		async loadItem({ commit }, itemID) {
-			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID))
-			const item = new Item(response.data.data.item)
-			commit('setItem', { item })
+		async getItemById({ commit }, itemID) {
+			try {
+				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID))
+				const item = new Item(response.data)
+				commit('setItem', { item })
+			} catch {
+				commit('setItem', { item: null })
+			}
 		},
 		async loadSubItems({ commit }, itemID) {
-			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/sub'))
-			const subItems = response.data.data.items.map(payload => {
-				const item = new Item(payload)
-				return item
-			})
-			commit('setSubItems', { subItems })
+			try {
+				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/sub'))
+				const subItems = response.data.map(payload => {
+					return new Item(payload)
+				})
+				commit('setSubItems', { subItems })
+			} catch {
+				commit('setSubItems', { subItems: [] })
+			}
 		},
 		async loadParentItems({ commit }, itemID) {
-			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/parent'))
-			const parentItems = response.data.data.items.map(payload => {
-				const item = new Item(payload)
-				return item
-			})
-			commit('setParentItems', { parentItems })
+			try {
+				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/parent'))
+				const parentItems = response.data.map(payload => {
+					return new Item(payload)
+				})
+				commit('setParentItems', { parentItems })
+			} catch {
+				commit('setParentItems', { parentItems: [] })
+			}
 		},
 		async loadRelatedItems({ commit }, itemID) {
-			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/related'))
-			const relatedItems = response.data.data.items.map(payload => {
-				const item = new Item(payload)
-				return item
-			})
-			commit('setRelatedItems', { relatedItems })
+			try {
+				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/related'))
+				const relatedItems = response.data.map(payload => {
+					return new Item(payload)
+				})
+				commit('setRelatedItems', { relatedItems })
+			} catch {
+				commit('setRelatedItems', { relatedItems: [] })
+			}
 		},
 		async loadItemCandidates({ commit }, parameters) {
-			const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + parameters.itemID + '/candidates/' + parameters.relationType))
-			const itemCandidates = response.data.data.items.map(payload => {
-				const item = new Item(payload)
-				return item
-			})
-			commit('setItemCandidates', { itemCandidates })
+			try {
+				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + parameters.itemID + '/candidates/' + parameters.relationType))
+				const itemCandidates = response.data.map(payload => {
+					return new Item(payload)
+				})
+				commit('setItemCandidates', { itemCandidates })
+			} catch {
+				commit('setItemCandidates', { itemCandidates: [] })
+			}
 		},
 		async deleteItem({ commit }, item) {
-			const response = await Axios.delete(OC.generateUrl('apps/inventory/item/' + item.id + '/delete'))
-			if (response.data.status === 'success') {
+			try {
+				await Axios.delete(OC.generateUrl('apps/inventory/item/' + item.id + '/delete'))
 				commit('deleteItem', item)
+			} catch {
+				console.debug('Item deletion failed.')
 			}
 		},
 		async deleteItems(context, items) {
