@@ -83,7 +83,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<a @click="removeItems">
 								<span class="icon icon-bw icon-trash" />
 								<span class="label">
-									{{ t('inventory', 'Delete selected items') }}
+									{{ n('inventory', 'Delete selected item', 'Delete selected items', selectedItems.length) }}
 								</span>
 							</a>
 						</li>
