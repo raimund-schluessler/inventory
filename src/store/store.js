@@ -32,7 +32,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		items: [],
+		items: {},
 		item: [],
 		subItems: [],
 		parentItems: [],
@@ -110,6 +110,25 @@ export default new Vuex.Store({
 		getAllItems: (state, getters, rootState) => {
 			return Object.values(state.items)
 		},
+
+		/**
+		 * Returns all items with the given id in the store
+		 *
+		 * @param {Object} state The store data
+		 * @param {Object} getters The store getters
+		 * @param {Object} rootState The store root state
+		 * @param {Array} itemIDs Array containing the itemIDs
+		 * @returns {Array} All items in store
+		 */
+		getItemsByIDs: (state, getters, rootState) => (itemIDs) => {
+			if (!Array.isArray(itemIDs)) {
+				return []
+			}
+			return getters.getAllItems
+				.filter(item => {
+					return itemIDs.includes(item.id)
+				})
+		},
 	},
 
 	actions: {
@@ -186,6 +205,13 @@ export default new Vuex.Store({
 			if (response.data.status === 'success') {
 				commit('deleteItem', item)
 			}
+		},
+		async deleteItems(context, itemIDs) {
+			const queue = new PQueue({ concurrency: 5 })
+			const items = context.getters.getItemsByIDs(itemIDs)
+			items.forEach(async(item) => {
+				await queue.add(() => context.dispatch('deleteItem', item))
+			})
 		},
 	}
 })

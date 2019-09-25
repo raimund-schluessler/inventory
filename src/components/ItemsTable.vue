@@ -79,6 +79,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								</span>
 							</a>
 						</li>
+						<li v-if="selectedItemIDs.length">
+							<a @click="removeItems">
+								<span class="icon icon-bw icon-trash" />
+								<span class="label">
+									{{ t('inventory', 'Delete selected items') }}
+								</span>
+							</a>
+						</li>
 					</Dropdown>
 				</th>
 				<th />
@@ -136,6 +144,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import Dropdown from './Dropdown.vue'
 import ItemStatusDisplay from './ItemStatusDisplay'
 import searchQueryParser from 'search-query-parser'
+import { mapActions } from 'vuex'
 
 export default {
 	components: {
@@ -286,6 +295,10 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions([
+			'deleteItems'
+		]),
+
 		getIconUrl: function(item) {
 			if (!item.iconurl) {
 				let color = '000'
@@ -314,6 +327,10 @@ export default {
 		itemRoute(item) {
 			const itemStatus = item.syncstatus ? item.syncstatus.type : null
 			return (this.mode === 'selection' || itemStatus === 'unsynced') ? null : '#/items/' + item.id
+		},
+		async removeItems() {
+			await this.deleteItems(this.selectedItemIDs)
+			this.selectedItemIDs = []
 		},
 	}
 }
