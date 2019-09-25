@@ -31,6 +31,8 @@ use OCA\Inventory\Db\ItemparentMapper;
 use OCA\Inventory\Service\IteminstanceService;
 use OCA\Inventory\Db\ItemrelationMapper;
 use OCA\Inventory\Db\ItemtypeMapper;
+use OCA\Inventory\BadRequestException;
+use OCP\AppFramework\Db\DoesNotExistException;
 
 class ItemsService {
 
@@ -91,6 +93,10 @@ class ItemsService {
 	 */
 	public function getCandidates($itemID, $relationType) {
 
+		if ( is_numeric($itemID) === false ) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
 		$excludeIDs = array();
 		if ($relationType === 'sub') {
 			$excludeIDs = $this->itemParentMapper->findSubIDs($itemID);
@@ -124,11 +130,20 @@ class ItemsService {
 	}
 
 	/**
-	 * get items
-	 *
-	 * @return array
+	 * Get an item by its ID
+	 * 
+	 * @param $itemID
+	 * @return Item
+	 * @throws DoesNotExistException
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws BadRequestException
 	 */
 	public function get($itemID) {
+
+		if ( is_numeric($itemID) === false ) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
 		$item = $this->itemMapper->find($itemID, $this->userId);
 		$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
 		$categoriesNames = array();
@@ -153,6 +168,11 @@ class ItemsService {
 	 * @return array
 	 */
 	public function getSub($itemID) {
+
+		if ( is_numeric($itemID) === false ) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
 		$relations = $this->itemParentMapper->findSub($itemID);
 		$items = [];
 		foreach ($relations as $relation) {
@@ -182,6 +202,11 @@ class ItemsService {
 	 * @return array
 	 */
 	public function getParent($itemID) {
+
+		if ( is_numeric($itemID) === false ) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
 		$relations = $this->itemParentMapper->findParent($itemID);
 		$items = [];
 		foreach ($relations as $relation) {
@@ -211,6 +236,11 @@ class ItemsService {
 	 * @return array
 	 */
 	public function getRelated($itemID) {
+
+		if ( is_numeric($itemID) === false ) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
 		$relations = $this->itemRelationMapper->findRelation($itemID, $this->userId);
 		$items = [];
 		foreach ($relations as $relation) {
@@ -268,6 +298,11 @@ class ItemsService {
 	 * @return array
 	 */
 	public function delete($itemId) {
+
+		if ( is_numeric($itemId) === false ) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
 		// Find the item by Id
 		$item = $this->itemMapper->find($itemId, $this->userId);
 
@@ -296,6 +331,11 @@ class ItemsService {
 	 * @return array
 	 */
 	public function link($mainItemID, $itemIDs, $relationType) {
+
+		if ( is_numeric($mainItemID) === false ) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
 		if ($relationType === 'parent') {
 			foreach ($itemIDs as $itemID) {
 				if ($itemID === $mainItemID) {

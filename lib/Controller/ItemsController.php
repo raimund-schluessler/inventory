@@ -34,7 +34,7 @@ class ItemsController extends Controller {
 
 	use Response;
 
-	public function __construct($AppName, IRequest $request, ItemsService $itemsService){
+	public function __construct($AppName, IRequest $request, ItemsService $itemsService) {
 		parent::__construct($AppName, $request);
 		$this->appName = $AppName;
 		$this->itemsService = $itemsService;
@@ -43,81 +43,65 @@ class ItemsController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	public function getAll(){
-		return $this->generateResponse(function () {
-			return ['items' => $this->itemsService->getAll()];
-		});
+	public function getAll() {
+		return $this->itemsService->getAll();
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @param $itemID
+	 * @return \OCP\AppFramework\Db\Entity
+	 */
+	public function get($itemID) {
+		return $this->itemsService->get($itemID);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	public function get($itemID){
-		return $this->generateResponse(function () use ($itemID) {
-			return ['item' => $this->itemsService->get($itemID)];
-		});
+	public function getSub($itemID) {
+		return $this->itemsService->getSub($itemID);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	public function getSub($itemID){
-		return $this->generateResponse(function () use ($itemID) {
-			return ['items' => $this->itemsService->getSub($itemID)];
-		});
+	public function getParent($itemID) {
+		return $this->itemsService->getParent($itemID);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	public function getParent($itemID){
-		return $this->generateResponse(function () use ($itemID) {
-			return ['items' => $this->itemsService->getParent($itemID)];
-		});
+	public function getRelated($itemID) {
+		return $this->itemsService->getRelated($itemID);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	public function getRelated($itemID){
-		return $this->generateResponse(function () use ($itemID) {
-			return ['items' => $this->itemsService->getRelated($itemID)];
-		});
+	public function getCandidates($itemID, $relationType) {
+		return $this->itemsService->getCandidates($itemID, $relationType);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	public function getCandidates($itemID, $relationType){
-		return $this->generateResponse(function () use ($itemID, $relationType) {
-			return ['items' => $this->itemsService->getCandidates($itemID, $relationType)];
-		});
+	public function link($itemID, $relationType, $itemIDs) {
+		return $this->itemsService->link($itemID, $itemIDs, $relationType);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	public function link($itemID, $relationType, $itemIDs){
-		return $this->generateResponse(function () use ($itemID, $itemIDs, $relationType) {
-			return $this->itemsService->link($itemID, $itemIDs, $relationType);
-		});
-	}
-
-	/**
-	 * @NoAdminRequired
-	 */
-	public function enlist($item){
-		return $this->generateResponse(function () use ($item) {
-			return $this->itemsService->enlist($item);
-		});
+	public function enlist($item) {
+		return $this->itemsService->enlist($item);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
 	public function delete($itemID){
-		return $this->generateResponse(function () use ($itemID) {
-			return $this->itemsService->delete($itemID);
-		});
+		return $this->itemsService->delete($itemID);
 	}
 }

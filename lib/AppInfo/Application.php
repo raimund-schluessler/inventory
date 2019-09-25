@@ -3,7 +3,7 @@
  * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2017 Raimund Schlüßler raimund.schluessler@mailbox.org
+ * @copyright 2019 Raimund Schlüßler raimund.schluessler@mailbox.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -33,6 +33,7 @@ use \OCA\Inventory\Db\CategoryMapper;
 use \OCA\Inventory\Db\ItemcategoriesMapper;
 use \OCA\Inventory\Db\ItemparentMapper;
 use \OCA\Inventory\Db\ItemrelationMapper;
+use OCA\Inventory\Middleware\ExceptionMiddleware;
 
 class Application extends App {
 
@@ -41,6 +42,16 @@ class Application extends App {
 		parent::__construct('inventory', $urlParams);
 
 		$container = $this->getContainer();
+
+		/**
+		 * Middleware
+		 */
+
+		$container->registerService('ExceptionMiddleware', function($c){
+			return new ExceptionMiddleware();
+		});
+
+		$container->registerMiddleware('ExceptionMiddleware');
 
 		/**
 		 * Services
