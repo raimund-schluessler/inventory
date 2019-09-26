@@ -32,8 +32,6 @@ class ItemsController extends Controller {
 	private $itemsService;
 	public $appName;
 
-	use Response;
-
 	public function __construct($AppName, IRequest $request, ItemsService $itemsService) {
 		parent::__construct($AppName, $request);
 		$this->appName = $AppName;
