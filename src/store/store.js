@@ -198,6 +198,7 @@ export default new Vuex.Store({
 		},
 		async loadItemCandidates({ commit }, parameters) {
 			try {
+				commit('setItemCandidates', { itemCandidates: [] })
 				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + parameters.itemID + '/candidates/' + parameters.relationType))
 				const itemCandidates = response.data.map(payload => {
 					return new Item(payload)

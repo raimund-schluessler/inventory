@@ -45,26 +45,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</a>
 					</li>
 					<li>
-						<a @click="openModal('parent')">
+						<a @click="openModal">
 							<span class="icon icon-bw icon-plus" />
 							<span class="label">
-								{{ t('inventory', 'Add parent item') }}
-							</span>
-						</a>
-					</li>
-					<li>
-						<a @click="openModal('related')">
-							<span class="icon icon-bw icon-plus" />
-							<span class="label">
-								{{ t('inventory', 'Add related item') }}
-							</span>
-						</a>
-					</li>
-					<li>
-						<a @click="openModal('sub')">
-							<span class="icon icon-bw icon-plus" />
-							<span class="label">
-								{{ t('inventory', 'Add sub item') }}
+								{{ t('inventory', 'Link items') }}
 							</span>
 						</a>
 					</li>
@@ -236,9 +220,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<ItemsTable :items="relatedItems" :show-dropdown="false" :search-string="$root.searchString" />
 				</div>
 			</div>
-			<RelationModal :modal-open.sync="modalOpen" :link="linkItems"
-				:relation-type="relationType" :item-id="id"
-			/>
+			<RelationModal :modal-open.sync="modalOpen" :link="linkItems" :item-id="id" />
 		</div>
 		<div v-else class="notice">
 			<span v-if="loading">{{ t('inventory', 'Loading item from server.') }}</span>
@@ -268,7 +250,6 @@ export default {
 	},
 	data: function() {
 		return {
-			relationType: '',
 			modalOpen: false,
 			loading: false,
 		}
@@ -305,9 +286,7 @@ export default {
 				return ''
 			}
 		},
-		openModal: function(relationType) {
-			this.loadItemCandidates({ itemID: this.id, relationType: relationType })
-			this.relationType = relationType
+		openModal: function() {
 			this.modalOpen = true
 		},
 		async linkItems(relationType, items) {
@@ -318,11 +297,11 @@ export default {
 				// Extract itemIDs from items array
 				const itemIDs = items.map((item) => { return item.id })
 				await Axios.post(OC.generateUrl('apps/inventory/item/' + this.item.id + '/link/' + relationType), { itemIDs })
-				if (this.relationType === 'parent') {
+				if (relationType === 'parent') {
 					this.loadParentItems(this.item.id)
-				} else if (this.relationType === 'sub') {
+				} else if (relationType === 'sub') {
 					this.loadSubItems(this.item.id)
-				} else if (this.relationType === 'related') {
+				} else if (relationType === 'related') {
 					this.loadRelatedItems(this.item.id)
 				}
 			} catch {
@@ -344,7 +323,6 @@ export default {
 			'loadSubItems',
 			'loadParentItems',
 			'loadRelatedItems',
-			'loadItemCandidates',
 			'deleteItem',
 		])
 	}

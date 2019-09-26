@@ -30,6 +30,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="title">
 					{{ headerString }}
 				</span>
+				<Multiselect
+					:value="relationTypes.find( _ => _.type === relationType )"
+					:multiple="false"
+					:allow-empty="false"
+					track-by="type"
+					:placeholder="t('tasks', 'Select relation type')"
+					label="name"
+					:options="relationTypes"
+					:close-on-select="true"
+					class="multiselect-vue"
+					@input="changeRelationType"
+				/>
 				<form class="searchbox" action="#" method="post"
 					role="search" novalidate=""
 				>
@@ -50,7 +62,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 			<div class="body">
 				<ItemsTable :items="items" :show-dropdown="false" :search-string="searchString"
-					:mode="'selection'" @selectedItemsChanged="selectedItemsChanged"
+					:mode="'selection'" :loading="loading" @selectedItemsChanged="selectedItemsChanged"
 				/>
 			</div>
 
@@ -70,14 +82,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
-import { Modal } from 'nextcloud-vue'
+import { Modal, Multiselect } from 'nextcloud-vue'
 
 export default {
 	components: {
 		ItemsTable: ItemsTable,
 		Modal,
+		Multiselect,
 	},
 	props: {
 		modalOpen: {
@@ -88,10 +101,6 @@ export default {
 			type: Function,
 			default: () => {}
 		},
-		relationType: {
-			type: String,
-			default: 'parent'
-		},
 		itemID: {
 			type: String,
 			default: '0'
@@ -100,21 +109,24 @@ export default {
 	data: function() {
 		return {
 			selectedItems: [],
-			searchString: ''
+			searchString: '',
+			relationTypes: [{
+				type: 'parent',
+				name: this.t('inventory', 'parent items'),
+			}, {
+				type: 'sub',
+				name: this.t('inventory', 'sub items'),
+			}, {
+				type: 'related',
+				name: this.t('inventory', 'related items'),
+			}],
+			relationType: 'parent',
+			loading: false,
 		}
 	},
 	computed: {
 		headerString: function() {
-			switch (this.relationType) {
-			case 'parent':
-				return this.t('inventory', 'Please select the parent items:')
-			case 'related':
-				return this.t('inventory', 'Please select the related items:')
-			case 'sub':
-				return this.t('inventory', 'Please select the sub items:')
-			default:
-				return this.t('inventory', 'Please select the items:')
-			}
+			return this.t('inventory', 'Please select the relation of the items:')
 		},
 		statusString: function() {
 			var singular, plural
@@ -141,7 +153,17 @@ export default {
 			items: state => state.itemCandidates
 		})
 	},
+	watch: {
+		modalOpen: 'loadItems',
+	},
+	created: function() {
+		this.loadItems()
+	},
 	methods: {
+		changeRelationType: function(relation) {
+			this.relationType = relation.type
+			this.loadItems()
+		},
 		closeModal: function(event) {
 			this.$emit('update:modalOpen', false)
 		},
@@ -152,6 +174,18 @@ export default {
 		selectedItemsChanged: function(selectedItems) {
 			this.selectedItems = selectedItems
 		},
+		async loadItems() {
+			if (!this.modalOpen) {
+				return
+			}
+			this.loading = true
+			await this.loadItemCandidates({ itemID: this.itemID, relationType: this.relationType })
+			this.loading = false
+		},
+
+		...mapActions([
+			'loadItemCandidates',
+		])
 	}
 }
 </script>
