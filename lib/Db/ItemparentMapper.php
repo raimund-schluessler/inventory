@@ -31,6 +31,12 @@ class ItemparentMapper extends Mapper {
 		parent::__construct($db, 'invtry_parent_map');
 	}
 
+	public function findRelation($itemID, $parentID, $userID) {
+		$sql = 'SELECT * FROM `*PREFIX*invtry_parent_map` ' .
+			'WHERE `itemid` = ? AND `parentid` = ? AND `uid` = ?';
+		return $this->findEntity($sql, [$itemID, $parentID, $userID]);
+	}
+
 	public function find($itemID) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_parent_map` ' .
 			'WHERE `parentid` = ? OR `itemid` = ?';

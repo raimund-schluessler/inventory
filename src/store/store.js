@@ -35,10 +35,10 @@ export default new Vuex.Store({
 		items: {},
 		item: null,
 		loadingItems: false,
-		subItems: [],
-		parentItems: [],
-		relatedItems: [],
-		itemCandidates: []
+		subItems: {},
+		parentItems: {},
+		relatedItems: {},
+		itemCandidates: [],
 	},
 	mutations: {
 
@@ -81,17 +81,80 @@ export default new Vuex.Store({
 			}
 		},
 
+		/**
+		 * Unlinks parent items
+		 *
+		 * @param {Object} state Default state
+		 * @param {Item} items The items to unlink
+		 */
+		unlinkParents(state, items) {
+			items.forEach((item) => {
+				if (state.parentItems[item.id] && item instanceof Item) {
+					Vue.delete(state.parentItems, item.id)
+				}
+			})
+		},
+
+		/**
+		 * Unlinks related items
+		 *
+		 * @param {Object} state Default state
+		 * @param {Item} items The items to unlink
+		 */
+		unlinkRelated(state, items) {
+			items.forEach((item) => {
+				if (state.relatedItems[item.id] && item instanceof Item) {
+					Vue.delete(state.relatedItems, item.id)
+				}
+			})
+		},
+
+		/**
+		 * Unlinks sub items
+		 *
+		 * @param {Object} state Default state
+		 * @param {Item} items The items to unlink
+		 */
+		unlinkSub(state, items) {
+			items.forEach((item) => {
+				if (state.subItems[item.id] && item instanceof Item) {
+					Vue.delete(state.subItems, item.id)
+				}
+			})
+		},
+
 		setItem(state, payload) {
 			state.item = payload.item
 		},
-		setSubItems(state, payload) {
-			state.subItems = payload.subItems
+		setSubItems(state, items) {
+			state.subItems = items.reduce(function(list, item) {
+				if (item instanceof Item) {
+					Vue.set(list, item.id, item)
+				} else {
+					console.error('Wrong item object', item)
+				}
+				return list
+			}, state.subItems)
 		},
-		setParentItems(state, payload) {
-			state.parentItems = payload.parentItems
+		setParentItems(state, items) {
+			state.parentItems = items.reduce(function(list, item) {
+				if (item instanceof Item) {
+					Vue.set(list, item.id, item)
+				} else {
+					console.error('Wrong item object', item)
+				}
+				return list
+			}, state.parentItems)
 		},
-		setRelatedItems(state, payload) {
-			state.relatedItems = payload.relatedItems
+		setRelatedItems(state, items) {
+			state.relatedItems = items.reduce(function(list, item) {
+				if (item instanceof Item) {
+					Vue.set(list, item.id, item)
+				} else {
+					console.error('Wrong item object', item)
+				}
+				return list
+			}, state.relatedItems)
 		},
 		setItemCandidates(state, payload) {
 			state.itemCandidates = payload.itemCandidates
@@ -110,6 +173,42 @@ export default new Vuex.Store({
 		 */
 		getAllItems: (state, getters, rootState) => {
 			return Object.values(state.items)
+		},
+
+		/**
+		 * Returns all parent items in the store
+		 *
+		 * @param {Object} state The store data
+		 * @param {Object} getters The store getters
+		 * @param {Object} rootState The store root state
+		 * @returns {Array} All parent items in store
+		 */
+		getParentItems: (state, getters, rootState) => {
+			return Object.values(state.parentItems)
+		},
+
+		/**
+		 * Returns all sub items in the store
+		 *
+		 * @param {Object} state The store data
+		 * @param {Object} getters The store getters
+		 * @param {Object} rootState The store root state
+		 * @returns {Array} All sub items in store
+		 */
+		getSubItems: (state, getters, rootState) => {
+			return Object.values(state.subItems)
+		},
+
+		/**
+		 * Returns all related items in the store
+		 *
+		 * @param {Object} state The store data
+		 * @param {Object} getters The store getters
+		 * @param {Object} rootState The store root state
+		 * @returns {Array} All related items in store
+		 */
+		getRelatedItems: (state, getters, rootState) => {
+			return Object.values(state.relatedItems)
 		},
 
 		/**
@@ -169,9 +268,9 @@ export default new Vuex.Store({
 				const subItems = response.data.map(payload => {
 					return new Item(payload)
 				})
-				commit('setSubItems', { subItems })
+				commit('setSubItems', subItems)
 			} catch {
-				commit('setSubItems', { subItems: [] })
+				commit('setSubItems', [])
 			}
 		},
 		async loadParentItems({ commit }, itemID) {
@@ -180,9 +279,9 @@ export default new Vuex.Store({
 				const parentItems = response.data.map(payload => {
 					return new Item(payload)
 				})
-				commit('setParentItems', { parentItems })
+				commit('setParentItems', parentItems)
 			} catch {
-				commit('setParentItems', { parentItems: [] })
+				commit('setParentItems', [])
 			}
 		},
 		async loadRelatedItems({ commit }, itemID) {
@@ -191,9 +290,9 @@ export default new Vuex.Store({
 				const relatedItems = response.data.map(payload => {
 					return new Item(payload)
 				})
-				commit('setRelatedItems', { relatedItems })
+				commit('setRelatedItems', relatedItems)
 			} catch {
-				commit('setRelatedItems', { relatedItems: [] })
+				commit('setRelatedItems', [])
 			}
 		},
 		async loadItemCandidates({ commit }, parameters) {
@@ -221,6 +320,44 @@ export default new Vuex.Store({
 			items.forEach(async(item) => {
 				await queue.add(() => context.dispatch('deleteItem', item))
 			})
+		},
+		async linkItems(context, { itemID, relation, items }) {
+			if (!Array.isArray(items) || !items.length) {
+				return
+			}
+			try {
+				// Extract itemIDs from items array
+				const itemIDs = items.map((item) => { return item.id })
+				await Axios.post(OC.generateUrl('apps/inventory/item/' + itemID + '/link/' + relation), { itemIDs })
+				if (relation === 'parent') {
+					context.dispatch('loadParentItems', itemID)
+				} else if (relation === 'sub') {
+					context.dispatch('loadSubItems', itemID)
+				} else if (relation === 'related') {
+					context.dispatch('loadRelatedItems', itemID)
+				}
+			} catch {
+				console.debug('Linking items failed.')
+			}
+		},
+		async unlinkItems({ commit }, { itemID, relation, items }) {
+			if (!Array.isArray(items) || !items.length) {
+				return
+			}
+			try {
+				// Extract itemIDs from items array
+				const itemIDs = items.map((item) => { return item.id })
+				await Axios.post(OC.generateUrl('apps/inventory/item/' + itemID + '/unlink/' + relation), { itemIDs })
+				if (relation === 'parent') {
+					commit('unlinkParents', items)
+				} else if (relation === 'sub') {
+					commit('unlinkSub', items)
+				} else if (relation === 'related') {
+					commit('unlinkRelated', items)
+				}
+			} catch {
+				console.debug('Unlinking items failed.')
+			}
 		},
 	}
 })
