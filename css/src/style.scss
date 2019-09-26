@@ -68,6 +68,13 @@
 	width: 100%;
 	position: relative;
 
+	thead {
+		position: sticky;
+		top: 50px;
+		background-color: var(--color-main-background-translucent);
+		z-index: 55;
+	}
+
 	tr {
 		transition: background-color .3s ease;
 
@@ -235,7 +242,10 @@ table {
 	width: 100%;
 	padding: 0;
 	margin: 0;
-	z-index: 50;
+	position: sticky;
+	top: 50px;
+	background-color: var(--color-main-background-translucent);
+	z-index: 55;
 }
 
 .table-dropdown {
@@ -307,6 +317,10 @@ table {
 		display: flex;
 		flex: 1;
 		overflow-y: auto;
+
+		thead {
+			top: 0;
+		}
 	}
 	
 	.footer {
