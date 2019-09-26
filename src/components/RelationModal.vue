@@ -101,9 +101,9 @@ export default {
 			type: Function,
 			default: () => {}
 		},
-		itemID: {
+		itemId: {
 			type: String,
-			default: '0'
+			required: true,
 		},
 	},
 	data: function() {
@@ -179,7 +179,7 @@ export default {
 				return
 			}
 			this.loading = true
-			await this.loadItemCandidates({ itemID: this.itemID, relationType: this.relationType })
+			await this.loadItemCandidates({ itemID: this.itemId, relationType: this.relationType })
 			this.loading = false
 		},
 
