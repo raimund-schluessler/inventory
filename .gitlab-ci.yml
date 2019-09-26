@@ -21,14 +21,12 @@ javascript:
     - npm run test
 
 PHP7.2 + SQLite:
-  image: ubuntu:18.10
+  image: test-nextcloud:latest
   stage: test
   artifacts:
     paths:
       - coverage
   coverage: '/^\s*Lines:\s*(\d+.\d+)\%/'
-  before_script:
-    - bash ci/docker_install.sh
   script:
     # copy local copy that has been cloned already
     - cp -r . /tmp/inventory
@@ -49,7 +47,7 @@ PHP7.2 + SQLite:
     - sudo -u www-data make -C /var/www/html/nextcloud/apps/inventory test-php
 
 PHP7.2 + PostgreSQL:
-  image: ubuntu:18.10
+  image: test-nextcloud:latest
   stage: test
   services:
       - postgres:latest
@@ -57,8 +55,6 @@ PHP7.2 + PostgreSQL:
       POSTGRES_DB: plop
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ""
-  before_script:
-    - bash ci/docker_install.sh
   script:
     - DEBIAN_FRONTEND=noninteractive apt-get install php7.2-pgsql postgresql-client -yqq > /dev/null 2>&1
     # copy local copy that has been cloned already
