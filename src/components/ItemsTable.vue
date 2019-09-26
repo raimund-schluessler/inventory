@@ -305,11 +305,11 @@ export default {
 		},
 		emptyListMessage() {
 			if (this.loading) {
-				return t('inventory', 'Loading items from server.')
+				return this.t('inventory', 'Loading items from server.')
 			} else if (this.searchString && this.items.length) {
-				return t('inventory', 'No item found.')
+				return this.t('inventory', 'No item found.')
 			} else {
-				return t('inventory', 'The item list is empty.')
+				return this.t('inventory', 'The item list is empty.')
 			}
 		},
 	},
