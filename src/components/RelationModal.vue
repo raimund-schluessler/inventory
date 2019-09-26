@@ -178,6 +178,7 @@ export default {
 			if (!this.modalOpen) {
 				return
 			}
+			this.selectedItems = []
 			this.loading = true
 			await this.loadItemCandidates({ itemID: this.itemId, relationType: this.relationType })
 			this.loading = false
