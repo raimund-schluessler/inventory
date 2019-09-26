@@ -298,18 +298,32 @@ table {
 	font-family: Helvetica, Arial, sans-serif;
 
 	.header {
+		display: flex;
+		align-items: center;
+		flex-wrap: nowrap;
+		flex-direction: row;
 		background-color: $color-primary;
 		padding: 8px;
 	
 		.title {
 			line-height: 38px;
-			padding-left: 20px;
+			padding: 0 20px;
 			font-size: 14px;
 			color: white;
 		}
+
+		.multiselect {
+			z-index: 100;
+			background-color: unset;
+			font-size: 14px;
+
+			.multiselect__tags {
+				align-items: center;
+			}
+		}
 	
 		.searchbox {
-			float: right;
+			margin-left: auto;
 		}
 	}
 
