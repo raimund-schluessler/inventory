@@ -205,22 +205,28 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Parent items') }}</span>
 					</h3>
-					<ItemsTable :items="parentItems" :show-dropdown="false" :search-string="$root.searchString" />
+					<ItemsTable :items="parentItems" :unlink="true" :search-string="$root.searchString"
+						@selectedItemsChanged="selectedParentsChanged" @unlink="unlink('parent')"
+					/>
 				</div>
 				<div v-if="subItems.length" class="paragraph">
 					<h3>
 						<span>{{ t('inventory', 'Sub items') }}</span>
 					</h3>
-					<ItemsTable :items="subItems" :show-dropdown="false" :search-string="$root.searchString" />
+					<ItemsTable :items="subItems" :unlink="true" :search-string="$root.searchString"
+						@selectedItemsChanged="selectedSubChanged" @unlink="unlink('sub')"
+					/>
 				</div>
 				<div v-if="relatedItems.length" class="paragraph">
 					<h3>
 						<span>{{ t('inventory', 'Related items') }}</span>
 					</h3>
-					<ItemsTable :items="relatedItems" :show-dropdown="false" :search-string="$root.searchString" />
+					<ItemsTable :items="relatedItems" :unlink="true" :search-string="$root.searchString"
+						@selectedItemsChanged="selectedRelatedChanged" @unlink="unlink('related')"
+					/>
 				</div>
 			</div>
-			<RelationModal :modal-open.sync="modalOpen" :link="linkItems" :item-id="id" />
+			<RelationModal :modal-open.sync="modalOpen" :link="link" :item-id="id" />
 		</div>
 		<div v-else class="notice">
 			<span v-if="loading">{{ t('inventory', 'Loading item from server.') }}</span>
@@ -230,11 +236,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 import Dropdown from './Dropdown.vue'
 import RelationModal from './RelationModal.vue'
-import Axios from 'axios'
 
 export default {
 	components: {
@@ -252,14 +257,21 @@ export default {
 		return {
 			modalOpen: false,
 			loading: false,
+			selectedParents: [],
+			selectedSub: [],
+			selectedRelated: [],
 		}
 	},
-	computed: mapState({
-		item:	state => state.item,
-		subItems:	state => state.subItems,
-		parentItems:	state => state.parentItems,
-		relatedItems:	state => state.relatedItems
-	}),
+	computed: {
+		...mapState({
+			item:	state => state.item,
+		}),
+		...mapGetters({
+			parentItems: 'getParentItems',
+			subItems: 'getSubItems',
+			relatedItems: 'getRelatedItems',
+		}),
+	},
 	created: function() {
 		this.loadItem(this.id)
 		this.loadSubItems(this.id)
@@ -289,24 +301,32 @@ export default {
 		openModal: function() {
 			this.modalOpen = true
 		},
-		async linkItems(relationType, items) {
-			if (!Array.isArray(items) || !items.length) {
-				return
+		selectedParentsChanged: function(items) {
+			this.selectedParents = items
+		},
+		selectedSubChanged: function(items) {
+			this.selectedSub = items
+		},
+		selectedRelatedChanged: function(items) {
+			this.selectedRelated = items
+		},
+		async link(relation, items) {
+			this.linkItems({ itemID: this.item.id, relation, items })
+		},
+		async unlink(relation) {
+			let items = []
+			switch (relation) {
+			case 'parent':
+				items = this.selectedParents
+				break
+			case 'sub':
+				items = this.selectedSub
+				break
+			case 'related':
+				items = this.selectedRelated
+				break
 			}
-			try {
-				// Extract itemIDs from items array
-				const itemIDs = items.map((item) => { return item.id })
-				await Axios.post(OC.generateUrl('apps/inventory/item/' + this.item.id + '/link/' + relationType), { itemIDs })
-				if (relationType === 'parent') {
-					this.loadParentItems(this.item.id)
-				} else if (relationType === 'sub') {
-					this.loadSubItems(this.item.id)
-				} else if (relationType === 'related') {
-					this.loadRelatedItems(this.item.id)
-				}
-			} catch {
-				console.debug('Linking items failed.')
-			}
+			this.unlinkItems({ itemID: this.item.id, relation, items })
 		},
 
 		removeItem: function() {
@@ -324,6 +344,8 @@ export default {
 			'loadParentItems',
 			'loadRelatedItems',
 			'deleteItem',
+			'linkItems',
+			'unlinkItems',
 		])
 	}
 }

@@ -92,6 +92,13 @@ class ItemsController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
+	public function unlink($itemID, $relationType, $itemIDs) {
+		return $this->itemsService->unlink($itemID, $itemIDs, $relationType);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
 	public function enlist($item) {
 		return $this->itemsService->enlist($item);
 	}

@@ -37,6 +37,12 @@ class ItemrelationMapper extends Mapper {
 		return $this->findEntities($sql, [$itemID, $itemID, $userID]);
 	}
 
+	public function findExactRelation($itemID1, $itemID2, $userID) {
+		$sql = 'SELECT * FROM `*PREFIX*invtry_rel_map` ' .
+			'WHERE `itemid1` = ? AND `itemid2` = ? AND `uid` = ?';
+		return $this->findEntity($sql, [$itemID1, $itemID2, $userID]);
+	}
+
 	public function findRelation($itemID, $userID) {
 		$sql = 'SELECT itemid1 FROM `*PREFIX*invtry_rel_map` ' .
 			'WHERE `itemid2` = ? AND `uid` = ? ' .

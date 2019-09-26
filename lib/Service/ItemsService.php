@@ -396,6 +396,64 @@ class ItemsService {
 	}
 
 	/**
+	 * Remove item relations
+	 *
+	 * @return array
+	 */
+	public function unlink($mainItemID, $itemIDs, $relationType) {
+
+		if ( is_numeric($mainItemID) === false ) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
+		if ($relationType === 'parent') {
+			foreach ($itemIDs as $itemID) {
+				if ($itemID === $mainItemID) {
+					continue;
+				}
+				try {
+					$relation = $this->itemParentMapper->findRelation($mainItemID, $itemID, $this->userId);
+					$this->itemParentMapper->delete($relation);
+				} catch (\Exception $e) {
+
+				}
+			}
+		} elseif ($relationType === 'sub') {
+			foreach ($itemIDs as $itemID) {
+				if ($itemID === $mainItemID) {
+					continue;
+				}
+				try {
+					$relation = $this->itemParentMapper->findRelation($itemID, $mainItemID, $this->userId);
+					$this->itemParentMapper->delete($relation);
+				} catch (\Exception $e) {
+
+				}
+			}
+		} elseif ($relationType === 'related') {
+			foreach ($itemIDs as $itemID) {
+				if ($itemID === $mainItemID) {
+					continue;
+				}
+				// sort IDs so that $itemID1 is smaller than $itemID2
+				if ($mainItemID <= $itemID) {
+					$itemID1 = $mainItemID;
+					$itemID2 = $itemID;
+				} else {
+					$itemID1 = $itemID;
+					$itemID2 = $mainItemID;
+				}
+				try {
+					$relation = $this->itemRelationMapper->findExactRelation($itemID1, $itemID2, $this->userId);
+					$this->itemRelationMapper->delete($relation);
+				} catch (\Exception $e) {
+
+				}
+			}
+		}
+	}
+
+	/**
 	 * finds items by query
 	 *
 	 * @return array

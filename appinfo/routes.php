@@ -29,6 +29,7 @@ return [
 		['name' => 'items#getRelated',		'url' => '/item/{itemID}/related',						'verb' => 'GET'],
 		['name' => 'items#getCandidates',	'url' => '/item/{itemID}/candidates/{relationType}',	'verb' => 'GET'],
 		['name' => 'items#link',			'url' => '/item/{itemID}/link/{relationType}',			'verb' => 'POST'],
+		['name' => 'items#unlink',			'url' => '/item/{itemID}/unlink/{relationType}',		'verb' => 'POST'],
 		['name' => 'items#enlist',			'url' => '/item/add',									'verb' => 'POST'],
 		['name' => 'items#delete',			'url' => '/item/{itemID}/delete',						'verb' => 'DELETE'],
 	]

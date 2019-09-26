@@ -85,8 +85,26 @@
 		th {
 			height: 50px;
 
+			>div {
+				display: flex;
+				align-items: center;
+
+				a {
+					margin-right: auto;
+				}
+			}
+
 			a.name {
 				padding-left: 40px;
+			}
+
+			.unlink {
+				margin-left: -32px;
+				padding: 0 8px;
+
+				&:hover .icon {
+					opacity: 0.8;
+				}
 			}
 
 			&.column-selection label {

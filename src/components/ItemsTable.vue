@@ -58,36 +58,41 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</th>
 				<th>
-					<a class="categories sort columntitle" data-sort="categories">
-						<span>{{ t('inventory', 'Categories') }}</span>
-						<span class="sort-indicator hidden icon-triangle-s" />
-					</a>
-					<Dropdown v-if="showDropdown">
-						<li>
-							<a href="#/items/additem">
-								<span class="icon icon-bw icon-plus" />
-								<span class="label">
-									{{ t('inventory', 'Add single item') }}
-								</span>
-							</a>
-						</li>
-						<li>
-							<a href="#/items/additems">
-								<span class="icon icon-bw icon-plus" />
-								<span class="label">
-									{{ t('inventory', 'Add multiple items') }}
-								</span>
-							</a>
-						</li>
-						<li v-if="selectedItems.length">
-							<a @click="removeItems">
-								<span class="icon icon-bw icon-trash" />
-								<span class="label">
-									{{ n('inventory', 'Delete selected item', 'Delete selected items', selectedItems.length) }}
-								</span>
-							</a>
-						</li>
-					</Dropdown>
+					<div>
+						<a class="categories sort columntitle" data-sort="categories">
+							<span>{{ t('inventory', 'Categories') }}</span>
+							<span class="sort-indicator hidden icon-triangle-s" />
+						</a>
+						<Dropdown v-if="showDropdown">
+							<li>
+								<a href="#/items/additem">
+									<span class="icon icon-bw icon-plus" />
+									<span class="label">
+										{{ t('inventory', 'Add single item') }}
+									</span>
+								</a>
+							</li>
+							<li>
+								<a href="#/items/additems">
+									<span class="icon icon-bw icon-plus" />
+									<span class="label">
+										{{ t('inventory', 'Add multiple items') }}
+									</span>
+								</a>
+							</li>
+							<li v-if="selectedItems.length">
+								<a @click="removeItems">
+									<span class="icon icon-bw icon-trash" />
+									<span class="label">
+										{{ n('inventory', 'Delete selected item', 'Delete selected items', selectedItems.length) }}
+									</span>
+								</a>
+							</li>
+						</Dropdown>
+						<div v-show="unlink && selectedItems.length" class="unlink" @click="$emit('unlink')">
+							<span class="icon icon-bw icon-trash" />
+						</div>
+					</div>
 				</th>
 				<th />
 			</tr>
@@ -172,6 +177,10 @@ export default {
 			required: false
 		},
 		showDropdown: {
+			type: Boolean,
+			default: false
+		},
+		unlink: {
 			type: Boolean,
 			default: false
 		},
@@ -313,10 +322,29 @@ export default {
 			}
 		},
 	},
+	watch: {
+		items: 'checkSelected',
+	},
 	methods: {
 		...mapActions([
-			'deleteItems'
+			'deleteItems',
+			'unlinkItems',
 		]),
+
+		/**
+		 * Check for every item in the selectedItems array
+		 * whether it is still in the items array.
+		 * If not, remove from selected.
+		 */
+		checkSelected: function() {
+			const before = this.selectedItems.length
+			this.selectedItems = this.selectedItems.filter((selected) => {
+				return (this.items.indexOf(selected) > -1)
+			})
+			if (before !== this.selectedItems.length) {
+				this.$emit('selectedItemsChanged', this.selectedItems)
+			}
+		},
 
 		getIconUrl: function(item) {
 			if (!item.iconurl) {
