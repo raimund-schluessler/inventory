@@ -60,11 +60,6 @@ describe('ItemsTable.vue', () => {
 				showDropdown: false,
 				searchString: ''
 			},
-			methods: {
-				t: function(app, string) {
-					return string
-				}
-			}
 		})
 		var itemsFound = wrapper.vm.filteredItems
 		expect(itemsFound.length).toBe(3)
@@ -77,11 +72,6 @@ describe('ItemsTable.vue', () => {
 				showDropdown: false,
 				searchString: 'Cat1'
 			},
-			methods: {
-				t: function(app, string) {
-					return string
-				}
-			}
 		})
 		var itemsFound = wrapper.vm.filteredItems
 		expect(itemsFound.length).toBe(2)
@@ -94,11 +84,6 @@ describe('ItemsTable.vue', () => {
 				showDropdown: false,
 				searchString: 'Maker1'
 			},
-			methods: {
-				t: function(app, string) {
-					return string
-				}
-			}
 		})
 		var itemsFound = wrapper.vm.filteredItems
 		expect(itemsFound.length).toBe(2)
@@ -111,11 +96,6 @@ describe('ItemsTable.vue', () => {
 				showDropdown: false,
 				searchString: 'categories:Cat1'
 			},
-			methods: {
-				t: function(app, string) {
-					return string
-				}
-			}
 		})
 		var itemsFound = wrapper.vm.filteredItems
 		expect(itemsFound.length).toBe(2)
@@ -128,11 +108,6 @@ describe('ItemsTable.vue', () => {
 				showDropdown: false,
 				searchString: 'comment:Maker1'
 			},
-			methods: {
-				t: function(app, string) {
-					return string
-				}
-			}
 		})
 		var itemsFound = wrapper.vm.filteredItems
 		expect(itemsFound.length).toBe(1)
@@ -145,11 +120,6 @@ describe('ItemsTable.vue', () => {
 				showDropdown: false,
 				searchString: 'itemNumber:42'
 			},
-			methods: {
-				t: function(app, string) {
-					return string
-				}
-			}
 		})
 		var itemsFound = wrapper.vm.filteredItems
 		expect(itemsFound.length).toBe(0)
@@ -161,11 +131,6 @@ describe('ItemsTable.vue', () => {
 				showDropdown: false,
 				searchString: ''
 			},
-			methods: {
-				t: function(app, string) {
-					return string
-				}
-			}
 		})
 		var itemsFound = wrapper.vm.filteredItems
 		expect(itemsFound.length).toBe(0)
@@ -178,11 +143,6 @@ describe('ItemsTable.vue', () => {
 				showDropdown: false,
 				searchString: ''
 			},
-			methods: {
-				t: function(app, string) {
-					return string
-				}
-			}
 		})
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		wrapper.find('label[for="select-item-2-' + wrapper.vm._uid + '"]').trigger('click')
@@ -200,11 +160,6 @@ describe('ItemsTable.vue', () => {
 				showDropdown: false,
 				searchString: ''
 			},
-			methods: {
-				t: function(app, string) {
-					return string
-				}
-			}
 		})
 		wrapper.find('input.select-all.checkbox').trigger('click')
 		var itemsFound = wrapper.vm.selectedItems
@@ -225,11 +180,6 @@ describe('ItemsTable.vue', () => {
 				showDropdown: false,
 				searchString: ''
 			},
-			methods: {
-				t: function(app, string) {
-					return string
-				}
-			}
 		})
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		var selectedItems = wrapper.vm.selectedItems
