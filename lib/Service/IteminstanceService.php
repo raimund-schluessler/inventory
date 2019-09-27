@@ -26,6 +26,8 @@ use OCP\IConfig;
 use OCA\Inventory\Db\Iteminstance;
 use OCA\Inventory\Db\IteminstanceMapper;
 use OCA\Inventory\Db\PlaceMapper;
+use OCA\Inventory\Db\IteminstanceUuidMapper;
+use OCA\Inventory\BadRequestException;
 
 class IteminstanceService {
 
@@ -33,12 +35,16 @@ class IteminstanceService {
 	private $AppName;
 	private $iteminstanceMapper;
 	private $placeMapper;
+	private $iteminstanceUuidMapper;
 
-	public function __construct($userId, $AppName, IteminstanceMapper $iteminstanceMapper, PlaceMapper $placeMapper) {
+	public function __construct($userId, $AppName, IteminstanceMapper $iteminstanceMapper, PlaceMapper $placeMapper,
+		IteminstanceUuidMapper $iteminstanceUuidMapper) {
+		
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->iteminstanceMapper = $iteminstanceMapper;
 		$this->placeMapper = $placeMapper;
+		$this->iteminstanceUuidMapper = $iteminstanceUuidMapper;
 	}
 
 	/**
@@ -59,6 +65,7 @@ class IteminstanceService {
 			} else{
 				$iteminstance->place = null;
 			}
+			$iteminstance->uuids = $this->iteminstanceUuidMapper->findByInstanceId($iteminstance->id, $this->userId);
 		}
 		return $iteminstances;
 	}
@@ -82,5 +89,51 @@ class IteminstanceService {
 	public function deleteAllInstancesOfItem($itemId) {
 		$instances = $this->iteminstanceMapper->findByItemID($itemId, $this->userId);
 		$this->iteminstanceMapper->deleteInstances($instances);
+	}
+
+	/**
+	 * Adds an UUID to an item instance
+	 */
+	public function addUuid($itemID, $instanceID, $uuid) {
+
+		if ( $this->isValidUuid($uuid) === false ) {
+			throw new BadRequestException('The given UUID is invalid.');
+		}
+
+		
+		if( $this->iteminstanceUuidMapper->find($instanceID, $uuid, $this->userId) ) {
+			throw new BadRequestException('The given UUID is already set for this instance.');
+		}
+
+		$iteminstance = $this->iteminstanceMapper->find($instanceID, $this->userId);
+		if ($iteminstance) {
+			$params['itemid'] = $itemID;
+			$params['instanceid'] = $instanceID;
+			$params['uuid'] = $uuid;
+			$params['uid'] = $this->userId;
+			return $this->iteminstanceUuidMapper->add($params);
+		}
+	}
+
+	/**
+	 * Deletes a UUID from an item instance
+	 */
+	public function deleteUuid($itemID, $instanceID, $uuid) {
+		$uuids = $this->iteminstanceUuidMapper->find($instanceID, $uuid, $this->userId);
+		foreach ($uuids as $uuid) {
+			$this->iteminstanceUuidMapper->delete($uuid);
+		}
+	}
+
+	/**
+	 * Check if the given string is a valid UUID of version 4, variant 1, RFC 4122/DCE 1.1
+	 * @param	string	$uuid	The string to check
+	 * @return	boolean
+	 */
+	function isValidUuid( $uuid ) {
+		if (!is_string($uuid) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $uuid) !== 1)) {
+			return false;
+		}
+		return true;
 	}
 }

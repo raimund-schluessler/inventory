@@ -32,5 +32,7 @@ return [
 		['name' => 'items#unlink',			'url' => '/item/{itemID}/unlink/{relationType}',		'verb' => 'POST'],
 		['name' => 'items#enlist',			'url' => '/item/add',									'verb' => 'POST'],
 		['name' => 'items#delete',			'url' => '/item/{itemID}/delete',						'verb' => 'DELETE'],
+		['name' => 'instance#addUuid',		'url' => '/item/{itemID}/instance/{instanceID}/uuid/{uuid}',	'verb' => 'PUT'],
+		['name' => 'instance#deleteUuid',	'url' => '/item/{itemID}/instance/{instanceID}/uuid/{uuid}',	'verb' => 'DELETE'],
 	]
 ];

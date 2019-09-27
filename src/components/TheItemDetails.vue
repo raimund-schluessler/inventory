@@ -158,47 +158,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Instances') }}</span>
 					</h3>
-					<table class="instances">
-						<thead>
-							<tr>
-								<th>
-									<span>{{ t('inventory', 'Count') }}</span>
-								</th>
-								<th>
-									<span>{{ t('inventory', 'Available') }}</span>
-								</th>
-								<th>
-									<span>{{ t('inventory', 'Price') }}</span>
-								</th>
-								<th>
-									<span>{{ t('inventory', 'Date') }}</span>
-								</th>
-								<th>
-									<span>{{ t('inventory', 'Vendor') }}</span>
-								</th>
-								<th>
-									<span>{{ t('inventory', 'Place') }}</span>
-								</th>
-								<th>
-									<span>{{ t('inventory', 'Comment') }}</span>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr v-for="instance in item.instances"
-								:key="instance.id"
-								class="handler"
-							>
-								<td>{{ instance.count }}</td>
-								<td>{{ instance.available }}</td>
-								<td>{{ instance.price }}</td>
-								<td>{{ instance.date }}</td>
-								<td>{{ instance.vendor }}</td>
-								<td>{{ getPlace(instance) }}</td>
-								<td>{{ instance.comment }}</td>
-							</tr>
-						</tbody>
-					</table>
+					<item-instances :item="item" />
 				</div>
 				<br>
 				<div v-if="parentItems.length" class="paragraph">
@@ -240,12 +200,14 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 import Dropdown from './Dropdown.vue'
 import RelationModal from './RelationModal.vue'
+import ItemInstances from './TheItemInstances.vue'
 
 export default {
 	components: {
 		ItemsTable: ItemsTable,
 		Dropdown: Dropdown,
 		RelationModal,
+		ItemInstances,
 	},
 	props: {
 		id: {
@@ -290,13 +252,6 @@ export default {
 			this.loading = true
 			await this.getItemById(itemID)
 			this.loading = false
-		},
-		getPlace(instance) {
-			if (instance.place) {
-				return instance.place.name
-			} else {
-				return ''
-			}
 		},
 		openModal: function() {
 			this.modalOpen = true
