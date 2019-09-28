@@ -62,7 +62,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<td>
 							<div>
 								<Dropdown :type="'icon'">
-									<li v-for="action in instanceActions" :key="action.text">
+									<li v-for="action in uuidActions" :key="action.text">
 										<a @click="action.action({ instance, uuid: uuid.uuid })">
 											<span class="icon icon-bw" :class="action.icon" />
 											<span class="label">
@@ -139,7 +139,7 @@ export default {
 			newUuid: '',
 			addUuidTo: null,
 			qrcode: null,
-			instanceActions: [
+			uuidActions: [
 				{
 					icon: 'icon-qrcode',
 					text: t('inventory', 'Show QR Code'),
