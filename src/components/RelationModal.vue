@@ -23,9 +23,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<Modal v-if="modalOpen"
 		:out-transition="true"
 		:size="'full'"
+		class="relation-modal"
 		@close="closeModal"
 	>
-		<div class="relation-modal-content">
+		<div class="content">
 			<div class="header">
 				<span class="title">
 					{{ headerString }}
