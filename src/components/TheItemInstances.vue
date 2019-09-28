@@ -37,7 +37,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							{{ getInstanceProperty(instance, instanceProperty) }}
 						</td>
 						<td>
-							<div>
+							<div class="add-uuid">
 								<span class="icon icon-bw icon-plus" :instanceId="instance.id" @click="showUuidInput(instance)" />
 							</div>
 						</td>
@@ -61,8 +61,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</td>
 						<td>
 							<div>
-								<span class="icon icon-bw icon-trash" :instanceId="instance.id" @click="removeUuid(instance, uuid.uuid)" />
-								<span class="icon icon-bw icon-qrcode" @click="showQRcode(uuid.uuid)" />
+								<Dropdown :type="'icon'">
+									<li v-for="action in instanceActions" :key="action.text">
+										<a @click="action.action({ instance, uuid: uuid.uuid })">
+											<span class="icon icon-bw" :class="action.icon" />
+											<span class="label">
+												{{ action.text }}
+											</span>
+										</a>
+									</li>
+								</Dropdown>
 							</div>
 						</td>
 					</tr>
@@ -82,11 +90,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import { mapActions } from 'vuex'
 import focus from '../directives/focus'
 import ClickOutside from 'vue-click-outside'
+import Dropdown from './Dropdown.vue'
 import qr from 'qr-image'
 import { Modal } from 'nextcloud-vue'
 
 export default {
 	components: {
+		Dropdown,
 		Modal,
 	},
 	directives: {
@@ -129,6 +139,19 @@ export default {
 			newUuid: '',
 			addUuidTo: null,
 			qrcode: null,
+			instanceActions: [
+				{
+					icon: 'icon-qrcode',
+					text: t('inventory', 'Show QR Code'),
+					action: this.showQRcode
+				},
+				{
+					icon: 'icon-trash',
+					text: t('inventory', 'Delete UUID'),
+					action: this.removeUuid
+				}
+
+			]
 		}
 	},
 	methods: {
@@ -137,7 +160,7 @@ export default {
 		 * Generate a qrcode for the UUID
 		 * @param {String} uuid The UUID
 		 */
-		showQRcode(uuid) {
+		showQRcode({ uuid }) {
 			if (uuid.length > 0) {
 				this.qrcode = btoa(qr.imageSync(uuid, { type: 'svg' }))
 			}
@@ -178,7 +201,7 @@ export default {
 			this.newUuid = ''
 		},
 
-		removeUuid: function(instance, uuid) {
+		removeUuid: function({ instance, uuid }) {
 			this.deleteUuid({ item: this.item, instance, uuid })
 		},
 
