@@ -28,6 +28,7 @@ use \OCA\Inventory\Service\IteminstanceService;
 use \OCA\Inventory\Service\ItemsService;
 use \OCA\Inventory\Db\IteminstanceMapper;
 use \OCA\Inventory\Db\PlaceMapper;
+use \OCA\Inventory\Db\IteminstanceUuidMapper;
 use \OCA\Inventory\Db\ItemMapper;
 use \OCA\Inventory\Db\CategoryMapper;
 use \OCA\Inventory\Db\ItemcategoriesMapper;
@@ -62,7 +63,8 @@ class Application extends App {
 				$c->query('UserId'),
 				$c->query('AppName'),
 				$c->query('IteminstanceMapper'),
-				$c->query('PlaceMapper')
+				$c->query('PlaceMapper'),
+				$c->query('IteminstanceUuidMapper')
 			);
 		});
 
@@ -85,6 +87,12 @@ class Application extends App {
 
 		$container->registerService('IteminstanceMapper', function($c){
 			return new IteminstanceMapper(
+				$c->query('ServerContainer')->getDatabaseConnection()
+			);
+		});
+
+		$container->registerService('IteminstanceUuidMapper', function($c){
+			return new IteminstanceUuidMapper(
 				$c->query('ServerContainer')->getDatabaseConnection()
 			);
 		});

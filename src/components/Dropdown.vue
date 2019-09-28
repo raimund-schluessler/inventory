@@ -23,7 +23,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div ref="dropdownMenu" class="dropdown-container">
 		<div class="app-navigation-entry-utils" @click="toggle()">
 			<div class="app-navigation-entry-utils-menu-button">
-				<button class="dropdown-button">
+				<span v-if="type === 'icon'" class="icon icon-bw icon-more" style="margin: 0 14px;" />
+				<button v-else class="dropdown-button">
 					<span class="icon icon-bw icon-list" />
 				</button>
 			</div>
@@ -38,6 +39,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 export default {
+	props: {
+		type: {
+			type: String,
+			default: 'button',
+		}
+	},
 	data: function() {
 		return {
 			open: false
@@ -66,16 +73,16 @@ export default {
 
 <style>
 .dropdown-container {
-	position: absolute;
-	top: 8px;
-	right: 10px;
+	position: relative;
+	display: inline-block;
+	width: 44px;
 }
 
 .dropdown-button {
-	width: 42px;
+	width: 44px;
 	height: 34px;
-	margin: 0 0 14px 0;
 	padding: 0;
+	margin: 3px 0;
 	cursor: pointer;
 }
 </style>
