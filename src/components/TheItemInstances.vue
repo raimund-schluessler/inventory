@@ -68,6 +68,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</td>
 					</tr>
 				</template>
+				<tr v-if="!item.instances.length">
+					<td class="center" :colspan="instanceProperties.length + 1">
+						{{ t('inventory', 'This item has no instances.') }}
+					</td>
+				</tr>
 				<tr v-if="addingInstance" v-click-outside="hideInstanceInput">
 					<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 						<input v-model="newInstance[instanceProperty.key]"
