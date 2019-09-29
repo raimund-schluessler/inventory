@@ -184,6 +184,11 @@ table {
 			padding: 0 10px;
 			width: 100px;
 
+			&.actions {
+				width: 44px;
+				padding: 0;
+			}
+
 			&.narrow {
 				width: 50px;
 			}

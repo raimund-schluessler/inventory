@@ -27,7 +27,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<th v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 						<span>{{ instanceProperty.name }}</span>
 					</th>
-					<th>
+					<th class="actions">
 						<div class="add-instance">
 							<span add-instance="true" class="icon icon-bw icon-plus" @click="showInstanceInput" />
 						</div>
@@ -40,7 +40,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 							{{ getInstanceProperty(instance, instanceProperty) }}
 						</td>
-						<td>
+						<td class="actions">
 							<div>
 								<Dropdown :menu="instanceActions(instance)" />
 							</div>
@@ -63,7 +63,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<td :colspan="instanceProperties.length">
 							{{ uuid.uuid }}
 						</td>
-						<td>
+						<td class="actions">
 							<Dropdown :menu="uuidActions(instance, uuid.uuid)" />
 						</td>
 					</tr>
@@ -77,7 +77,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							form="new_instance"
 						>
 					</td>
-					<td>
+					<td class="actions">
 						<!-- Submit button -->
 						<button type="submit" form="new_instance">
 							Ok
