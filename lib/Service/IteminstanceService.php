@@ -69,6 +69,15 @@ class IteminstanceService {
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
 	public function add($instance) {
+
+		if ( $instance['count'] && is_numeric($instance['count']) === false ) {
+			throw new BadRequestException('Count must be a number.');
+		}
+
+		if ( $instance['available'] && is_numeric($instance['available']) === false ) {
+			throw new BadRequestException('Available must be a number.');
+		}
+
 		$instance['uid'] = $this->userId;
 		if ($instance['place']) {
 			$place = $this->placeMapper->findPlaceByName($instance['place'], $this->userId);
