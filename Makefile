@@ -109,6 +109,7 @@ appstore: clean build
 	--exclude=/.gitattributes \
 	--exclude=/.gitignore \
 	--exclude=/.gitlab-ci.yml \
+	--exclude=/.phpunit.result.cache \
 	--exclude=/.prettierrc.js \
 	--exclude=/.scrutinizer.yml \
 	--exclude=/.stylelintrc \
@@ -122,13 +123,19 @@ appstore: clean build
 	--exclude=/Makefile \
 	--exclude=/package-lock.json \
 	--exclude=/package.json \
+	--exclude=/phpunit.xml \
+	--exclude=/phpunit.integration.xml \
 	--exclude=/README.md \
+	--exclude=/renovate.json \
 	--exclude=/svg-sprite-bw.json \
 	--exclude=/svg-sprite-bw.tmpl \
+	--exclude=/svg-sprite-color.json \
+	--exclude=/svg-sprite-color.tmpl \
 	--exclude=/webpack.common.js \
 	--exclude=/webpack.prod.js \
 	--exclude=/webpack.dev.js \
 	--exclude=/build \
+	--exclude=/ci \
 	--exclude=/coverage \
 	--exclude=/img/src \
 	--exclude=/src \
