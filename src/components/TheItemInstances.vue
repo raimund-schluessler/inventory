@@ -85,7 +85,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<td class="actions">
 						<!-- Submit button -->
 						<button type="submit" form="new_instance">
-							Ok
+							{{ t('inventory', 'Save') }}
 						</button>
 					</td>
 				</tr>
