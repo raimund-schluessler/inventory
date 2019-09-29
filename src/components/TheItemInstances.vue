@@ -62,8 +62,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<td>
 							<div>
 								<Dropdown :type="'icon'">
-									<li v-for="action in uuidActions" :key="action.text">
-										<a @click="action.action({ instance, uuid: uuid.uuid })">
+									<li v-for="action in uuidActions(instance, uuid.uuid)" :key="action.text">
+										<a @click="action.action">
 											<span class="icon icon-bw" :class="action.icon" />
 											<span class="label">
 												{{ action.text }}
@@ -139,28 +139,29 @@ export default {
 			newUuid: '',
 			addUuidTo: null,
 			qrcode: null,
-			uuidActions: [
+		}
+	},
+	methods: {
+		uuidActions(instance, uuid) {
+			return [
 				{
 					icon: 'icon-qrcode',
 					text: t('inventory', 'Show QR Code'),
-					action: this.showQRcode
+					action: () => { this.showQRcode(uuid) },
 				},
 				{
 					icon: 'icon-trash',
 					text: t('inventory', 'Delete UUID'),
-					action: this.removeUuid
+					action: () => { this.removeUuid(instance, uuid) },
 				}
-
 			]
-		}
-	},
-	methods: {
+		},
 
 		/**
 		 * Generate a qrcode for the UUID
 		 * @param {String} uuid The UUID
 		 */
-		showQRcode({ uuid }) {
+		showQRcode(uuid) {
 			if (uuid.length > 0) {
 				this.qrcode = btoa(qr.imageSync(uuid, { type: 'svg' }))
 			}
@@ -201,7 +202,7 @@ export default {
 			this.newUuid = ''
 		},
 
-		removeUuid: function({ instance, uuid }) {
+		removeUuid: function(instance, uuid) {
 			this.deleteUuid({ item: this.item, instance, uuid })
 		},
 
