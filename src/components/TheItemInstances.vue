@@ -60,18 +60,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							{{ uuid.uuid }}
 						</td>
 						<td>
-							<div>
-								<Dropdown :type="'icon'">
-									<li v-for="action in uuidActions(instance, uuid.uuid)" :key="action.text">
-										<a @click="action.action">
-											<span class="icon icon-bw" :class="action.icon" />
-											<span class="label">
-												{{ action.text }}
-											</span>
-										</a>
-									</li>
-								</Dropdown>
-							</div>
+							<Dropdown :menu="uuidActions(instance, uuid.uuid)" />
 						</td>
 					</tr>
 				</template>
@@ -150,7 +139,7 @@ export default {
 					action: () => { this.showQRcode(uuid) },
 				},
 				{
-					icon: 'icon-trash',
+					icon: 'icon-delete',
 					text: t('inventory', 'Delete UUID'),
 					action: () => { this.removeUuid(instance, uuid) },
 				}

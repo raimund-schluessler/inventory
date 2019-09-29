@@ -20,69 +20,43 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div ref="dropdownMenu" class="dropdown-container">
-		<div class="app-navigation-entry-utils" @click="toggle()">
-			<div class="app-navigation-entry-utils-menu-button">
-				<span v-if="type === 'icon'" class="icon icon-bw icon-more" style="margin: 0 14px;" />
-				<button v-else class="dropdown-button">
-					<span class="icon icon-bw icon-list" />
-				</button>
-			</div>
-		</div>
-		<div :class="{ open:open }" class="app-navigation-entry-menu bubble table-dropdown">
-			<ul>
-				<slot />
-			</ul>
+	<div class="menu-icon">
+		<div v-click-outside="close" class="header-icon icon-more" @click="toggle" />
+		<div :class="{ 'open': open }" class="popovermenu">
+			<popover-menu :menu="menu" />
 		</div>
 	</div>
 </template>
 
 <script>
+import { PopoverMenu } from 'nextcloud-vue'
+import ClickOutside from 'vue-click-outside'
+
 export default {
+	components: {
+		PopoverMenu,
+	},
+	directives: {
+		ClickOutside,
+	},
 	props: {
-		type: {
-			type: String,
-			default: 'button',
+		menu: {
+			type: Array,
+			required: true,
 		}
 	},
 	data: function() {
 		return {
-			open: false
+			open: false,
 		}
-	},
-	created() {
-		document.addEventListener('click', this.documentClick)
-	},
-	destroyed() {
-		document.removeEventListener('click', this.documentClick)
 	},
 	methods: {
 		toggle: function() {
 			this.open = !this.open
 		},
-		documentClick: function(e) {
-			const el = this.$refs.dropdownMenu
-			const target = e.target
-			if ((el !== target) && !el.contains(target)) {
-				this.open = false
-			}
-		}
+		close() {
+			this.open = false
+		},
 	}
 }
 </script>
-
-<style>
-.dropdown-container {
-	position: relative;
-	display: inline-block;
-	width: 44px;
-}
-
-.dropdown-button {
-	width: 44px;
-	height: 34px;
-	padding: 0;
-	margin: 3px 0;
-	cursor: pointer;
-}
-</style>

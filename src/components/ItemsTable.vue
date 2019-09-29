@@ -63,32 +63,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<span>{{ t('inventory', 'Categories') }}</span>
 							<span class="sort-indicator hidden icon-triangle-s" />
 						</a>
-						<Dropdown v-if="showDropdown">
-							<li>
-								<a href="#/items/additem">
-									<span class="icon icon-bw icon-plus" />
-									<span class="label">
-										{{ t('inventory', 'Add single item') }}
-									</span>
-								</a>
-							</li>
-							<li>
-								<a href="#/items/additems">
-									<span class="icon icon-bw icon-plus" />
-									<span class="label">
-										{{ t('inventory', 'Add multiple items') }}
-									</span>
-								</a>
-							</li>
-							<li v-if="selectedItems.length">
-								<a @click="removeItems">
-									<span class="icon icon-bw icon-trash" />
-									<span class="label">
-										{{ n('inventory', 'Delete selected item', 'Delete selected items', selectedItems.length) }}
-									</span>
-								</a>
-							</li>
-						</Dropdown>
+						<Dropdown v-if="showDropdown" :menu="itemActions" />
 						<div v-show="unlink && selectedItems.length" class="unlink" @click="$emit('unlink')">
 							<span class="icon icon-bw icon-trash" />
 						</div>
@@ -195,6 +170,29 @@ export default {
 		}
 	},
 	computed: {
+		itemActions() {
+			const actions = [
+				{
+					icon: 'icon-add',
+					text: t('inventory', 'Add single item'),
+					href: '#/items/additem',
+				},
+				{
+					icon: 'icon-add',
+					text: t('inventory', 'Add multiple items'),
+					href: '#/items/additems',
+				}
+			]
+			if (this.selectedItems.length) {
+				actions.push({
+					icon: 'icon-delete',
+					text: n('inventory', 'Delete selected item', 'Delete selected items', this.selectedItems.length),
+					action: this.removeItems
+				})
+			}
+
+			return actions
+		},
 		allVisibleItemsSelected: {
 			set(select) {
 				if (select) {

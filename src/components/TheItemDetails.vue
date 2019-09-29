@@ -35,32 +35,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</a>
 					</div>
 				</div>
-				<Dropdown>
-					<li>
-						<a>
-							<span class="icon icon-bw icon-plus" />
-							<span class="label">
-								{{ t('inventory', 'Add item instance') }}
-							</span>
-						</a>
-					</li>
-					<li>
-						<a @click="openModal">
-							<span class="icon icon-bw icon-plus" />
-							<span class="label">
-								{{ t('inventory', 'Link items') }}
-							</span>
-						</a>
-					</li>
-					<li>
-						<a @click="removeItem()">
-							<span class="icon icon-bw icon-trash" />
-							<span class="label">
-								{{ t('inventory', 'Delete item') }}
-							</span>
-						</a>
-					</li>
-				</Dropdown>
+				<Dropdown :menu="itemActions" />
 			</div>
 			<div id="itemdetails">
 				<div class="item_images" />
@@ -222,6 +197,23 @@ export default {
 			selectedParents: [],
 			selectedSub: [],
 			selectedRelated: [],
+			itemActions: [
+				{
+					icon: 'icon-add',
+					text: t('inventory', 'Add item instance'),
+					action: () => { },
+				},
+				{
+					icon: 'icon-add',
+					text: t('inventory', 'Link items'),
+					action: this.openModal,
+				},
+				{
+					icon: 'icon-delete',
+					text: t('inventory', 'Delete item'),
+					action: this.deleteItem,
+				}
+			],
 		}
 	},
 	computed: {
