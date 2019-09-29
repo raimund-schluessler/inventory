@@ -70,9 +70,11 @@ class IteminstanceService {
 	 */
 	public function add($instance) {
 		$instance['uid'] = $this->userId;
-		$place = $this->placeMapper->findPlaceByName($instance['place'], $this->userId);
-		if (!$place) {
-			$place = $this->placeMapper->add($instance['place'], $this->userId);
+		if ($instance['place']) {
+			$place = $this->placeMapper->findPlaceByName($instance['place'], $this->userId);
+			if (!$place) {
+				$place = $this->placeMapper->add($instance['place'], $this->userId);
+			}
 		}
 		$instance['placeid'] = $place->id;
 		$added = $this->iteminstanceMapper->add($instance);
