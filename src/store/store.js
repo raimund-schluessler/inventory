@@ -147,6 +147,30 @@ export default new Vuex.Store({
 			})
 		},
 
+		/**
+		 * Adds an instance to an item
+		 *
+		 * @param {Object} state Default state
+		 * @param {Array} instance The item instance
+		 * @param {Array} uuid The UUID
+		 */
+		addInstance(state, { item, instance }) {
+			item.instances.push(instance)
+		},
+
+		/**
+		 * Deletes an instance from an item
+		 *
+		 * @param {Object} state Default state
+		 * @param {Array} item The item
+		 * @param {Array} instance The item instance
+		 */
+		deleteInstance(state, { item, instance }) {
+			item.instances = item.instances.filter((localInstance) => {
+				return localInstance !== instance
+			})
+		},
+
 		setItem(state, payload) {
 			state.item = payload.item
 		},
@@ -381,6 +405,22 @@ export default new Vuex.Store({
 				}
 			} catch {
 				console.debug('Unlinking items failed.')
+			}
+		},
+		async addInstance({ commit }, { item, instance }) {
+			try {
+				const response = await Axios.post(OC.generateUrl('apps/inventory/item/' + item.id + '/instance/add'), { instance })
+				commit('addInstance', { item, instance: response.data })
+			} catch {
+				console.debug('Creating item instance failed.')
+			}
+		},
+		async deleteInstance({ commit }, { item, instance }) {
+			try {
+				await Axios.delete(OC.generateUrl('apps/inventory/item/' + item.id + '/instance/' + instance.id + '/delete'))
+				commit('deleteInstance', { item, instance })
+			} catch {
+				console.debug('Deleting item instance failed.')
 			}
 		},
 		async addUuid({ commit }, { item, instance, uuid }) {

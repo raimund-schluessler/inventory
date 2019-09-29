@@ -24,26 +24,30 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<table class="instances">
 			<thead>
 				<tr>
-					<th v-for="instanceProperty in instanceProperties" :key="instanceProperty.key">
+					<th v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 						<span>{{ instanceProperty.name }}</span>
 					</th>
-					<th />
+					<th class="actions">
+						<div class="add-instance">
+							<span add-instance="true" class="icon icon-bw icon-plus" @click="toggleInstanceInput" />
+						</div>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
 				<template v-for="instance in item.instances">
 					<tr :key="'instance-' + instance.id" class="handler">
-						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key">
+						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 							{{ getInstanceProperty(instance, instanceProperty) }}
 						</td>
-						<td>
-							<div class="add-uuid">
-								<span class="icon icon-bw icon-plus" :instanceId="instance.id" @click="showUuidInput(instance)" />
+						<td class="actions">
+							<div>
+								<Dropdown :menu="instanceActions(instance)" />
 							</div>
 						</td>
 					</tr>
 					<tr v-if="addUuidTo === instance.id" :key="'uuidInput-' + instance.id"
-						v-click-outside="($event) => hideUuidInput($event, instance)"
+						v-click-outside="() => hideUuidInput(instance)"
 					>
 						<td :colspan="instanceProperties.length + 1">
 							<form name="addUuid" @submit.prevent="setUuid(instance)">
@@ -59,13 +63,35 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<td :colspan="instanceProperties.length">
 							{{ uuid.uuid }}
 						</td>
-						<td>
+						<td class="actions">
 							<Dropdown :menu="uuidActions(instance, uuid.uuid)" />
 						</td>
 					</tr>
 				</template>
+				<tr v-if="!item.instances.length">
+					<td class="center" :colspan="instanceProperties.length + 1">
+						{{ t('inventory', 'This item has no instances.') }}
+					</td>
+				</tr>
+				<tr v-if="addingInstance" v-click-outside="hideInstanceInput">
+					<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
+						<input v-model="newInstance[instanceProperty.key]"
+							type="text"
+							:placeholder="instanceProperty.name"
+							:name="instanceProperty.key"
+							form="new_instance"
+						>
+					</td>
+					<td class="actions">
+						<!-- Submit button -->
+						<button type="submit" form="new_instance">
+							{{ t('inventory', 'Save') }}
+						</button>
+					</td>
+				</tr>
 			</tbody>
 		</table>
+		<form id="new_instance" method="POST" @submit.prevent="putInstance" />
 		<!-- qrcode -->
 		<modal v-if="qrcode" id="qrcode-modal"
 			@close="closeQrModal"
@@ -104,9 +130,11 @@ export default {
 				{
 					key: 'count',
 					name: t('inventory', 'Count'),
+					width: 'narrow',
 				}, {
 					key: 'available',
 					name: t('inventory', 'Available'),
+					width: 'narrow',
 				}, {
 					key: 'price',
 					name: t('inventory', 'Price'),
@@ -123,14 +151,18 @@ export default {
 				}, {
 					key: 'comment',
 					name: t('inventory', 'Comment'),
+					width: 'wide',
 				},
 			],
 			newUuid: '',
 			addUuidTo: null,
+			addingInstance: false,
+			newInstance: {},
 			qrcode: null,
 		}
 	},
 	methods: {
+
 		uuidActions(instance, uuid) {
 			return [
 				{
@@ -143,6 +175,22 @@ export default {
 					text: t('inventory', 'Delete UUID'),
 					action: () => { this.removeUuid(instance, uuid) },
 				}
+			]
+		},
+
+		instanceActions(instance) {
+			return [
+				{
+					icon: 'icon-add',
+					text: t('inventory', 'Add UUID'),
+					action: () => { this.toggleUuidInput(instance) }
+				},
+				{
+					icon: 'icon-delete',
+					text: t('inventory', 'Delete instance'),
+					action: () => { this.removeInstance(instance) }
+				}
+
 			]
 		},
 
@@ -161,12 +209,26 @@ export default {
 			this.qrcode = null
 		},
 
-		showUuidInput: function(instance) {
-			this.addUuidTo = instance.id
+		toggleInstanceInput: function() {
+			this.addingInstance = !this.addingInstance
 		},
 
-		hideUuidInput: function(e, instance) {
-			if (+e.target.getAttribute('instanceId') !== instance.id && instance.id === this.addUuidTo) {
+		hideInstanceInput: function(e) {
+			if (!e.target.getAttribute('add-instance')) {
+				this.addingInstance = false
+			}
+		},
+
+		toggleUuidInput: function(instance) {
+			if (this.addUuidTo === instance.id) {
+				this.addUuidTo = null
+			} else {
+				this.addUuidTo = instance.id
+			}
+		},
+
+		hideUuidInput: function(instance) {
+			if (instance.id === this.addUuidTo) {
 				this.addUuidTo = null
 			}
 		},
@@ -186,6 +248,15 @@ export default {
 			}
 		},
 
+		async putInstance() {
+			await this.addInstance({ item: this.item, instance: this.newInstance })
+			this.newInstance = {}
+		},
+
+		removeInstance: function(instance) {
+			this.deleteInstance({ item: this.item, instance })
+		},
+
 		async setUuid(instance) {
 			await this.addUuid({ item: this.item, instance, uuid: this.newUuid })
 			this.newUuid = ''
@@ -196,6 +267,8 @@ export default {
 		},
 
 		...mapActions([
+			'addInstance',
+			'deleteInstance',
 			'addUuid',
 			'deleteUuid',
 		])

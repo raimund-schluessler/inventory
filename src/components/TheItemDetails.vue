@@ -200,11 +200,6 @@ export default {
 			itemActions: [
 				{
 					icon: 'icon-add',
-					text: t('inventory', 'Add item instance'),
-					action: () => { },
-				},
-				{
-					icon: 'icon-add',
 					text: t('inventory', 'Link items'),
 					action: this.openModal,
 				},

@@ -182,8 +182,22 @@ table {
 		td {
 			height: 44px;
 			padding: 0 10px;
+			width: 100px;
 
-			div.add-uuid {
+			&.actions {
+				width: 44px;
+				padding: 0;
+			}
+
+			&.narrow {
+				width: 50px;
+			}
+
+			&.wide {
+				width: 150px;
+			}
+
+			div.add-instance {
 				padding: 0 14px;
 			}
 
