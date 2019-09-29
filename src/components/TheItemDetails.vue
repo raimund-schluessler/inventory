@@ -211,7 +211,7 @@ export default {
 				{
 					icon: 'icon-delete',
 					text: t('inventory', 'Delete item'),
-					action: this.deleteItem,
+					action: this.removeItem,
 				}
 			],
 		}
