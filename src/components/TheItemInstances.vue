@@ -29,7 +29,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</th>
 					<th class="actions">
 						<div class="add-instance">
-							<span add-instance="true" class="icon icon-bw icon-plus" @click="showInstanceInput" />
+							<span add-instance="true" class="icon icon-bw icon-plus" @click="toggleInstanceInput" />
 						</div>
 					</th>
 				</tr>
@@ -183,7 +183,7 @@ export default {
 				{
 					icon: 'icon-add',
 					text: t('inventory', 'Add UUID'),
-					action: () => { this.showUuidInput(instance) }
+					action: () => { this.toggleUuidInput(instance) }
 				},
 				{
 					icon: 'icon-delete',
@@ -209,8 +209,8 @@ export default {
 			this.qrcode = null
 		},
 
-		showInstanceInput: function() {
-			this.addingInstance = true
+		toggleInstanceInput: function() {
+			this.addingInstance = !this.addingInstance
 		},
 
 		hideInstanceInput: function(e) {
@@ -219,8 +219,12 @@ export default {
 			}
 		},
 
-		showUuidInput: function(instance) {
-			this.addUuidTo = instance.id
+		toggleUuidInput: function(instance) {
+			if (this.addUuidTo === instance.id) {
+				this.addUuidTo = null
+			} else {
+				this.addUuidTo = instance.id
+			}
 		},
 
 		hideUuidInput: function(instance) {
