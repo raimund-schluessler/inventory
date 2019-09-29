@@ -158,7 +158,7 @@ export default new Vuex.Store({
 					console.error('Wrong item object', item)
 				}
 				return list
-			}, state.subItems)
+			}, [])
 		},
 		setParentItems(state, items) {
 			state.parentItems = items.reduce(function(list, item) {
@@ -168,7 +168,7 @@ export default new Vuex.Store({
 					console.error('Wrong item object', item)
 				}
 				return list
-			}, state.parentItems)
+			}, [])
 		},
 		setRelatedItems(state, items) {
 			state.relatedItems = items.reduce(function(list, item) {
@@ -178,7 +178,7 @@ export default new Vuex.Store({
 					console.error('Wrong item object', item)
 				}
 				return list
-			}, state.relatedItems)
+			}, [])
 		},
 		setItemCandidates(state, payload) {
 			state.itemCandidates = payload.itemCandidates
