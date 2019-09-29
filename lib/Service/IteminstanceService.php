@@ -53,34 +53,70 @@ class IteminstanceService {
 	 * @return array
 	 */
 	public function getByItemID($itemid) {
-		$iteminstances = $this->iteminstanceMapper->findByItemID($itemid, $this->userId);
-		foreach ($iteminstances as $nr => $iteminstance) {
-			$place = $this->placeMapper->findPlace($iteminstance->placeid, $this->userId);
-			if ($place) {
-				$iteminstance->place = array(
-					'id'	=> $place->id,
-					'name'	=> $place->name,
-					'parent'=> $place->parentid
-				);
-			} else{
-				$iteminstance->place = null;
-			}
-			$iteminstance->uuids = $this->iteminstanceUuidMapper->findByInstanceId($iteminstance->id, $this->userId);
+		$instances = $this->iteminstanceMapper->findByItemID($itemid, $this->userId);
+		foreach ($instances as $nr => $instance) {
+			$instance = $this->getInstanceDetails($instance);
 		}
-		return $iteminstances;
+		return $instances;
 	}
 
 	/**
-	 * add an instance
+	 * Adds an instance to an item
+	 * 
+	 * @NoAdminRequired
+	 * @param $itemID	The item Id
+	 * @param $params	The instance parameters
+	 * @return \OCP\AppFramework\Db\Entity
 	 */
 	public function add($instance) {
+		$instance['uid'] = $this->userId;
 		$place = $this->placeMapper->findPlaceByName($instance['place'], $this->userId);
 		if (!$place) {
 			$place = $this->placeMapper->add($instance['place'], $this->userId);
 		}
-		$instance['uid'] = $this->userId;
 		$instance['placeid'] = $place->id;
-		$this->iteminstanceMapper->add($instance);
+		$added = $this->iteminstanceMapper->add($instance);
+		return $this->getInstanceDetails($added);
+	}
+
+	/**
+	 * Removes an instance of an item
+	 * 
+	 * @NoAdminRequired
+	 * @param $itemID	The item Id
+	 * @param $params	The instance parameters
+	 * @return \OCP\AppFramework\Db\Entity
+	 */
+	public function delete($itemId, $instanceId) {
+		$instance = $this->iteminstanceMapper->find($instanceId, $this->userId);
+		// Delete all UUIDs belonging to this instance
+		$uuids = $this->iteminstanceUuidMapper->findByInstanceId($instanceId, $this->userId);
+		foreach ($uuids as $uuid) {
+			$this->iteminstanceUuidMapper->delete($uuid);
+		}
+		return $this->iteminstanceMapper->delete($instance);
+	}
+
+	/**
+	 * Gets the place details and the UUIDs of an instance
+	 * 
+	 * @NoAdminRequired
+	 * @param $instance	The instance
+	 * @return \OCP\AppFramework\Db\Entity
+	 */
+	function getInstanceDetails($instance) {
+		$place = $this->placeMapper->findPlace($instance->placeid, $this->userId);
+		if ($place) {
+			$instance->place = array(
+				'id'	=> $place->id,
+				'name'	=> $place->name,
+				'parent'=> $place->parentid
+			);
+		} else{
+			$instance->place = null;
+		}
+		$instance->uuids = $this->iteminstanceUuidMapper->findByInstanceId($instance->id, $this->userId);
+		return $instance;
 	}
 
 	/**
@@ -88,6 +124,13 @@ class IteminstanceService {
 	 */
 	public function deleteAllInstancesOfItem($itemId) {
 		$instances = $this->iteminstanceMapper->findByItemID($itemId, $this->userId);
+		// Delete all UUIDs belonging to the instances
+		foreach($instances as $instance) {
+			$uuids = $this->iteminstanceUuidMapper->findByInstanceId($instance->id, $this->userId);
+			foreach ($uuids as $uuid) {
+				$this->iteminstanceUuidMapper->delete($uuid);
+			}
+		}
 		$this->iteminstanceMapper->deleteInstances($instances);
 	}
 

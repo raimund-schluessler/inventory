@@ -226,4 +226,15 @@ export default class Item {
 		return this._instances
 	}
 
+	/**
+	 * Return the instances
+	 *
+	 * @param {Array} instances The instances
+	 * @memberof Item
+	 */
+	set instances(instances) {
+		this.response.instances = instances
+		this._instances = this.response.instances || []
+	}
+
 }

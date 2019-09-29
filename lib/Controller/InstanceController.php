@@ -39,6 +39,30 @@ class InstanceController extends Controller {
 	}
 
 	/**
+	 * Adds an instance of an item
+	 * 
+	 * @NoAdminRequired
+	 * @param $itemID	The item Id
+	 * @param $instance	The instance properties
+	 * @return \OCP\AppFramework\Db\Entity
+	 */
+	public function add($itemID, $instance) {
+		$instance['itemid'] = $itemID;
+		return $this->iteminstanceService->add($instance);
+	}
+
+	/**
+	 * Removes an instance of an item
+	 * 
+	 * @NoAdminRequired
+	 * @param $itemID		The item Id
+	 * @param $instanceID	The instance Id
+	 */
+	public function delete($itemID, $instanceID) {
+		return $this->iteminstanceService->delete($itemID, $instanceID);
+	}
+
+	/**
 	 * @NoAdminRequired
 	 * @param $itemID
 	 * @param $instanceID
