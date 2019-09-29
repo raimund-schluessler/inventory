@@ -72,6 +72,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 						<input v-model="newInstance[instanceProperty.key]"
 							type="text"
+							:placeholder="instanceProperty.name"
 							:name="instanceProperty.key"
 							form="new_instance"
 						>
