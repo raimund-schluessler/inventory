@@ -29,7 +29,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { PopoverMenu } from 'nextcloud-vue'
+import PopoverMenu from 'nextcloud-vue/dist/Components/PopoverMenu'
 import ClickOutside from 'vue-click-outside'
 
 export default {

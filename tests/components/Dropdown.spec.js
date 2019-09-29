@@ -6,13 +6,13 @@ describe('Dropdown.vue', () => {
 
 	it('toggles open state', () => {
 		const wrapper = shallowMount(Dropdown)
-		wrapper.find('.app-navigation-entry-utils').trigger('click')
+		wrapper.find('.header-icon').trigger('click')
 		expect(wrapper.vm.open).toBe(true)
 	})
 
 	it('closes on background click', () => {
 		const wrapper = shallowMount(Dropdown)
-		wrapper.find('.app-navigation-entry-utils').trigger('click')
+		wrapper.find('.menu-icon').trigger('click')
 		document.body.click()
 		expect(wrapper.vm.open).toBe(false)
 	})
