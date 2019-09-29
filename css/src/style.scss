@@ -182,6 +182,15 @@ table {
 		td {
 			height: 44px;
 			padding: 0 10px;
+			width: 100px;
+
+			&.narrow {
+				width: 50px;
+			}
+
+			&.wide {
+				width: 150px;
+			}
 
 			div.add-instance {
 				padding: 0 14px;

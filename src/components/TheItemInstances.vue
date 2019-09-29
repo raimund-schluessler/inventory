@@ -24,7 +24,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<table class="instances">
 			<thead>
 				<tr>
-					<th v-for="instanceProperty in instanceProperties" :key="instanceProperty.key">
+					<th v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 						<span>{{ instanceProperty.name }}</span>
 					</th>
 					<th>
@@ -37,7 +37,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<tbody>
 				<template v-for="instance in item.instances">
 					<tr :key="'instance-' + instance.id" class="handler">
-						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key">
+						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 							{{ getInstanceProperty(instance, instanceProperty) }}
 						</td>
 						<td>
@@ -69,7 +69,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</tr>
 				</template>
 				<tr v-if="addingInstance" v-click-outside="hideInstanceInput">
-					<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key">
+					<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 						<input v-model="newInstance[instanceProperty.key]"
 							type="text"
 							:name="instanceProperty.key"
@@ -124,9 +124,11 @@ export default {
 				{
 					key: 'count',
 					name: t('inventory', 'Count'),
+					width: 'narrow',
 				}, {
 					key: 'available',
 					name: t('inventory', 'Available'),
+					width: 'narrow',
 				}, {
 					key: 'price',
 					name: t('inventory', 'Price'),
@@ -143,6 +145,7 @@ export default {
 				}, {
 					key: 'comment',
 					name: t('inventory', 'Comment'),
+					width: 'wide',
 				},
 			],
 			newUuid: '',
