@@ -63,6 +63,19 @@ class InstanceController extends Controller {
 	}
 
 	/**
+	 * Edits an instance of an item
+	 * 
+	 * @NoAdminRequired
+	 * @param $itemID		The item Id
+	 * @param $instanceID	The instance Id
+	 * @param $instance		The instance
+	 */
+	public function edit($itemID, $instanceID, $instance) {
+		$instance['itemid'] = $itemID;
+		return $this->iteminstanceService->edit($itemID, $instanceID, $instance);
+	}
+
+	/**
 	 * @NoAdminRequired
 	 * @param $itemID
 	 * @param $instanceID

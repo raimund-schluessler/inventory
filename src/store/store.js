@@ -171,6 +171,19 @@ export default new Vuex.Store({
 			})
 		},
 
+		/**
+		 * Edits an instance of an item
+		 *
+		 * @param {Object} state Default state
+		 * @param {Array} item The item
+		 * @param {Array} instance The new item instance
+		 */
+		editInstance(state, { item, instance }) {
+			item.instances = item.instances.map((localInstance) => {
+				return (localInstance.id === instance.id) ? instance : localInstance
+			})
+		},
+
 		setItem(state, payload) {
 			state.item = payload.item
 		},
@@ -421,6 +434,14 @@ export default new Vuex.Store({
 				commit('deleteInstance', { item, instance })
 			} catch {
 				console.debug('Deleting item instance failed.')
+			}
+		},
+		async editInstance({ commit }, { item, instance }) {
+			try {
+				const response = await Axios.patch(OC.generateUrl('apps/inventory/item/' + item.id + '/instance/' + instance.id + '/edit'), { instance })
+				commit('editInstance', { item, instance: response.data })
+			} catch {
+				console.debug('Editing item instance failed.')
 			}
 		},
 		async addUuid({ commit }, { item, instance, uuid }) {

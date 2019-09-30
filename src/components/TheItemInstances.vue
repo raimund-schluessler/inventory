@@ -36,7 +36,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</thead>
 			<tbody>
 				<template v-for="instance in item.instances">
-					<tr :key="'instance-' + instance.id" class="handler">
+					<tr v-if="editedInstance.id !== instance.id" :key="'instance-' + instance.id" class="handler">
 						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 							{{ getInstanceProperty(instance, instanceProperty) }}
 						</td>
@@ -44,6 +44,25 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<div>
 								<Dropdown :menu="instanceActions(instance)" />
 							</div>
+						</td>
+					</tr>
+					<tr v-else :key="'editinstance-' + instance.id" v-click-outside="() => { hideEditInstance(instance) }">
+						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
+							<div v-if="instanceProperty.key === 'place'">
+								{{ getInstanceProperty(instance, instanceProperty) }}
+							</div>
+							<input v-else v-model="editedInstance[instanceProperty.key]"
+								type="text"
+								:placeholder="getInstanceProperty(instance, instanceProperty)"
+								:name="instanceProperty.key"
+								form="edit_instance"
+							>
+						</td>
+						<td class="actions">
+							<!-- Submit button -->
+							<button type="submit" form="edit_instance">
+								{{ t('inventory', 'Save') }}
+							</button>
 						</td>
 					</tr>
 					<tr v-if="addUuidTo === instance.id" :key="'uuidInput-' + instance.id"
@@ -92,6 +111,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</tbody>
 		</table>
 		<form id="new_instance" method="POST" @submit.prevent="putInstance" />
+		<form id="edit_instance" method="POST" @submit.prevent="saveInstance" />
 		<!-- qrcode -->
 		<modal v-if="qrcode" id="qrcode-modal"
 			@close="closeQrModal"
@@ -159,6 +179,7 @@ export default {
 			addingInstance: false,
 			newInstance: {},
 			qrcode: null,
+			editedInstance: {},
 		}
 	},
 	methods: {
@@ -186,6 +207,11 @@ export default {
 					action: () => { this.toggleUuidInput(instance) }
 				},
 				{
+					icon: 'icon-rename',
+					text: t('inventory', 'Edit instance'),
+					action: () => { this.toggleEditInstance(instance) }
+				},
+				{
 					icon: 'icon-delete',
 					text: t('inventory', 'Delete instance'),
 					action: () => { this.removeInstance(instance) }
@@ -207,6 +233,20 @@ export default {
 		// reset the current qrcode
 		closeQrModal() {
 			this.qrcode = null
+		},
+
+		toggleEditInstance: function(instance) {
+			if (this.editedInstance.id === instance.id) {
+				this.editedInstance = {}
+			} else {
+				this.editedInstance = Object.assign({}, instance)
+			}
+		},
+
+		hideEditInstance: function(instance) {
+			if (this.editedInstance.id === instance.id) {
+				this.editedInstance = {}
+			}
 		},
 
 		toggleInstanceInput: function() {
@@ -257,6 +297,11 @@ export default {
 			this.deleteInstance({ item: this.item, instance })
 		},
 
+		async saveInstance() {
+			await this.editInstance({ item: this.item, instance: this.editedInstance })
+			this.editedInstance = {}
+		},
+
 		async setUuid(instance) {
 			await this.addUuid({ item: this.item, instance, uuid: this.newUuid })
 			this.newUuid = ''
@@ -269,6 +314,7 @@ export default {
 		...mapActions([
 			'addInstance',
 			'deleteInstance',
+			'editInstance',
 			'addUuid',
 			'deleteUuid',
 		])

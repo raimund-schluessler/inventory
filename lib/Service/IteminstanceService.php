@@ -94,8 +94,8 @@ class IteminstanceService {
 	 * Removes an instance of an item
 	 * 
 	 * @NoAdminRequired
-	 * @param $itemID	The item Id
-	 * @param $params	The instance parameters
+	 * @param $itemID		The item Id
+	 * @param $instanceId	The instance Id
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
 	public function delete($itemId, $instanceId) {
@@ -106,6 +106,28 @@ class IteminstanceService {
 			$this->iteminstanceUuidMapper->delete($uuid);
 		}
 		return $this->iteminstanceMapper->delete($instance);
+	}
+
+	/**
+	 * Edits an instance of an item
+	 * 
+	 * @NoAdminRequired
+	 * @param $itemID	The item Id
+	 * @param $params	The instance parameters
+	 * @return \OCP\AppFramework\Db\Entity
+	 */
+	public function edit($itemId, $instanceId, $instance) {
+		$localInstance = $this->iteminstanceMapper->find($instanceId, $this->userId);
+		$localInstance->setComment($instance['comment']);
+		$localInstance->setPrice($instance['price']);
+		$localInstance->setCount($instance['count']);
+		$localInstance->setAvailable($instance['available']);
+		$localInstance->setVendor($instance['vendor']);
+		$localInstance->setDate($instance['date']);
+		$localInstance->setComment($instance['comment']);
+		$localInstance->setPlaceid($instance['placeid']);
+		$editedInstance = $this->iteminstanceMapper->update($localInstance);
+		return $this->getInstanceDetails($editedInstance);
 	}
 
 	/**
