@@ -117,6 +117,17 @@ export default class Item {
 	}
 
 	/**
+	 * Set the name
+	 *
+	 * @param {string} name The new name
+	 * @memberof Item
+	 */
+	set name(name) {
+		this.response.name = name
+		this._name = this.response.name || ''
+	}
+
+	/**
 	 * Return the maker
 	 *
 	 * @readonly
@@ -124,6 +135,17 @@ export default class Item {
 	 */
 	get maker() {
 		return this._maker
+	}
+
+	/**
+	 * Set the maker
+	 *
+	 * @param {string} maker The new maker
+	 * @memberof Item
+	 */
+	set maker(maker) {
+		this.response.maker = maker
+		this._maker = this.response.maker || ''
 	}
 
 	/**
@@ -137,6 +159,17 @@ export default class Item {
 	}
 
 	/**
+	 * Set the description
+	 *
+	 * @param {string} description The new description
+	 * @memberof Item
+	 */
+	set description(description) {
+		this.response.description = description
+		this._description = this.response.description || ''
+	}
+
+	/**
 	 * Return the itemNumber
 	 *
 	 * @readonly
@@ -144,6 +177,17 @@ export default class Item {
 	 */
 	get itemNumber() {
 		return this._itemNumber
+	}
+
+	/**
+	 * Set the itemNumber
+	 *
+	 * @param {string} itemNumber The new itemNumber
+	 * @memberof Item
+	 */
+	set itemNumber(itemNumber) {
+		this.response.itemNumber = itemNumber
+		this._itemNumber = this.response.itemNumber || ''
 	}
 
 	/**
@@ -157,6 +201,17 @@ export default class Item {
 	}
 
 	/**
+	 * Set the link
+	 *
+	 * @param {string} link The new link
+	 * @memberof Item
+	 */
+	set link(link) {
+		this.response.link = link
+		this._link = this.response.link || ''
+	}
+
+	/**
 	 * Return the gtin
 	 *
 	 * @readonly
@@ -164,6 +219,17 @@ export default class Item {
 	 */
 	get gtin() {
 		return this._gtin
+	}
+
+	/**
+	 * Set the gtin
+	 *
+	 * @param {string} gtin The new gtin
+	 * @memberof Item
+	 */
+	set gtin(gtin) {
+		this.response.gtin = gtin
+		this._gtin = this.response.gtin || ''
 	}
 
 	/**
@@ -177,6 +243,17 @@ export default class Item {
 	}
 
 	/**
+	 * Set the details
+	 *
+	 * @param {string} details The new details
+	 * @memberof Item
+	 */
+	set details(details) {
+		this.response.details = details
+		this._details = this.response.details || ''
+	}
+
+	/**
 	 * Return the comment
 	 *
 	 * @readonly
@@ -184,6 +261,17 @@ export default class Item {
 	 */
 	get comment() {
 		return this._comment
+	}
+
+	/**
+	 * Set the comment
+	 *
+	 * @param {string} comment The new comment
+	 * @memberof Item
+	 */
+	set comment(comment) {
+		this.response.comment = comment
+		this._comment = this.response.comment || ''
 	}
 
 	/**
@@ -214,6 +302,17 @@ export default class Item {
 	 */
 	get categories() {
 		return this._categories
+	}
+
+	/**
+	 * Set the categories
+	 *
+	 * @param {string} categories The new categories
+	 * @memberof Item
+	 */
+	set categories(categories) {
+		this.response.categories = categories
+		this._categories = this.response.categories || ''
 	}
 
 	/**

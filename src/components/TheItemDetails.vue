@@ -44,17 +44,23 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Properties') }}</span>
 					</h3>
 					<table class="properties">
-						<tbody>
+						<tbody v-click-outside="hideEditItem">
 							<tr v-for="itemProperty in itemProperties" :key="itemProperty.key">
 								<td>
 									<span>{{ itemProperty.name }}</span>
 								</td>
 								<td v-if="itemProperty.key === 'link'">
-									<span>
+									<span v-if="!editingItem">
 										<a :href="item.link" target="_blank">
 											{{ item.link }}
 										</a>
 									</span>
+									<input v-else v-model="editedItem.link"
+										type="text"
+										:placeholder="itemProperty.name"
+										:name="itemProperty.key"
+										form="edit_item"
+									>
 								</td>
 								<td v-else-if="itemProperty.key === 'categories'">
 									<ul class="categories">
@@ -64,7 +70,21 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 									</ul>
 								</td>
 								<td v-else>
-									<span>{{ item[itemProperty.key] }}</span>
+									<span v-if="!editingItem">{{ item[itemProperty.key] }}</span>
+									<input v-else v-model="editedItem[itemProperty.key]"
+										v-focus="itemProperty.key === 'name'"
+										type="text"
+										:placeholder="itemProperty.name"
+										:name="itemProperty.key"
+										form="edit_item"
+									>
+								</td>
+							</tr>
+							<tr v-if="editingItem">
+								<td colspan="2">
+									<button type="submit" form="edit_item" class="right">
+										{{ t('inventory', 'Save') }}
+									</button>
 								</td>
 							</tr>
 						</tbody>
@@ -109,6 +129,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<span v-if="loading">{{ t('inventory', 'Loading item from server.') }}</span>
 			<span v-else>{{ t('inventory', 'Item not found!') }}</span>
 		</div>
+		<form id="edit_item" method="POST" @submit.prevent="saveItem" />
 	</div>
 </template>
 
@@ -116,6 +137,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import { mapActions, mapState, mapGetters } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 import Dropdown from './Dropdown.vue'
+import focus from '../directives/focus'
+import ClickOutside from 'vue-click-outside'
 import RelationModal from './RelationModal.vue'
 import ItemInstances from './TheItemInstances.vue'
 
@@ -125,6 +148,10 @@ export default {
 		Dropdown: Dropdown,
 		RelationModal,
 		ItemInstances,
+	},
+	directives: {
+		ClickOutside,
+		focus,
 	},
 	props: {
 		id: {
@@ -139,11 +166,18 @@ export default {
 			selectedParents: [],
 			selectedSub: [],
 			selectedRelated: [],
+			editingItem: false,
+			editedItem: {},
 			itemActions: [
 				{
 					icon: 'icon-add',
 					text: t('inventory', 'Link items'),
 					action: this.openModal,
+				},
+				{
+					icon: 'icon-rename',
+					text: t('inventory', 'Edit item'),
+					action: this.toggleEditItem,
 				},
 				{
 					icon: 'icon-delete',
@@ -207,6 +241,19 @@ export default {
 		next()
 	},
 	methods: {
+		hideEditItem: function() {
+			this.editingItem = false
+		},
+		toggleEditItem: function() {
+			this.editingItem = !this.editingItem
+			if (this.editingItem) {
+				this.editedItem = this.item.response
+			}
+		},
+		async saveItem() {
+			await this.editItem(this.item)
+			this.editingItem = false
+		},
 		async loadItem(itemID) {
 			this.loading = true
 			await this.getItemById(itemID)
@@ -258,6 +305,7 @@ export default {
 			'loadParentItems',
 			'loadRelatedItems',
 			'deleteItem',
+			'editItem',
 			'linkItems',
 			'unlinkItems',
 		])

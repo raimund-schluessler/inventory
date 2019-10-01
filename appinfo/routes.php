@@ -32,6 +32,7 @@ return [
 		['name' => 'items#unlink',			'url' => '/item/{itemID}/unlink/{relationType}',		'verb' => 'POST'],
 		['name' => 'items#enlist',			'url' => '/item/add',									'verb' => 'POST'],
 		['name' => 'items#delete',			'url' => '/item/{itemID}/delete',						'verb' => 'DELETE'],
+		['name' => 'items#edit',			'url' => '/item/{itemID}/edit',							'verb' => 'PATCH'],
 		['name' => 'instance#add',			'url' => '/item/{itemID}/instance/add',					'verb' => 'POST'],
 		['name' => 'instance#delete',		'url' => '/item/{itemID}/instance/{instanceID}/delete',	'verb' => 'DELETE'],
 		['name' => 'instance#edit',			'url' => '/item/{itemID}/instance/{instanceID}/edit',	'verb' => 'PATCH'],

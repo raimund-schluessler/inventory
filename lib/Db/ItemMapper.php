@@ -79,4 +79,8 @@ class ItemMapper extends Mapper {
 		$item->setType($params['type']);
 		return $this->insert($item);
 	}
+
+	public function update($instance) {
+		return parent::update($instance);
+	}
 }

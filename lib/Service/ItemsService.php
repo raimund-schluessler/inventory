@@ -67,21 +67,8 @@ class ItemsService {
 	 */
 	public function getAll() {
 		$items = $this->itemMapper->findAll($this->userId);
-		foreach ($items as $nr => $item) {
-			$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
-			$categoriesNames = array();
-			foreach ($categories as $category) {
-				$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
-				$categoriesNames[] = array(
-					'id'	=> $category->categoryid,
-					'name'	=> $name->name
-				);
-			}
-			$type = $this->itemtypeMapper->find($item->type, $this->userId);
-			$items[$nr]->icon = $type->icon;
-			$items[$nr]->type = $type->name;
-			$items[$nr]->categories = $categoriesNames;
-			$items[$nr]->instances = $this->iteminstanceService->getByItemID($item->id);
+		foreach ($items as $item) {
+			$item = $this->getItemDetails($item);
 		}
 		return $items;
 	}
@@ -110,21 +97,8 @@ class ItemsService {
 		array_push($excludeIDs, $itemID);
 
 		$items = $this->itemMapper->findCandidates($itemID, $excludeIDs, $this->userId);
-		foreach ($items as $nr => $item) {
-			$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
-			$categoriesNames = array();
-			foreach ($categories as $category) {
-				$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
-				$categoriesNames[] = array(
-					'id'	=> $category->categoryid,
-					'name'	=> $name->name
-				);
-			}
-			$type = $this->itemtypeMapper->find($item->type, $this->userId);
-			$items[$nr]->icon = $type->icon;
-			$items[$nr]->type = $type->name;
-			$items[$nr]->categories = $categoriesNames;
-			$items[$nr]->instances = $this->iteminstanceService->getByItemID($item->id);
+		foreach ($items as $item) {
+			$item = $this->getItemDetails($item);
 		}
 		return $items;
 	}
@@ -145,21 +119,7 @@ class ItemsService {
 		}
 
 		$item = $this->itemMapper->find($itemID, $this->userId);
-		$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
-		$categoriesNames = array();
-		foreach ($categories as $category) {
-			$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
-			$categoriesNames[] = array(
-				'id'	=> $category->categoryid,
-				'name'	=> $name->name
-			);
-		}
-		$type = $this->itemtypeMapper->find($item->type, $this->userId);
-		$item->icon = $type->icon;
-		$item->type = $type->name;
-		$item->categories = $categoriesNames;
-		$item->instances = $this->iteminstanceService->getByItemID($item->id);
-		return $item;
+		return $this->getItemDetails($item);
 	}
 
 	/**
@@ -177,20 +137,7 @@ class ItemsService {
 		$items = [];
 		foreach ($relations as $relation) {
 			$item = $this->itemMapper->find($relation->itemid, $this->userId);
-			$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
-			$categoriesNames = array();
-			foreach ($categories as $category) {
-				$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
-				$categoriesNames[] = array(
-					'id'	=> $category->categoryid,
-					'name'	=> $name->name
-				);
-			}
-			$type = $this->itemtypeMapper->find($item->type, $this->userId);
-			$item->icon = $type->icon;
-			$item->type = $type->name;
-			$item->categories = $categoriesNames;
-			$item->instances = $this->iteminstanceService->getByItemID($item->id);
+			$item = $this->getItemDetails($item);
 			$items[] = $item;
 		}
 		return $items;
@@ -211,20 +158,7 @@ class ItemsService {
 		$items = [];
 		foreach ($relations as $relation) {
 			$item = $this->itemMapper->find($relation->parentid, $this->userId);
-			$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
-			$categoriesNames = array();
-			foreach ($categories as $category) {
-				$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
-				$categoriesNames[] = array(
-					'id'	=> $category->categoryid,
-					'name'	=> $name->name
-				);
-			}
-			$type = $this->itemtypeMapper->find($item->type, $this->userId);
-			$item->icon = $type->icon;
-			$item->type = $type->name;
-			$item->categories = $categoriesNames;
-			$item->instances = $this->iteminstanceService->getByItemID($item->id);
+			$item = $this->getItemDetails($item);
 			$items[] = $item;
 		}
 		return $items;
@@ -245,20 +179,7 @@ class ItemsService {
 		$items = [];
 		foreach ($relations as $relation) {
 			$item = $this->itemMapper->find($relation->itemid1, $this->userId);
-			$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
-			$categoriesNames = array();
-			foreach ($categories as $category) {
-				$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
-				$categoriesNames[] = array(
-					'id'	=> $category->categoryid,
-					'name'	=> $name->name
-				);
-			}
-			$type = $this->itemtypeMapper->find($item->type, $this->userId);
-			$item->icon = $type->icon;
-			$item->type = $type->name;
-			$item->categories = $categoriesNames;
-			$item->instances = $this->iteminstanceService->getByItemID($item->id);
+			$item = $this->getItemDetails($item);
 			$items[] = $item;
 		}
 		return $items;
@@ -323,6 +244,67 @@ class ItemsService {
 
 		// Delete the item itself
 		$this->itemMapper->delete($item);
+	}
+
+	/**
+	 * Edits an instance of an item
+	 * 
+	 * @NoAdminRequired
+	 * @param $itemID	The item Id
+	 * @param $item	The item parameters
+	 * @return \OCP\AppFramework\Db\Entity
+	 */
+	public function edit($itemId, $item) {
+
+		if ( is_numeric($itemId) === false ) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
+		if ( $item['name'] === null || $item['name'] === false ) {
+			throw new BadRequestException('Item name must not be empty.');
+		}
+
+		if ( $item['gtin'] !== '' && strlen($item['gtin']) !== 13 ) {
+			throw new BadRequestException('The provided GTIN is invalid.');
+		}
+
+		$localItem = $this->itemMapper->find($itemId, $this->userId);
+		$localItem->setName($item['name']);
+		$localItem->setMaker($item['maker']);
+		$localItem->setDescription($item['description']);
+		$localItem->setItemNumber($item['itemNumber']);
+		$localItem->setLink($item['link']);
+		$localItem->setGtin($item['gtin']);
+		$localItem->setDetails($item['details']);
+		$localItem->setComment($item['comment']);
+		$localItem->setType($item['type']);
+		$editedItem = $this->itemMapper->update($localItem);
+		return $this->getItemDetails($editedItem);
+	}
+
+	/**
+	 * Gets the of an item
+	 * 
+	 * @NoAdminRequired
+	 * @param $item	The item
+	 * @return \OCP\AppFramework\Db\Entity
+	 */
+	function getItemDetails($item) {
+		$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
+		$categoriesNames = array();
+		foreach ($categories as $category) {
+			$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
+			$categoriesNames[] = array(
+				'id'	=> $category->categoryid,
+				'name'	=> $name->name
+			);
+		}
+		$type = $this->itemtypeMapper->find($item->type, $this->userId);
+		$item->icon = $type->icon;
+		$item->type = $type->name;
+		$item->categories = $categoriesNames;
+		$item->instances = $this->iteminstanceService->getByItemID($item->id);
+		return $item;
 	}
 
 	/**
