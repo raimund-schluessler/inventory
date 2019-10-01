@@ -70,4 +70,8 @@ class IteminstanceMapper extends Mapper {
 			$this->delete($instance);
 		}
 	}
+
+	public function update($instance) {
+		return parent::update($instance);
+	}
 }

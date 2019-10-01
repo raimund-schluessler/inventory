@@ -34,6 +34,7 @@ return [
 		['name' => 'items#delete',			'url' => '/item/{itemID}/delete',						'verb' => 'DELETE'],
 		['name' => 'instance#add',			'url' => '/item/{itemID}/instance/add',					'verb' => 'POST'],
 		['name' => 'instance#delete',		'url' => '/item/{itemID}/instance/{instanceID}/delete',	'verb' => 'DELETE'],
+		['name' => 'instance#edit',			'url' => '/item/{itemID}/instance/{instanceID}/edit',	'verb' => 'PATCH'],
 		['name' => 'instance#addUuid',		'url' => '/item/{itemID}/instance/{instanceID}/uuid/{uuid}',	'verb' => 'PUT'],
 		['name' => 'instance#deleteUuid',	'url' => '/item/{itemID}/instance/{instanceID}/uuid/{uuid}',	'verb' => 'DELETE'],
 	]
