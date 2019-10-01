@@ -1,8 +1,8 @@
 <!--
-Nextcloud - Tasks
+Nextcloud - Inventory
 
 @author Raimund Schlüßler
-@copyright 2018 Raimund Schlüßler <raimund.schluessler@mailbox.org>
+@copyright 2019 Raimund Schlüßler <raimund.schluessler@mailbox.org>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -21,8 +21,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 export default {
-	inserted: function(el) {
-		el.focus()
+	inserted: function(el, binding) {
+		if (binding.expression === undefined || binding.value) {
+			el.focus()
+		}
 	}
 }
 </script>
