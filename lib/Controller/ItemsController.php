@@ -109,4 +109,11 @@ class ItemsController extends Controller {
 	public function delete($itemID){
 		return $this->itemsService->delete($itemID);
 	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function edit($itemID, $item){
+		return $this->itemsService->edit($itemID, $item);
+	}
 }

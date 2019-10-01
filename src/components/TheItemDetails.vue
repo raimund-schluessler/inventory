@@ -44,85 +44,47 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Properties') }}</span>
 					</h3>
 					<table class="properties">
-						<tbody>
-							<tr>
+						<tbody v-click-outside="hideEditItem">
+							<tr v-for="itemProperty in itemProperties" :key="itemProperty.key">
 								<td>
-									<span>{{ t('inventory', 'Name') }}</span>
+									<span>{{ itemProperty.name }}</span>
 								</td>
-								<td>
-									<span>{{ item.name }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Maker') }}</span>
-								</td>
-								<td>
-									<span>{{ item.maker }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Description') }}</span>
-								</td>
-								<td>
-									<span>{{ item.description }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Item Number') }}</span>
-								</td>
-								<td>
-									<span>{{ item.itemNumber }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Link') }}</span>
-								</td>
-								<td>
-									<span>
+								<td v-if="itemProperty.key === 'link'">
+									<span v-if="!editingItem">
 										<a :href="item.link" target="_blank">
 											{{ item.link }}
 										</a>
 									</span>
+									<input v-else v-model="editedItem.link"
+										type="text"
+										:placeholder="itemProperty.name"
+										:name="itemProperty.key"
+										form="edit_item"
+									>
 								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'GTIN') }}</span>
-								</td>
-								<td>
-									<span>{{ item.gtin }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Details') }}</span>
-								</td>
-								<td>
-									<span>{{ item.details }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Comment') }}</span>
-								</td>
-								<td>
-									<span>{{ item.comment }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Categories') }}</span>
-								</td>
-								<td>
+								<td v-else-if="itemProperty.key === 'categories'">
 									<ul class="categories">
 										<li v-for="category in item.categories" :key="category.id">
 											<span>{{ category.name }}</span>
 										</li>
 									</ul>
+								</td>
+								<td v-else>
+									<span v-if="!editingItem">{{ item[itemProperty.key] }}</span>
+									<input v-else v-model="editedItem[itemProperty.key]"
+										v-focus="itemProperty.key === 'name'"
+										type="text"
+										:placeholder="itemProperty.name"
+										:name="itemProperty.key"
+										form="edit_item"
+									>
+								</td>
+							</tr>
+							<tr v-if="editingItem">
+								<td colspan="2">
+									<button type="submit" form="edit_item" class="right">
+										{{ t('inventory', 'Save') }}
+									</button>
 								</td>
 							</tr>
 						</tbody>
@@ -167,6 +129,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<span v-if="loading">{{ t('inventory', 'Loading item from server.') }}</span>
 			<span v-else>{{ t('inventory', 'Item not found!') }}</span>
 		</div>
+		<form id="edit_item" method="POST" @submit.prevent="saveItem" />
 	</div>
 </template>
 
@@ -174,6 +137,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import { mapActions, mapState, mapGetters } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 import Dropdown from './Dropdown.vue'
+import focus from '../directives/focus'
+import ClickOutside from 'vue-click-outside'
 import RelationModal from './RelationModal.vue'
 import ItemInstances from './TheItemInstances.vue'
 
@@ -183,6 +148,10 @@ export default {
 		Dropdown: Dropdown,
 		RelationModal,
 		ItemInstances,
+	},
+	directives: {
+		ClickOutside,
+		focus,
 	},
 	props: {
 		id: {
@@ -197,6 +166,8 @@ export default {
 			selectedParents: [],
 			selectedSub: [],
 			selectedRelated: [],
+			editingItem: false,
+			editedItem: {},
 			itemActions: [
 				{
 					icon: 'icon-add',
@@ -204,10 +175,45 @@ export default {
 					action: this.openModal,
 				},
 				{
+					icon: 'icon-rename',
+					text: t('inventory', 'Edit item'),
+					action: this.toggleEditItem,
+				},
+				{
 					icon: 'icon-delete',
 					text: t('inventory', 'Delete item'),
 					action: this.removeItem,
 				}
+			],
+			itemProperties: [
+				{
+					key: 'name',
+					name: t('inventory', 'Name'),
+				}, {
+					key: 'maker',
+					name: t('inventory', 'Maker'),
+				}, {
+					key: 'description',
+					name: t('inventory', 'Description'),
+				}, {
+					key: 'itemNumber',
+					name: t('inventory', 'Item number'),
+				}, {
+					key: 'link',
+					name: t('inventory', 'Link'),
+				}, {
+					key: 'gtin',
+					name: t('inventory', 'GTIN'),
+				}, {
+					key: 'details',
+					name: t('inventory', 'Details'),
+				}, {
+					key: 'comment',
+					name: t('inventory', 'Comment'),
+				}, {
+					key: 'categories',
+					name: t('inventory', 'Categories'),
+				},
 			],
 		}
 	},
@@ -235,6 +241,19 @@ export default {
 		next()
 	},
 	methods: {
+		hideEditItem: function() {
+			this.editingItem = false
+		},
+		toggleEditItem: function() {
+			this.editingItem = !this.editingItem
+			if (this.editingItem) {
+				this.editedItem = this.item.response
+			}
+		},
+		async saveItem() {
+			await this.editItem(this.item)
+			this.editingItem = false
+		},
 		async loadItem(itemID) {
 			this.loading = true
 			await this.getItemById(itemID)
@@ -286,6 +305,7 @@ export default {
 			'loadParentItems',
 			'loadRelatedItems',
 			'deleteItem',
+			'editItem',
 			'linkItems',
 			'unlinkItems',
 		])

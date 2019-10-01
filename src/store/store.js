@@ -82,6 +82,21 @@ export default new Vuex.Store({
 		},
 
 		/**
+		 * Edits an item in the store
+		 *
+		 * @param {Object} state Default state
+		 * @param {Item} item The item to edit
+		 */
+		editItem(state, item) {
+			if (state.items[item.id] && item instanceof Item) {
+				Vue.set(state.items, item.id, item)
+			}
+			if (state.item.id === item.id) {
+				state.item = item
+			}
+		},
+
+		/**
 		 * Unlinks parent items
 		 *
 		 * @param {Object} state Default state
@@ -381,6 +396,16 @@ export default new Vuex.Store({
 			items.forEach(async(item) => {
 				await queue.add(() => context.dispatch('deleteItem', item))
 			})
+		},
+		async editItem({ commit }, item) {
+			try {
+				const response = await Axios.patch(OC.generateUrl('apps/inventory/item/' + item.id + '/edit'), { item: item.response })
+				Vue.set(item, 'response', response.data)
+				item.updateItem()
+				commit('editItem', item)
+			} catch {
+				console.debug('Item editing failed.')
+			}
 		},
 		async linkItems(context, { itemID, relation, items }) {
 			if (!Array.isArray(items) || !items.length) {
