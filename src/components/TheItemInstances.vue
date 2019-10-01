@@ -28,9 +28,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ instanceProperty.name }}</span>
 					</th>
 					<th class="actions">
-						<div class="add-instance">
-							<span add-instance="true" class="icon icon-bw icon-plus" @click="toggleInstanceInput" />
-						</div>
+						<Actions>
+							<ActionButton icon="icon-add" @click="toggleInstanceInput">
+								{{ t('inventory', 'Add instance') }}
+							</ActionButton>
+						</Actions>
 					</th>
 				</tr>
 			</thead>
@@ -42,7 +44,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</td>
 						<td class="actions">
 							<div>
-								<Dropdown :menu="instanceActions(instance)" />
+								<Actions>
+									<ActionButton :icon="'icon-add'" @click="toggleUuidInput(instance)">
+										{{ t('inventory', 'Add UUID') }}
+									</ActionButton>
+									<ActionButton :icon="'icon-rename'" @click="toggleEditInstance(instance)">
+										{{ t('inventory', 'Edit instance') }}
+									</ActionButton>
+									<ActionButton :icon="'icon-delete'" @click="removeInstance(instance)">
+										{{ t('inventory', 'Delete instance') }}
+									</ActionButton>
+								</Actions>
 							</div>
 						</td>
 					</tr>
@@ -83,7 +95,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							{{ uuid.uuid }}
 						</td>
 						<td class="actions">
-							<Dropdown :menu="uuidActions(instance, uuid.uuid)" />
+							<Actions>
+								<ActionButton :icon="'icon-qrcode'" @click="showQRcode(uuid.uuid)">
+									{{ t('inventory', 'Show QR Code') }}
+								</ActionButton>
+								<ActionButton :icon="'icon-delete'" @click="removeUuid(instance, uuid.uuid)">
+									{{ t('inventory', 'Delete UUID') }}
+								</ActionButton>
+							</Actions>
 						</td>
 					</tr>
 				</template>
@@ -125,14 +144,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import { mapActions } from 'vuex'
 import focus from '../directives/focus'
 import ClickOutside from 'vue-click-outside'
-import Dropdown from './Dropdown.vue'
 import qr from 'qr-image'
 import { Modal } from 'nextcloud-vue'
+import { Actions } from 'nextcloud-vue/dist/Components/Actions'
+import { ActionButton } from 'nextcloud-vue/dist/Components/ActionButton'
 
 export default {
 	components: {
-		Dropdown,
 		Modal,
+		Actions,
+		ActionButton,
 	},
 	directives: {
 		ClickOutside,
@@ -180,46 +201,10 @@ export default {
 			newInstance: {},
 			qrcode: null,
 			editedInstance: {},
+			closing: true,
 		}
 	},
 	methods: {
-
-		uuidActions(instance, uuid) {
-			return [
-				{
-					icon: 'icon-qrcode',
-					text: t('inventory', 'Show QR Code'),
-					action: () => { this.showQRcode(uuid) },
-				},
-				{
-					icon: 'icon-delete',
-					text: t('inventory', 'Delete UUID'),
-					action: () => { this.removeUuid(instance, uuid) },
-				}
-			]
-		},
-
-		instanceActions(instance) {
-			return [
-				{
-					icon: 'icon-add',
-					text: t('inventory', 'Add UUID'),
-					action: () => { this.toggleUuidInput(instance) }
-				},
-				{
-					icon: 'icon-rename',
-					text: t('inventory', 'Edit instance'),
-					action: () => { this.toggleEditInstance(instance) }
-				},
-				{
-					icon: 'icon-delete',
-					text: t('inventory', 'Delete instance'),
-					action: () => { this.removeInstance(instance) }
-				}
-
-			]
-		},
-
 		/**
 		 * Generate a qrcode for the UUID
 		 * @param {String} uuid The UUID
@@ -240,23 +225,30 @@ export default {
 				this.editedInstance = {}
 			} else {
 				this.editedInstance = Object.assign({}, instance)
+				this.closing = false
 			}
 		},
 
 		hideEditInstance: function(instance) {
-			if (this.editedInstance.id === instance.id) {
+			if (this.closing && this.editedInstance.id === instance.id) {
 				this.editedInstance = {}
 			}
+			this.closing = true
 		},
 
 		toggleInstanceInput: function() {
 			this.addingInstance = !this.addingInstance
+			// Temporarily disable the click-outside-directive
+			if (this.addingInstance) {
+				this.closing = false
+			}
 		},
 
 		hideInstanceInput: function(e) {
-			if (!e.target.getAttribute('add-instance')) {
+			if (this.closing) {
 				this.addingInstance = false
 			}
+			this.closing = true
 		},
 
 		toggleUuidInput: function(instance) {
@@ -264,13 +256,17 @@ export default {
 				this.addUuidTo = null
 			} else {
 				this.addUuidTo = instance.id
+				// Temporarily disable the click-outside-directive
+				this.closing = false
 			}
 		},
 
 		hideUuidInput: function(instance) {
-			if (instance.id === this.addUuidTo) {
+			if (this.closing && instance.id === this.addUuidTo) {
 				this.addUuidTo = null
 			}
+			// Enable closing the menus again
+			this.closing = true
 		},
 
 		getPlace(place) {

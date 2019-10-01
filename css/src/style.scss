@@ -320,33 +320,8 @@ table {
 	background-color: var(--color-main-background-translucent);
 	z-index: 60;
 
-	.menu-icon {
+	.action-item {
 		margin-left: auto;
-	}
-}
-
-.menu-icon {
-	position: relative;
-	height: 44px;
-	width: 44px;
-}
-
-.header-icon {
-	height: 44px;
-	width: 44px;
-	padding: 14px;
-	border-radius: 22px;
-	cursor: pointer;
-	background-size: 16px;
-	opacity: .7;
-	&:hover,
-	&:focus {
-		opacity: 1;
-	}
-	&.header-icon--pulse {
-		margin: 8px;
-		width: 16px;
-		height: 16px;
 	}
 }
 

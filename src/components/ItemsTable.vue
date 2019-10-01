@@ -63,7 +63,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<span>{{ t('inventory', 'Categories') }}</span>
 							<span class="sort-indicator hidden icon-triangle-s" />
 						</a>
-						<Dropdown v-if="showDropdown" :menu="itemActions" />
+						<Actions v-if="showDropdown">
+							<ActionRouter :to="'/items/additem'" :icon="'icon-add'">
+								{{ t('inventory', 'Add single item') }}
+							</ActionRouter>
+							<ActionRouter :to="'/items/additems'" :icon="'icon-add'">
+								{{ t('inventory', 'Add multiple items') }}
+							</ActionRouter>
+							<ActionButton v-if="selectedItems.length" :icon="'icon-delete'"
+								@click="removeItems"
+							>
+								{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
+							</ActionButton>
+						</Actions>
 						<div v-show="unlink && selectedItems.length" class="unlink" @click="$emit('unlink')">
 							<span class="icon icon-bw icon-trash" />
 						</div>
@@ -126,14 +138,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import Dropdown from './Dropdown.vue'
 import ItemStatusDisplay from './ItemStatusDisplay'
 import searchQueryParser from 'search-query-parser'
 import { mapActions } from 'vuex'
+import { Actions } from 'nextcloud-vue/dist/Components/Actions'
+import { ActionButton } from 'nextcloud-vue/dist/Components/ActionButton'
+import { ActionRouter } from 'nextcloud-vue/dist/Components/ActionRouter'
 
 export default {
 	components: {
-		Dropdown: Dropdown,
+		Actions,
+		ActionButton,
+		ActionRouter,
 		ItemStatusDisplay,
 	},
 	props: {
@@ -170,29 +186,6 @@ export default {
 		}
 	},
 	computed: {
-		itemActions() {
-			const actions = [
-				{
-					icon: 'icon-add',
-					text: t('inventory', 'Add single item'),
-					href: '#/items/additem',
-				},
-				{
-					icon: 'icon-add',
-					text: t('inventory', 'Add multiple items'),
-					href: '#/items/additems',
-				}
-			]
-			if (this.selectedItems.length) {
-				actions.push({
-					icon: 'icon-delete',
-					text: n('inventory', 'Delete selected item', 'Delete selected items', this.selectedItems.length),
-					action: this.removeItems
-				})
-			}
-
-			return actions
-		},
 		allVisibleItemsSelected: {
 			set(select) {
 				if (select) {
