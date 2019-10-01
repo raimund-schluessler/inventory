@@ -45,84 +45,26 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</h3>
 					<table class="properties">
 						<tbody>
-							<tr>
+							<tr v-for="itemProperty in itemProperties" :key="itemProperty.key">
 								<td>
-									<span>{{ t('inventory', 'Name') }}</span>
+									<span>{{ itemProperty.name }}</span>
 								</td>
-								<td>
-									<span>{{ item.name }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Maker') }}</span>
-								</td>
-								<td>
-									<span>{{ item.maker }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Description') }}</span>
-								</td>
-								<td>
-									<span>{{ item.description }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Item Number') }}</span>
-								</td>
-								<td>
-									<span>{{ item.itemNumber }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Link') }}</span>
-								</td>
-								<td>
+								<td v-if="itemProperty.key === 'link'">
 									<span>
 										<a :href="item.link" target="_blank">
 											{{ item.link }}
 										</a>
 									</span>
 								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'GTIN') }}</span>
-								</td>
-								<td>
-									<span>{{ item.gtin }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Details') }}</span>
-								</td>
-								<td>
-									<span>{{ item.details }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Comment') }}</span>
-								</td>
-								<td>
-									<span>{{ item.comment }}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span>{{ t('inventory', 'Categories') }}</span>
-								</td>
-								<td>
+								<td v-else-if="itemProperty.key === 'categories'">
 									<ul class="categories">
 										<li v-for="category in item.categories" :key="category.id">
 											<span>{{ category.name }}</span>
 										</li>
 									</ul>
+								</td>
+								<td v-else>
+									<span>{{ item[itemProperty.key] }}</span>
 								</td>
 							</tr>
 						</tbody>
@@ -208,6 +150,36 @@ export default {
 					text: t('inventory', 'Delete item'),
 					action: this.removeItem,
 				}
+			],
+			itemProperties: [
+				{
+					key: 'name',
+					name: t('inventory', 'Name'),
+				}, {
+					key: 'maker',
+					name: t('inventory', 'Maker'),
+				}, {
+					key: 'description',
+					name: t('inventory', 'Description'),
+				}, {
+					key: 'itemNumber',
+					name: t('inventory', 'Item number'),
+				}, {
+					key: 'link',
+					name: t('inventory', 'Link'),
+				}, {
+					key: 'gtin',
+					name: t('inventory', 'GTIN'),
+				}, {
+					key: 'details',
+					name: t('inventory', 'Details'),
+				}, {
+					key: 'comment',
+					name: t('inventory', 'Comment'),
+				}, {
+					key: 'categories',
+					name: t('inventory', 'Categories'),
+				},
 			],
 		}
 	},
