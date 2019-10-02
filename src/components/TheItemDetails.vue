@@ -35,7 +35,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</a>
 					</div>
 				</div>
-				<Dropdown :menu="itemActions" />
+				<Actions>
+					<ActionButton :icon="'icon-add'" @click="openModal">
+						{{ t('inventory', 'Link items') }}
+					</ActionButton>
+					<ActionButton :icon="'icon-rename'" @click="toggleEditItem">
+						{{ t('inventory', 'Edit item') }}
+					</ActionButton>
+					<ActionButton :icon="'icon-delete'" @click="removeItem">
+						{{ t('inventory', 'Delete item') }}
+					</ActionButton>
+				</Actions>
 			</div>
 			<div id="itemdetails">
 				<div class="item_images" />
@@ -136,16 +146,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
-import Dropdown from './Dropdown.vue'
-import focus from '../directives/focus'
-import ClickOutside from 'vue-click-outside'
 import RelationModal from './RelationModal.vue'
 import ItemInstances from './TheItemInstances.vue'
+import focus from '../directives/focus'
+import ClickOutside from 'vue-click-outside'
+import { Actions } from 'nextcloud-vue/dist/Components/Actions'
+import { ActionButton } from 'nextcloud-vue/dist/Components/ActionButton'
 
 export default {
 	components: {
 		ItemsTable: ItemsTable,
-		Dropdown: Dropdown,
+		Actions,
+		ActionButton,
 		RelationModal,
 		ItemInstances,
 	},
@@ -168,23 +180,7 @@ export default {
 			selectedRelated: [],
 			editingItem: false,
 			editedItem: {},
-			itemActions: [
-				{
-					icon: 'icon-add',
-					text: t('inventory', 'Link items'),
-					action: this.openModal,
-				},
-				{
-					icon: 'icon-rename',
-					text: t('inventory', 'Edit item'),
-					action: this.toggleEditItem,
-				},
-				{
-					icon: 'icon-delete',
-					text: t('inventory', 'Delete item'),
-					action: this.removeItem,
-				}
-			],
+			closing: true,
 			itemProperties: [
 				{
 					key: 'name',
@@ -242,12 +238,16 @@ export default {
 	},
 	methods: {
 		hideEditItem: function() {
-			this.editingItem = false
+			if (this.closing) {
+				this.editingItem = false
+			}
+			this.closing = true
 		},
 		toggleEditItem: function() {
 			this.editingItem = !this.editingItem
 			if (this.editingItem) {
 				this.editedItem = this.item.response
+				this.closing = false
 			}
 		},
 		async saveItem() {
