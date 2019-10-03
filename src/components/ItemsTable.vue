@@ -71,7 +71,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								{{ t('inventory', 'Add multiple items') }}
 							</ActionRouter>
 							<ActionButton v-if="selectedItems.length" :icon="'icon-delete'"
-								@click="removeItems"
+								:close-after-click="true" @click="removeItems"
 							>
 								{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
 							</ActionButton>
