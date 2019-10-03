@@ -21,7 +21,7 @@ module.exports = {
 				use: ['vue-style-loader', 'css-loader', 'sass-loader']
 			},
 			{
-				test: /\.(js|vue)$/,
+				test: /(src|tests)\/.*\.(js|vue)$/,
 				use: 'eslint-loader',
 				enforce: 'pre'
 			},
