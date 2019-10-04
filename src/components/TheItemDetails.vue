@@ -97,6 +97,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 									</button>
 								</td>
 							</tr>
+							<tr>
+								<td colspan="2">
+									<a href="/nextcloud/index.php/apps/inventory/item/123/attachment/123">
+										{{ t('inventory', 'Download attachment') }}
+									</a>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -225,12 +232,14 @@ export default {
 	},
 	created: function() {
 		this.loadItem(this.id)
+		this.getAttachments(this.id)
 		this.loadSubItems(this.id)
 		this.loadParentItems(this.id)
 		this.loadRelatedItems(this.id)
 	},
 	beforeRouteUpdate(to, from, next) {
 		this.loadItem(to.params.id)
+		this.getAttachments(to.params.id)
 		this.loadSubItems(to.params.id)
 		this.loadParentItems(to.params.id)
 		this.loadRelatedItems(to.params.id)
@@ -301,6 +310,7 @@ export default {
 
 		...mapActions([
 			'getItemById',
+			'getAttachments',
 			'loadSubItems',
 			'loadParentItems',
 			'loadRelatedItems',
