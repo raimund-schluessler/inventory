@@ -23,17 +23,6 @@
 namespace OCA\Inventory\AppInfo;
 
 use \OCP\AppFramework\App;
-use \OCP\AppFramework\IAppContainer;
-use \OCA\Inventory\Service\IteminstanceService;
-use \OCA\Inventory\Service\ItemsService;
-use \OCA\Inventory\Db\IteminstanceMapper;
-use \OCA\Inventory\Db\PlaceMapper;
-use \OCA\Inventory\Db\IteminstanceUuidMapper;
-use \OCA\Inventory\Db\ItemMapper;
-use \OCA\Inventory\Db\CategoryMapper;
-use \OCA\Inventory\Db\ItemcategoriesMapper;
-use \OCA\Inventory\Db\ItemparentMapper;
-use \OCA\Inventory\Db\ItemrelationMapper;
 use OCA\Inventory\Middleware\ExceptionMiddleware;
 
 class Application extends App {
@@ -53,84 +42,5 @@ class Application extends App {
 		});
 
 		$container->registerMiddleware('ExceptionMiddleware');
-
-		/**
-		 * Services
-		 */
-
-		$container->registerService('IteminstanceService', function(IAppContainer $c) {
-			return new IteminstanceService(
-				$c->query('UserId'),
-				$c->query('AppName'),
-				$c->query('IteminstanceMapper'),
-				$c->query('PlaceMapper'),
-				$c->query('IteminstanceUuidMapper')
-			);
-		});
-
-		$container->registerService('ItemsService', function(IAppContainer $c) {
-			return new ItemsService(
-				$c->query('UserId'),
-				$c->query('AppName'),
-				$c->query('ItemMapper'),
-				$c->query('IteminstanceService'),
-				$c->query('CategoryMapper'),
-				$c->query('ItemcategoriesMapper'),
-				$c->query('ItemparentMapper'),
-				$c->query('ItemrelationMapper')
-			);
-		});
-
-		/**
-		 * Mappers
-		 */
-
-		$container->registerService('IteminstanceMapper', function($c){
-			return new IteminstanceMapper(
-				$c->query('ServerContainer')->getDatabaseConnection()
-			);
-		});
-
-		$container->registerService('IteminstanceUuidMapper', function($c){
-			return new IteminstanceUuidMapper(
-				$c->query('ServerContainer')->getDatabaseConnection()
-			);
-		});
-
-		$container->registerService('PlaceMapper', function($c){
-			return new PlaceMapper(
-				$c->query('ServerContainer')->getDatabaseConnection()
-			);
-		});
-
-		$container->registerService('ItemMapper', function($c){
-			return new ItemMapper(
-				$c->query('ServerContainer')->getDatabaseConnection()
-			);
-		});
-
-		$container->registerService('CategoryMapper', function($c){
-			return new CategoryMapper(
-				$c->query('ServerContainer')->getDatabaseConnection()
-			);
-		});
-
-		$container->registerService('ItemcategoriesMapper', function($c){
-			return new ItemcategoriesMapper(
-				$c->query('ServerContainer')->getDatabaseConnection()
-			);
-		});
-
-		$container->registerService('ItemparentMapper', function($c){
-			return new ItemparentMapper(
-				$c->query('ServerContainer')->getDatabaseConnection()
-			);
-		});
-
-		$container->registerService('ItemrelationMapper', function($c){
-			return new ItemrelationMapper(
-				$c->query('ServerContainer')->getDatabaseConnection()
-			);
-		});
 	}
 }
