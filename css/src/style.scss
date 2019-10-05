@@ -439,3 +439,46 @@ table {
 		}
 	}
 }
+
+.attachment-list li.attachment {
+	display: flex;
+	padding: 3px;
+
+	&.deleted {
+		opacity: .5;
+	}
+
+	.fileicon {
+		display: inline-block;
+		min-width: 32px;
+		width: 32px;
+		height: 32px;
+		background-size: contain;
+	}
+	.details {
+		flex-grow: 1;
+		flex-shrink: 1;
+		min-width: 0;
+		flex-basis: 50%;
+		line-height: 110%;
+		padding: 2px;
+	}
+	.filename {
+		width: 70%;
+		display: flex;
+		.basename {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			padding-bottom: 2px;
+		}
+		.extension {
+			opacity: 0.7;
+		}
+	}
+	.filesize,
+	.filedate {
+		font-size: 90%;
+		color: $color-darkgrey;
+	}
+}

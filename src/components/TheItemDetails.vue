@@ -98,10 +98,26 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2">
-									<a href="/nextcloud/index.php/apps/inventory/item/123/attachment/123">
-										{{ t('inventory', 'Download attachment') }}
-									</a>
+								<td>
+									{{ t('inventory', 'Attachments') }}
+								</td>
+								<td class="attachment-list">
+									<ul>
+										<li v-for="attachment in attachments" :key="attachment.id" class="attachment">
+											<a class="fileicon" :style="attachmentMimetype(attachment)" :href="attachment.url" />
+											<div class="details">
+												<a :href="attachmentUrl(attachment)">
+													<div class="filename">
+														<span class="basename">{{ attachment.extendedData.info.filename }}</span>
+														<span class="extension">{{ '.' + attachment.extendedData.info.extension }}</span>
+													</div>
+													<span class="filesize">{{ attachment.extendedData.filesize | bytes }}</span>
+													<span class="filedate">{{ attachment.lastModified | relativeDateFilter }}</span>
+													<span class="filedate">{{ t('inventory', 'by') + ' ' + attachment.createdBy }}</span>
+												</a>
+											</div>
+										</li>
+									</ul>
 								</td>
 							</tr>
 						</tbody>
@@ -172,6 +188,20 @@ export default {
 		ClickOutside,
 		focus,
 	},
+	filters: {
+		bytes: function(bytes) {
+			if (isNaN(parseFloat(bytes, 10)) || !isFinite(bytes)) {
+				return '-'
+			}
+			const precision = 2
+			var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB']
+			var number = Math.floor(Math.log(bytes) / Math.log(1024))
+			return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number]
+		},
+		relativeDateFilter: function(timestamp) {
+			return OC.Util.relativeModifiedDate(timestamp * 1000)
+		},
+	},
 	props: {
 		id: {
 			type: String,
@@ -218,6 +248,48 @@ export default {
 					name: t('inventory', 'Categories'),
 				},
 			],
+			attachments: [
+				{
+					id: 1,
+					itemId: 3,
+					type: 'deck_file',
+					data: 'uuid.csv',
+					lastModified: 1570127792,
+					createdAt: 1570127792,
+					createdBy: 'admin',
+					deletedAt: 0,
+					extendedData: {
+						filesize: 38000,
+						mimetype: 'text/csv',
+						info: {
+							dirname: '.',
+							basename: 'uuid.csv',
+							extension: 'csv',
+							filename: 'uuid',
+						},
+					},
+				},
+				{
+					id: 2,
+					itemId: 3,
+					type: 'deck_file',
+					data: 'info.pdf',
+					lastModified: 1570127792,
+					createdAt: 1570127792,
+					createdBy: 'admin',
+					deletedAt: 0,
+					extendedData: {
+						filesize: 380000,
+						mimetype: 'application/pdf',
+						info: {
+							dirname: '.',
+							basename: 'info.pdf',
+							extension: 'pdf',
+							filename: 'info',
+						},
+					},
+				},
+			]
 		}
 	},
 	computed: {
@@ -246,6 +318,17 @@ export default {
 		next()
 	},
 	methods: {
+		attachmentMimetype(attachment) {
+			const url = OC.MimeType.getIconUrl(attachment.extendedData.mimetype)
+			return {
+				'background-image': `url("${url}")`
+			}
+		},
+
+		attachmentUrl(attachment) {
+			return OC.generateUrl(`/apps/inventory/item/${this.id}/attachment/${attachment.id}`)
+		},
+
 		hideEditItem: function() {
 			if (this.closing) {
 				this.editingItem = false
