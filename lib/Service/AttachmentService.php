@@ -62,7 +62,48 @@ class AttachmentService {
 	 * @return array
 	 */
 	public function getAll($itemID) {
-		return $this->attachmentStorage->listAttachments($itemID);
+		$attachments[] = array(
+			'id' => 1,
+			'itemId' => 3,
+			'type' => 'deck_file',
+			'data' => 'uuid.csv',
+			'lastModified' => 1570127792,
+			'createdAt' => 1570127792,
+			'createdBy' => 'admin',
+			'deletedAt' => 0,
+			'extendedData' => array(
+				'filesize' => 38000,
+				'mimetype' => 'text/csv',
+				'info' => array(
+					'dirname' => '.',
+					'basename' => 'uuid.csv',
+					'extension' => 'csv',
+					'filename' => 'uuid',
+				)
+			)
+		);
+		$attachments[] = array(
+			'id' => 2,
+			'itemId' => 3,
+			'type' => 'deck_file',
+			'data' => 'info.pdf',
+			'lastModified' => 1570127792,
+			'createdAt' => 1570127792,
+			'createdBy' => 'admin',
+			'deletedAt' => 0,
+			'extendedData' => array(
+				'filesize' => 380000,
+				'mimetype' => 'application/pdf',
+				'info' => array(
+					'dirname' => '.',
+					'basename' => 'info.pdf',
+					'extension' => 'pdf',
+					'filename' => 'info',
+				)
+			)
+		);
+		return $attachments;
+		// return $this->attachmentStorage->listAttachments($itemID);
 	}
 
 	/**

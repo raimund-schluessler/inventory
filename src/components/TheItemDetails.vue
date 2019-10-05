@@ -103,7 +103,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								</td>
 								<td class="attachment-list">
 									<ul>
-										<li v-for="attachment in attachments" :key="attachment.id" class="attachment">
+										<li v-for="attachment in item.attachments" :key="attachment.id" class="attachment">
 											<a class="fileicon" :style="attachmentMimetype(attachment)" :href="attachment.url" />
 											<div class="details">
 												<a :href="attachmentUrl(attachment)">
@@ -248,48 +248,6 @@ export default {
 					name: t('inventory', 'Categories'),
 				},
 			],
-			attachments: [
-				{
-					id: 1,
-					itemId: 3,
-					type: 'deck_file',
-					data: 'uuid.csv',
-					lastModified: 1570127792,
-					createdAt: 1570127792,
-					createdBy: 'admin',
-					deletedAt: 0,
-					extendedData: {
-						filesize: 38000,
-						mimetype: 'text/csv',
-						info: {
-							dirname: '.',
-							basename: 'uuid.csv',
-							extension: 'csv',
-							filename: 'uuid',
-						},
-					},
-				},
-				{
-					id: 2,
-					itemId: 3,
-					type: 'deck_file',
-					data: 'info.pdf',
-					lastModified: 1570127792,
-					createdAt: 1570127792,
-					createdBy: 'admin',
-					deletedAt: 0,
-					extendedData: {
-						filesize: 380000,
-						mimetype: 'application/pdf',
-						info: {
-							dirname: '.',
-							basename: 'info.pdf',
-							extension: 'pdf',
-							filename: 'info',
-						},
-					},
-				},
-			]
 		}
 	},
 	computed: {
@@ -303,21 +261,24 @@ export default {
 		}),
 	},
 	created: function() {
-		this.loadItem(this.id)
-		this.getAttachments(this.id)
+		this.getItem(this.id)
 		this.loadSubItems(this.id)
 		this.loadParentItems(this.id)
 		this.loadRelatedItems(this.id)
 	},
 	beforeRouteUpdate(to, from, next) {
-		this.loadItem(to.params.id)
-		this.getAttachments(to.params.id)
+		this.getItem(to.params.id)
 		this.loadSubItems(to.params.id)
 		this.loadParentItems(to.params.id)
 		this.loadRelatedItems(to.params.id)
 		next()
 	},
 	methods: {
+		async getItem(itemID) {
+			await this.loadItem(itemID)
+			this.getAttachments(itemID)
+		},
+
 		attachmentMimetype(attachment) {
 			const url = OC.MimeType.getIconUrl(attachment.extendedData.mimetype)
 			return {
