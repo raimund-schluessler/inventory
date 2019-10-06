@@ -90,6 +90,32 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 									>
 								</td>
 							</tr>
+							<tr>
+								<td>
+									{{ t('inventory', 'Attachments') }}
+								</td>
+								<td class="attachment-list">
+									<ul>
+										<li v-for="attachment in item.attachments" :key="attachment.id" class="attachment">
+											<a class="fileicon" :style="attachmentMimetype(attachment)" :href="attachment.url" />
+											<div class="details">
+												<a :href="attachmentUrl(attachment)">
+													<div class="filename">
+														<span class="basename">{{ attachment.extendedData.info.filename }}</span>
+														<span class="extension">{{ '.' + attachment.extendedData.info.extension }}</span>
+													</div>
+													<span class="filesize">{{ attachment.extendedData.filesize | bytes }}</span>
+													<span class="filedate">{{ attachment.lastModified | relativeDateFilter }}</span>
+													<span class="filedate">{{ t('inventory', 'by') + ' ' + attachment.createdBy }}</span>
+												</a>
+											</div>
+										</li>
+										<li v-if="!item.attachments.length">
+											{{ t('inventory', 'No files attached.') }}
+										</li>
+									</ul>
+								</td>
+							</tr>
 							<tr v-if="editingItem">
 								<td colspan="2">
 									<button type="submit" form="edit_item" class="right">
@@ -165,6 +191,20 @@ export default {
 		ClickOutside,
 		focus,
 	},
+	filters: {
+		bytes: function(bytes) {
+			if (isNaN(parseFloat(bytes, 10)) || !isFinite(bytes)) {
+				return '-'
+			}
+			const precision = 2
+			var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB']
+			var number = Math.floor(Math.log(bytes) / Math.log(1024))
+			return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number]
+		},
+		relativeDateFilter: function(timestamp) {
+			return OC.Util.relativeModifiedDate(timestamp * 1000)
+		},
+	},
 	props: {
 		id: {
 			type: String,
@@ -224,19 +264,35 @@ export default {
 		}),
 	},
 	created: function() {
-		this.loadItem(this.id)
+		this.getItem(this.id)
 		this.loadSubItems(this.id)
 		this.loadParentItems(this.id)
 		this.loadRelatedItems(this.id)
 	},
 	beforeRouteUpdate(to, from, next) {
-		this.loadItem(to.params.id)
+		this.getItem(to.params.id)
 		this.loadSubItems(to.params.id)
 		this.loadParentItems(to.params.id)
 		this.loadRelatedItems(to.params.id)
 		next()
 	},
 	methods: {
+		async getItem(itemID) {
+			await this.loadItem(itemID)
+			this.getAttachments(itemID)
+		},
+
+		attachmentMimetype(attachment) {
+			const url = OC.MimeType.getIconUrl(attachment.extendedData.mimetype)
+			return {
+				'background-image': `url("${url}")`
+			}
+		},
+
+		attachmentUrl(attachment) {
+			return OC.generateUrl(`/apps/inventory/item/${this.id}/attachment/${attachment.id}`)
+		},
+
 		hideEditItem: function() {
 			if (this.closing) {
 				this.editingItem = false
@@ -301,6 +357,7 @@ export default {
 
 		...mapActions([
 			'getItemById',
+			'getAttachments',
 			'loadSubItems',
 			'loadParentItems',
 			'loadRelatedItems',

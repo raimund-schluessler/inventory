@@ -24,6 +24,8 @@ return [
 		['name' => 'page#index',			'url' => '/',											'verb' => 'GET'],
 		['name' => 'items#getAll',			'url' => '/items',										'verb' => 'GET'],
 		['name' => 'items#get',				'url' => '/item/{itemID}',								'verb' => 'GET'],
+		['name' => 'attachment#getAll',		'url' => '/item/{itemID}/attachments',					'verb' => 'GET'],
+		['name' => 'attachment#display',	'url' => '/item/{itemID}/attachment/{attachmentID}',	'verb' => 'GET'],
 		['name' => 'items#getSub',			'url' => '/item/{itemID}/sub',							'verb' => 'GET'],
 		['name' => 'items#getParent',		'url' => '/item/{itemID}/parent',						'verb' => 'GET'],
 		['name' => 'items#getRelated',		'url' => '/item/{itemID}/related',						'verb' => 'GET'],

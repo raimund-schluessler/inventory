@@ -61,6 +61,7 @@ export default class Item {
 		this._icon = this.response.icon || ''
 		this._categories = this.response.categories || []
 		this._instances = this.response.instances || []
+		this._attachments = this.response.attachments || []
 		if (this.response.syncstatus) {
 			this.syncstatus = new Status(this.response.syncstatus.type, this.response.syncstatus.message)
 		}
@@ -334,6 +335,27 @@ export default class Item {
 	set instances(instances) {
 		this.response.instances = instances
 		this._instances = this.response.instances || []
+	}
+
+	/**
+	 * Return the attachments
+	 *
+	 * @readonly
+	 * @memberof Item
+	 */
+	get attachments() {
+		return this._attachments
+	}
+
+	/**
+	 * Return the attachments
+	 *
+	 * @param {Array} attachments The attachments
+	 * @memberof Item
+	 */
+	set attachments(attachments) {
+		this.response.attachments = attachments
+		this._attachments = this.response.attachments || []
 	}
 
 }
