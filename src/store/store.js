@@ -349,7 +349,7 @@ export default new Vuex.Store({
 				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/attachments'))
 				commit('setAttachments', { attachments: response.data })
 			} catch {
-				commit('setAttachments', { attachments: null })
+				commit('setAttachments', { attachments: [] })
 			}
 		},
 		async loadSubItems({ commit }, itemID) {

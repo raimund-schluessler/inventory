@@ -117,6 +117,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 												</a>
 											</div>
 										</li>
+										<li v-if="!item.attachments.length">
+											{{ t('inventory', 'No files attached.') }}
+										</li>
 									</ul>
 								</td>
 							</tr>
