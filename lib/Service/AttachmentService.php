@@ -71,8 +71,14 @@ class AttachmentService {
 		$this->scanItemFolder($itemID);
 		// Get attachments from the database
 		$attachments = $this->attachmentMapper->findAll($itemID);
-		foreach($attachments as &$attachment) {
-			$this->attachmentStorage->extendAttachment($attachment);
+		foreach($attachments as $key => &$attachment) {
+			try {
+				$this->attachmentStorage->extendAttachment($attachment);
+			} catch (\OCP\Files\NotFoundException $e) {
+				// Remove the file from the database if not found in storage
+				$this->attachmentMapper->delete($attachment);
+				unset($attachments[$key]);
+			}
 		}
 		return $attachments;
 	}
