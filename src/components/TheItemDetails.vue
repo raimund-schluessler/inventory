@@ -90,13 +90,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 									>
 								</td>
 							</tr>
-							<tr v-if="editingItem">
-								<td colspan="2">
-									<button type="submit" form="edit_item" class="right">
-										{{ t('inventory', 'Save') }}
-									</button>
-								</td>
-							</tr>
 							<tr>
 								<td>
 									{{ t('inventory', 'Attachments') }}
@@ -121,6 +114,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 											{{ t('inventory', 'No files attached.') }}
 										</li>
 									</ul>
+								</td>
+							</tr>
+							<tr v-if="editingItem">
+								<td colspan="2">
+									<button type="submit" form="edit_item" class="right">
+										{{ t('inventory', 'Save') }}
+									</button>
 								</td>
 							</tr>
 						</tbody>
