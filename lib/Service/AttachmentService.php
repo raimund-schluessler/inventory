@@ -24,6 +24,7 @@ namespace OCA\Inventory\Service;
 
 use OCA\Inventory\AppInfo\Application;
 use OCA\Inventory\Db\Attachment;
+use OCA\Inventory\Db\AttachmentMapper;
 use OCA\Inventory\Storage\AttachmentStorage;
 use OCA\Inventory\BadRequestException;
 use OCA\Inventory\InvalidAttachmentType;
@@ -39,6 +40,7 @@ class AttachmentService {
 
 	private $userId;
 	private $AppName;
+	private $attachmentMapper;
 	private $attachmentStorage;
 
 	/**
@@ -49,10 +51,11 @@ class AttachmentService {
 	 * @param Application $application
 	 * @throws \OCP\AppFramework\QueryException
 	 */
-	public function __construct($userId, $AppName, Application $application, AttachmentStorage $attachmentStorage) {
+	public function __construct($userId, $AppName, Application $application, AttachmentMapper $attachmentMapper, AttachmentStorage $attachmentStorage) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->application = $application;
+		$this->attachmentMapper = $attachmentMapper;
 		$this->attachmentStorage = $attachmentStorage;
 	}
 
@@ -62,48 +65,15 @@ class AttachmentService {
 	 * @return array
 	 */
 	public function getAll($itemID) {
-		$attachments[] = array(
-			'id' => 1,
-			'itemId' => 3,
-			'type' => 'deck_file',
-			'data' => 'uuid.csv',
-			'lastModified' => 1570127792,
-			'createdAt' => 1570127792,
-			'createdBy' => 'admin',
-			'deletedAt' => 0,
-			'extendedData' => array(
-				'filesize' => 38000,
-				'mimetype' => 'text/csv',
-				'info' => array(
-					'dirname' => '.',
-					'basename' => 'uuid.csv',
-					'extension' => 'csv',
-					'filename' => 'uuid',
-				)
-			)
-		);
-		$attachments[] = array(
-			'id' => 2,
-			'itemId' => 3,
-			'type' => 'deck_file',
-			'data' => 'info.pdf',
-			'lastModified' => 1570127792,
-			'createdAt' => 1570127792,
-			'createdBy' => 'admin',
-			'deletedAt' => 0,
-			'extendedData' => array(
-				'filesize' => 380000,
-				'mimetype' => 'application/pdf',
-				'info' => array(
-					'dirname' => '.',
-					'basename' => 'info.pdf',
-					'extension' => 'pdf',
-					'filename' => 'info',
-				)
-			)
-		);
+		$attachments = $this->attachmentMapper->findAll($itemID);
+		foreach($attachments as &$attachment) {
+			$this->attachmentStorage->extendAttachment($attachment);
+		}
 		return $attachments;
-		// return $this->attachmentStorage->listAttachments($itemID);
+	}
+
+	private function scanItemFolder($itemID) {
+		$attachments = $this->attachmentStorage->listAttachments($itemID);
 	}
 
 	/**
@@ -128,12 +98,7 @@ class AttachmentService {
 			throw new BadRequestException('Attachment id must be a number.');
 		}
 
-		$attachment = new Attachment();
-		$attachment->setItemid(3);
-		$attachment->setFilename('uuid.csv');
-		$attachment->setFilepath('.');
-		$attachment->setType('inventory_file');
-
+		$attachment = $this->attachmentMapper->findAttachment($itemID, $attachmentID);
 		try {
 			return $this->attachmentStorage->display($attachment);
 		} catch (InvalidAttachmentType $e) {

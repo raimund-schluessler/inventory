@@ -29,10 +29,12 @@ use OCP\AppFramework\Db\Entity;
 
 class Attachment extends Entity {
 
-	protected $itemid;
-	protected $type;
-	protected $filename;
-	protected $filepath;
+	public $itemid;
+	public $data;
+	public $lastModified = 0;
+	public $createdAt = 0;
+	public $createdBy;
+	public $extendedData = [];
 
 	public function __construct() {
 		$this->addType('id', 'integer');

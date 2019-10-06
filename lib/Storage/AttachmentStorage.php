@@ -40,17 +40,58 @@ use OCP\IConfig;
 
 class AttachmentStorage {
 
+	private $userId;
 	private $appData;
 	private $rootFolder;
 	private $config;
 
-	public function __construct(IAppData $appData, IRootFolder $rootFolder, IConfig $config) {
+	public function __construct($userId, IAppData $appData, IRootFolder $rootFolder, IConfig $config) {
+		$this->userId = $userId;
 		$this->appData = $appData;
 		$this->rootFolder = $rootFolder;
 		$this->config = $config;
 	}
 
+	private function getRootFolder() {
+		$name = $this->userId . '/files';
+		$appDataFolder = $this->rootFolder->get($name);
+		return $appDataFolder->get('inventory');
+	}
+
 	public function listAttachments($itemID) {
+		$files = [];
+		$appDataFolder = $this->getRootFolder();
+		$itemFolderName = 'item-' . (int)$itemID;
+		try {
+			$itemFolder = $appDataFolder->get($itemFolderName);
+		} catch (NotFoundException $e) {
+			return $files;
+		}
+		$folderContent = $itemFolder->getDirectoryListing();
+		foreach($folderContent as $node) {
+			$attachment = [];
+			// We only want to list files, not folders.
+			if ($node->getFileInfo()->getType() !== \OCP\Files\FileInfo::TYPE_FILE) {
+				continue;
+			}
+			$attachment['extendedData'] = [
+				'filesize' => $node->getSize(),
+				'mimetype' => $node->getMimeType(),
+				'info' => pathinfo($node->getName())
+			];
+			$files[] = $attachment;
+		}
+		return $files;
+	}
+
+	public function extendAttachment(Attachment $attachment) {
+		$file = $this->getFileFromRootFolder($attachment);
+		$attachment->extendedData = [
+			'filesize' => $file->getSize(),
+			'mimetype' => $file->getMimeType(),
+			'info' => pathinfo($file->getName())
+		];
+		return $attachment;
 	}
 
 	/**
@@ -59,16 +100,10 @@ class AttachmentStorage {
 	 * @throws \Exception
 	 */
 	private function getFileFromRootFolder(Attachment $attachment) {
-		$folderName = 'file-card-' . (int)$attachment->getItemid();
-		$instanceId = $this->config->getSystemValue('instanceid', null);
-		if ($instanceId === null) {
-			throw new \Exception('no instance id!');
-		}
-		$name = 'appdata_' . $instanceId;
-		$appDataFolder = $this->rootFolder->get($name);
-		$appDataFolder = $appDataFolder->get('deck');
-		$cardFolder = $appDataFolder->get($folderName);
-		return $cardFolder->get($attachment->getFilename());
+		$appDataFolder = $this->getRootFolder();
+		$itemFolderName = 'item-' . (int)$attachment->getItemid();
+		$itemFolder = $appDataFolder->get($itemFolderName);
+		return $itemFolder->get($attachment->getData());
 	}
 
 	/**

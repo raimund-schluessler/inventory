@@ -33,11 +33,17 @@ class AttachmentMapper extends Mapper {
 		parent::__construct($db, 'invtry_attachments');
 	}
 
-	public function findAttachment($itemId, $attachmentId, $uid) {
+	public function findAll($itemID) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_attachments` ' .
-			'WHERE `id` = ? AND `itemid` = ? AND `uid` = ?';
+			'WHERE `itemid` = ?';
+		return $this->findEntities($sql, [$itemID]);
+	}
+
+	public function findAttachment($itemId, $attachmentId) {
+		$sql = 'SELECT * FROM `*PREFIX*invtry_attachments` ' .
+			'WHERE `id` = ? AND `itemid` = ?';
 		try {
-			return $this->findEntity($sql, [$attachmentId, $itemId, $uid]);
+			return $this->findEntity($sql, [$attachmentId, $itemId]);
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
