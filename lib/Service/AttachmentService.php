@@ -84,7 +84,7 @@ class AttachmentService {
 			if (!$this->attachmentMapper->findByName($itemID, $name)) {
 				$attachment = new Attachment();
 				$attachment->setItemid($itemID);
-				$attachment->setData($name);
+				$attachment->setBasename($name);
 				$attachment->setCreatedBy($this->userId);
 				$attachment->setLastModified(time());
 				$attachment->setCreatedAt(time());

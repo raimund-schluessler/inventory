@@ -51,7 +51,7 @@ class AttachmentMapper extends Mapper {
 
 	public function findByName($itemID, $name) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_attachments` ' .
-			'WHERE `itemid` = ? AND `data` = ?';
+			'WHERE `itemid` = ? AND `basename` = ?';
 		try {
 			return $this->findEntity($sql, [$itemID, $name]);
 		} catch (DoesNotExistException $e) {

@@ -99,7 +99,7 @@ class AttachmentStorage {
 	 */
 	private function getFileFromRootFolder(Attachment $attachment) {
 		$itemFolder = $this->getItemFolder((int)$attachment->getItemid());
-		return $itemFolder->get($attachment->getData());
+		return $itemFolder->get($attachment->getBasename());
 	}
 
 	/**

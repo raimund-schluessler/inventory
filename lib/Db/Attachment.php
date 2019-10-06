@@ -30,7 +30,7 @@ use OCP\AppFramework\Db\Entity;
 class Attachment extends Entity {
 
 	public $itemid;
-	public $data;
+	public $basename;
 	public $lastModified = 0;
 	public $createdAt = 0;
 	public $createdBy;
