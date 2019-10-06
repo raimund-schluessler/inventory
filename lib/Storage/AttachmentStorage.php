@@ -58,7 +58,13 @@ class AttachmentStorage {
 	private function getRootFolder() {
 		$name = $this->userId . '/files';
 		$appDataFolder = $this->rootFolder->get($name);
-		return $appDataFolder->get('inventory');
+		try {
+			$folder = $appDataFolder->get('inventory');
+		} catch (NotFoundException $e) {
+			$folder = $appDataFolder->newFolder('inventory');
+		}
+		return $folder;
+
 	}
 
 	/**
