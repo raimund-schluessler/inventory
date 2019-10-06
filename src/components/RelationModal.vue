@@ -85,7 +85,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import { mapState, mapActions } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
-import { Modal, Multiselect } from 'nextcloud-vue'
+import { Modal } from 'nextcloud-vue/dist/Components/Modal'
+import { Multiselect } from 'nextcloud-vue/dist/Components/Multiselect'
 
 export default {
 	components: {

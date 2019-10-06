@@ -145,7 +145,7 @@ import { mapActions } from 'vuex'
 import focus from '../directives/focus'
 import ClickOutside from 'vue-click-outside'
 import qr from 'qr-image'
-import { Modal } from 'nextcloud-vue'
+import { Modal } from 'nextcloud-vue/dist/Components/Modal'
 import { Actions } from 'nextcloud-vue/dist/Components/Actions'
 import { ActionButton } from 'nextcloud-vue/dist/Components/ActionButton'
 
