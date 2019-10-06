@@ -65,6 +65,9 @@ class AttachmentService {
 	 * @return array
 	 */
 	public function getAll($itemID) {
+		// Scan for new files in the item folder
+		$this->scanItemFolder($itemID);
+		// Get attachments from the database
 		$attachments = $this->attachmentMapper->findAll($itemID);
 		foreach($attachments as &$attachment) {
 			$this->attachmentStorage->extendAttachment($attachment);
@@ -73,7 +76,21 @@ class AttachmentService {
 	}
 
 	private function scanItemFolder($itemID) {
-		$attachments = $this->attachmentStorage->listAttachments($itemID);
+		// Get all files from the item folder
+		$files = $this->attachmentStorage->listFiles($itemID);
+		// Add them to the database if not present already
+		foreach ($files as $file) {
+			$name = $file['basename'];
+			if (!$this->attachmentMapper->findByName($itemID, $name)) {
+				$attachment = new Attachment();
+				$attachment->setItemid($itemID);
+				$attachment->setData($name);
+				$attachment->setCreatedBy($this->userId);
+				$attachment->setLastModified(time());
+				$attachment->setCreatedAt(time());
+				$this->attachmentMapper->insert($attachment);
+			}
+		}
 	}
 
 	/**

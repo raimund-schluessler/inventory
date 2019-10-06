@@ -58,28 +58,26 @@ class AttachmentStorage {
 		return $appDataFolder->get('inventory');
 	}
 
-	public function listAttachments($itemID) {
-		$files = [];
+	private function getItemFolder($itemID) {
 		$appDataFolder = $this->getRootFolder();
 		$itemFolderName = 'item-' . (int)$itemID;
+		return $appDataFolder->get($itemFolderName);
+	}
+
+	public function listFiles($itemID) {
+		$files = [];
 		try {
-			$itemFolder = $appDataFolder->get($itemFolderName);
+			$itemFolder = $this->getItemFolder($itemID);
 		} catch (NotFoundException $e) {
 			return $files;
 		}
 		$folderContent = $itemFolder->getDirectoryListing();
 		foreach($folderContent as $node) {
-			$attachment = [];
 			// We only want to list files, not folders.
 			if ($node->getFileInfo()->getType() !== \OCP\Files\FileInfo::TYPE_FILE) {
 				continue;
 			}
-			$attachment['extendedData'] = [
-				'filesize' => $node->getSize(),
-				'mimetype' => $node->getMimeType(),
-				'info' => pathinfo($node->getName())
-			];
-			$files[] = $attachment;
+			$files[] = pathinfo($node->getName());
 		}
 		return $files;
 	}
@@ -100,9 +98,7 @@ class AttachmentStorage {
 	 * @throws \Exception
 	 */
 	private function getFileFromRootFolder(Attachment $attachment) {
-		$appDataFolder = $this->getRootFolder();
-		$itemFolderName = 'item-' . (int)$attachment->getItemid();
-		$itemFolder = $appDataFolder->get($itemFolderName);
+		$itemFolder = $this->getItemFolder((int)$attachment->getItemid());
 		return $itemFolder->get($attachment->getData());
 	}
 
