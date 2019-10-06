@@ -116,10 +116,12 @@ class AttachmentService {
 		}
 
 		$attachment = $this->attachmentMapper->findAttachment($itemID, $attachmentID);
-		try {
-			return $this->attachmentStorage->display($attachment);
-		} catch (InvalidAttachmentType $e) {
-			throw new NotFoundException();
+		if ($attachment) {
+			try {
+				return $this->attachmentStorage->display($attachment);
+			} catch (InvalidAttachmentType $e) {
+				throw new NotFoundException();
+			}
 		}
 	}
 }

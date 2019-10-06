@@ -23,37 +23,65 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
-use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use \OCA\Inventory\Db\Attachment;
 use OCP\AppFramework\Db\DoesNotExistException;
 
-class AttachmentMapper extends Mapper {
+class AttachmentMapper extends QBMapper {
 
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_attachments');
 	}
 
-	public function findAll($itemID) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_attachments` ' .
-			'WHERE `itemid` = ?';
-		return $this->findEntities($sql, [$itemID]);
+	public function findAll(int $itemID, $limit = null, $offset = null) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_attachments')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
+			->where(
+				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			);
+
+		return $this->findEntities($qb);
 	}
 
-	public function findAttachment($itemId, $attachmentId) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_attachments` ' .
-			'WHERE `id` = ? AND `itemid` = ?';
+
+	public function findAttachment($itemID, $attachmentID) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_attachments')
+			->where(
+				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('id', $qb->createNamedParameter($attachmentID, IQueryBuilder::PARAM_INT))
+			);
+
 		try {
-			return $this->findEntity($sql, [$attachmentId, $itemId]);
+			return $this->findEntity($qb);
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
 	}
 
 	public function findByName($itemID, $name) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_attachments` ' .
-			'WHERE `itemid` = ? AND `basename` = ?';
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_attachments')
+			->where(
+				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('basename', $qb->createNamedParameter($name, IQueryBuilder::PARAM_STR))
+			);
+
 		try {
-			return $this->findEntity($sql, [$itemID, $name]);
+			return $this->findEntity($qb);
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
