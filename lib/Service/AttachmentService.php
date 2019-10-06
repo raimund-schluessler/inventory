@@ -22,7 +22,6 @@
 
 namespace OCA\Inventory\Service;
 
-use OCA\Inventory\AppInfo\Application;
 use OCA\Inventory\Db\Attachment;
 use OCA\Inventory\Db\AttachmentMapper;
 use OCA\Inventory\Storage\AttachmentStorage;
@@ -39,7 +38,6 @@ use OCP\IL10N;
 class AttachmentService {
 
 	private $userId;
-	private $AppName;
 	private $attachmentMapper;
 	private $attachmentStorage;
 
@@ -47,24 +45,28 @@ class AttachmentService {
 	 * AttachmentService constructor.
 	 *
 	 * @param $userId
-	 * @param PermissionService $permissionService
-	 * @param Application $application
+	 * @param AttachmentMapper $attachmentMapper
+	 * @param AttachmentStorage $attachmentStorage
 	 * @throws \OCP\AppFramework\QueryException
 	 */
-	public function __construct($userId, $AppName, Application $application, AttachmentMapper $attachmentMapper, AttachmentStorage $attachmentStorage) {
+	public function __construct($userId, AttachmentMapper $attachmentMapper, AttachmentStorage $attachmentStorage) {
 		$this->userId = $userId;
-		$this->appName = $AppName;
-		$this->application = $application;
 		$this->attachmentMapper = $attachmentMapper;
 		$this->attachmentStorage = $attachmentStorage;
 	}
 
 	/**
-	 * Returns a list of all attachments
-	 * 
-	 * @return array
+	 * Returns a list of all attachments of an item
+	 *
+	 * @param int $itemID
+	 * @return Attachment[]
 	 */
 	public function getAll($itemID) {
+
+		if (is_numeric($itemID) === false) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
 		// Scan for new files in the item folder
 		$this->scanItemFolder($itemID);
 		// Get attachments from the database
@@ -75,7 +77,12 @@ class AttachmentService {
 		return $attachments;
 	}
 
-	private function scanItemFolder($itemID) {
+	/**
+	 * Scans the item folder for files
+	 * 
+	 * @param int $itemID
+	 */
+	private function scanItemFolder(int $itemID) {
 		// Get all files from the item folder
 		$files = $this->attachmentStorage->listFiles($itemID);
 		// Add them to the database if not present already
@@ -96,8 +103,8 @@ class AttachmentService {
 	/**
 	 * Display the attachment
 	 *
-	 * @param $itemID		The item Id
-	 * @param $attachmentID	The attachment Id
+	 * @param int $itemID		The item Id
+	 * @param int $attachmentID	The attachment Id
 	 * @return Response
 	 * @throws BadRequestException
 	 * @throws NoPermissionException

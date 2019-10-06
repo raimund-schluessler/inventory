@@ -36,35 +36,64 @@ use OCP\Files\IAppData;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
-use OCP\IConfig;
 
 class AttachmentStorage {
 
 	private $userId;
 	private $appData;
 	private $rootFolder;
-	private $config;
 
-	public function __construct($userId, IAppData $appData, IRootFolder $rootFolder, IConfig $config) {
+	public function __construct($userId, IAppData $appData, IRootFolder $rootFolder) {
 		$this->userId = $userId;
 		$this->appData = $appData;
 		$this->rootFolder = $rootFolder;
-		$this->config = $config;
 	}
 
+	/**
+	 * Get the attachment storage root folder
+	 *
+	 * @return \OCP\Files\Node
+	 * @throws \Exception
+	 */
 	private function getRootFolder() {
 		$name = $this->userId . '/files';
 		$appDataFolder = $this->rootFolder->get($name);
 		return $appDataFolder->get('inventory');
 	}
 
-	private function getItemFolder($itemID) {
+	/**
+	 * Get the item folder
+	 *
+	 * @param int $itemID
+	 * @return \OCP\Files\Node
+	 * @throws \Exception
+	 */
+	private function getItemFolder(int $itemID) {
 		$appDataFolder = $this->getRootFolder();
 		$itemFolderName = 'item-' . (int)$itemID;
 		return $appDataFolder->get($itemFolderName);
 	}
 
-	public function listFiles($itemID) {
+	/**
+	 * Get a handle to the attachment
+	 *
+	 * @param Attachment $attachment
+	 * @return \OCP\Files\Node
+	 * @throws \Exception
+	 */
+	private function getFileFromRootFolder(Attachment $attachment) {
+		$itemFolder = $this->getItemFolder((int)$attachment->getItemid());
+		return $itemFolder->get($attachment->getBasename());
+	}
+
+	/**
+	 * List all files in an item folder
+	 *
+	 * @param int $itemID
+	 * @return Array
+	 * @throws \Exception
+	 */
+	public function listFiles(int $itemID) {
 		$files = [];
 		try {
 			$itemFolder = $this->getItemFolder($itemID);
@@ -82,6 +111,13 @@ class AttachmentStorage {
 		return $files;
 	}
 
+	/**
+	 * Get more information about an attached file
+	 *
+	 * @param Attachment $attachment
+	 * @return Attachment
+	 * @throws \Exception
+	 */
 	public function extendAttachment(Attachment $attachment) {
 		$file = $this->getFileFromRootFolder($attachment);
 		$attachment->extendedData = [
@@ -93,16 +129,8 @@ class AttachmentStorage {
 	}
 
 	/**
-	 * Workaround until ISimpleFile can be fetched as a resource
+	 * Display an atteched file
 	 *
-	 * @throws \Exception
-	 */
-	private function getFileFromRootFolder(Attachment $attachment) {
-		$itemFolder = $this->getItemFolder((int)$attachment->getItemid());
-		return $itemFolder->get($attachment->getBasename());
-	}
-
-	/**
 	 * @param Attachment $attachment
 	 * @return FileDisplayResponse|\OCP\AppFramework\Http\Response|StreamResponse
 	 * @throws \Exception

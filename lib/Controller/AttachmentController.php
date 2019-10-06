@@ -33,15 +33,23 @@ class AttachmentController extends Controller {
 
 	private $attachmentService;
 
-	public function __construct($appName, IRequest $request, AttachmentService $attachmentService) {
-		parent::__construct($appName, $request);
+	/**
+	 * AttachmentController constructor.
+	 *
+	 * @param $AppName
+	 * @param AttachmentService $attachmentService
+	 */
+	public function __construct($AppName, IRequest $request, AttachmentService $attachmentService) {
+		parent::__construct($AppName, $request);
 		$this->attachmentService = $attachmentService;
 	}
 
 	/**
 	 * Returns a list with all attachments for an item
 	 *
+	 * @param int $itemID
 	 * @NoAdminRequired
+	 * @return Attachment[]
 	 */
 	public function getAll($itemID) {
 		return $this->attachmentService->getAll($itemID);
@@ -50,8 +58,8 @@ class AttachmentController extends Controller {
 	/**
 	 * Displays an attachment
 	 *
-	 * @param $itemID
-	 * @param $attachmentID
+	 * @param int $itemID
+	 * @param int $attachmentID
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 * @return \OCP\AppFramework\Http\Response
