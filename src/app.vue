@@ -54,15 +54,15 @@ export default {
 			active: 'items',
 			views: [
 				{
-					name: t('inventory', 'Items'),
+					name: this.t('inventory', 'Items'),
 					id: 'items'
 				},
 				{
-					name: t('inventory', 'Places'),
+					name: this.t('inventory', 'Places'),
 					id: 'places'
 				},
 				{
-					name: t('inventory', 'Categories'),
+					name: this.t('inventory', 'Categories'),
 					id: 'categories'
 				}
 			]

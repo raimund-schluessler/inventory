@@ -84,7 +84,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<form name="addUuid" @submit.prevent="setUuid(instance)">
 								<input v-model="newUuid"
 									v-focus
-									placeholder="Add UUID"
+									:placeholder="t('inventory', 'Add UUID')"
 									@keyup.27="addUuidTo = null"
 								>
 							</form>
@@ -170,28 +170,28 @@ export default {
 			instanceProperties: [
 				{
 					key: 'count',
-					name: t('inventory', 'Count'),
+					name: this.t('inventory', 'Count'),
 					width: 'narrow',
 				}, {
 					key: 'available',
-					name: t('inventory', 'Available'),
+					name: this.t('inventory', 'Available'),
 					width: 'narrow',
 				}, {
 					key: 'price',
-					name: t('inventory', 'Price'),
+					name: this.t('inventory', 'Price'),
 				}, {
 					key: 'date',
-					name: t('inventory', 'Date'),
+					name: this.t('inventory', 'Date'),
 				}, {
 					key: 'vendor',
-					name: t('inventory', 'Vendor'),
+					name: this.t('inventory', 'Vendor'),
 				}, {
 					key: 'place',
 					fn: this.getPlace,
-					name: t('inventory', 'Place'),
+					name: this.t('inventory', 'Place'),
 				}, {
 					key: 'comment',
-					name: t('inventory', 'Comment'),
+					name: this.t('inventory', 'Comment'),
 					width: 'wide',
 				},
 			],

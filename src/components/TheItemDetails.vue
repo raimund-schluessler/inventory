@@ -224,31 +224,31 @@ export default {
 			itemProperties: [
 				{
 					key: 'name',
-					name: t('inventory', 'Name'),
+					name: this.t('inventory', 'Name'),
 				}, {
 					key: 'maker',
-					name: t('inventory', 'Maker'),
+					name: this.t('inventory', 'Maker'),
 				}, {
 					key: 'description',
-					name: t('inventory', 'Description'),
+					name: this.t('inventory', 'Description'),
 				}, {
 					key: 'itemNumber',
-					name: t('inventory', 'Item number'),
+					name: this.t('inventory', 'Item number'),
 				}, {
 					key: 'link',
-					name: t('inventory', 'Link'),
+					name: this.t('inventory', 'Link'),
 				}, {
 					key: 'gtin',
-					name: t('inventory', 'GTIN'),
+					name: this.t('inventory', 'GTIN'),
 				}, {
 					key: 'details',
-					name: t('inventory', 'Details'),
+					name: this.t('inventory', 'Details'),
 				}, {
 					key: 'comment',
-					name: t('inventory', 'Comment'),
+					name: this.t('inventory', 'Comment'),
 				}, {
 					key: 'categories',
-					name: t('inventory', 'Categories'),
+					name: this.t('inventory', 'Categories'),
 				},
 			],
 		}
