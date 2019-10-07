@@ -23,25 +23,49 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
-use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use \OCA\Inventory\Db\IteminstanceUuid;
 
-class IteminstanceUuidMapper extends Mapper {
+class IteminstanceUuidMapper extends QBMapper {
 
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_instance_uuids');
 	}
 
-	public function find($instanceId, $uuid, $uid) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_instance_uuids` ' .
-			'WHERE `instanceid` = ? AND `uuid` = ? AND `uid` = ?';
-		return $this->findEntities($sql, [$instanceId, $uuid, $uid]);
+	public function find(int $instanceId, string $uuid, string $uid) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_instance_uuids')
+			->where(
+				$qb->expr()->eq('instanceid', $qb->createNamedParameter($instanceId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uuid', $qb->createNamedParameter($uuid, IQueryBuilder::PARAM_STR))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntities($qb);
 	}
 
 	public function findByInstanceId($instanceId, $uid, $limit=null, $offset=null) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_instance_uuids`' .
-			'WHERE `instanceid` = ? AND `uid` = ?';
-		return $this->findEntities($sql, [$instanceId, $uid], $limit, $offset);
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_instance_uuids')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
+			->where(
+				$qb->expr()->eq('instanceid', $qb->createNamedParameter($instanceId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntities($qb);
 	}
 
 	public function add($params) {

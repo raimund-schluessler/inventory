@@ -23,19 +23,31 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
-use OCP\AppFramework\Db\Mapper;
 use \OCA\Inventory\Db\Itemcategories;
+use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 
-class ItemcategoriesMapper extends Mapper {
+class ItemcategoriesMapper extends QBMapper {
 
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_cat_map');
 	}
 
-	public function findCategories($itemId, $uid) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_cat_map` ' .
-			'WHERE `itemid` = ? AND `uid` = ?';
-		return $this->findEntities($sql, [$itemId, $uid]);
+	public function findCategories(int $itemId, string $uid, $limit = null, $offset = null) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_cat_map')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
+			->where(
+				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntities($qb);
 	}
 
 	public function add($params) {

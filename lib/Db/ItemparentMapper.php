@@ -23,60 +23,104 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
-use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use \OCA\Inventory\Db\Itemparent;
 
-class ItemparentMapper extends Mapper {
+class ItemparentMapper extends QBMapper {
 
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_parent_map');
 	}
 
-	public function findRelation($itemID, $parentID, $userID) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_parent_map` ' .
-			'WHERE `itemid` = ? AND `parentid` = ? AND `uid` = ?';
-		return $this->findEntity($sql, [$itemID, $parentID, $userID]);
+	public function findRelation(int $itemID, int $parentID, string $userID) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_parent_map')
+			->where(
+				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('parentid', $qb->createNamedParameter($parentID, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($userID, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntity($qb);
 	}
 
-	public function find($itemID) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_parent_map` ' .
-			'WHERE `parentid` = ? OR `itemid` = ?';
-		return $this->findEntities($sql, [$itemID, $itemID]);
+	public function find(int $itemID) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_parent_map')
+			->where(
+				$qb->expr()->eq('parentid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			)
+			->orWhere(
+				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			);
+
+		return $this->findEntities($qb);
 	}
 
-	public function findSub($parentId) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_parent_map` ' .
-			'WHERE `parentid` = ?';
-		return $this->findEntities($sql, [$parentId]);
+	public function findSub(int $parentId) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_parent_map')
+			->where(
+				$qb->expr()->eq('parentid', $qb->createNamedParameter($parentId, IQueryBuilder::PARAM_INT))
+			);
+
+		return $this->findEntities($qb);
 	}
 
-	public function findSubIDs($itemID) {
-		$sql = 'SELECT itemid FROM `*PREFIX*invtry_parent_map` ' .
-			'WHERE `parentid` = ?';
-		$stmt =  $this->execute($sql, [$itemID]);
+	public function findSubIDs(int $itemID) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('itemid')
+			->from('*PREFIX*invtry_parent_map')
+			->where(
+				$qb->expr()->eq('parentid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			);
+		$cursor = $qb->execute();
 		$subIDs = array();
-		while ($row = $stmt->fetch()) {
+		while ($row = $cursor->fetch()) {
 			array_push($subIDs, $row['itemid']);
 		};
-		$stmt->closeCursor();
+		$cursor->closeCursor();
 		return $subIDs;
 	}
 
-	public function findParent($itemID) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_parent_map` ' .
-			'WHERE `itemid` = ?';
-		return $this->findEntities($sql, [$itemID]);
+	public function findParent(int $itemID) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_parent_map')
+			->where(
+				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			);
+
+		return $this->findEntities($qb);
 	}
 
-	public function findParentIDs($itemID) {
-		$sql = 'SELECT parentid FROM `*PREFIX*invtry_parent_map` ' .
-			'WHERE `itemid` = ?';
-		$stmt =  $this->execute($sql, [$itemID]);
+	public function findParentIDs(int $itemID) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('parentid')
+			->from('*PREFIX*invtry_parent_map')
+			->where(
+				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			);
+		$cursor = $qb->execute();
 		$subIDs = array();
-		while ($row = $stmt->fetch()) {
+		while ($row = $cursor->fetch()) {
 			array_push($subIDs, $row['parentid']);
 		};
-		$stmt->closeCursor();
+		$cursor->closeCursor();
 		return $subIDs;
 	}
 

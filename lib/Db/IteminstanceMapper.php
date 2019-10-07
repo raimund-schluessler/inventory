@@ -23,10 +23,11 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
-use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use \OCA\Inventory\Db\Iteminstance;
 
-class IteminstanceMapper extends Mapper {
+class IteminstanceMapper extends QBMapper {
 
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_item_instances');
@@ -36,16 +37,35 @@ class IteminstanceMapper extends Mapper {
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
-	public function find($id, $uid) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_item_instances` ' .
-			'WHERE `id` = ? AND `uid` = ?';
-		return $this->findEntity($sql, [$id, $uid]);
+	public function find(int $id, string $uid) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_item_instances')
+			->where(
+				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+		return $this->findEntity($qb);
 	}
 
-	public function findByItemID($itemid, $uid, $limit=null, $offset=null) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_item_instances`' .
-			'WHERE `itemid` = ? AND `uid` = ?';
-		return $this->findEntities($sql, [$itemid, $uid], $limit, $offset);
+	public function findByItemID(int $itemid, string $uid, $limit=null, $offset=null) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_item_instances')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
+			->where(
+				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemid, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntities($qb);
 	}
 
 	public function add($params) {
@@ -66,9 +86,5 @@ class IteminstanceMapper extends Mapper {
 		foreach ($instances as $instance) {
 			$this->delete($instance);
 		}
-	}
-
-	public function update($instance) {
-		return parent::update($instance);
 	}
 }
