@@ -53,22 +53,4 @@ class PageController extends Controller {
 		$response = new TemplateResponse('inventory', 'main');
 		return $response;
 	}
-
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 */
-	public function templates($template) {
-		$templates = array(	'part.items',
-							'part.itemdetails',
-							'part.categories',
-							'part.places',
-							'part.item.new');
-		if (in_array($template, $templates)) {
-			$response = new TemplateResponse('inventory', $template, [], 'blank');
-		} else {
-			$response = new NotFoundResponse();
-		}
-		return $response;
-	}
 }
