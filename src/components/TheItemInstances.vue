@@ -38,27 +38,27 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</thead>
 			<tbody>
 				<template v-for="instance in item.instances">
-					<tr v-if="editedInstance.id !== instance.id" :key="'instance-' + instance.id" class="handler">
+					<tr v-if="editedInstance.id !== instance.id" :key="`instance-${instance.id}`" class="handler">
 						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 							{{ getInstanceProperty(instance, instanceProperty) }}
 						</td>
 						<td class="actions">
 							<div>
 								<Actions>
-									<ActionButton :icon="'icon-add'" :close-after-click="true" @click="toggleUuidInput(instance)">
+									<ActionButton icon="icon-add" :close-after-click="true" @click="toggleUuidInput(instance)">
 										{{ t('inventory', 'Add UUID') }}
 									</ActionButton>
-									<ActionButton :icon="'icon-rename'" @click="toggleEditInstance(instance)">
+									<ActionButton icon="icon-rename" @click="toggleEditInstance(instance)">
 										{{ t('inventory', 'Edit instance') }}
 									</ActionButton>
-									<ActionButton :icon="'icon-delete'" @click="removeInstance(instance)">
+									<ActionButton icon="icon-delete" @click="removeInstance(instance)">
 										{{ t('inventory', 'Delete instance') }}
 									</ActionButton>
 								</Actions>
 							</div>
 						</td>
 					</tr>
-					<tr v-else :key="'editinstance-' + instance.id" v-click-outside="() => { hideEditInstance(instance) }">
+					<tr v-else :key="`editinstance-${instance.id}`" v-click-outside="() => { hideEditInstance(instance) }">
 						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 							<div v-if="instanceProperty.key === 'place'">
 								{{ getInstanceProperty(instance, instanceProperty) }}
@@ -77,29 +77,29 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</button>
 						</td>
 					</tr>
-					<tr v-if="addUuidTo === instance.id" :key="'uuidInput-' + instance.id"
+					<tr v-if="addUuidTo === instance.id" :key="`uuidInput-${instance.id}`"
 						v-click-outside="() => hideUuidInput(instance)"
 					>
 						<td :colspan="instanceProperties.length + 1">
 							<form name="addUuid" @submit.prevent="setUuid(instance)">
 								<input v-model="newUuid"
 									v-focus
-									placeholder="Add UUID"
+									:placeholder="t('inventory', 'Add UUID')"
 									@keyup.27="addUuidTo = null"
 								>
 							</form>
 						</td>
 					</tr>
-					<tr v-for="uuid in instance.uuids" :key="'uuids' + instance.id + uuid.id">
+					<tr v-for="uuid in instance.uuids" :key="`uuids${instance.id}${uuid.id}`">
 						<td :colspan="instanceProperties.length">
 							{{ uuid.uuid }}
 						</td>
 						<td class="actions">
 							<Actions>
-								<ActionButton :icon="'icon-qrcode'" :close-after-click="true" @click="showQRcode(uuid.uuid)">
+								<ActionButton icon="icon-qrcode" :close-after-click="true" @click="showQRcode(uuid.uuid)">
 									{{ t('inventory', 'Show QR Code') }}
 								</ActionButton>
-								<ActionButton :icon="'icon-delete'" @click="removeUuid(instance, uuid.uuid)">
+								<ActionButton icon="icon-delete" @click="removeUuid(instance, uuid.uuid)">
 									{{ t('inventory', 'Delete UUID') }}
 								</ActionButton>
 							</Actions>
@@ -170,28 +170,28 @@ export default {
 			instanceProperties: [
 				{
 					key: 'count',
-					name: t('inventory', 'Count'),
+					name: this.t('inventory', 'Count'),
 					width: 'narrow',
 				}, {
 					key: 'available',
-					name: t('inventory', 'Available'),
+					name: this.t('inventory', 'Available'),
 					width: 'narrow',
 				}, {
 					key: 'price',
-					name: t('inventory', 'Price'),
+					name: this.t('inventory', 'Price'),
 				}, {
 					key: 'date',
-					name: t('inventory', 'Date'),
+					name: this.t('inventory', 'Date'),
 				}, {
 					key: 'vendor',
-					name: t('inventory', 'Vendor'),
+					name: this.t('inventory', 'Vendor'),
 				}, {
 					key: 'place',
 					fn: this.getPlace,
-					name: t('inventory', 'Place'),
+					name: this.t('inventory', 'Place'),
 				}, {
 					key: 'comment',
-					name: t('inventory', 'Comment'),
+					name: this.t('inventory', 'Comment'),
 					width: 'wide',
 				},
 			],

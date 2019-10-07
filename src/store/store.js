@@ -336,7 +336,7 @@ export default new Vuex.Store({
 
 		async getItemById({ commit }, itemID) {
 			try {
-				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID))
+				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}`))
 				const item = new Item(response.data)
 				commit('setItem', { item })
 			} catch {
@@ -346,7 +346,7 @@ export default new Vuex.Store({
 
 		async getAttachments({ commit }, itemID) {
 			try {
-				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/attachments'))
+				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}/attachments`))
 				commit('setAttachments', { attachments: response.data })
 			} catch {
 				commit('setAttachments', { attachments: [] })
@@ -354,7 +354,7 @@ export default new Vuex.Store({
 		},
 		async loadSubItems({ commit }, itemID) {
 			try {
-				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/sub'))
+				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}/sub`))
 				const subItems = response.data.map(payload => {
 					return new Item(payload)
 				})
@@ -365,7 +365,7 @@ export default new Vuex.Store({
 		},
 		async loadParentItems({ commit }, itemID) {
 			try {
-				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/parent'))
+				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}/parent`))
 				const parentItems = response.data.map(payload => {
 					return new Item(payload)
 				})
@@ -376,7 +376,7 @@ export default new Vuex.Store({
 		},
 		async loadRelatedItems({ commit }, itemID) {
 			try {
-				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + itemID + '/related'))
+				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}/related`))
 				const relatedItems = response.data.map(payload => {
 					return new Item(payload)
 				})
@@ -388,7 +388,7 @@ export default new Vuex.Store({
 		async loadItemCandidates({ commit }, parameters) {
 			try {
 				commit('setItemCandidates', { itemCandidates: [] })
-				const response = await Axios.get(OC.generateUrl('apps/inventory/item/' + parameters.itemID + '/candidates/' + parameters.relationType))
+				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${parameters.itemID}/candidates/${parameters.relationType}`))
 				const itemCandidates = response.data.map(payload => {
 					return new Item(payload)
 				})
@@ -399,7 +399,7 @@ export default new Vuex.Store({
 		},
 		async deleteItem({ commit }, item) {
 			try {
-				await Axios.delete(OC.generateUrl('apps/inventory/item/' + item.id + '/delete'))
+				await Axios.delete(OC.generateUrl(`apps/inventory/item/${item.id}/delete`))
 				commit('deleteItem', item)
 			} catch {
 				console.debug('Item deletion failed.')
@@ -413,7 +413,7 @@ export default new Vuex.Store({
 		},
 		async editItem({ commit }, item) {
 			try {
-				const response = await Axios.patch(OC.generateUrl('apps/inventory/item/' + item.id + '/edit'), { item: item.response })
+				const response = await Axios.patch(OC.generateUrl(`apps/inventory/item/${item.id}/edit`), { item: item.response })
 				Vue.set(item, 'response', response.data)
 				item.updateItem()
 				commit('editItem', item)
@@ -428,7 +428,7 @@ export default new Vuex.Store({
 			try {
 				// Extract itemIDs from items array
 				const itemIDs = items.map((item) => { return item.id })
-				await Axios.post(OC.generateUrl('apps/inventory/item/' + itemID + '/link/' + relation), { itemIDs })
+				await Axios.post(OC.generateUrl(`apps/inventory/item/${itemID}/link/${relation}`), { itemIDs })
 				if (relation === 'parent') {
 					context.dispatch('loadParentItems', itemID)
 				} else if (relation === 'sub') {
@@ -447,7 +447,7 @@ export default new Vuex.Store({
 			try {
 				// Extract itemIDs from items array
 				const itemIDs = items.map((item) => { return item.id })
-				await Axios.post(OC.generateUrl('apps/inventory/item/' + itemID + '/unlink/' + relation), { itemIDs })
+				await Axios.post(OC.generateUrl(`apps/inventory/item/${itemID}/unlink/${relation}`), { itemIDs })
 				if (relation === 'parent') {
 					commit('unlinkParents', items)
 				} else if (relation === 'sub') {
@@ -461,7 +461,7 @@ export default new Vuex.Store({
 		},
 		async addInstance({ commit }, { item, instance }) {
 			try {
-				const response = await Axios.post(OC.generateUrl('apps/inventory/item/' + item.id + '/instance/add'), { instance })
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${item.id}/instance/add`), { instance })
 				commit('addInstance', { item, instance: response.data })
 			} catch {
 				console.debug('Creating item instance failed.')
@@ -469,7 +469,7 @@ export default new Vuex.Store({
 		},
 		async deleteInstance({ commit }, { item, instance }) {
 			try {
-				await Axios.delete(OC.generateUrl('apps/inventory/item/' + item.id + '/instance/' + instance.id + '/delete'))
+				await Axios.delete(OC.generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/delete`))
 				commit('deleteInstance', { item, instance })
 			} catch {
 				console.debug('Deleting item instance failed.')
@@ -477,7 +477,7 @@ export default new Vuex.Store({
 		},
 		async editInstance({ commit }, { item, instance }) {
 			try {
-				const response = await Axios.patch(OC.generateUrl('apps/inventory/item/' + item.id + '/instance/' + instance.id + '/edit'), { instance })
+				const response = await Axios.patch(OC.generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/edit`), { instance })
 				commit('editInstance', { item, instance: response.data })
 			} catch {
 				console.debug('Editing item instance failed.')
@@ -485,7 +485,7 @@ export default new Vuex.Store({
 		},
 		async addUuid({ commit }, { item, instance, uuid }) {
 			try {
-				const response = await Axios.put(OC.generateUrl('apps/inventory/item/' + item.id + '/instance/' + instance.id + '/uuid/' + uuid))
+				const response = await Axios.put(OC.generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/uuid/${uuid}`))
 				commit('addUuid', { instance, uuid: response.data })
 			} catch {
 				console.debug('Saving uuid failed.')
@@ -493,7 +493,7 @@ export default new Vuex.Store({
 		},
 		async deleteUuid({ commit }, { item, instance, uuid }) {
 			try {
-				await Axios.delete(OC.generateUrl('apps/inventory/item/' + item.id + '/instance/' + instance.id + '/uuid/' + uuid))
+				await Axios.delete(OC.generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/uuid/${uuid}`))
 				commit('deleteUuid', { instance, uuid })
 			} catch {
 				console.debug('Uuid deletion failed.')

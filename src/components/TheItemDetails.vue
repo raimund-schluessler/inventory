@@ -30,19 +30,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</a>
 					</div>
 					<div class="crumb svg">
-						<a :href="'#/items/' + item.id">
+						<a :href="`#/items/${item.id}`">
 							{{ item.description }}
 						</a>
 					</div>
 				</div>
 				<Actions>
-					<ActionButton :icon="'icon-add'" :close-after-click="true" @click="openModal">
+					<ActionButton icon="icon-add" :close-after-click="true" @click="openModal">
 						{{ t('inventory', 'Link items') }}
 					</ActionButton>
-					<ActionButton :icon="'icon-rename'" :close-after-click="true" @click="toggleEditItem">
+					<ActionButton icon="icon-rename" :close-after-click="true" @click="toggleEditItem">
 						{{ t('inventory', 'Edit item') }}
 					</ActionButton>
-					<ActionButton :icon="'icon-delete'" @click="removeItem">
+					<ActionButton icon="icon-delete" @click="removeItem">
 						{{ t('inventory', 'Delete item') }}
 					</ActionButton>
 				</Actions>
@@ -224,31 +224,31 @@ export default {
 			itemProperties: [
 				{
 					key: 'name',
-					name: t('inventory', 'Name'),
+					name: this.t('inventory', 'Name'),
 				}, {
 					key: 'maker',
-					name: t('inventory', 'Maker'),
+					name: this.t('inventory', 'Maker'),
 				}, {
 					key: 'description',
-					name: t('inventory', 'Description'),
+					name: this.t('inventory', 'Description'),
 				}, {
 					key: 'itemNumber',
-					name: t('inventory', 'Item number'),
+					name: this.t('inventory', 'Item number'),
 				}, {
 					key: 'link',
-					name: t('inventory', 'Link'),
+					name: this.t('inventory', 'Link'),
 				}, {
 					key: 'gtin',
-					name: t('inventory', 'GTIN'),
+					name: this.t('inventory', 'GTIN'),
 				}, {
 					key: 'details',
-					name: t('inventory', 'Details'),
+					name: this.t('inventory', 'Details'),
 				}, {
 					key: 'comment',
-					name: t('inventory', 'Comment'),
+					name: this.t('inventory', 'Comment'),
 				}, {
 					key: 'categories',
-					name: t('inventory', 'Categories'),
+					name: this.t('inventory', 'Categories'),
 				},
 			],
 		}

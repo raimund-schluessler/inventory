@@ -103,7 +103,7 @@ export default {
 				}
 				item.syncstatus = {
 					type: 'unsynced',
-					message: 'The item has not been saved to the server yet.',
+					message: this.t('inventory', 'The item has not been saved to the server yet.'),
 				}
 				item.categories = categories
 				item = new Item(item)

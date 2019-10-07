@@ -26,8 +26,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<RouterLink
 					v-for="view in views"
 					:key="view.id"
-					:to="'/' + view.id"
-					:class="'icon-' + view.id"
+					:to="`/${view.id}`"
+					:class="`icon-${view.id}`"
 					tag="li"
 					active-class="active"
 				>
@@ -54,15 +54,15 @@ export default {
 			active: 'items',
 			views: [
 				{
-					name: t('inventory', 'Items'),
+					name: this.t('inventory', 'Items'),
 					id: 'items'
 				},
 				{
-					name: t('inventory', 'Places'),
+					name: this.t('inventory', 'Places'),
 					id: 'places'
 				},
 				{
-					name: t('inventory', 'Categories'),
+					name: this.t('inventory', 'Categories'),
 					id: 'categories'
 				}
 			]

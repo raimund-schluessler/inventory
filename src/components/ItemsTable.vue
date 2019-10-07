@@ -23,11 +23,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<table class="itemstable">
 		<thead>
 			<tr>
-				<th :id="'headerSelection-' + _uid" class="column-selection">
-					<input :id="'select_all_items-' + _uid" v-model="allVisibleItemsSelected" class="select-all checkbox"
+				<th :id="`headerSelection-${_uid}`" class="column-selection">
+					<input :id="`select_all_items-${_uid}`" v-model="allVisibleItemsSelected" class="select-all checkbox"
 						type="checkbox"
 					>
-					<label :for="'select_all_items-' + _uid">
+					<label :for="`select_all_items-${_uid}`">
 						<span class="hidden-visually">
 							{{ t('inventory', 'Select all') }}
 						</span>
@@ -64,13 +64,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<span class="sort-indicator hidden icon-triangle-s" />
 						</a>
 						<Actions v-if="showDropdown">
-							<ActionRouter :to="'/items/additem'" :icon="'icon-add'">
+							<ActionRouter to="/items/additem" icon="icon-add">
 								{{ t('inventory', 'Add single item') }}
 							</ActionRouter>
-							<ActionRouter :to="'/items/additems'" :icon="'icon-add'">
+							<ActionRouter to="/items/additems" icon="icon-add">
 								{{ t('inventory', 'Add multiple items') }}
 							</ActionRouter>
-							<ActionButton v-if="selectedItems.length" :icon="'icon-delete'"
+							<ActionButton v-if="selectedItems.length" icon="icon-delete"
 								:close-after-click="true" @click="removeItems"
 							>
 								{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
@@ -95,10 +95,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				@click.ctrl="selectItem(item)"
 			>
 				<td class="selection">
-					<input :id="'select-item-' + item.id + '-' + _uid" :value="item.id" :checked="isSelected(item)"
+					<input :id="`select-item-${item.id}-${_uid}`" :value="item.id" :checked="isSelected(item)"
 						class="selectCheckBox checkbox" type="checkbox"
 					>
-					<label :for="'select-item-' + item.id + '-' + _uid" @click.prevent="selectItem(item)">
+					<label :for="`select-item-${item.id}-${_uid}`" @click.prevent="selectItem(item)">
 						<span class="hidden-visually">
 							{{ t('inventory', 'Select') }}
 						</span>
@@ -107,7 +107,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<td>
 					<a :href="itemRoute(item)" @click.ctrl.prevent>
 						<div class="thumbnail-wrapper">
-							<div :style="{ backgroundImage: 'url(' + getIconUrl(item) + ')' }" class="thumbnail default" />
+							<div :style="{ backgroundImage: `url(${getIconUrl(item)})` }" class="thumbnail default" />
 						</div>
 						<span>{{ item.name }}</span>
 					</a>
@@ -343,7 +343,7 @@ export default {
 				if (OCA.Accessibility) {
 					color = (OCA.Accessibility.theme === 'themedark' ? 'fff' : '000')
 				}
-				return OC.generateUrl('svg/inventory/item_' + item.icon + '?color=' + color)
+				return OC.generateUrl(`svg/inventory/item_${item.icon}?color=${color}`)
 			} else {
 				return item.iconurl
 			}
@@ -364,7 +364,7 @@ export default {
 		},
 		itemRoute(item) {
 			const itemStatus = item.syncstatus ? item.syncstatus.type : null
-			return (this.mode === 'selection' || itemStatus === 'unsynced') ? null : '#/items/' + item.id
+			return (this.mode === 'selection' || itemStatus === 'unsynced') ? null : `#/items/${item.id}`
 		},
 		async removeItems() {
 			await this.deleteItems(this.selectedItems)

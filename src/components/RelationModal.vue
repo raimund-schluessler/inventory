@@ -22,7 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<Modal v-if="modalOpen"
 		:out-transition="true"
-		:size="'full'"
+		size="full"
 		class="relation-modal"
 		@close="closeModal"
 	>
@@ -36,7 +36,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:multiple="false"
 					:allow-empty="false"
 					track-by="type"
-					:placeholder="t('tasks', 'Select relation type')"
+					:placeholder="t('inventory', 'Select relation type')"
 					label="name"
 					:options="relationTypes"
 					:close-on-select="true"
@@ -63,7 +63,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 			<div class="body">
 				<ItemsTable :items="items" :show-dropdown="false" :search-string="searchString"
-					:mode="'selection'" :loading="loading" @selectedItemsChanged="selectedItemsChanged"
+					mode="selection" :loading="loading" @selectedItemsChanged="selectedItemsChanged"
 				/>
 			</div>
 
