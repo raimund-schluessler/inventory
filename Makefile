@@ -172,3 +172,7 @@ test-php:
 test-php-coverage:
 	phpunit -c phpunit.xml --coverage-clover=coverage-unit.xml
 	phpunit -c phpunit.integration.xml --coverage-clover=coverage-integration.xml
+
+test-php-coverage-html:
+	phpunit -c phpunit.xml --coverage-html=coverage_php/unit
+	phpunit -c phpunit.integration.xml --coverage-html=coverage_php/integration
