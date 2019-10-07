@@ -26,8 +26,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<RouterLink
 					v-for="view in views"
 					:key="view.id"
-					:to="'/' + view.id"
-					:class="'icon-' + view.id"
+					:to="`/${view.id}`"
+					:class="`icon-${view.id}`"
 					tag="li"
 					active-class="active"
 				>

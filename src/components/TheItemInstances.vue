@@ -38,7 +38,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</thead>
 			<tbody>
 				<template v-for="instance in item.instances">
-					<tr v-if="editedInstance.id !== instance.id" :key="'instance-' + instance.id" class="handler">
+					<tr v-if="editedInstance.id !== instance.id" :key="`instance-${instance.id}`" class="handler">
 						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 							{{ getInstanceProperty(instance, instanceProperty) }}
 						</td>
@@ -58,7 +58,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</td>
 					</tr>
-					<tr v-else :key="'editinstance-' + instance.id" v-click-outside="() => { hideEditInstance(instance) }">
+					<tr v-else :key="`editinstance-${instance.id}`" v-click-outside="() => { hideEditInstance(instance) }">
 						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
 							<div v-if="instanceProperty.key === 'place'">
 								{{ getInstanceProperty(instance, instanceProperty) }}
@@ -77,7 +77,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</button>
 						</td>
 					</tr>
-					<tr v-if="addUuidTo === instance.id" :key="'uuidInput-' + instance.id"
+					<tr v-if="addUuidTo === instance.id" :key="`uuidInput-${instance.id}`"
 						v-click-outside="() => hideUuidInput(instance)"
 					>
 						<td :colspan="instanceProperties.length + 1">
@@ -90,7 +90,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</form>
 						</td>
 					</tr>
-					<tr v-for="uuid in instance.uuids" :key="'uuids' + instance.id + uuid.id">
+					<tr v-for="uuid in instance.uuids" :key="`uuids${instance.id}${uuid.id}`">
 						<td :colspan="instanceProperties.length">
 							{{ uuid.uuid }}
 						</td>
