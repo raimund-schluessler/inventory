@@ -64,13 +64,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<span class="sort-indicator hidden icon-triangle-s" />
 						</a>
 						<Actions v-if="showDropdown">
-							<ActionRouter :to="'/items/additem'" :icon="'icon-add'">
+							<ActionRouter to="/items/additem" icon="icon-add">
 								{{ t('inventory', 'Add single item') }}
 							</ActionRouter>
-							<ActionRouter :to="'/items/additems'" :icon="'icon-add'">
+							<ActionRouter to="/items/additems" icon="icon-add">
 								{{ t('inventory', 'Add multiple items') }}
 							</ActionRouter>
-							<ActionButton v-if="selectedItems.length" :icon="'icon-delete'"
+							<ActionButton v-if="selectedItems.length" icon="icon-delete"
 								:close-after-click="true" @click="removeItems"
 							>
 								{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}

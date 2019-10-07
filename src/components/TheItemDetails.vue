@@ -36,13 +36,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 				<Actions>
-					<ActionButton :icon="'icon-add'" :close-after-click="true" @click="openModal">
+					<ActionButton icon="icon-add" :close-after-click="true" @click="openModal">
 						{{ t('inventory', 'Link items') }}
 					</ActionButton>
-					<ActionButton :icon="'icon-rename'" :close-after-click="true" @click="toggleEditItem">
+					<ActionButton icon="icon-rename" :close-after-click="true" @click="toggleEditItem">
 						{{ t('inventory', 'Edit item') }}
 					</ActionButton>
-					<ActionButton :icon="'icon-delete'" @click="removeItem">
+					<ActionButton icon="icon-delete" @click="removeItem">
 						{{ t('inventory', 'Delete item') }}
 					</ActionButton>
 				</Actions>

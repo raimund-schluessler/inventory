@@ -45,13 +45,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<td class="actions">
 							<div>
 								<Actions>
-									<ActionButton :icon="'icon-add'" :close-after-click="true" @click="toggleUuidInput(instance)">
+									<ActionButton icon="icon-add" :close-after-click="true" @click="toggleUuidInput(instance)">
 										{{ t('inventory', 'Add UUID') }}
 									</ActionButton>
-									<ActionButton :icon="'icon-rename'" @click="toggleEditInstance(instance)">
+									<ActionButton icon="icon-rename" @click="toggleEditInstance(instance)">
 										{{ t('inventory', 'Edit instance') }}
 									</ActionButton>
-									<ActionButton :icon="'icon-delete'" @click="removeInstance(instance)">
+									<ActionButton icon="icon-delete" @click="removeInstance(instance)">
 										{{ t('inventory', 'Delete instance') }}
 									</ActionButton>
 								</Actions>
@@ -96,10 +96,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</td>
 						<td class="actions">
 							<Actions>
-								<ActionButton :icon="'icon-qrcode'" :close-after-click="true" @click="showQRcode(uuid.uuid)">
+								<ActionButton icon="icon-qrcode" :close-after-click="true" @click="showQRcode(uuid.uuid)">
 									{{ t('inventory', 'Show QR Code') }}
 								</ActionButton>
-								<ActionButton :icon="'icon-delete'" @click="removeUuid(instance, uuid.uuid)">
+								<ActionButton icon="icon-delete" @click="removeUuid(instance, uuid.uuid)">
 									{{ t('inventory', 'Delete UUID') }}
 								</ActionButton>
 							</Actions>
