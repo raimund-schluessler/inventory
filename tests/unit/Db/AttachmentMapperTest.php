@@ -109,45 +109,6 @@ class AttachmentMapperTest extends MapperTestUtility  {
 		$this->assertEquals(false, $this->attachmentMapper->findByName($itemId, $attachmentBasename));
 	}
 
-	// public function testFindToDelete() {
-	// 	$attachmentsToDelete = $this->attachments;
-	// 	$attachmentsToDelete[0]->setDeletedAt(1);
-	// 	$attachmentsToDelete[2]->setDeletedAt(1);
-	// 	$this->attachmentMapper->update($attachmentsToDelete[0]);
-	// 	$this->attachmentMapper->update($attachmentsToDelete[2]);
-	// 	foreach ($attachmentsToDelete as $attachment) {
-	// 		$attachment->resetUpdatedFields();
-	// 	}
-
-	// 	$this->assertEquals([$attachmentsToDelete[0]], $this->attachmentMapper->findToDelete(1));
-	// 	$this->assertEquals([$attachmentsToDelete[2]], $this->attachmentMapper->findToDelete(2));
-	// }
-
-	// public function testIsOwner() {
-	// 	$this->cardMapper->expects($this->once())
-	// 		->method('isOwner')
-	// 		->with('admin', 1)
-	// 		->willReturn(true);
-	// 	$this->assertTrue($this->attachmentMapper->isOwner('admin', (string)$this->attachments[0]->getId()));
-	// }
-
-	// public function testIsOwnerInvalid() {
-	// 	$this->cardMapper->expects($this->once())
-	// 		->method('isOwner')
-	// 		->with('admin', 1)
-	// 		->will($this->throwException(new DoesNotExistException('does not exist')));
-	// 	$this->assertFalse($this->attachmentMapper->isOwner('admin', (string)$this->attachments[0]->getId()));
-	// }
-
-	// public function testFindBoardId() {
-	// 	$this->cardMapper->expects($this->any())
-	// 		->method('findBoardId')
-	// 		->willReturn(123);
-	// 	foreach ($this->attachmentsById as $attachment) {
-	// 		$this->assertEquals(123, $this->attachmentMapper->findBoardId($attachment->getId()));
-	// 	}
-	// }
-
 	public function tearDown() {
 		parent::tearDown();
 		foreach ($this->attachments as $attachment) {
