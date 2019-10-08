@@ -31,9 +31,9 @@ class ItemCategories extends Entity {
 	public $uid;
 	public $itemid;
 
-    public function __construct() {
-        // add types in constructor
-        $this->addType('itemid', 'integer');
-        $this->addType('categoryid', 'integer');
-    }
+	public function __construct() {
+		// add types in constructor
+		$this->addType('itemid', 'integer');
+		$this->addType('categoryid', 'integer');
+	}
 }

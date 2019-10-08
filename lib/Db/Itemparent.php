@@ -30,9 +30,9 @@ class ItemParent extends Entity {
 	public $parentid;
 	public $uid;
 
-    public function __construct() {
-        // add types in constructor
-        $this->addType('itemid', 'integer');
-        $this->addType('parentid', 'integer');
-    }
+	public function __construct() {
+		// add types in constructor
+		$this->addType('itemid', 'integer');
+		$this->addType('parentid', 'integer');
+	}
 }
