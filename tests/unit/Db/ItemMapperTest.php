@@ -53,10 +53,10 @@ class ItemMapperTest extends MapperTestUtility  {
 			$this->dbConnection
 		);
 		$this->items = [
-			$this->createItemEntity('admin', 'Testitem 1', 'Maker 1', 'A new red Item', 123, 'www.item1.de', null, 'Red, big, new', '', null),
-			$this->createItemEntity('admin', 'Testitem 2', 'Maker 2', 'A new blue Item', 124, 'www.item2.de', null, 'Blue, small, new', '', null),
-			$this->createItemEntity('admin', 'Testitem 3', 'Maker 3', 'A new green Item', 125, 'www.item3.de', '3165140777223', 'Green, big, new', 'Borrowed', null),
-			$this->createItemEntity('user1', 'Testitem 4', 'Maker 4', 'A new black Item', 126, 'www.item4.de', null, 'Black, big, old', '', null)
+			$this->createItemEntity('unit_tester_1', 'Testitem 1', 'Maker 1', 'A new red Item', 123, 'www.item1.de', null, 'Red, big, new', '', null),
+			$this->createItemEntity('unit_tester_1', 'Testitem 2', 'Maker 2', 'A new blue Item', 124, 'www.item2.de', null, 'Blue, small, new', '', null),
+			$this->createItemEntity('unit_tester_1', 'Testitem 3', 'Maker 3', 'A new green Item', 125, 'www.item3.de', '3165140777223', 'Green, big, new', 'Borrowed', null),
+			$this->createItemEntity('unit_tester_2', 'Testitem 4', 'Maker 4', 'A new black Item', 126, 'www.item4.de', null, 'Black, big, old', '', null)
 		];
 		foreach ($this->items as $item) {
 			$entry = $this->itemMapper->insert($item);
@@ -92,20 +92,21 @@ class ItemMapperTest extends MapperTestUtility  {
 			array_slice($this->items, 0, 3),
 			array_slice($this->items, 3, 1)
 		];
-		$this->assertEquals($itemsByUser[0], $this->itemMapper->findAll('admin'));
-		$this->assertEquals($itemsByUser[1], $this->itemMapper->findAll('user1'));
+		$this->assertEquals($itemsByUser[0], $this->itemMapper->findAll('unit_tester_1'));
+		$this->assertEquals($itemsByUser[1], $this->itemMapper->findAll('unit_tester_2'));
 		$this->assertEquals([], $this->itemMapper->findAll('user2'));
 	}
 
 	public function testFindCandidates() {
-	// 	$uid = 'admin';
-	// 	$itemId = 1;
-	// 	$excludeIds = [];
-	// 	$this->itemMapper->findCandidates($itemId, $excludeIds, $uid);
+		$uid = 'unit_tester_1';
+		$itemId = 1;
+		$excludeIds = [$this->items[0]->getId(), $this->items[1]->getId()];
+		$this->itemMapper->findCandidates($itemId, $excludeIds, $uid);
+		$this->assertEquals(array_slice($this->items, 2, 1), $this->itemMapper->findCandidates($itemId, $excludeIds, $uid));
 	}
 
 	public function testAddAndFind() {
-		$params['uid'] = 'admin';
+		$params['uid'] = 'unit_tester_1';
 		$params['name'] = 'Testitem 5';
 		$params['maker'] = 'Maker 5';
 		$params['description'] = '';
@@ -134,6 +135,9 @@ class ItemMapperTest extends MapperTestUtility  {
 		$item->resetUpdatedFields();
 
 		$this->assertEquals($item, $entry);
+
+		// Store the reference to the item to delete it after the tests
+		$this->items[] = $item;
 	}
 
 	public function testUpdate() {
