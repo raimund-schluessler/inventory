@@ -23,5 +23,5 @@ RUN	set -xe; \
 	npm install -g jshint > /dev/null 2>&1;
 
 RUN	curl --location --output /usr/local/bin/phpunit \
-	https://phar.phpunit.de/phpunit.phar; \
+	https://phar.phpunit.de/phpunit-7.phar; \
 	chmod +x /usr/local/bin/phpunit;
