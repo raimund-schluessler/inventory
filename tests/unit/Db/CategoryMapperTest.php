@@ -114,6 +114,8 @@ class CategoryMapperTest extends MapperTestUtility  {
 		$category->resetUpdatedFields();
 
 		$this->assertEquals($category, $entry);
+
+		$this->categories[] = $category;
 	}
 
 	public function tearDown() {
