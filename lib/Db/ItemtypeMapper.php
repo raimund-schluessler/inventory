@@ -43,7 +43,7 @@ class ItemtypeMapper extends Mapper {
 	}
 
 	public function findAll($uid, $limit=null, $offset=null) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_items` ' .
+		$sql = 'SELECT * FROM `*PREFIX*invtry_item_types` ' .
 			'WHERE `uid` = ?';
 		return $this->findEntities($sql, [$uid], $limit, $offset);
 	}
