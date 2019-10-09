@@ -32,19 +32,12 @@ class IteminstanceUuidMapper extends Mapper {
 		parent::__construct($db, 'invtry_instance_uuids');
 	}
 
-	/**
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
-	 */
 	public function find($instanceId, $uuid, $uid) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_instance_uuids` ' .
 			'WHERE `instanceid` = ? AND `uuid` = ? AND `uid` = ?';
 		return $this->findEntities($sql, [$instanceId, $uuid, $uid]);
 	}
 
-	/**
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
-	 */
 	public function findByInstanceId($instanceId, $uid, $limit=null, $offset=null) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_instance_uuids`' .
 			'WHERE `instanceid` = ? AND `uid` = ?';
