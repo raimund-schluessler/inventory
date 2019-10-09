@@ -21,7 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<div v-if="item">
+		<div class="app-content-details" v-if="item">
 			<div class="itemnavigation">
 				<div class="breadcrumb">
 					<div data-dir="/" class="crumb svg">
@@ -48,92 +48,94 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</Actions>
 			</div>
 			<div id="itemdetails">
-				<div class="item_images" />
-				<div>
+				<div class="item_images_wrapper">
+					<div class="item_images" />
+				</div>
+				<div class="paragraph">
 					<h3>
 						<span>{{ t('inventory', 'Properties') }}</span>
 					</h3>
-					<table class="properties">
-						<tbody v-click-outside="hideEditItem">
-							<tr v-for="itemProperty in itemProperties" :key="itemProperty.key">
-								<td>
-									<span>{{ itemProperty.name }}</span>
-								</td>
-								<td v-if="itemProperty.key === 'link'">
-									<span v-if="!editingItem">
-										<a :href="item.link" target="_blank">
-											{{ item.link }}
-										</a>
-									</span>
-									<input v-else v-model="editedItem.link"
-										type="text"
-										:placeholder="itemProperty.name"
-										:name="itemProperty.key"
-										form="edit_item"
-									>
-								</td>
-								<td v-else-if="itemProperty.key === 'categories'">
-									<ul class="categories">
-										<li v-for="category in item.categories" :key="category.id">
-											<span>{{ category.name }}</span>
-										</li>
-									</ul>
-								</td>
-								<td v-else>
-									<span v-if="!editingItem">{{ item[itemProperty.key] }}</span>
-									<input v-else v-model="editedItem[itemProperty.key]"
-										v-focus="itemProperty.key === 'name'"
-										type="text"
-										:placeholder="itemProperty.name"
-										:name="itemProperty.key"
-										form="edit_item"
-									>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									{{ t('inventory', 'Attachments') }}
-								</td>
-								<td class="attachment-list">
-									<ul>
-										<li v-for="attachment in item.attachments" :key="attachment.id" class="attachment">
-											<a class="fileicon" :style="attachmentMimetype(attachment)" :href="attachment.url" />
-											<div class="details">
-												<a :href="attachmentUrl(attachment)">
-													<div class="filename">
-														<span class="basename">{{ attachment.extendedData.info.filename }}</span>
-														<span class="extension">{{ '.' + attachment.extendedData.info.extension }}</span>
-													</div>
-													<span class="filesize">{{ attachment.extendedData.filesize | bytes }}</span>
-													<span class="filedate">{{ attachment.lastModified | relativeDateFilter }}</span>
-													<span class="filedate">{{ t('inventory', 'by') + ' ' + attachment.createdBy }}</span>
-												</a>
-											</div>
-										</li>
-										<li v-if="!item.attachments.length">
-											{{ t('inventory', 'No files attached.') }}
-										</li>
-									</ul>
-								</td>
-							</tr>
-							<tr v-if="editingItem">
-								<td colspan="2">
-									<button type="submit" form="edit_item" class="right">
-										{{ t('inventory', 'Save') }}
-									</button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<div>
+						<table class="properties">
+							<tbody v-click-outside="hideEditItem">
+								<tr v-for="itemProperty in itemProperties" :key="itemProperty.key">
+									<td>
+										<span>{{ itemProperty.name }}</span>
+									</td>
+									<td v-if="itemProperty.key === 'link'">
+										<span v-if="!editingItem">
+											<a :href="item.link" target="_blank">
+												{{ item.link }}
+											</a>
+										</span>
+										<input v-else v-model="editedItem.link"
+											type="text"
+											:placeholder="itemProperty.name"
+											:name="itemProperty.key"
+											form="edit_item"
+										>
+									</td>
+									<td v-else-if="itemProperty.key === 'categories'">
+										<ul class="categories">
+											<li v-for="category in item.categories" :key="category.id">
+												<span>{{ category.name }}</span>
+											</li>
+										</ul>
+									</td>
+									<td v-else>
+										<span v-if="!editingItem">{{ item[itemProperty.key] }}</span>
+										<input v-else v-model="editedItem[itemProperty.key]"
+											v-focus="itemProperty.key === 'name'"
+											type="text"
+											:placeholder="itemProperty.name"
+											:name="itemProperty.key"
+											form="edit_item"
+										>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										{{ t('inventory', 'Attachments') }}
+									</td>
+									<td class="attachment-list">
+										<ul>
+											<li v-for="attachment in item.attachments" :key="attachment.id" class="attachment">
+												<a class="fileicon" :style="attachmentMimetype(attachment)" :href="attachment.url" />
+												<div class="details">
+													<a :href="attachmentUrl(attachment)">
+														<div class="filename">
+															<span class="basename">{{ attachment.extendedData.info.filename }}</span>
+															<span class="extension">{{ '.' + attachment.extendedData.info.extension }}</span>
+														</div>
+														<span class="filesize">{{ attachment.extendedData.filesize | bytes }}</span>
+														<span class="filedate">{{ attachment.lastModified | relativeDateFilter }}</span>
+														<span class="filedate">{{ t('inventory', 'by') + ' ' + attachment.createdBy }}</span>
+													</a>
+												</div>
+											</li>
+											<li v-if="!item.attachments.length">
+												{{ t('inventory', 'No files attached.') }}
+											</li>
+										</ul>
+									</td>
+								</tr>
+								<tr v-if="editingItem">
+									<td colspan="2">
+										<button type="submit" form="edit_item" class="right">
+											{{ t('inventory', 'Save') }}
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
-				<br>
 				<div class="paragraph">
 					<h3>
 						<span>{{ t('inventory', 'Instances') }}</span>
 					</h3>
 					<item-instances :item="item" />
 				</div>
-				<br>
 				<div v-if="parentItems.length" class="paragraph">
 					<h3>
 						<span>{{ t('inventory', 'Parent items') }}</span>
@@ -161,7 +163,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<RelationModal :modal-open.sync="modalOpen" :link="link" :item-id="id" />
 		</div>
-		<div v-else class="notice">
+		<div v-else class="app-content-details notice">
 			<span v-if="loading">{{ t('inventory', 'Loading item from server.') }}</span>
 			<span v-else>{{ t('inventory', 'Item not found!') }}</span>
 		</div>

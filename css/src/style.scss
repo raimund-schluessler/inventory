@@ -1,3 +1,8 @@
+// Workaround to fix https://github.com/nextcloud/server/issues/13465
+.skip-navigation.skip-content {
+	right: 0;
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -27,16 +32,24 @@
 	@include icon-color('qrcode', 'inventory', $color-black, 3);
 }
 
-.content-wrapper {
-	height: 100%;
+#app-content {
+	max-width: 100%;
 
-	.notice {
-		color: $gray;
-		font-size: 16px;
-		position: absolute;
-		text-align: center;
-		top: 50%;
-		width: 100%;
+	#app-content-wrapper {
+		height: 100%;
+
+		.app-content-details {
+			max-width: 100%;
+		}
+	
+		.notice {
+			color: $gray;
+			font-size: 16px;
+			position: absolute;
+			text-align: center;
+			top: 50%;
+			width: 100%;
+		}
 	}
 }
 
@@ -69,7 +82,7 @@
 }
 
 .itemstable {
-	width: 100%;
+	// width: 100%;
 	position: relative;
 
 	thead {
@@ -164,6 +177,10 @@
 }
 
 table {
+	white-space: unset;
+	width: 100%;
+	min-width: 300px;
+
 	tr {
 		transition: background-color .3s ease;
 	}
@@ -182,19 +199,19 @@ table {
 		td {
 			height: 44px;
 			padding: 0 10px;
-			width: 100px;
+			// width: 100px;
 
 			&.actions {
-				width: 44px;
+				// width: 44px;
 				padding: 0;
 			}
 
 			&.narrow {
-				width: 50px;
+				// width: 50px;
 			}
 
 			&.wide {
-				width: 150px;
+				// width: 150px;
 			}
 
 			div.add-instance {
@@ -202,7 +219,7 @@ table {
 			}
 
 			input {
-				width: 100%;
+				// width: 100%;
 				margin-left: -7px;
 			}
 
@@ -239,26 +256,30 @@ table {
 #itemdetails {
 	margin-bottom: 50px;
 
-	.item_images {
-		width: 30%;
-		float: left;
-		margin: 0 30px;
-		max-width: 400px;
-		min-width: 200px;
-		background: var(--icon-inventory-inventory-000) no-repeat;
-		background-size: cover;
-		opacity: .3;
+	.item_images_wrapper {
+		padding: 0 30px;
 
-		// Make the item_images square
-		&:after {
-			content: '';
-			display: block;
-			padding-bottom: 100%;
-		}
-	
-		img {
+		.item_images {
 			width: 100%;
+			float: left;
+			margin-top: -20px;
+			max-width: 500px;
+			min-width: 200px;
+			background: var(--icon-inventory-inventory-000) no-repeat;
+			background-size: cover;
 			opacity: .3;
+
+			// Make the item_images square
+			&:after {
+				content: '';
+				display: block;
+				padding-bottom: 100%;
+			}
+		
+			img {
+				width: 100%;
+				opacity: .3;
+			}
 		}
 	}
 
@@ -269,7 +290,15 @@ table {
 	}
 
 	.paragraph {
-		margin: 0 10px;
+		margin-top: 40px;
+
+		h3 {
+			margin: 0 10px;
+		}
+		
+		>div {
+			overflow-x: auto;
+		}
 	}
 
 	#qrcode-modal {
@@ -480,5 +509,18 @@ table {
 	.filedate {
 		font-size: 90%;
 		color: $color-darkgrey;
+	}
+}
+
+@media only screen and (min-width: 500px) {
+	#itemdetails {
+		
+		.item_images_wrapper .item_images {
+			width: 40%;
+		}
+
+		.paragraph > div {
+			margin: 0 10px;
+		}
 	}
 }
