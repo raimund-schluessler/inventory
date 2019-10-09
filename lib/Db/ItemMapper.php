@@ -56,15 +56,6 @@ class ItemMapper extends Mapper {
 		return $this->findEntities($sql, [$uid], $limit, $offset);
 	}
 
-	public function itemCount($name) {
-		$sql = 'SELECT COUNT(*) AS `count` FROM `*PREFIX*invtry_items`';
-		$stmt = $this->execute($sql);
-
-		$row = $stmt->fetch();
-		$stmt->closeCursor();
-		return $row['count'];
-	}
-
 	public function add($params) {
 		$item = new Item();
 		$item->setUid($params['uid']);

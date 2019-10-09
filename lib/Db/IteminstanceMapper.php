@@ -42,9 +42,6 @@ class IteminstanceMapper extends Mapper {
 		return $this->findEntity($sql, [$id, $uid]);
 	}
 
-	/**
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
-	 */
 	public function findByItemID($itemid, $uid, $limit=null, $offset=null) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_item_instances`' .
 			'WHERE `itemid` = ? AND `uid` = ?';

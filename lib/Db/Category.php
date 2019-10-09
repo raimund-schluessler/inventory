@@ -3,7 +3,7 @@
  * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2017 Raimund Schlüßler raimund.schluessler@mailbox.org
+ * @copyright 2019 Raimund Schlüßler raimund.schluessler@mailbox.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -31,8 +31,8 @@ class Category extends Entity {
 	public $name;
 	public $parentid;
 
-    public function __construct() {
-        // add types in constructor
-        $this->addType('categoryId', 'integer');
-    }
+	public function __construct() {
+		// add types in constructor
+		$this->addType('parentid', 'integer');
+	}
 }

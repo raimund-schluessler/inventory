@@ -43,18 +43,9 @@ class ItemtypeMapper extends Mapper {
 	}
 
 	public function findAll($uid, $limit=null, $offset=null) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_items` ' .
+		$sql = 'SELECT * FROM `*PREFIX*invtry_item_types` ' .
 			'WHERE `uid` = ?';
 		return $this->findEntities($sql, [$uid], $limit, $offset);
-	}
-
-	public function itemCount($name) {
-		$sql = 'SELECT COUNT(*) AS `count` FROM `*PREFIX*invtry_items`';
-		$stmt = $this->execute($sql);
-
-		$row = $stmt->fetch();
-		$stmt->closeCursor();
-		return $row['count'];
 	}
 
 	public function add($params) {
