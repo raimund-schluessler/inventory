@@ -24,6 +24,7 @@ namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\Mapper;
+use \OCA\Inventory\Db\Itemparent;
 
 class ItemparentMapper extends Mapper {
 
@@ -43,10 +44,10 @@ class ItemparentMapper extends Mapper {
 		return $this->findEntities($sql, [$itemID, $itemID]);
 	}
 
-	public function findSub($itemID) {
+	public function findSub($parentId) {
 		$sql = 'SELECT * FROM `*PREFIX*invtry_parent_map` ' .
 			'WHERE `parentid` = ?';
-		return $this->findEntities($sql, [$itemID]);
+		return $this->findEntities($sql, [$parentId]);
 	}
 
 	public function findSubIDs($itemID) {
@@ -79,10 +80,12 @@ class ItemparentMapper extends Mapper {
 		return $subIDs;
 	}
 
-	public function add($mapping) {
-		$sql = 'INSERT INTO `*PREFIX*invtry_parent_map` (itemid, parentid, uid)'.
-				' Values(?, ?, ?)';
-		return $this->execute($sql, array($mapping['itemid'], $mapping['parentid'], $mapping['uid']));
+	public function add($params) {
+		$itemparent = new Itemparent();
+		$itemparent->setUid($params['uid']);
+		$itemparent->setItemid($params['itemid']);
+		$itemparent->setParentid($params['parentid']);
+		return $this->insert($itemparent);
 	}
 
 	public function deleteRelations($relations) {
