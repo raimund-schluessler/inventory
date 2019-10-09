@@ -24,6 +24,7 @@ namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\Mapper;
+use \OCA\Inventory\Db\Itemrelation;
 
 class ItemrelationMapper extends Mapper {
 
@@ -67,10 +68,12 @@ class ItemrelationMapper extends Mapper {
 		return $relatedIDs;
 	}
 
-	public function add($mapping) {
-		$sql = 'INSERT INTO `*PREFIX*invtry_rel_map` (itemid1, itemid2, uid)'.
-				' Values(?, ?, ?)';
-		return $this->execute($sql, array($mapping['itemid1'], $mapping['itemid2'], $mapping['uid']));
+	public function add($params) {
+		$itemrelation = new Itemrelation();
+		$itemrelation->setUid($params['uid']);
+		$itemrelation->setItemid1($params['itemid1']);
+		$itemrelation->setItemid2($params['itemid2']);
+		return $this->insert($itemrelation);
 	}
 
 	public function deleteRelations($relations) {
