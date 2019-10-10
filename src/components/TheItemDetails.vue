@@ -63,17 +63,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 										<span>{{ itemProperty.name }}</span>
 									</td>
 									<td v-if="itemProperty.key === 'link'">
-										<span v-if="!editingItem">
+										<span :class="{ 'visibility-hidden': editingItem }">
 											<a :href="item.link" target="_blank">
 												{{ item.link }}
 											</a>
 										</span>
-										<input v-else v-model="editedItem.link"
-											type="text"
-											:placeholder="itemProperty.name"
-											:name="itemProperty.key"
-											form="edit_item"
-										>
+										<span v-if="editingItem">
+											<input v-model="editedItem.link"
+												type="text"
+												:placeholder="itemProperty.name"
+												:name="itemProperty.key"
+												form="edit_item"
+											>
+										</span>
 									</td>
 									<td v-else-if="itemProperty.key === 'categories'">
 										<ul class="categories">
@@ -83,14 +85,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 										</ul>
 									</td>
 									<td v-else>
-										<span v-if="!editingItem">{{ item[itemProperty.key] }}</span>
-										<input v-else v-model="editedItem[itemProperty.key]"
-											v-focus="itemProperty.key === 'name'"
-											type="text"
-											:placeholder="itemProperty.name"
-											:name="itemProperty.key"
-											form="edit_item"
-										>
+										<span :class="{ 'visibility-hidden': editingItem }">{{ item[itemProperty.key] }}</span>
+										<span v-if="editingItem">
+											<input v-model="editedItem[itemProperty.key]"
+												v-focus="itemProperty.key === 'name'"
+												type="text"
+												:placeholder="itemProperty.name"
+												:name="itemProperty.key"
+												form="edit_item"
+											>
+										</span>
 									</td>
 								</tr>
 								<tr>
