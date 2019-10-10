@@ -319,19 +319,21 @@ table {
 		}
 	}
 
-	#qrcode-modal {
-		.modal-container {
-			display: flex;
-			padding: 10px;
-			background-color: #fff;
-			.qrcode {
-				max-width: 100%;
-			}
-		}
-	}
-
 	.right {
 		float: right;
+	}
+}
+
+#qrcode-modal {
+	.modal-container {
+		display: flex;
+		padding: 10px;
+		background-color: #fff;
+		.qrcode {
+			min-width: 200px;
+			max-width: 100%;
+			width: 400px;
+		}
 	}
 }
 
