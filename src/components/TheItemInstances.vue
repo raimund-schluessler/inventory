@@ -24,7 +24,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<table class="instances">
 			<thead>
 				<tr>
-					<th v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
+					<th v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.class">
 						<span>{{ instanceProperty.name }}</span>
 					</th>
 					<th class="actions">
@@ -39,7 +39,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<tbody>
 				<template v-for="instance in item.instances">
 					<tr v-if="editedInstance.id !== instance.id" :key="`instance-${instance.id}`" class="handler">
-						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
+						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.class">
 							{{ getInstanceProperty(instance, instanceProperty) }}
 						</td>
 						<td class="actions">
@@ -59,7 +59,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</td>
 					</tr>
 					<tr v-else :key="`editinstance-${instance.id}`" v-click-outside="() => { hideEditInstance(instance) }">
-						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
+						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.class">
 							<div v-if="instanceProperty.key === 'place'">
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</div>
@@ -91,9 +91,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</td>
 					</tr>
 					<tr v-for="uuid in instance.uuids" :key="`uuids${instance.id}${uuid.id}`">
-						<td :colspan="instanceProperties.length">
+						<td :colspan="instanceProperties.length - 2">
 							{{ uuid.uuid }}
 						</td>
+						<td class="hide-if-narrow" />
+						<td class="hide-if-narrow" />
 						<td class="actions">
 							<Actions>
 								<ActionButton icon="icon-qrcode" :close-after-click="true" @click="showQRcode(uuid.uuid)">
@@ -112,7 +114,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</td>
 				</tr>
 				<tr v-if="addingInstance" v-click-outside="hideInstanceInput">
-					<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.width">
+					<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.class">
 						<input v-model="newInstance[instanceProperty.key]"
 							type="text"
 							:placeholder="instanceProperty.name"
@@ -171,17 +173,18 @@ export default {
 				{
 					key: 'count',
 					name: this.t('inventory', 'Count'),
-					width: 'narrow',
+					class: 'narrow',
 				}, {
 					key: 'available',
 					name: this.t('inventory', 'Available'),
-					width: 'narrow',
+					class: 'narrow',
 				}, {
 					key: 'price',
 					name: this.t('inventory', 'Price'),
 				}, {
 					key: 'date',
 					name: this.t('inventory', 'Date'),
+					class: 'hide-if-narrow'
 				}, {
 					key: 'vendor',
 					name: this.t('inventory', 'Vendor'),
@@ -192,7 +195,7 @@ export default {
 				}, {
 					key: 'comment',
 					name: this.t('inventory', 'Comment'),
-					width: 'wide',
+					class: 'wide hide-if-narrow',
 				},
 			],
 			newUuid: '',
