@@ -80,9 +80,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
 							</ActionButton>
 						</Actions>
-						<div v-show="unlink && selectedItems.length" class="unlink" @click="$emit('unlink')">
-							<span class="icon icon-bw icon-trash" />
-						</div>
+						<Actions v-show="unlink && selectedItems.length">
+							<ActionButton icon="icon-delete"
+								:close-after-click="true" @click="$emit('unlink')"
+							>
+								{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
+							</ActionButton>
+						</Actions>
 					</div>
 				</th>
 			</tr>
