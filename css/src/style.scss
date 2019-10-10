@@ -108,7 +108,7 @@
 		th {
 			height: 50px;
 
-			>div {
+			> div {
 				display: flex;
 				align-items: center;
 
@@ -225,13 +225,13 @@ table {
 				padding: 0;
 			}
 
-			&.narrow {
-				// width: 50px;
-			}
+			// &.narrow {
+			// width: 50px;
+			// }
 
-			&.wide {
-				// width: 150px;
-			}
+			// &.wide {
+			// width: 150px;
+			// }
 
 			div.add-instance {
 				padding: 0 14px;
@@ -274,31 +274,28 @@ table {
 
 #itemdetails {
 	margin-bottom: 50px;
+	display: flex;
+	flex-wrap: wrap;
 
-	.item_images_wrapper {
-		padding: 0 30px;
+	.item_images {
+		width: 100%;
+		margin-top: -20px;
+		max-width: 500px;
+		min-width: 200px;
+		background: var(--icon-inventory-inventory-000) no-repeat;
+		background-size: cover;
+		opacity: .3;
 
-		.item_images {
+		// Make the item_images square
+		&:after {
+			content: '';
+			display: block;
+			padding-bottom: 100%;
+		}
+	
+		img {
 			width: 100%;
-			float: left;
-			margin-top: -20px;
-			max-width: 500px;
-			min-width: 200px;
-			background: var(--icon-inventory-inventory-000) no-repeat;
-			background-size: cover;
 			opacity: .3;
-
-			// Make the item_images square
-			&:after {
-				content: '';
-				display: block;
-				padding-bottom: 100%;
-			}
-		
-			img {
-				width: 100%;
-				opacity: .3;
-			}
 		}
 	}
 
@@ -310,13 +307,15 @@ table {
 
 	.paragraph {
 		margin-top: 40px;
+		width: 100%;
+
+		&.properties {
+			width: 100%;
+			flex-grow: 1;
+		}
 
 		h3 {
 			margin: 0 10px;
-		}
-		
-		>div {
-			overflow-x: auto;
 		}
 	}
 
@@ -533,13 +532,18 @@ table {
 
 @media only screen and (min-width: 500px) {
 	#itemdetails {
-		
-		.item_images_wrapper .item_images {
-			width: 40%;
-		}
+		.paragraph {
+			> div {
+				margin: 0 10px;
+			}
 
-		.paragraph > div {
-			margin: 0 10px;
+			&.properties {
+				width: 60%;
+			}
+
+			&.images {
+				width: 40%;
+			}
 		}
 	}
 

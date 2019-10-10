@@ -48,10 +48,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</Actions>
 			</div>
 			<div id="itemdetails">
-				<div class="item_images_wrapper">
+				<div class="paragraph images">
 					<div class="item_images" />
 				</div>
-				<div class="paragraph">
+				<div class="paragraph properties">
 					<h3>
 						<span>{{ t('inventory', 'Properties') }}</span>
 					</h3>
