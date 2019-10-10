@@ -57,12 +57,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</a>
 					</div>
 				</th>
-				<th>
+				<th class="hide-if-narrow">
 					<div>
 						<a class="categories sort columntitle" data-sort="categories">
 							<span>{{ t('inventory', 'Categories') }}</span>
 							<span class="sort-indicator hidden icon-triangle-s" />
 						</a>
+					</div>
+				</th>
+				<th>
+					<div>
 						<Actions v-if="showDropdown">
 							<ActionRouter to="/items/additem" icon="icon-add">
 								{{ t('inventory', 'Add single item') }}
@@ -76,17 +80,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
 							</ActionButton>
 						</Actions>
-						<div v-show="unlink && selectedItems.length" class="unlink" @click="$emit('unlink')">
-							<span class="icon icon-bw icon-trash" />
-						</div>
+						<Actions v-show="unlink && selectedItems.length">
+							<ActionButton icon="icon-delete"
+								:close-after-click="true" @click="$emit('unlink')"
+							>
+								{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
+							</ActionButton>
+						</Actions>
 					</div>
 				</th>
-				<th />
 			</tr>
 		</thead>
 		<tbody>
 			<tr v-if="!filteredItems.length">
-				<td class="center" colspan="5">
+				<td class="center" colspan="6">
 					{{ emptyListMessage }}
 				</td>
 			</tr>
@@ -122,7 +129,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						{{ item.description }}
 					</a>
 				</td>
-				<td>
+				<td class="hide-if-narrow">
 					<ul class="categories">
 						<li v-for="category in item.categories" :key="category.id">
 							<span>{{ category.name }}</span>

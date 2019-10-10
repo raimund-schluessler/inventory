@@ -20,21 +20,27 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div id="newItemsView">
-		{{ t('inventory', 'Add multiple new items (as comma separated list).') }}
-		<br>
-		{{ t('inventory', 'Expects csv with the fields:') }}
-		<span v-for="field in fields" :key="field">
-			&lt;{{ field }}&gt;;
-		</span>
-		<form id="newItems" @submit.prevent="enlist">
-			<textarea v-model="rawInput" />
-			{{ t('inventory', 'Items:') }}
+	<div>
+		<div id="newItemsView" class="app-content-details">
 			<div>
-				<ItemsTable :items="items" :show-dropdown="false" :search-string="$root.searchString" />
+				{{ t('inventory', 'Add multiple new items (as comma separated list).') }}
+				<br>
+				{{ t('inventory', 'Expects csv with the fields:') }}
+				<span v-for="field in fields" :key="field">
+					&lt;{{ field }}&gt;;
+				</span>
 			</div>
-			<input :value="t('inventory', 'Enlist')" type="submit" :disabled="!canEnlist">
-		</form>
+			<div>
+				<form id="newItems" @submit.prevent="enlist">
+					<textarea v-model="rawInput" />
+					{{ t('inventory', 'Items:') }}
+					<div>
+						<ItemsTable :items="items" :show-dropdown="false" :search-string="$root.searchString" />
+					</div>
+					<input :value="t('inventory', 'Enlist')" type="submit" :disabled="!canEnlist">
+				</form>
+			</div>
+		</div>
 	</div>
 </template>
 
