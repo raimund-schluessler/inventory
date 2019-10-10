@@ -57,12 +57,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</a>
 					</div>
 				</th>
-				<th>
+				<th class="hide-if-narrow">
 					<div>
 						<a class="categories sort columntitle" data-sort="categories">
 							<span>{{ t('inventory', 'Categories') }}</span>
 							<span class="sort-indicator hidden icon-triangle-s" />
 						</a>
+					</div>
+				</th>
+				<th>
+					<div>
 						<Actions v-if="showDropdown">
 							<ActionRouter to="/items/additem" icon="icon-add">
 								{{ t('inventory', 'Add single item') }}
@@ -81,7 +85,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 				</th>
-				<th />
 			</tr>
 		</thead>
 		<tbody>
@@ -122,7 +125,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						{{ item.description }}
 					</a>
 				</td>
-				<td>
+				<td class="hide-if-narrow">
 					<ul class="categories">
 						<li v-for="category in item.categories" :key="category.id">
 							<span>{{ category.name }}</span>

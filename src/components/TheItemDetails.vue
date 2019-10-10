@@ -21,7 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<div class="app-content-details" v-if="item">
+		<div v-if="item" class="app-content-details">
 			<div class="itemnavigation">
 				<div class="breadcrumb">
 					<div data-dir="/" class="crumb svg">

@@ -17,6 +17,10 @@
 	visibility: hidden;
 }
 
+.hide-if-narrow {
+	display: none;
+}
+
 @include icon-black-white('inventory', 'inventory', 1, false);
 
 .icon {
@@ -130,7 +134,8 @@
 		}
 
 		td {
-			height: 40px;
+			min-height: 40px;
+			line-height: 20px;
 
 			&.center {
 				text-align: center;
@@ -146,8 +151,24 @@
 				}
 			}
 
+			a {
+				padding-right: 4px;
+			}
+
 			a,
 			div {
+				height: 100%;
+				width: 100%;
+				display: flex;
+				align-items: center;
+				line-height: 20px;
+
+				span {
+					display: inline-flex;
+					align-items: center;
+					word-wrap: anywhere;
+				}
+
 				.thumbnail-wrapper {
 					height: 40px;
 					width: 40px;
@@ -167,10 +188,6 @@
 				.nametext {
 					flex-grow: 1;
 				}
-				height: 100%;
-				width: 100%;
-				display: flex;
-				line-height: 40px;
 			}
 		}
 	}
@@ -522,5 +539,9 @@ table {
 		.paragraph > div {
 			margin: 0 10px;
 		}
+	}
+
+	.hide-if-narrow {
+		display: revert;
 	}
 }
