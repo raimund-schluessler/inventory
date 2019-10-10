@@ -144,25 +144,31 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Parent items') }}</span>
 					</h3>
-					<ItemsTable :items="parentItems" :unlink="true" :search-string="$root.searchString"
-						@selectedItemsChanged="selectedParentsChanged" @unlink="unlink('parent')"
-					/>
+					<div>
+						<ItemsTable :items="parentItems" :unlink="true" :search-string="$root.searchString"
+							@selectedItemsChanged="selectedParentsChanged" @unlink="unlink('parent')"
+						/>
+					</div>
 				</div>
 				<div v-if="subItems.length" class="paragraph">
 					<h3>
 						<span>{{ t('inventory', 'Sub items') }}</span>
 					</h3>
-					<ItemsTable :items="subItems" :unlink="true" :search-string="$root.searchString"
-						@selectedItemsChanged="selectedSubChanged" @unlink="unlink('sub')"
-					/>
+					<div>
+						<ItemsTable :items="subItems" :unlink="true" :search-string="$root.searchString"
+							@selectedItemsChanged="selectedSubChanged" @unlink="unlink('sub')"
+						/>
+					</div>
 				</div>
 				<div v-if="relatedItems.length" class="paragraph">
 					<h3>
 						<span>{{ t('inventory', 'Related items') }}</span>
 					</h3>
-					<ItemsTable :items="relatedItems" :unlink="true" :search-string="$root.searchString"
-						@selectedItemsChanged="selectedRelatedChanged" @unlink="unlink('related')"
-					/>
+					<div>
+						<ItemsTable :items="relatedItems" :unlink="true" :search-string="$root.searchString"
+							@selectedItemsChanged="selectedRelatedChanged" @unlink="unlink('related')"
+						/>
+					</div>
 				</div>
 			</div>
 			<RelationModal :modal-open.sync="modalOpen" :link="link" :item-id="id" />
