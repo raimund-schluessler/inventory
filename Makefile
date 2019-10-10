@@ -137,6 +137,7 @@ appstore: clean build
 	--exclude=/build \
 	--exclude=/ci \
 	--exclude=/coverage \
+	--exclude=/coverage_php \
 	--exclude=/img/src \
 	--exclude=/src \
 	--exclude=/node_modules \
