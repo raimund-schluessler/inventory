@@ -38,6 +38,10 @@
 	@include icon-color('qrcode', 'inventory', $color-black, 3);
 }
 
+.action-item {
+	margin-left: auto;
+}
+
 #app-content {
 	max-width: 100%;
 
@@ -88,7 +92,6 @@
 }
 
 .itemstable {
-	// width: 100%;
 	position: relative;
 
 	thead {
@@ -141,6 +144,7 @@
 
 			&.center {
 				text-align: center;
+				line-height: 40px;
 			}
 
 			&.selection {
@@ -218,20 +222,16 @@ table {
 		td {
 			height: 44px;
 			padding: 0 10px;
-			// width: 100px;
 
 			&.actions {
-				// width: 44px;
 				padding: 0;
+				display: flex;
+
+				> div,
+				> button {
+					margin-left: auto;
+				}
 			}
-
-			// &.narrow {
-			// width: 50px;
-			// }
-
-			// &.wide {
-			// width: 150px;
-			// }
 
 			div.add-instance {
 				padding: 0 14px;
@@ -368,10 +368,6 @@ table {
 	top: 50px;
 	background-color: var(--color-main-background-translucent);
 	z-index: 60;
-
-	.action-item {
-		margin-left: auto;
-	}
 }
 
 @media only screen and (max-width: 768px) {

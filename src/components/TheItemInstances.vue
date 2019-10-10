@@ -173,11 +173,9 @@ export default {
 				{
 					key: 'count',
 					name: this.t('inventory', 'Count'),
-					class: 'narrow',
 				}, {
 					key: 'available',
 					name: this.t('inventory', 'Available'),
-					class: 'narrow',
 				}, {
 					key: 'price',
 					name: this.t('inventory', 'Price'),
@@ -195,7 +193,7 @@ export default {
 				}, {
 					key: 'comment',
 					name: this.t('inventory', 'Comment'),
-					class: 'wide hide-if-narrow',
+					class: 'hide-if-narrow',
 				},
 			],
 			newUuid: '',

@@ -89,7 +89,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</thead>
 		<tbody>
 			<tr v-if="!filteredItems.length">
-				<td class="center" colspan="5">
+				<td class="center" colspan="6">
 					{{ emptyListMessage }}
 				</td>
 			</tr>
