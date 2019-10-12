@@ -56,7 +56,8 @@ class AttachmentMapperTest extends MapperTestUtility  {
 			$this->createAttachmentEntity(1, 'file1.pdf'),
 			$this->createAttachmentEntity(1, 'file2.pdf'),
 			$this->createAttachmentEntity(2, 'file3.pdf'),
-			$this->createAttachmentEntity(3, 'file4.pdf')
+			$this->createAttachmentEntity(3, 'file4.pdf'),
+			$this->createAttachmentEntity(1, 'file5.pdf', 123)
 		];
 		foreach ($this->attachments as $attachment) {
 			$entry = $this->attachmentMapper->insert($attachment);
@@ -65,9 +66,10 @@ class AttachmentMapperTest extends MapperTestUtility  {
 		}
 	}
 
-	private function createAttachmentEntity($itemId, $basename) {
+	private function createAttachmentEntity($itemId, $basename, $instanceId = null) {
 		$attachment = new Attachment();
 		$attachment->setItemid($itemId);
+		$attachment->setInstanceid($instanceId);
 		$attachment->setBasename($basename);
 		$attachment->setCreatedBy('admin');
 		return $attachment;
@@ -75,7 +77,7 @@ class AttachmentMapperTest extends MapperTestUtility  {
 
 	public function testFind() {
 		foreach ($this->attachmentsById as $id => $attachment) {
-			$this->assertEquals($attachment, $this->attachmentMapper->findAttachment($attachment->getItemid(), $id));
+			$this->assertEquals($attachment, $this->attachmentMapper->findAttachment($attachment->getItemid(), $id, $attachment->getInstanceid()));
 		}
 	}
 	
@@ -89,11 +91,13 @@ class AttachmentMapperTest extends MapperTestUtility  {
 		$attachmentsByItem = [
 			array_slice($this->attachments, 0, 2),
 			array_slice($this->attachments, 2, 1),
-			array_slice($this->attachments, 3, 1)
+			array_slice($this->attachments, 3, 1),
+			array_slice($this->attachments, 4, 1)
 		];
 		$this->assertEquals($attachmentsByItem[0], $this->attachmentMapper->findAll(1));
 		$this->assertEquals($attachmentsByItem[1], $this->attachmentMapper->findAll(2));
 		$this->assertEquals($attachmentsByItem[2], $this->attachmentMapper->findAll(3));
+		$this->assertEquals($attachmentsByItem[3], $this->attachmentMapper->findAll(1, 123));
 		$this->assertEquals([], $this->attachmentMapper->findAll(5));
 	}
 	
@@ -101,6 +105,13 @@ class AttachmentMapperTest extends MapperTestUtility  {
 		$itemId = 1;
 		$attachmentBasename = 'file1.pdf';
 		$this->assertEquals($this->attachments[0], $this->attachmentMapper->findByName($itemId, $attachmentBasename));
+	}
+	
+	public function testFindByNameAndInstance() {
+		$itemId = 1;
+		$attachmentBasename = 'file5.pdf';
+		$instanceId = 123;
+		$this->assertEquals($this->attachments[4], $this->attachmentMapper->findByName($itemId, $attachmentBasename, $instanceId));
 	}
 	
 	public function testFindByNameNotFound() {

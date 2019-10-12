@@ -102,25 +102,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 										{{ t('inventory', 'Attachments') }}
 									</td>
 									<td class="attachment-list">
-										<ul>
-											<li v-for="attachment in item.attachments" :key="attachment.id" class="attachment">
-												<a class="fileicon" :style="attachmentMimetype(attachment)" :href="attachment.url" />
-												<div class="details">
-													<a :href="attachmentUrl(attachment)">
-														<div class="filename">
-															<span class="basename">{{ attachment.extendedData.info.filename }}</span>
-															<span class="extension">{{ '.' + attachment.extendedData.info.extension }}</span>
-														</div>
-														<span class="filesize">{{ attachment.extendedData.filesize | bytes }}</span>
-														<span class="filedate">{{ attachment.lastModified | relativeDateFilter }}</span>
-														<span class="filedate">{{ t('inventory', 'by') + ' ' + attachment.createdBy }}</span>
-													</a>
-												</div>
-											</li>
-											<li v-if="!item.attachments.length">
-												{{ t('inventory', 'No files attached.') }}
-											</li>
-										</ul>
+										<attachments :attachments="item.attachments" />
 									</td>
 								</tr>
 								<tr v-if="editingItem">
@@ -184,6 +166,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
+import Attachments from './Attachments.vue'
 import RelationModal from './RelationModal.vue'
 import ItemInstances from './TheItemInstances.vue'
 import focus from '../directives/focus'
@@ -198,24 +181,11 @@ export default {
 		ActionButton,
 		RelationModal,
 		ItemInstances,
+		Attachments,
 	},
 	directives: {
 		ClickOutside,
 		focus,
-	},
-	filters: {
-		bytes: function(bytes) {
-			if (isNaN(parseFloat(bytes, 10)) || !isFinite(bytes)) {
-				return '-'
-			}
-			const precision = 2
-			var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB']
-			var number = Math.floor(Math.log(bytes) / Math.log(1024))
-			return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number]
-		},
-		relativeDateFilter: function(timestamp) {
-			return OC.Util.relativeModifiedDate(timestamp * 1000)
-		},
 	},
 	props: {
 		id: {
@@ -292,17 +262,9 @@ export default {
 		async getItem(itemID) {
 			await this.loadItem(itemID)
 			this.getAttachments(itemID)
-		},
-
-		attachmentMimetype(attachment) {
-			const url = OC.MimeType.getIconUrl(attachment.extendedData.mimetype)
-			return {
-				'background-image': `url("${url}")`
-			}
-		},
-
-		attachmentUrl(attachment) {
-			return OC.generateUrl(`/apps/inventory/item/${this.id}/attachment/${attachment.id}`)
+			this.item.instances.forEach(instance => {
+				this.getInstanceAttachments({ itemID, instanceID: instance.id })
+			})
 		},
 
 		hideEditItem: function() {
@@ -370,6 +332,7 @@ export default {
 		...mapActions([
 			'getItemById',
 			'getAttachments',
+			'getInstanceAttachments',
 			'loadSubItems',
 			'loadParentItems',
 			'loadRelatedItems',

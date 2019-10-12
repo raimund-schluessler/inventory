@@ -81,6 +81,20 @@ class AttachmentStorage {
 	}
 
 	/**
+	 * Get the instance folder
+	 *
+	 * @param int $itemID
+	 * @param int $instanceID
+	 * @return \OCP\Files\Node
+	 * @throws \Exception
+	 */
+	private function getInstanceFolder(int $itemID, int $instanceID) {
+		$itemFolder = $this->getItemFolder($itemID);
+		$instanceFolderName = 'instances/instance-' . (int)$instanceID;
+		return $itemFolder->get($instanceFolderName);
+	}
+
+	/**
 	 * Get a handle to the attachment
 	 *
 	 * @param Attachment $attachment
@@ -88,25 +102,35 @@ class AttachmentStorage {
 	 * @throws \Exception
 	 */
 	private function getFileFromRootFolder(Attachment $attachment) {
-		$itemFolder = $this->getItemFolder((int)$attachment->getItemid());
-		return $itemFolder->get($attachment->getBasename());
+		$instanceID = $attachment->getInstanceid();
+		if (!$instanceID) {
+			$folder = $this->getItemFolder((int)$attachment->getItemid());
+		} else {
+			$folder = $this->getInstanceFolder((int)$attachment->getItemid(), (int)$instanceID);
+		}
+		return $folder->get($attachment->getBasename());
 	}
 
 	/**
-	 * List all files in an item folder
+	 * List all files in an item or instance folder
 	 *
 	 * @param int $itemID
+	 * @param int $instanceID
 	 * @return Array
 	 * @throws \Exception
 	 */
-	public function listFiles(int $itemID) {
+	public function listFiles(int $itemID, int $instanceID = null) {
 		$files = [];
 		try {
-			$itemFolder = $this->getItemFolder($itemID);
+			if (!$instanceID) {
+				$folder = $this->getItemFolder($itemID);
+			} else {
+				$folder = $this->getInstanceFolder($itemID, $instanceID);
+			}
 		} catch (NotFoundException $e) {
 			return $files;
 		}
-		$folderContent = $itemFolder->getDirectoryListing();
+		$folderContent = $folder->getDirectoryListing();
 		foreach($folderContent as $node) {
 			// We only want to list files, not folders.
 			if ($node->getFileInfo()->getType() !== \OCP\Files\FileInfo::TYPE_FILE) {

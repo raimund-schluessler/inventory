@@ -34,7 +34,7 @@ class AttachmentMapper extends QBMapper {
 		parent::__construct($db, 'invtry_attachments');
 	}
 
-	public function findAll(int $itemID, $limit = null, $offset = null) {
+	public function findAll(int $itemID, int $instanceID = null, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -44,12 +44,20 @@ class AttachmentMapper extends QBMapper {
 			->where(
 				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
 			);
-
+			if ($instanceID === null) {
+				$qb->andWhere(
+					$qb->expr()->isNull('instanceid')
+				);
+			} else {
+				$qb->andWhere(
+					$qb->expr()->eq('instanceid', $qb->createNamedParameter($instanceID, IQueryBuilder::PARAM_INT))
+				);
+			}
 		return $this->findEntities($qb);
 	}
 
 
-	public function findAttachment($itemID, $attachmentID) {
+	public function findAttachment($itemID, $attachmentID, int $instanceID = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -60,6 +68,15 @@ class AttachmentMapper extends QBMapper {
 			->andWhere(
 				$qb->expr()->eq('id', $qb->createNamedParameter($attachmentID, IQueryBuilder::PARAM_INT))
 			);
+			if ($instanceID === null) {
+				$qb->andWhere(
+					$qb->expr()->isNull('instanceid')
+				);
+			} else {
+				$qb->andWhere(
+					$qb->expr()->eq('instanceid', $qb->createNamedParameter($instanceID, IQueryBuilder::PARAM_INT))
+				);
+			}
 
 		try {
 			return $this->findEntity($qb);
@@ -68,7 +85,7 @@ class AttachmentMapper extends QBMapper {
 		}
 	}
 
-	public function findByName($itemID, $name) {
+	public function findByName($itemID, $name, $instanceID = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -79,6 +96,15 @@ class AttachmentMapper extends QBMapper {
 			->andWhere(
 				$qb->expr()->eq('basename', $qb->createNamedParameter($name, IQueryBuilder::PARAM_STR))
 			);
+			if ($instanceID === null) {
+				$qb->andWhere(
+					$qb->expr()->isNull('instanceid')
+				);
+			} else {
+				$qb->andWhere(
+					$qb->expr()->eq('instanceid', $qb->createNamedParameter($instanceID, IQueryBuilder::PARAM_INT))
+				);
+			}
 
 		try {
 			return $this->findEntity($qb);

@@ -381,6 +381,11 @@
           <notnull>true</notnull>
       </field>
       <field>
+          <name>instanceid</name>
+          <type>integer</type>
+          <length>8</length>
+      </field>
+      <field>
           <name>basename</name>
           <type>text</type>
       </field>

@@ -207,6 +207,11 @@ export default new Vuex.Store({
 			Vue.set(state.item, 'attachments', attachments)
 		},
 
+		setInstanceAttachments(state, { instanceID, attachments }) {
+			const instance = state.item.instances.find(instance => instance.id === instanceID)
+			Vue.set(instance, 'attachments', attachments)
+		},
+
 		setSubItems(state, items) {
 			state.subItems = items.reduce(function(list, item) {
 				if (item instanceof Item) {
@@ -350,6 +355,15 @@ export default new Vuex.Store({
 				commit('setAttachments', { attachments: response.data })
 			} catch {
 				commit('setAttachments', { attachments: [] })
+			}
+		},
+
+		async getInstanceAttachments({ commit }, { itemID, instanceID }) {
+			try {
+				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}/instance/${instanceID}/attachments`))
+				commit('setInstanceAttachments', { instanceID, attachments: response.data })
+			} catch {
+				commit('setInstanceAttachments', { instanceID, attachments: [] })
 			}
 		},
 		async loadSubItems({ commit }, itemID) {
