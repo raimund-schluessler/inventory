@@ -30,6 +30,7 @@ use OCP\AppFramework\Db\Entity;
 class Attachment extends Entity {
 
 	public $itemid;
+	public $instanceid = null;
 	public $basename;
 	public $lastModified = 0;
 	public $createdAt = 0;
@@ -39,6 +40,7 @@ class Attachment extends Entity {
 	public function __construct() {
 		$this->addType('id', 'integer');
 		$this->addType('itemid', 'integer');
+		$this->addType('instanceid', 'integer');
 	}
 
 }

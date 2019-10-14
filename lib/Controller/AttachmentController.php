@@ -56,7 +56,19 @@ class AttachmentController extends Controller {
 	}
 
 	/**
-	 * Displays an attachment
+	 * Returns a list with all attachments for an instance
+	 *
+	 * @param int $itemID
+	 * @param int $instanceID
+	 * @NoAdminRequired
+	 * @return Attachment[]
+	 */
+	public function getInstance($itemID, $instanceID) {
+		return $this->attachmentService->getAll($itemID, $instanceID);
+	}
+
+	/**
+	 * Displays an attachment for an item
 	 *
 	 * @param int $itemID
 	 * @param int $attachmentID
@@ -67,5 +79,20 @@ class AttachmentController extends Controller {
 	 */
 	public function display($itemID, $attachmentID) {
 		return $this->attachmentService->display($itemID, $attachmentID);
+	}
+
+	/**
+	 * Displays an attachment for an instance
+	 *
+	 * @param int $itemID
+	 * @param int $instanceID
+	 * @param int $attachmentID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 * @throws \OCA\Inventory\NotFoundException
+	 */
+	public function displayInstance($itemID, $instanceID, $attachmentID) {
+		return $this->attachmentService->display($itemID, $attachmentID, $instanceID);
 	}
 }

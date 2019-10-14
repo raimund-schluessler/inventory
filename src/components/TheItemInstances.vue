@@ -111,6 +111,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</td>
 					</tr>
+					<tr v-if="instance.attachments" :key="`attachments${instance.id}`">
+						<td :colspan="instanceProperties.length - 2" class="attachment-list">
+							<attachments :attachments="instance.attachments" />
+						</td>
+						<td class="hide-if-narrow" />
+						<td class="hide-if-narrow" />
+						<td />
+					</tr>
 				</template>
 				<tr v-if="!item.instances.length">
 					<td class="center" :colspan="instanceProperties.length + 1">
@@ -149,6 +157,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import { mapActions } from 'vuex'
 import focus from '../directives/focus'
+import Attachments from './Attachments.vue'
 import ClickOutside from 'vue-click-outside'
 import qr from 'qr-image'
 import { Modal } from 'nextcloud-vue/dist/Components/Modal'
@@ -160,6 +169,7 @@ export default {
 		Modal,
 		Actions,
 		ActionButton,
+		Attachments,
 	},
 	directives: {
 		ClickOutside,
