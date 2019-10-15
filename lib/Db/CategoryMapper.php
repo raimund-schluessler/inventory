@@ -23,37 +23,56 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
-use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use \OCA\Inventory\Db\Category;
 use OCP\AppFramework\Db\DoesNotExistException;
 
-class CategoryMapper extends Mapper {
+class CategoryMapper extends QBMapper {
 
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_categories');
 	}
 
-	public function findCategory($categoryId, $uid) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_categories` ' .
-			'WHERE `id` = ? AND `uid` = ?';
+	public function findCategory(int $categoryId, string $uid) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_categories')
+			->where(
+				$qb->expr()->eq('id', $qb->createNamedParameter($categoryId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
 		try {
-			return $this->findEntity($sql, [$categoryId, $uid]);
+			return $this->findEntity($qb);
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
 	}
 
-	public function findCategoryByName($categoryName, $uid) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_categories` ' .
-			'WHERE `name` = ? AND `uid` = ?';
+	public function findCategoryByName(string $categoryName, string $uid) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_categories')
+			->where(
+				$qb->expr()->eq('name', $qb->createNamedParameter($categoryName, IQueryBuilder::PARAM_STR))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
 		try {
-			return $this->findEntity($sql, [$categoryName, $uid]);
+			return $this->findEntity($qb);
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
 	}
 
-	public function add($name, $uid, $parentID=NULL) {
+	public function add(string $name, string $uid, int $parentID = null) {
 		$category = new Category();
 		$category->setName($name);
 		$category->setUid($uid);

@@ -23,10 +23,11 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
-use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use \OCA\Inventory\Db\Itemtype;
 
-class ItemtypeMapper extends Mapper {
+class ItemtypeMapper extends QBMapper {
 
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_item_types');
@@ -36,16 +37,33 @@ class ItemtypeMapper extends Mapper {
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
-	public function find($id, $uid) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_item_types` ' .
-			'WHERE `id` = ? AND `uid` = ?';
-		return $this->findEntity($sql, [$id, $uid]);
+	public function find(int $id, string $uid) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_item_types')
+			->where(
+				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntity($qb);
 	}
 
-	public function findAll($uid, $limit=null, $offset=null) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_item_types` ' .
-			'WHERE `uid` = ?';
-		return $this->findEntities($sql, [$uid], $limit, $offset);
+	public function findAll(string $uid, $limit=null, $offset=null) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_item_types')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
+			->where(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntities($qb);
 	}
 
 	public function add($params) {

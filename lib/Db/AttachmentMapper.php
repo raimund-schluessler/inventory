@@ -57,7 +57,7 @@ class AttachmentMapper extends QBMapper {
 	}
 
 
-	public function findAttachment($itemID, $attachmentID, int $instanceID = null) {
+	public function findAttachment(int $itemID, int $attachmentID, int $instanceID = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -85,7 +85,7 @@ class AttachmentMapper extends QBMapper {
 		}
 	}
 
-	public function findByName($itemID, $name, $instanceID = null) {
+	public function findByName(int $itemID, string $name, int $instanceID = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')

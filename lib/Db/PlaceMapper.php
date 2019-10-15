@@ -23,37 +23,56 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
-use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use \OCA\Inventory\Db\Place;
 use OCP\AppFramework\Db\DoesNotExistException;
 
-class PlaceMapper extends Mapper {
+class PlaceMapper extends QBMapper {
 
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_places');
 	}
 
-	public function findPlace($placeId, $uid) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_places` ' .
-			'WHERE `id` = ? AND `uid` = ?';
+	public function findPlace(int $placeId, string $uid) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_places')
+			->where(
+				$qb->expr()->eq('id', $qb->createNamedParameter($placeId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
 		try {
-			return $this->findEntity($sql, [$placeId, $uid]);
+			return $this->findEntity($qb);
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
 	}
 
-	public function findPlaceByName($placeName, $uid) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_places` ' .
-			'WHERE `name` = ? AND `uid` = ?';
+	public function findPlaceByName(string $placeName, string $uid) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_places')
+			->where(
+				$qb->expr()->eq('name', $qb->createNamedParameter($placeName, IQueryBuilder::PARAM_STR))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
 		try {
-			return $this->findEntity($sql, [$placeName, $uid]);
+			return $this->findEntity($qb);
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
 	}
 
-	public function add($name, $uid, $parentID=NULL) {
+	public function add(string $name, string $uid, int $parentID = null) {
 		$place = new Place();
 		$place->setName($name);
 		$place->setUid($uid);
