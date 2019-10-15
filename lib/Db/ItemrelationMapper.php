@@ -23,48 +23,89 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
-use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use \OCA\Inventory\Db\Itemrelation;
 
-class ItemrelationMapper extends Mapper {
+class ItemrelationMapper extends QBMapper {
 
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_rel_map');
 	}
 
-	public function find($itemID, $userID) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_rel_map` ' .
-			'WHERE `itemid1` = ? OR `itemid2` = ? AND `uid` = ?';
-		return $this->findEntities($sql, [$itemID, $itemID, $userID]);
+	public function find(int $itemID, string $userID) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_rel_map')
+			->where(
+				$qb->expr()->eq('itemid1', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			)
+			->orWhere(
+				$qb->expr()->eq('itemid2', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($userID, IQueryBuilder::PARAM_STR))
+			);
+		return $this->findEntities($qb);
 	}
 
-	public function findExactRelation($itemID1, $itemID2, $userID) {
-		$sql = 'SELECT * FROM `*PREFIX*invtry_rel_map` ' .
-			'WHERE `itemid1` = ? AND `itemid2` = ? AND `uid` = ?';
-		return $this->findEntity($sql, [$itemID1, $itemID2, $userID]);
+	public function findExactRelation(int $itemID1, int $itemID2, string $userID) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_rel_map')
+			->where(
+				$qb->expr()->eq('itemid1', $qb->createNamedParameter($itemID1, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('itemid2', $qb->createNamedParameter($itemID2, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($userID, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntity($qb);
 	}
 
-	public function findRelation($itemID, $userID) {
-		$sql = 'SELECT itemid1 FROM `*PREFIX*invtry_rel_map` ' .
-			'WHERE `itemid2` = ? AND `uid` = ? ' .
-			'UNION ' .
-			'SELECT itemid2 FROM `*PREFIX*invtry_rel_map` ' .
-			'WHERE `itemid1` = ? AND `uid` = ?';
-		return $this->findEntities($sql, [$itemID, $userID, $itemID, $userID]);
+	public function findRelation(int $itemID, string $userID) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_rel_map')
+			->where(
+				$qb->expr()->eq('itemid1', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			)
+			->orWhere(
+				$qb->expr()->eq('itemid2', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($userID, IQueryBuilder::PARAM_STR))
+			);
+		return $this->findEntities($qb);
 	}
 
-	public function findRelatedIDs($itemID, $userID) {
-		$sql = 'SELECT itemid1 FROM `*PREFIX*invtry_rel_map` ' .
-			'WHERE `itemid2` = ? AND `uid` = ? ' .
-			'UNION ' .
-			'SELECT itemid2 FROM `*PREFIX*invtry_rel_map` ' .
-			'WHERE `itemid1` = ? AND `uid` = ?';
-		$stmt =  $this->execute($sql, [$itemID, $userID, $itemID, $userID]);
+	public function findRelatedIDs(int $itemID, string $userID) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_rel_map')
+			->where(
+				$qb->expr()->eq('itemid1', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			)
+			->orWhere(
+				$qb->expr()->eq('itemid2', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($userID, IQueryBuilder::PARAM_STR))
+			);
+		$cursor = $qb->execute();
 		$relatedIDs = array();
-		while ($row = $stmt->fetch()) {
-			array_push($relatedIDs, $row['itemid1']);
+		while ($row = $cursor->fetch()) {
+			$relatedID = ((int)$row['itemid1'] === $itemID) ? $row['itemid2'] : $row['itemid1'];
+			$relatedIDs[] = (int)$relatedID;
 		};
-		$stmt->closeCursor();
+		$cursor->closeCursor();
 		return $relatedIDs;
 	}
 

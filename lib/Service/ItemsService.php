@@ -175,10 +175,10 @@ class ItemsService {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
-		$relations = $this->itemRelationMapper->findRelation($itemID, $this->userId);
+		$relatedIDs = $this->itemRelationMapper->findRelatedIDs($itemID, $this->userId);
 		$items = [];
-		foreach ($relations as $relation) {
-			$item = $this->itemMapper->find($relation->itemid1, $this->userId);
+		foreach ($relatedIDs as $relatedID) {
+			$item = $this->itemMapper->find($relatedID, $this->userId);
 			$item = $this->getItemDetails($item);
 			$items[] = $item;
 		}

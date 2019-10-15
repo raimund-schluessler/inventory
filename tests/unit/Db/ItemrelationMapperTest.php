@@ -100,16 +100,7 @@ class ItemrelationMapperTest extends MapperTestUtility  {
 		$itemId = 3;
 		$uid = 'unit_tester_1';
 		$relations = array_slice($this->itemrelations, 0, 3);
-		// TODO: Adjust the current implementation to really return the relation and not only part of it.
-		$relationsReturned  = [];
-		foreach($relations as $relation) {
-			$tmp = new Itemrelation();
-			$id = ($relation->getItemid1() === $itemId) ? $relation->getItemid2() : $relation->getItemid1();
-			$tmp->setItemid1($id);
-			$tmp->resetUpdatedFields();
-			$relationsReturned[] = $tmp;
-		}
-		$this->assertEquals($relationsReturned, $this->itemrelationMapper->findRelation($itemId, $uid));
+		$this->assertEquals($relations, $this->itemrelationMapper->findRelation($itemId, $uid));
 		$this->assertEquals([], $this->itemrelationMapper->findRelation(7, $uid));
 	}
 
@@ -117,7 +108,6 @@ class ItemrelationMapperTest extends MapperTestUtility  {
 		$itemId = 3;
 		$uid = 'unit_tester_1';
 		$relations = array_slice($this->itemrelations, 0, 3);
-		// TODO: Adjust the current implementation to really return the relation and not only part of it.
 		$relatedIDs  = [];
 		foreach($relations as $relation) {
 			$relatedIDs[] = ($relation->getItemid1() === $itemId) ? $relation->getItemid2() : $relation->getItemid1();
