@@ -138,14 +138,18 @@ class IteminstanceService {
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
 	function getInstanceDetails($instance) {
-		$place = $this->placeMapper->findPlace($instance->placeid, $this->userId);
-		if ($place) {
-			$instance->place = array(
-				'id'	=> $place->id,
-				'name'	=> $place->name,
-				'parent'=> $place->parentid
-			);
-		} else{
+		if ($instance->placeid) {
+			$place = $this->placeMapper->findPlace($instance->placeid, $this->userId);
+			if ($place) {
+				$instance->place = array(
+					'id'	=> $place->id,
+					'name'	=> $place->name,
+					'parent'=> $place->parentid
+				);
+			} else{
+				$instance->place = null;
+			}
+		} else {
 			$instance->place = null;
 		}
 		$instance->uuids = $this->iteminstanceUuidMapper->findByInstanceId($instance->id, $this->userId);
