@@ -51,7 +51,7 @@ class IteminstanceUuidMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function findByInstanceId($instanceId, $uid, $limit=null, $offset=null) {
+	public function findByInstanceId(int $instanceId, string $uid, $limit=null, $offset=null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')

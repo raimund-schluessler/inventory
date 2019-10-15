@@ -72,7 +72,7 @@ class PlaceMapper extends QBMapper {
 		}
 	}
 
-	public function add($name, $uid, $parentID=NULL) {
+	public function add(string $name, string $uid, int $parentID = null) {
 		$place = new Place();
 		$place->setName($name);
 		$place->setUid($uid);

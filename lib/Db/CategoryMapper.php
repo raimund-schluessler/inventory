@@ -72,7 +72,7 @@ class CategoryMapper extends QBMapper {
 		}
 	}
 
-	public function add(string $name, string $uid, int $parentID = NULL) {
+	public function add(string $name, string $uid, int $parentID = null) {
 		$category = new Category();
 		$category->setName($name);
 		$category->setUid($uid);
