@@ -148,9 +148,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import ItemStatusDisplay from './ItemStatusDisplay'
 import searchQueryParser from 'search-query-parser'
 import { mapActions } from 'vuex'
-import { Actions } from 'nextcloud-vue/dist/Components/Actions'
-import { ActionButton } from 'nextcloud-vue/dist/Components/ActionButton'
-import { ActionRouter } from 'nextcloud-vue/dist/Components/ActionRouter'
+import { Actions } from '@nextcloud/vue/dist/Components/Actions'
+import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
+import { ActionRouter } from '@nextcloud/vue/dist/Components/ActionRouter'
 
 export default {
 	components: {

@@ -25,8 +25,8 @@
 	"bugs": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory/issues",
 	"contributors": [],
 	"dependencies": {
+		"@nextcloud/vue": "1.0.0",
 		"axios": "0.19.0",
-		"nextcloud-vue": "0.12.6",
 		"p-queue": "6.2.0",
 		"papaparse": "5.1.0",
 		"qr-image": "3.2.0",

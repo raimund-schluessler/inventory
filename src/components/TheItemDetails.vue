@@ -171,8 +171,8 @@ import RelationModal from './RelationModal.vue'
 import ItemInstances from './TheItemInstances.vue'
 import focus from '../directives/focus'
 import ClickOutside from 'vue-click-outside'
-import { Actions } from 'nextcloud-vue/dist/Components/Actions'
-import { ActionButton } from 'nextcloud-vue/dist/Components/ActionButton'
+import { Actions } from '@nextcloud/vue/dist/Components/Actions'
+import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
 
 export default {
 	components: {
