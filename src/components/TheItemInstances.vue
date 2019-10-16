@@ -114,7 +114,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</ul>
 						</td>
 					</tr>
-					<tr v-if="instance.attachments.length" :key="`attachments${instance.id}`">
+					<tr v-if="instance.attachments && instance.attachments.length" :key="`attachments${instance.id}`">
 						<td class="center">
 							{{ t('inventory', 'Attachments') }}
 						</td>
