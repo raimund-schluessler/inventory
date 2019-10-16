@@ -92,32 +92,35 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</form>
 						</td>
 					</tr>
-					<tr v-for="uuid in instance.uuids" :key="`uuids${instance.id}${uuid.id}`">
-						<td :colspan="instanceProperties.length - 2">
-							{{ uuid.uuid }}
+					<tr v-if="instance.uuids.length" :key="`uuids${instance.id}`">
+						<td class="center">
+							{{ t('inventory', 'UUIDs') }}
 						</td>
-						<td class="hide-if-narrow" />
-						<td class="hide-if-narrow" />
-						<td class="actions">
-							<div>
-								<Actions>
-									<ActionButton icon="icon-qrcode" :close-after-click="true" @click="showQRcode(uuid.uuid)">
-										{{ t('inventory', 'Show QR Code') }}
-									</ActionButton>
-									<ActionButton icon="icon-delete" @click="removeUuid(instance, uuid.uuid)">
-										{{ t('inventory', 'Delete UUID') }}
-									</ActionButton>
-								</Actions>
-							</div>
+						<td class="uuids" :colspan="instanceProperties.length">
+							<ul>
+								<li v-for="uuid in instance.uuids" :key="`uuids${instance.id}${uuid.id}`">
+									<span>{{ uuid.uuid }}</span>
+									<div class="actions">
+										<Actions>
+											<ActionButton icon="icon-qrcode" :close-after-click="true" @click="showQRcode(uuid.uuid)">
+												{{ t('inventory', 'Show QR Code') }}
+											</ActionButton>
+											<ActionButton icon="icon-delete" @click="removeUuid(instance, uuid.uuid)">
+												{{ t('inventory', 'Delete UUID') }}
+											</ActionButton>
+										</Actions>
+									</div>
+								</li>
+							</ul>
 						</td>
 					</tr>
-					<tr v-if="instance.attachments" :key="`attachments${instance.id}`">
-						<td :colspan="instanceProperties.length - 2" class="attachment-list">
+					<tr v-if="instance.attachments.length" :key="`attachments${instance.id}`">
+						<td class="center">
+							{{ t('inventory', 'Attachments') }}
+						</td>
+						<td :colspan="instanceProperties.length" class="attachment-list">
 							<attachments :attachments="instance.attachments" />
 						</td>
-						<td class="hide-if-narrow" />
-						<td class="hide-if-narrow" />
-						<td />
 					</tr>
 				</template>
 				<tr v-if="!item.instances.length">
