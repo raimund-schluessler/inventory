@@ -345,6 +345,8 @@ table {
 		display: flex;
 		padding: 10px;
 		background-color: #fff;
+		margin: 0 20px;
+ 		border-radius: var(--border-radius-large);
 		.qrcode {
 			min-width: 200px;
 			max-width: 100%;

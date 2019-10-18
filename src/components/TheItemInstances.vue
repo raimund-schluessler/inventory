@@ -151,8 +151,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<!-- qrcode -->
 		<modal v-if="qrcode" id="qrcode-modal"
 			@close="closeQrModal"
+			size="full"
 		>
+			<div>
 			<img :src="`data:image/svg+xml;base64,${qrcode}`" class="qrcode">
+			</div>
 		</modal>
 	</div>
 </template>
