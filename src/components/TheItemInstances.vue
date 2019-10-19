@@ -82,12 +82,21 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<tr v-if="addUuidTo === instance.id" :key="`uuidInput-${instance.id}`"
 						v-click-outside="() => hideUuidInput(instance)"
 					>
-						<td :colspan="instanceProperties.length + 1">
+						<td :colspan="instanceProperties.length + 1" class="add-uuid">
 							<form name="addUuid" @submit.prevent="setUuid(instance)">
 								<input v-model="newUuid"
 									v-focus
 									:placeholder="t('inventory', 'Add UUID')"
+									type="text"
 									@keyup.27="addUuidTo = null"
+								>
+								<input type="button" :class="{valid: newUuidValid(instance.uuids)}"
+									class="icon-qrcode"
+									@click="openQrModal"
+								>
+								<input v-if="newUuidValid(instance.uuids)" type="submit"
+									class="icon-confirm"
+									value=""
 								>
 							</form>
 						</td>
@@ -150,13 +159,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="edit_instance" method="POST" @submit.prevent="saveInstance" />
 		<!-- qrcode -->
 		<modal v-if="qrcode" id="qrcode-modal"
-			@close="closeQrModal"
 			size="full"
+			@close="closeQrModal"
 		>
 			<div>
-			<img :src="`data:image/svg+xml;base64,${qrcode}`" class="qrcode">
+				<img :src="`data:image/svg+xml;base64,${qrcode}`" class="qrcode">
 			</div>
 		</modal>
+		<QrScanModal :qr-modal-open.sync="qrModalOpen" @recognizedQrCode="foundUuid" />
 	</div>
 </template>
 
@@ -166,6 +176,7 @@ import focus from '../directives/focus'
 import Attachments from './Attachments.vue'
 import ClickOutside from 'vue-click-outside'
 import qr from 'qr-image'
+import QrScanModal from './QrScanModal.vue'
 import { Modal } from '@nextcloud/vue/dist/Components/Modal'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
@@ -176,6 +187,7 @@ export default {
 		Actions,
 		ActionButton,
 		Attachments,
+		QrScanModal,
 	},
 	directives: {
 		ClickOutside,
@@ -223,9 +235,25 @@ export default {
 			qrcode: null,
 			editedInstance: {},
 			closing: true,
+			qrModalOpen: false,
 		}
 	},
 	methods: {
+		/**
+		 * Checks that the new UUID is valid and not already used for this instance.
+		 * @param {Array} uuids The already used UUIDs
+		 * @returns {Boolean} Whether the new UUID is valid
+		 */
+		newUuidValid(uuids) {
+			const uuidArray = uuids.map(uuid => {
+				return uuid.uuid
+			})
+			return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(this.newUuid) && !uuidArray.includes(this.newUuid)
+		},
+
+		openQrModal: function() {
+			this.qrModalOpen = true
+		},
 		/**
 		 * Generate a qrcode for the UUID
 		 * @param {String} uuid The UUID
@@ -234,6 +262,11 @@ export default {
 			if (uuid.length > 0) {
 				this.qrcode = btoa(qr.imageSync(uuid, { type: 'svg' }))
 			}
+		},
+
+		foundUuid(uuid) {
+			this.newUuid = uuid
+			this.qrModalOpen = false
 		},
 
 		// reset the current qrcode
@@ -320,8 +353,10 @@ export default {
 		},
 
 		async setUuid(instance) {
-			await this.addUuid({ item: this.item, instance, uuid: this.newUuid })
-			this.newUuid = ''
+			if (this.newUuidValid(instance.uuids)) {
+				await this.addUuid({ item: this.item, instance, uuid: this.newUuid })
+				this.newUuid = ''
+			}
 		},
 
 		removeUuid: function(instance, uuid) {

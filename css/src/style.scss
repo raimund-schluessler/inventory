@@ -236,6 +236,55 @@ table {
 				text-align: center;
 			}
 
+			&.add-uuid {
+				padding: 0;
+
+				form {
+					display: inline-flex;
+					grid-row: 1;
+					width: 100%;
+
+					&:hover {
+						input:not([type='button']):not([type='submit']):not(:focus):not(:active) {
+							border-color: var(--color-border) !important;
+						}
+					}
+					input {
+						&[type='text'] {
+							margin-left: 6px;
+
+							&:focus + input,
+							&:focus + input + input {
+								border-color: var(--color-primary-element) !important;
+								border-left-color: transparent !important;
+								z-index: 2;
+								&.valid {
+									border-right-color: transparent !important;
+								}
+							}
+						}
+
+						&[type='button'],
+						&[type='submit'] {
+							width: 34px;
+							height: 34px;
+							padding: 7px 6px;
+							background-position: center;
+							flex: 0 0 auto;
+							margin-left: -8px !important;
+							border-left-color: transparent !important;
+							border-radius: 0 var(--border-radius) var(--border-radius) 0 !important;
+							padding-right: 6px;
+						}
+
+						&[type='button'].valid {
+							border-right-color: transparent !important;
+							border-radius: 0 !important;
+						}
+					}
+				}
+			}
+
 			&.uuids {
 				padding-right: 0;
 
@@ -346,7 +395,7 @@ table {
 		padding: 10px;
 		background-color: #fff;
 		margin: 0 20px;
- 		border-radius: var(--border-radius-large);
+		border-radius: var(--border-radius-large);
 		.qrcode {
 			min-width: 200px;
 			max-width: 100%;
