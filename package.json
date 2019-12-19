@@ -28,7 +28,7 @@
 		"@nextcloud/vue": "1.2.2",
 		"axios": "0.19.0",
 		"p-queue": "6.2.1",
-		"papaparse": "5.1.0",
+		"papaparse": "5.1.1",
 		"qr-image": "3.2.0",
 		"search-query-parser": "1.5.4",
 		"v-tooltip": "2.0.2",
