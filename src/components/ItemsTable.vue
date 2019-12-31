@@ -35,25 +35,31 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</th>
 				<th>
 					<div>
-						<a class="name sort columntitle" data-sort="name">
+						<a class="name sort columntitle" data-sort="name" @click="setSortOrder('name')">
 							<span>{{ t('inventory', 'Name') }}</span>
-							<span class="sort-indicator icon-triangle-n" />
+							<span v-show="sortOrder === 'name'"
+								:class="sortOrderIcon('name')" class="sort-indicator"
+							/>
 						</a>
 					</div>
 				</th>
 				<th>
 					<div>
-						<a class="maker sort columntitle" data-sort="maker">
+						<a class="maker sort columntitle" data-sort="maker" @click="setSortOrder('maker')">
 							<span>{{ t('inventory', 'Maker') }}</span>
-							<span class="sort-indicator icon-triangle-n" />
+							<span v-show="sortOrder === 'maker'"
+								:class="sortOrderIcon('maker')" class="sort-indicator"
+							/>
 						</a>
 					</div>
 				</th>
 				<th>
 					<div>
-						<a class="description sort columntitle" data-sort="description">
+						<a class="description sort columntitle" data-sort="description" @click="setSortOrder('description')">
 							<span>{{ t('inventory', 'Description') }}</span>
-							<span class="sort-indicator icon-triangle-n" />
+							<span v-show="sortOrder === 'description'"
+								:class="sortOrderIcon('description')" class="sort-indicator"
+							/>
 						</a>
 					</div>
 				</th>
@@ -61,7 +67,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<div>
 						<a class="categories sort columntitle" data-sort="categories">
 							<span>{{ t('inventory', 'Categories') }}</span>
-							<span class="sort-indicator hidden icon-triangle-s" />
 						</a>
 					</div>
 				</th>
@@ -97,7 +102,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ emptyListMessage }}
 				</td>
 			</tr>
-			<tr v-for="item in filteredItems" v-else
+			<tr v-for="item in sort(filteredItems, sortOrder, sortDirection)" v-else
 				:key="item.id" :class="{ selected: isSelected(item) }" class="handler"
 				@click.ctrl="selectItem(item)"
 			>
@@ -151,6 +156,7 @@ import { mapActions } from 'vuex'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
 import { ActionRouter } from '@nextcloud/vue/dist/Components/ActionRouter'
+import { sort } from '../store/storeHelper'
 
 export default {
 	components: {
@@ -319,6 +325,22 @@ export default {
 				return this.t('inventory', 'The item list is empty.')
 			}
 		},
+		sortOrder: {
+			get() {
+				return this.$store.state.settings.sortOrder
+			},
+			set(order) {
+				this.$store.dispatch('setSetting', { type: 'sortOrder', value: order })
+			}
+		},
+		sortDirection: {
+			get() {
+				return this.$store.state.settings.sortDirection
+			},
+			set(direction) {
+				this.$store.dispatch('setSetting', { type: 'sortDirection', value: +direction })
+			}
+		},
 	},
 	watch: {
 		items: 'checkSelected',
@@ -376,6 +398,19 @@ export default {
 		async removeItems() {
 			await this.deleteItems(this.selectedItems)
 			this.selectedItems = []
+		},
+		sort,
+		setSortOrder(order) {
+			// If the sort order was already set, toggle the sort direction, otherwise reset it.
+			this.sortDirection = (this.sortOrder === order) ? !this.sortDirection : false
+			this.sortOrder = order
+		},
+		sortOrderIcon(order) {
+			if (order === this.sortOrder) {
+				return this.sortDirection ? 'icon-triangle-s' : 'icon-triangle-n'
+			} else {
+				return 'icon-triangle-n'
+			}
 		},
 	}
 }

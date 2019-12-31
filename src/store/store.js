@@ -2,7 +2,7 @@
  * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2017 Raimund Schlüßler <raimund.schluessler@mailbox.org>
+ * @copyright 2019 Raimund Schlüßler <raimund.schluessler@mailbox.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -39,6 +39,7 @@ export default new Vuex.Store({
 		parentItems: {},
 		relatedItems: {},
 		itemCandidates: [],
+		settings: {},
 	},
 	mutations: {
 
@@ -245,6 +246,26 @@ export default new Vuex.Store({
 		setItemCandidates(state, payload) {
 			state.itemCandidates = payload.itemCandidates
 		},
+
+		/**
+		 * Sets all settings
+		 *
+		 * @param {Object} state Default state
+		 * @param {Object} payload The settings object
+		 */
+		setSettings(state, payload) {
+			state.settings = payload.settings
+		},
+
+		/**
+		 * Sets a setting value
+		 *
+		 * @param {Object} state Default state
+		 * @param {Object} payload The setting object
+		 */
+		setSetting(state, payload) {
+			state.settings[payload.type] = payload.value
+		},
 	},
 
 	getters: {
@@ -308,6 +329,22 @@ export default new Vuex.Store({
 		loadingItems: (state, getters, rootState) => {
 			return state.loadingItems
 		},
+
+		/**
+		 * Returns the sort order how to sort tasks
+		 *
+		 * @param {Object} state The store data
+		 * @returns {String} The sort order
+		 */
+		sortOrder: (state) => state.settings.sortOrder,
+
+		/**
+		 * Returns the sort direction how to sort tasks
+		 *
+		 * @param {Object} state The store data
+		 * @returns {String} The sort direction
+		 */
+		sortDirection: (state) => state.settings.sortDirection,
 	},
 
 	actions: {
@@ -513,5 +550,36 @@ export default new Vuex.Store({
 				console.debug('Uuid deletion failed.')
 			}
 		},
+
+		/**
+		* Writes a setting to the server
+		*
+		* @param {Object} context The store context
+		* @param {Object} payload The setting to save
+		* @returns {Promise}
+		*/
+		async setSetting(context, payload) {
+			try {
+				context.commit('setSetting', payload)
+				await Axios.post(OC.generateUrl('apps/inventory/settings/{type}/{value}', payload), {})
+			} catch {
+				console.debug('Could not save settings.')
+			}
+		},
+
+		/**
+		 * Requests all app settings from the server
+		 *
+		 * @param {Object} commit The store mutations
+		 * @returns {Promise}
+		 */
+		async loadSettings({ commit }) {
+			try {
+				const response = await Axios.get(OC.generateUrl('apps/inventory/settings'))
+				commit('setSettings', { settings: response.data })
+			} catch {
+				console.debug('Could not load settings.')
+			}
+		}
 	}
 })

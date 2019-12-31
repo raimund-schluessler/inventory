@@ -117,6 +117,17 @@
 
 				a {
 					margin-right: auto;
+					display: inline-flex;
+
+					&:hover {
+						span.sort-indicator {
+							display: inline-block !important;
+						}
+					}
+
+					span.sort-indicator {
+						display: inline-block;
+					}
 				}
 			}
 
