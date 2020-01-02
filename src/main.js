@@ -70,6 +70,7 @@ OCA.Inventory.App = new Vue({
 	},
 	beforeMount() {
 		this.$store.dispatch('loadItems')
+		this.$store.dispatch('loadSettings')
 	},
 	methods: {
 		filter(query) {

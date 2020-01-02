@@ -1,60 +1,17 @@
 import { shallowMount } from '@vue/test-utils'
 import ItemsTable from '@/components/ItemsTable.vue'
-import { OC } from '../OC.js'
-import OCA from '../OCA.js'
 
-global.OC = new OC()
-global.OCA = OCA
+import { store, localVue } from '../setupStore'
 
-var items = [
-	{
-		id: 1,
-		name: 'Item1',
-		maker: 'Maker1',
-		comment: 'Comment1',
-		iconurl: 'icon.svg',
-		categories: [
-			{
-				name: 'Cat1',
-				id: 1
-			},
-			{
-				name: 'Cat2',
-				id: 2
-			}
-		]
-	},
-	{
-		id: 2,
-		name: 'Item2',
-		maker: 'Maker1',
-		comment: 'Comment2 Maker1 is good',
-		categories: [
-			{
-				name: 'Cat1',
-				id: 1
-			}
-		]
-	},
-	{
-		id: 3,
-		name: 'Item3',
-		maker: 'Maker2',
-		comment: 'Comment3',
-		categories: [
-			{
-				name: 'Cat3',
-				id: 3
-			}
-		]
-	}
-]
+const items = store.getters.getAllItems
 
 describe('ItemsTable.vue', () => {
 	'use strict'
 
 	it('returns all items when search is empty', () => {
 		const wrapper = shallowMount(ItemsTable, {
+			localVue,
+			store,
 			propsData: {
 				items: items,
 				showDropdown: false,
@@ -67,6 +24,8 @@ describe('ItemsTable.vue', () => {
 
 	it('finds items when searching with text in categories "Cat1"', () => {
 		const wrapper = shallowMount(ItemsTable, {
+			localVue,
+			store,
 			propsData: {
 				items: items,
 				showDropdown: false,
@@ -79,6 +38,8 @@ describe('ItemsTable.vue', () => {
 
 	it('returns filtered items when search is "Maker1"', () => {
 		const wrapper = shallowMount(ItemsTable, {
+			localVue,
+			store,
 			propsData: {
 				items: items,
 				showDropdown: false,
@@ -91,6 +52,8 @@ describe('ItemsTable.vue', () => {
 
 	it('searches in categories "categories:Cat1"', () => {
 		const wrapper = shallowMount(ItemsTable, {
+			localVue,
+			store,
 			propsData: {
 				items: items,
 				showDropdown: false,
@@ -103,6 +66,8 @@ describe('ItemsTable.vue', () => {
 
 	it('searches only in given keywords "comment:Maker1"', () => {
 		const wrapper = shallowMount(ItemsTable, {
+			localVue,
+			store,
 			propsData: {
 				items: items,
 				showDropdown: false,
@@ -113,8 +78,10 @@ describe('ItemsTable.vue', () => {
 		expect(itemsFound.length).toBe(1)
 	})
 
-	it('handles if item has not entry with given keyword "itemNumber:42"', () => {
+	it('handles if item has no entry with given keyword "itemNumber:42"', () => {
 		const wrapper = shallowMount(ItemsTable, {
+			localVue,
+			store,
 			propsData: {
 				items: items,
 				showDropdown: false,
@@ -127,6 +94,8 @@ describe('ItemsTable.vue', () => {
 
 	it('does not fail when no items are passed', () => {
 		const wrapper = shallowMount(ItemsTable, {
+			localVue,
+			store,
 			propsData: {
 				showDropdown: false,
 				searchString: ''
@@ -138,6 +107,8 @@ describe('ItemsTable.vue', () => {
 
 	it('selects item when clicked', () => {
 		const wrapper = shallowMount(ItemsTable, {
+			localVue,
+			store,
 			propsData: {
 				items: items,
 				showDropdown: false,
@@ -155,6 +126,8 @@ describe('ItemsTable.vue', () => {
 
 	it('selects all items on checkbox click and unselects on second click', () => {
 		const wrapper = shallowMount(ItemsTable, {
+			localVue,
+			store,
 			propsData: {
 				items: items,
 				showDropdown: false,
@@ -175,6 +148,8 @@ describe('ItemsTable.vue', () => {
 
 	it('selects item when clicked on label', () => {
 		const wrapper = shallowMount(ItemsTable, {
+			localVue,
+			store,
 			propsData: {
 				items: items,
 				showDropdown: false,
