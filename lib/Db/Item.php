@@ -37,6 +37,7 @@ class Item extends Entity {
 	public $details;
 	public $comment;
 	public $type;
+	public $folderid;
 
 	public function __construct() {
 		// add types in constructor
