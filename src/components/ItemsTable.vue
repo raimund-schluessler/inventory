@@ -102,55 +102,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ emptyListMessage }}
 				</td>
 			</tr>
-			<tr v-for="item in sort(filteredItems, sortOrder, sortDirection)" v-else
-				:key="item.id" :class="{ selected: isSelected(item) }" class="handler"
-				@click.ctrl="selectItem(item)"
-			>
-				<td class="selection">
-					<input :id="`select-item-${item.id}-${_uid}`" :value="item.id" :checked="isSelected(item)"
-						class="selectCheckBox checkbox" type="checkbox"
-					>
-					<label :for="`select-item-${item.id}-${_uid}`" @click.prevent="selectItem(item)">
-						<span class="hidden-visually">
-							{{ t('inventory', 'Select') }}
-						</span>
-					</label>
-				</td>
-				<td>
-					<a :href="itemRoute(item)" @click.ctrl.prevent>
-						<div class="thumbnail-wrapper">
-							<div :style="{ backgroundImage: `url(${getIconUrl(item)})` }" class="thumbnail default" />
-						</div>
-						<span>{{ item.name }}</span>
-					</a>
-				</td>
-				<td>
-					<a :href="itemRoute(item)" @click.ctrl.prevent>
-						{{ item.maker }}
-					</a>
-				</td>
-				<td>
-					<a :href="itemRoute(item)" @click.ctrl.prevent>
-						{{ item.description }}
-					</a>
-				</td>
-				<td class="hide-if-narrow">
-					<ul class="categories">
-						<li v-for="category in item.categories" :key="category.id">
-							<span>{{ category.name }}</span>
-						</li>
-					</ul>
-				</td>
-				<td>
-					<ItemStatusDisplay :item="item" />
-				</td>
-			</tr>
+			<component :is="'Item'" v-for="item in sort(filteredItems, sortOrder, sortDirection)" v-else
+				:key="item.id" :item="item" :is-selected="isSelected(item)"
+				@selectItem="selectItem"
+			/>
 		</tbody>
 	</table>
 </template>
 
 <script>
-import ItemStatusDisplay from './ItemStatusDisplay'
+import Item from './Item'
 import searchQueryParser from 'search-query-parser'
 import { mapActions } from 'vuex'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
@@ -160,10 +121,10 @@ import { sort } from '../store/storeHelper'
 
 export default {
 	components: {
+		Item,
 		Actions,
 		ActionButton,
 		ActionRouter,
-		ItemStatusDisplay,
 	},
 	props: {
 		mode: {

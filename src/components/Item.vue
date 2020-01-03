@@ -1,0 +1,105 @@
+<!--
+Nextcloud - Inventory
+
+@author Raimund Schlüßler
+@copyright 2020 Raimund Schlüßler <raimund.schluessler@mailbox.org>
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+License as published by the Free Software Foundation; either
+version 3 of the License, or any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+
+You should have received a copy of the GNU Affero General Public
+License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<template>
+	<tr :class="{ selected: isSelected }" class="handler"
+		@click.ctrl="selectItem(item)"
+	>
+		<td class="selection">
+			<input :id="`select-item-${item.id}-${_uid}`" :value="item.id" :checked="isSelected"
+				class="selectCheckBox checkbox" type="checkbox"
+			>
+			<label :for="`select-item-${item.id}-${_uid}`" @click.prevent="selectItem(item)">
+				<span class="hidden-visually">
+					{{ t('inventory', 'Select') }}
+				</span>
+			</label>
+		</td>
+		<td>
+			<a :href="itemRoute(item)" @click.ctrl.prevent>
+				<div class="thumbnail-wrapper">
+					<div :style="{ backgroundImage: `url(${getIconUrl(item)})` }" class="thumbnail default" />
+				</div>
+				<span>{{ item.name }}</span>
+			</a>
+		</td>
+		<td>
+			<a :href="itemRoute(item)" @click.ctrl.prevent>
+				{{ item.maker }}
+			</a>
+		</td>
+		<td>
+			<a :href="itemRoute(item)" @click.ctrl.prevent>
+				{{ item.description }}
+			</a>
+		</td>
+		<td class="hide-if-narrow">
+			<ul class="categories">
+				<li v-for="category in item.categories" :key="category.id">
+					<span>{{ category.name }}</span>
+				</li>
+			</ul>
+		</td>
+		<td>
+			<ItemStatusDisplay :item="item" />
+		</td>
+	</tr>
+</template>
+
+<script>
+import ItemStatusDisplay from './ItemStatusDisplay'
+
+export default {
+	components: {
+		ItemStatusDisplay,
+	},
+	props: {
+		item: {
+			type: Object,
+			required: true,
+		},
+		isSelected: {
+			type: Boolean,
+			default: false,
+		},
+	},
+	methods: {
+		getIconUrl: function(item) {
+			if (!item.iconurl) {
+				let color = '000'
+				if (OCA.Accessibility) {
+					color = (OCA.Accessibility.theme === 'themedark' ? 'fff' : '000')
+				}
+				return OC.generateUrl(`svg/inventory/item_${item.icon}?color=${color}`)
+			} else {
+				return item.iconurl
+			}
+		},
+		selectItem: function(item) {
+			this.$emit('selectItem', this.item)
+		},
+		itemRoute(item) {
+			const itemStatus = item.syncstatus ? item.syncstatus.type : null
+			return (this.mode === 'selection' || itemStatus === 'unsynced') ? null : `#/items/${item.id}`
+		},
+	}
+}
+</script>
