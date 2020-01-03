@@ -195,10 +195,12 @@
 						height: 32px;
 						width: 32px;
 						margin: 4px;
-						opacity: .57;
+						background-size: 32px;
+						background-repeat:  no-repeat;
 
 						&.default {
-							background: url('../../svg/inventory/inventory') no-repeat;
+							background-image: url('../../svg/inventory/inventory');
+							opacity: .57;
 						}
 					}
 				}

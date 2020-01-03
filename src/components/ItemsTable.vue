@@ -102,8 +102,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ emptyListMessage }}
 				</td>
 			</tr>
-			<component :is="'Item'" v-for="item in sort(filteredItems, sortOrder, sortDirection)" v-else
-				:key="item.id" :item="item" :is-selected="isSelected(item)"
+			<component :is="entityType(item)" v-for="item in sort(filteredItems, sortOrder, sortDirection)" v-else
+				:key="item.id" :entity="item" :is-selected="isSelected(item)"
 				@selectItem="selectItem"
 			/>
 		</tbody>
@@ -111,7 +111,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import Item from './Item'
+import ItemComponent from './Item'
+import Item from '../models/item.js'
+import Folder from './Folder'
 import searchQueryParser from 'search-query-parser'
 import { mapActions } from 'vuex'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
@@ -121,7 +123,8 @@ import { sort } from '../store/storeHelper'
 
 export default {
 	components: {
-		Item,
+		ItemComponent,
+		Folder,
 		Actions,
 		ActionButton,
 		ActionRouter,
@@ -130,6 +133,24 @@ export default {
 		mode: {
 			type: String,
 			default: 'navigation'
+		},
+		folders: {
+			type: Array,
+			default: () => [
+				{
+					type: 'folder',
+					id: 2,
+					name: 'Bohrer',
+					path: 'Werkzeug/Bohrer'
+				},
+				{
+					type: 'folder',
+					id: 3,
+					name: 'Sägen',
+					path: 'Werkzeug/Sägen'
+				}
+			],
+			required: false,
 		},
 		items: {
 			type: Array,
@@ -196,7 +217,7 @@ export default {
 		},
 		filteredItems() {
 			if (!this.searchString) {
-				return this.items
+				return this.items.concat(this.folders)
 			}
 
 			var options = { keywords: ['maker', 'name', 'description', 'categories', 'itemNumber', 'gtin', 'details', 'comment'] }
@@ -311,6 +332,10 @@ export default {
 			'deleteItems',
 			'unlinkItems',
 		]),
+
+		entityType(entity) {
+			return (entity instanceof Item) ? 'ItemComponent' : 'Folder'
+		},
 
 		/**
 		 * Check for every item in the selectedItems array

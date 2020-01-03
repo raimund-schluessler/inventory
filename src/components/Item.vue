@@ -21,45 +21,45 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<tr :class="{ selected: isSelected }" class="handler"
-		@click.ctrl="selectItem(item)"
+		@click.ctrl="selectItem()"
 	>
 		<td class="selection">
-			<input :id="`select-item-${item.id}-${_uid}`" :value="item.id" :checked="isSelected"
+			<input :id="`select-item-${entity.id}-${_uid}`" :value="entity.id" :checked="isSelected"
 				class="selectCheckBox checkbox" type="checkbox"
 			>
-			<label :for="`select-item-${item.id}-${_uid}`" @click.prevent="selectItem(item)">
+			<label :for="`select-item-${entity.id}-${_uid}`" @click.prevent="selectItem()">
 				<span class="hidden-visually">
 					{{ t('inventory', 'Select') }}
 				</span>
 			</label>
 		</td>
 		<td>
-			<a :href="itemRoute(item)" @click.ctrl.prevent>
+			<a :href="itemRoute" @click.ctrl.prevent>
 				<div class="thumbnail-wrapper">
-					<div :style="{ backgroundImage: `url(${getIconUrl(item)})` }" class="thumbnail default" />
+					<div :style="{ backgroundImage: `url(${getIconUrl})` }" class="thumbnail default" />
 				</div>
-				<span>{{ item.name }}</span>
+				<span>{{ entity.name }}</span>
 			</a>
 		</td>
 		<td>
-			<a :href="itemRoute(item)" @click.ctrl.prevent>
-				{{ item.maker }}
+			<a :href="itemRoute" @click.ctrl.prevent>
+				{{ entity.maker }}
 			</a>
 		</td>
 		<td>
-			<a :href="itemRoute(item)" @click.ctrl.prevent>
-				{{ item.description }}
+			<a :href="itemRoute" @click.ctrl.prevent>
+				{{ entity.description }}
 			</a>
 		</td>
 		<td class="hide-if-narrow">
 			<ul class="categories">
-				<li v-for="category in item.categories" :key="category.id">
+				<li v-for="category in entity.categories" :key="category.id">
 					<span>{{ category.name }}</span>
 				</li>
 			</ul>
 		</td>
 		<td>
-			<ItemStatusDisplay :item="item" />
+			<ItemStatusDisplay :item="entity" />
 		</td>
 	</tr>
 </template>
@@ -72,7 +72,7 @@ export default {
 		ItemStatusDisplay,
 	},
 	props: {
-		item: {
+		entity: {
 			type: Object,
 			required: true,
 		},
@@ -81,24 +81,26 @@ export default {
 			default: false,
 		},
 	},
-	methods: {
-		getIconUrl: function(item) {
-			if (!item.iconurl) {
+	computed: {
+		getIconUrl() {
+			if (!this.entity.iconurl) {
 				let color = '000'
 				if (OCA.Accessibility) {
 					color = (OCA.Accessibility.theme === 'themedark' ? 'fff' : '000')
 				}
-				return OC.generateUrl(`svg/inventory/item_${item.icon}?color=${color}`)
+				return OC.generateUrl(`svg/inventory/item_${this.entity.icon}?color=${color}`)
 			} else {
-				return item.iconurl
+				return this.entity.iconurl
 			}
 		},
-		selectItem: function(item) {
-			this.$emit('selectItem', this.item)
+		itemRoute() {
+			const itemStatus = this.entity.syncstatus ? this.entity.syncstatus.type : null
+			return (this.mode === 'selection' || itemStatus === 'unsynced') ? null : `#/items/${this.entity.id}`
 		},
-		itemRoute(item) {
-			const itemStatus = item.syncstatus ? item.syncstatus.type : null
-			return (this.mode === 'selection' || itemStatus === 'unsynced') ? null : `#/items/${item.id}`
+	},
+	methods: {
+		selectItem() {
+			this.$emit('selectItem', this.entity)
 		},
 	}
 }

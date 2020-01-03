@@ -48,6 +48,15 @@ function sort(items, sortOrder, sortDirection) {
  * @returns {Integer}
  */
 function sortAlphabetically(itemA, itemB, sortOrder) {
+	if (itemA.type === 'folder' && itemB.type === 'folder') {
+		return itemA.name.toLowerCase().localeCompare(itemB.name.toLowerCase())
+	}
+	if (itemA.type === 'folder') {
+		return -1
+	}
+	if (itemB.type === 'folder') {
+		return 1
+	}
 	return itemA[sortOrder].toLowerCase().localeCompare(itemB[sortOrder].toLowerCase())
 }
 
