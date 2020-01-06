@@ -40,6 +40,7 @@ export default new Vuex.Store({
 		relatedItems: {},
 		itemCandidates: [],
 		settings: {},
+		folders: {},
 	},
 	mutations: {
 
@@ -266,6 +267,16 @@ export default new Vuex.Store({
 		setSetting(state, payload) {
 			state.settings[payload.type] = payload.value
 		},
+
+		/**
+		 * Adds an item to the store
+		 *
+		 * @param {Object} state Default state
+		 * @param {Object} payload The folders object
+		 */
+		setFolders(state, payload) {
+			state.folders = payload.folders
+		},
 	},
 
 	getters: {
@@ -345,6 +356,14 @@ export default new Vuex.Store({
 		 * @returns {String} The sort direction
 		 */
 		sortDirection: (state) => state.settings.sortDirection,
+
+		/**
+		 * Returns all folders
+		 *
+		 * @param {Object} state The store data
+		 * @returns {Array} The folders
+		 */
+		getFoldersByPath: (state) => Object.values(state.folders),
 	},
 
 	actions: {
@@ -579,6 +598,22 @@ export default new Vuex.Store({
 				commit('setSettings', { settings: response.data })
 			} catch {
 				console.debug('Could not load settings.')
+			}
+		},
+
+		/**
+		 * Requests all folders for a given path
+		 *
+		 * @param {Object} context The store context
+		 * @param {String} path The path to look at
+		 * @returns {Promise}
+		 */
+		async getFoldersByPath({ commit }, path) {
+			try {
+				const response = await Axios.post(OC.generateUrl('apps/inventory/folders'), { path })
+				commit('setFolders', { folders: response.data })
+			} catch {
+				console.debug('Could not load the folders.')
 			}
 		}
 	}

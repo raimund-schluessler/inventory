@@ -95,7 +95,7 @@ export default {
 		},
 		itemRoute() {
 			const itemStatus = this.entity.syncstatus ? this.entity.syncstatus.type : null
-			return (this.mode === 'selection' || itemStatus === 'unsynced') ? null : `#/items/${this.entity.id}`
+			return (this.mode === 'selection' || itemStatus === 'unsynced') ? null : `#/folders/item-${this.entity.id}`
 		},
 	},
 	methods: {

@@ -34,12 +34,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</label>
 		</td>
 		<td colspan="5">
-			<a :href="folderRoute" @click.ctrl.prevent>
+			<RouterLink :to="folderRoute" tag="a"
+				@click.ctrl.prevent
+			>
 				<div class="thumbnail-wrapper">
 					<div :style="{ backgroundImage: `url(${iconUrl})` }" class="thumbnail folder" />
 				</div>
 				<span>{{ entity.name }}</span>
-			</a>
+			</RouterLink>
 		</td>
 	</tr>
 </template>
@@ -59,7 +61,7 @@ export default {
 	},
 	computed: {
 		folderRoute() {
-			return `#/items/${this.entity.path}`
+			return `/folders${this.entity.path}`
 		},
 		iconUrl() {
 			return OC.generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')

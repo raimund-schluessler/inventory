@@ -44,5 +44,6 @@ return [
 		['name' => 'instance#deleteUuid',	'url' => '/item/{itemID}/instance/{instanceID}/uuid/{uuid}',	'verb' => 'DELETE'],
 		['name' => 'settings#get',			'url' => '/settings',									'verb' => 'GET'],
 		['name' => 'settings#set',			'url' => '/settings/{setting}/{value}',					'verb' => 'POST'],
+		['name' => 'folders#getByPath',		'url' => '/folders',									'verb' => 'POST'],
 	]
 ];

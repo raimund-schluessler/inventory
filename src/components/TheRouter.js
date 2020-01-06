@@ -31,15 +31,15 @@ import Categories from './Categories.vue'
 
 const routes = [
 	// using
-	// { path: '/items', component: Items, alias: '/' },
+	// { path: '/folders', component: TheItemsOverview, alias: '/' },
 	// instead of
-	{ path: '/', redirect: '/items' },
-	{ path: '/items', component: TheItemsOverview },
+	{ path: '/', redirect: '/folders/' },
+	{ path: '/folders/:path(.*)?/item-:id(\\d+)', component: TheItemDetails, props: true },
+	{ path: '/folders/:path(.*)?/additems', component: ItemsNew },
+	{ name: 'folders', path: '/folders/:path(.*)', component: TheItemsOverview },
 	// would also be an option, but it currently does not work
 	// reliably with router-link due to
 	// https://github.com/vuejs/vue-router/issues/419
-	{ path: '/items/additems', component: ItemsNew },
-	{ path: '/items/:id', component: TheItemDetails, props: true },
 	{ path: '/places', component: Places },
 	{ path: '/categories', component: Categories }
 ]

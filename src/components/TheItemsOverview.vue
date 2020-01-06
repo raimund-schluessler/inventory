@@ -21,23 +21,42 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<ItemsTable :items="items" :loading="loading" :show-dropdown="true"
-			:search-string="$root.searchString"
+		<ItemsTable :items="items" :folders="folders" :loading="loading"
+			:show-dropdown="true" :search-string="$root.searchString"
 		/>
 	</div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 
 export default {
 	components: {
 		ItemsTable: ItemsTable
 	},
-	computed: mapGetters({
-		items: 'getAllItems',
-		loading: 'loadingItems',
-	})
+	computed: {
+		...mapGetters({
+			items: 'getAllItems',
+			folders: 'getFoldersByPath',
+			loading: 'loadingItems',
+		}),
+	},
+	created: function() {
+		this.getFolders('null')
+	},
+	beforeRouteUpdate(to, from, next) {
+		this.getFolders(to.params.path)
+		next()
+	},
+	methods: {
+		async getFolders(path) {
+			await this.getFoldersByPath(path)
+		},
+
+		...mapActions([
+			'getFoldersByPath',
+		]),
+	},
 }
 </script>

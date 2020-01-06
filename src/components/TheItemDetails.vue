@@ -25,7 +25,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="itemnavigation">
 				<div class="breadcrumb">
 					<div data-dir="/" class="crumb svg">
-						<a href="#/items">
+						<a href="#/folders/">
 							<span class="icon icon-bw icon-items" />
 						</a>
 					</div>
@@ -191,6 +191,10 @@ export default {
 		id: {
 			type: String,
 			default: '0'
+		},
+		path: {
+			type: String,
+			default: '',
 		}
 	},
 	data: function() {

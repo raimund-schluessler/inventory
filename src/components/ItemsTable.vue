@@ -73,10 +73,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<th>
 					<div>
 						<Actions v-if="showDropdown">
-							<ActionRouter to="/items/additem" icon="icon-add">
+							<ActionRouter to="/folders/additem" icon="icon-add">
 								{{ t('inventory', 'Add single item') }}
 							</ActionRouter>
-							<ActionRouter to="/items/additems" icon="icon-add">
+							<ActionRouter to="/folders/additems" icon="icon-add">
 								{{ t('inventory', 'Add multiple items') }}
 							</ActionRouter>
 							<ActionButton v-if="selectedItems.length" icon="icon-delete"
@@ -136,20 +136,7 @@ export default {
 		},
 		folders: {
 			type: Array,
-			default: () => [
-				{
-					type: 'folder',
-					id: 2,
-					name: 'Bohrer',
-					path: 'Werkzeug/Bohrer'
-				},
-				{
-					type: 'folder',
-					id: 3,
-					name: 'Sägen',
-					path: 'Werkzeug/Sägen'
-				}
-			],
+			default: () => [],
 			required: false,
 		},
 		items: {
