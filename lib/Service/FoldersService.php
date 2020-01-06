@@ -62,4 +62,21 @@ class FoldersService {
 			),
 		);
 	}
+	
+	/**
+	* Add a folder
+	*
+	*/
+	public function add($folder) {
+		/**
+		 * Check that the folder name is valid.
+		 * 
+		 * The names
+		 * "item-(\\d+)"
+		 * "additem"
+		 * "additems"
+		 * are not allowed as they interfere with the routing.
+		 */
+
+	}
 }
