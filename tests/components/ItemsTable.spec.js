@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
 import ItemsTable from '@/components/ItemsTable.vue'
 
 import { store, localVue } from '../setupStore'
@@ -106,7 +106,7 @@ describe('ItemsTable.vue', () => {
 	})
 
 	it('selects item when clicked', () => {
-		const wrapper = shallowMount(ItemsTable, {
+		const wrapper = mount(ItemsTable, {
 			localVue,
 			store,
 			propsData: {
@@ -147,7 +147,7 @@ describe('ItemsTable.vue', () => {
 	})
 
 	it('selects item when clicked on label', () => {
-		const wrapper = shallowMount(ItemsTable, {
+		const wrapper = mount(ItemsTable, {
 			localVue,
 			store,
 			propsData: {
