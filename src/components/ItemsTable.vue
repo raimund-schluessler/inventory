@@ -104,7 +104,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</tr>
 			<component :is="entityType(item)" v-for="item in sort(filteredItems, sortOrder, sortDirection)" v-else
 				:key="item.id" :entity="item" :is-selected="isSelected(item)"
-				@selectItem="selectItem"
+				:select-entity="selectItem" :uuid="_uid" @selectItem="selectItem"
 			/>
 		</tbody>
 	</table>

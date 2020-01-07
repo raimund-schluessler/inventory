@@ -21,13 +21,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<tr :class="{ selected: isSelected }" class="handler"
-		@click.ctrl="selectItem()"
+		@click.ctrl="selectEntity(entity)"
 	>
 		<td class="selection">
-			<input :id="`select-item-${entity.id}-${_uid}`" :value="entity.id" :checked="isSelected"
+			<input :id="`select-item-${entity.id}-${uuid}`" :value="entity.id" :checked="isSelected"
 				class="selectCheckBox checkbox" type="checkbox"
 			>
-			<label :for="`select-item-${entity.id}-${_uid}`" @click.prevent="selectItem()">
+			<label :for="`select-item-${entity.id}-${uuid}`" @click.prevent="selectEntity(entity)">
 				<span class="hidden-visually">
 					{{ t('inventory', 'Select') }}
 				</span>
@@ -80,6 +80,14 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		selectEntity: {
+			type: Function,
+			default: () => {}
+		},
+		uuid: {
+			type: Number,
+			required: true,
+		},
 	},
 	computed: {
 		getIconUrl() {
@@ -98,10 +106,5 @@ export default {
 			return (this.mode === 'selection' || itemStatus === 'unsynced') ? null : `#/folders/item-${this.entity.id}`
 		},
 	},
-	methods: {
-		selectItem() {
-			this.$emit('selectItem', this.entity)
-		},
-	}
 }
 </script>

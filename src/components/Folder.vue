@@ -19,58 +19,31 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
 
-<template>
-	<tr :class="{ selected: isSelected }" class="handler"
-		@click.ctrl="selectFolder()"
+<template functional>
+	<tr :class="{ selected: props.isSelected }" class="handler"
+		@click.ctrl="selectEntity(props.entity)"
 	>
 		<td class="selection">
-			<input :id="`select-folder-${entity.id}-${_uid}`" :value="entity.id" :checked="isSelected"
+			<input :id="`select-folder-${props.entity.id}-${props.uuid}`" :value="props.entity.id" :checked="props.isSelected"
 				class="selectCheckBox checkbox" type="checkbox"
 			>
-			<label :for="`select-folder-${entity.id}-${_uid}`" @click.prevent="selectFolder()">
+			<label :for="`select-folder-${props.entity.id}-${props.uuid}`" @click.prevent="props.selectEntity(props.entity)">
 				<span class="hidden-visually">
-					{{ t('inventory', 'Select') }}
+					{{ parent.t('inventory', 'Select') }}
 				</span>
 			</label>
 		</td>
 		<td colspan="5">
-			<RouterLink :to="folderRoute" tag="a"
+			<RouterLink :to="`/folders${props.entity.path}`" tag="a"
 				@click.ctrl.prevent
 			>
 				<div class="thumbnail-wrapper">
-					<div :style="{ backgroundImage: `url(${iconUrl})` }" class="thumbnail folder" />
+					<div :style="{ backgroundImage: `url(${parent.OC.generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
+						class="thumbnail folder"
+					/>
 				</div>
-				<span>{{ entity.name }}</span>
+				<span>{{ props.entity.name }}</span>
 			</RouterLink>
 		</td>
 	</tr>
 </template>
-
-<script>
-
-export default {
-	props: {
-		entity: {
-			type: Object,
-			required: true,
-		},
-		isSelected: {
-			type: Boolean,
-			default: false,
-		},
-	},
-	computed: {
-		folderRoute() {
-			return `/folders${this.entity.path}`
-		},
-		iconUrl() {
-			return OC.generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')
-		},
-	},
-	methods: {
-		selectFolder() {
-			this.$emit('selectFolder', this.entity)
-		},
-	}
-}
-</script>
