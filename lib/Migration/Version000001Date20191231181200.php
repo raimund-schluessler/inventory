@@ -60,8 +60,16 @@ class Version000001Date20191231181200 extends SimpleMigrationStep {
 			
 			if(!$table->hasColumn('folderid')) {
 				$table->addColumn('folderid', Type::BIGINT, [
-					'notnull' => false,
+					'notnull' => true,
 					'length' => 8,
+					'default' => '-1',
+				]);
+			}
+			if(!$table->hasColumn('path')) {
+				$table->addColumn('path', Type::STRING, [
+					'notnull' => true,
+					'length' => 4000,
+					'default' => '',
 				]);
 			}
 		}
