@@ -101,7 +101,7 @@
 			"<rootDir>/node_modules/jest-serializer-vue"
 		],
 		"setupFilesAfterEnv": [
-			"./tests/setup.js"
+			"./tests/javascript/unit/setup.js"
 		],
 		"collectCoverage": true,
 		"collectCoverageFrom": [
