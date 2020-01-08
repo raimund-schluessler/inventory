@@ -23,22 +23,26 @@
 namespace OCA\Inventory\Service;
 
 use OCP\IConfig;
+use OCA\Inventory\Db\Folder;
+use OCA\Inventory\Db\FolderMapper;
 
 class FoldersService {
 
 	private $userId;
 	private $settings;
 	private $AppName;
+	private $folderMapper;
 
 	/**
 	 * @param string $userId
 	 * @param IConfig $settings
 	 * @param string $AppName
 	 */
-	public function __construct(string $userId, IConfig $settings, string $AppName) {
+	public function __construct(string $userId, IConfig $settings, string $AppName, FolderMapper $folderMapper) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->settings = $settings;
+		$this->folderMapper = $folderMapper;
 	}
 
 	/**
@@ -47,20 +51,9 @@ class FoldersService {
 	 * @return array
 	 */
 	public function getByPath($path):array {
-		return array(
-			'1' => array(
-				'type' => 'folder',
-				'id' => 2,
-				'name' => 'Bohrer',
-				'path' => '/Werkzeug/Bohrer'
-			),
-			'2' => array(
-				'type' => 'folder',
-				'id' => 3,
-				'name' => 'Sägen',
-				'path' => '/Werkzeug/Sägen'
-			),
-		);
+		$parentId = 4;
+		$folders = $this->folderMapper->findByParentId($this->userId, $parentId);
+		return $folders;
 	}
 	
 	/**
