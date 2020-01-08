@@ -43,7 +43,7 @@ export default {
 		}),
 	},
 	created: function() {
-		this.getFolders('')
+		this.getFolders(this.$route.params.path)
 	},
 	beforeRouteUpdate(to, from, next) {
 		this.getFolders(to.params.path)
