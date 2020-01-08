@@ -37,7 +37,7 @@ class FolderMapper extends QBMapper {
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
-	public function findIdByPath(string $uid, string $path) {
+	public function findFolderByPath(string $uid, string $path) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -50,7 +50,6 @@ class FolderMapper extends QBMapper {
 			);
 
 		return $this->findEntity($qb);
-
 	}
 
 	/**

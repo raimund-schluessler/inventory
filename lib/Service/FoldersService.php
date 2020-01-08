@@ -54,7 +54,8 @@ class FoldersService {
 		if ($path === '') {
 			$parentId = -1;
 		} else {
-			$parentId = $this->folderMapper->findIdByPath($this->userId, $path);
+			$parent = $this->folderMapper->findFolderByPath($this->userId, $path);
+			$parentId = $parent->id;
 		}
 		return $this->folderMapper->findByParentId($this->userId, $parentId);
 	}
