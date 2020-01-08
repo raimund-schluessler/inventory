@@ -94,6 +94,8 @@ class ItemMapper extends QBMapper {
 		$item->setDetails($params['details']);
 		$item->setComment($params['comment']);
 		$item->setType($params['type']);
+		$item->setPath($params['path']);
+		$item->setFolderid($params['folderid']);
 		return $this->insert($item);
 	}
 }
