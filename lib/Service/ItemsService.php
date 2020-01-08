@@ -3,7 +3,7 @@
  * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2017 Raimund Schlüßler raimund.schluessler@mailbox.org
+ * @copyright 2020 Raimund Schlüßler raimund.schluessler@mailbox.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -31,6 +31,7 @@ use OCA\Inventory\Db\ItemparentMapper;
 use OCA\Inventory\Service\IteminstanceService;
 use OCA\Inventory\Db\ItemrelationMapper;
 use OCA\Inventory\Db\ItemtypeMapper;
+use OCA\Inventory\Db\FolderMapper;
 use OCA\Inventory\BadRequestException;
 use OCP\AppFramework\Db\DoesNotExistException;
 
@@ -45,10 +46,11 @@ class ItemsService {
 	private $itemParentMapper;
 	private $itemRelationMapper;
 	private $itemtypeMapper;
+	private $folderMapper;
 
 	public function __construct($userId, $AppName, ItemMapper $itemMapper, IteminstanceService $iteminstanceService,
 		CategoryMapper $categoryMapper, ItemcategoriesMapper $itemcategoriesMapper, ItemparentMapper $itemParentMapper,
-		ItemRelationMapper $itemRelationMapper, ItemtypeMapper $itemtypeMapper) {
+		ItemRelationMapper $itemRelationMapper, ItemtypeMapper $itemtypeMapper, FolderMapper $folderMapper) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->itemMapper = $itemMapper;
@@ -58,6 +60,7 @@ class ItemsService {
 		$this->itemParentMapper = $itemParentMapper;
 		$this->itemRelationMapper = $itemRelationMapper;
 		$this->itemtypeMapper = $itemtypeMapper;
+		$this->folderMapper = $folderMapper;
 	}
 
 	/**
@@ -67,6 +70,24 @@ class ItemsService {
 	 */
 	public function getAll() {
 		$items = $this->itemMapper->findAll($this->userId);
+		foreach ($items as $item) {
+			$item = $this->getItemDetails($item);
+		}
+		return $items;
+	}
+
+	/**
+	 * get items by path
+	 *
+	 * @return array
+	 */
+	public function getByPath($path) {
+		if ($path === '') {
+			$folderId = -1;
+		} else {
+			$folderId = $this->folderMapper->findIdByPath($this->userId, $path);
+		}
+		$items = $this->itemMapper->findByFolderId($this->userId, $folderId);
 		foreach ($items as $item) {
 			$item = $this->getItemDetails($item);
 		}

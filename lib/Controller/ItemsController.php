@@ -3,7 +3,7 @@
  * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2017 Raimund Schlüßler raimund.schluessler@mailbox.org
+ * @copyright 2020 Raimund Schlüßler raimund.schluessler@mailbox.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -43,6 +43,14 @@ class ItemsController extends Controller {
 	 */
 	public function getAll() {
 		return $this->itemsService->getAll();
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @param $path
+	 */
+	public function getByPath($path) {
+		return $this->itemsService->getByPath($path);
 	}
 
 	/**
