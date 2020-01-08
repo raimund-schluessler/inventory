@@ -1,8 +1,8 @@
 import { createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 
-import store from '../src/store/store'
-import Item from '../src/models/item'
+import store from '../../../src/store/store'
+import Item from '../../../src/models/item'
 
 
 const localVue = createLocalVue()
