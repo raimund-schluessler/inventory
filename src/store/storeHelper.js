@@ -2,7 +2,7 @@
  * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2019 Raimund Schlüßler <raimund.schluessler@mailbox.org>
+ * @copyright 2020 Raimund Schlüßler <raimund.schluessler@mailbox.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -19,6 +19,8 @@
  *
  */
 'use strict'
+
+import Folder from '../models/folder.js'
 
 /**
  * Sorts items in specified order type
@@ -48,13 +50,13 @@ function sort(items, sortOrder, sortDirection) {
  * @returns {Integer}
  */
 function sortAlphabetically(itemA, itemB, sortOrder) {
-	if (itemA.type === 'folder' && itemB.type === 'folder') {
+	if (itemA instanceof Folder && itemB instanceof Folder) {
 		return itemA.name.toLowerCase().localeCompare(itemB.name.toLowerCase())
 	}
-	if (itemA.type === 'folder') {
+	if (itemA instanceof Folder) {
 		return -1
 	}
-	if (itemB.type === 'folder') {
+	if (itemB instanceof Folder) {
 		return 1
 	}
 	return itemA[sortOrder].toLowerCase().localeCompare(itemB[sortOrder].toLowerCase())

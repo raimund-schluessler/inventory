@@ -23,6 +23,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Item from '../models/item.js'
+import Folder from '../models/folder.js'
 import PQueue from 'p-queue'
 import Status from '../models/status'
 import Axios from 'axios'
@@ -611,7 +612,10 @@ export default new Vuex.Store({
 		async getFoldersByPath({ commit }, path) {
 			try {
 				const response = await Axios.post(OC.generateUrl('apps/inventory/folders'), { path })
-				commit('setFolders', { folders: response.data })
+				const folders = response.data.map(payload => {
+					return new Folder(payload)
+				})
+				commit('setFolders', { folders })
 			} catch {
 				console.debug('Could not load the folders.')
 			}
