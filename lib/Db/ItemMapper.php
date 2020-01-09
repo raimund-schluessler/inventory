@@ -76,7 +76,7 @@ class ItemMapper extends QBMapper {
 			->where(
 				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			)
-			->andWwhere(
+			->andWhere(
 				$qb->expr()->eq('folderid', $qb->createNamedParameter($folderid, IQueryBuilder::PARAM_INT))
 			);
 

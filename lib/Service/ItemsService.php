@@ -85,7 +85,8 @@ class ItemsService {
 		if ($path === '') {
 			$folderId = -1;
 		} else {
-			$folderId = $this->folderMapper->findIdByPath($this->userId, $path);
+			$folder = $this->folderMapper->findFolderByPath($this->userId, $path);
+			$folderId = $folder->id;
 		}
 		$items = $this->itemMapper->findByFolderId($this->userId, $folderId);
 		foreach ($items as $item) {

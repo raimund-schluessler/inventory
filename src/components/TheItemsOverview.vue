@@ -44,9 +44,11 @@ export default {
 	},
 	created: function() {
 		this.getFolders(this.$route.params.path)
+		this.getItems(this.$route.params.path)
 	},
 	beforeRouteUpdate(to, from, next) {
 		this.getFolders(to.params.path)
+		this.getItems(to.params.path)
 		next()
 	},
 	methods: {
@@ -54,8 +56,13 @@ export default {
 			await this.getFoldersByPath(path)
 		},
 
+		async getItems(path) {
+			await this.getItemsByPath(path)
+		},
+
 		...mapActions([
 			'getFoldersByPath',
+			'getItemsByPath',
 		]),
 	},
 }

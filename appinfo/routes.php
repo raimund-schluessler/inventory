@@ -23,6 +23,7 @@ return [
 	'routes' => [
 		['name' => 'page#index',			'url' => '/',											'verb' => 'GET'],
 		['name' => 'items#getAll',			'url' => '/items',										'verb' => 'GET'],
+		['name' => 'items#getByPath',		'url' => '/items',										'verb' => 'POST'],
 		['name' => 'items#get',				'url' => '/item/{itemID}',								'verb' => 'GET'],
 		['name' => 'attachment#getAll',		'url' => '/item/{itemID}/attachments',					'verb' => 'GET'],
 		['name' => 'attachment#getInstance','url' => '/item/{itemID}/instance/{instanceID}/attachments',	'verb' => 'GET'],

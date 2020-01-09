@@ -63,6 +63,23 @@ export default new Vuex.Store({
 		},
 
 		/**
+		 * Sets the items in the store
+		 *
+		 * @param {Object} state Default state
+		 * @param {Array<Item>} items The items to set
+		 */
+		setItems(state, items = []) {
+			state.items = items.reduce(function(list, item) {
+				if (item instanceof Item) {
+					Vue.set(list, item.id, item)
+				} else {
+					console.error('Wrong item object', item)
+				}
+				return list
+			}, [])
+		},
+
+		/**
 		 * Adds an item to the store
 		 *
 		 * @param {Object} state Default state
@@ -376,6 +393,16 @@ export default new Vuex.Store({
 				return new Item(payload)
 			})
 			commit('addItems', items)
+			state.loadingItems = false
+		},
+
+		async getItemsByPath({ commit, state }, path) {
+			state.loadingItems = true
+			const response = await Axios.post(OC.generateUrl('apps/inventory/items'), { path })
+			const items = response.data.map(payload => {
+				return new Item(payload)
+			})
+			commit('setItems', items)
 			state.loadingItems = false
 		},
 
