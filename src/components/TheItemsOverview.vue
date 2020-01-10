@@ -21,6 +21,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
+		<div id="controls">
+			<Breadcrumbs :path="$route.params.path" />
+		</div>
 		<ItemsTable :items="items" :folders="folders" :loading="loading"
 			:show-dropdown="true" :search-string="$root.searchString"
 		/>
@@ -30,10 +33,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
+import Breadcrumbs from './Breadcrumbs.vue'
 
 export default {
 	components: {
-		ItemsTable: ItemsTable
+		ItemsTable: ItemsTable,
+		Breadcrumbs,
 	},
 	computed: {
 		...mapGetters({

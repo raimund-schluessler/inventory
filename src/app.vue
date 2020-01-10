@@ -41,7 +41,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 
 		<div id="app-content">
-			<RouterView id="app-content-wrapper" />
+			<RouterView />
 		</div>
 	</div>
 </template>
