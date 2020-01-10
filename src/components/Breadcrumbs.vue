@@ -55,7 +55,7 @@ export default {
 	},
 	computed: {
 		folders() {
-			return this.path.split('/')
+			return (this.path === '') ? [] : this.path.split('/')
 		}
 	},
 	methods: {
