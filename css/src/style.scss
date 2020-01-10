@@ -417,9 +417,15 @@ table {
 	}
 }
 
-.breadcrumb span.icon {
-	padding: 0;
-	top: -3px;
+div.crumb > a {
+	align-items: center;
+	display: inline-flex;
+
+	> span {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 }
 
 .categories li {

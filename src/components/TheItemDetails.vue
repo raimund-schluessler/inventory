@@ -23,18 +23,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div v-if="item" class="app-content-details">
 			<div class="itemnavigation">
-				<div class="breadcrumb">
-					<div data-dir="/" class="crumb svg">
-						<a href="#/folders/">
-							<span class="icon icon-bw icon-items" />
-						</a>
-					</div>
-					<div class="crumb svg">
-						<a :href="`#/items/${item.id}`">
-							{{ item.description }}
-						</a>
-					</div>
-				</div>
+				<Breadcrumbs :path="item.path" :item="item" />
 				<Actions>
 					<ActionButton icon="icon-add" :close-after-click="true" @click="openModal">
 						{{ t('inventory', 'Link items') }}
@@ -167,6 +156,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import { mapActions, mapState, mapGetters } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 import Attachments from './Attachments.vue'
+import Breadcrumbs from './Breadcrumbs.vue'
 import RelationModal from './RelationModal.vue'
 import ItemInstances from './TheItemInstances.vue'
 import focus from '../directives/focus'
@@ -182,6 +172,7 @@ export default {
 		RelationModal,
 		ItemInstances,
 		Attachments,
+		Breadcrumbs,
 	},
 	directives: {
 		ClickOutside,
