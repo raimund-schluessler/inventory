@@ -19,31 +19,78 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
 
-<template functional>
-	<tr :class="{ selected: props.isSelected }" class="handler"
-		@click.ctrl="selectEntity(props.entity)"
+<template>
+	<tr :class="{ selected: isSelected }" class="handler"
+		@click.ctrl="selectEntity(entity)"
 	>
 		<td class="selection">
-			<input :id="`select-folder-${props.entity.id}-${props.uuid}`" :value="props.entity.id" :checked="props.isSelected"
+			<input :id="`select-folder-${entity.id}-${uuid}`" :value="entity.id" :checked="isSelected"
 				class="selectCheckBox checkbox" type="checkbox"
 			>
-			<label :for="`select-folder-${props.entity.id}-${props.uuid}`" @click.prevent="props.selectEntity(props.entity)">
+			<label :for="`select-folder-${entity.id}-${uuid}`" @click.prevent="selectEntity(entity)">
 				<span class="hidden-visually">
-					{{ parent.t('inventory', 'Select') }}
+					{{ t('inventory', 'Select') }}
 				</span>
 			</label>
 		</td>
 		<td colspan="5">
-			<RouterLink :to="`/folders/${props.entity.path}`" tag="a"
-				@click.ctrl.prevent
-			>
-				<div class="thumbnail-wrapper">
-					<div :style="{ backgroundImage: `url(${parent.OC.generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
-						class="thumbnail folder"
-					/>
-				</div>
-				<span>{{ props.entity.name }}</span>
-			</RouterLink>
+			<div>
+				<RouterLink :to="`/folders/${entity.path}`" tag="a"
+					@click.ctrl.prevent
+				>
+					<div class="thumbnail-wrapper">
+						<div :style="{ backgroundImage: `url(${OC.generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
+							class="thumbnail folder"
+						/>
+					</div>
+					<span>{{ entity.name }}</span>
+				</RouterLink>
+				<Actions>
+					<ActionButton icon="icon-rename" @click="renameFolder()">
+						{{ t('inventory', 'Rename') }}
+					</ActionButton>
+					<ActionButton icon="icon-delete" @click="deleteFolder()">
+						{{ t('inventory', 'Delete folder') }}
+					</ActionButton>
+				</Actions>
+			</div>
 		</td>
 	</tr>
 </template>
+
+<script>
+import { Actions } from '@nextcloud/vue/dist/Components/Actions'
+import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
+
+export default {
+	components: {
+		Actions,
+		ActionButton,
+	},
+	props: {
+		entity: {
+			type: Object,
+			required: true,
+		},
+		isSelected: {
+			type: Boolean,
+			default: false,
+		},
+		selectEntity: {
+			type: Function,
+			default: () => {}
+		},
+		uuid: {
+			type: Number,
+			required: true,
+		},
+	},
+	methods: {
+		async renameFolder() {
+		},
+
+		async deleteFolder() {
+		},
+	},
+}
+</script>
