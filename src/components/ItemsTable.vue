@@ -73,12 +73,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<th>
 					<div>
 						<Actions v-if="showDropdown">
-							<ActionRouter to="/folders/additem" icon="icon-add">
-								{{ t('inventory', 'Add single item') }}
-							</ActionRouter>
-							<ActionRouter to="/folders/additems" icon="icon-add">
-								{{ t('inventory', 'Add multiple items') }}
-							</ActionRouter>
 							<ActionButton v-if="selectedItems.length" icon="icon-delete"
 								:close-after-click="true" @click="removeItems"
 							>
@@ -118,7 +112,6 @@ import searchQueryParser from 'search-query-parser'
 import { mapActions } from 'vuex'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
-import { ActionRouter } from '@nextcloud/vue/dist/Components/ActionRouter'
 import { sort } from '../store/storeHelper'
 
 export default {
@@ -127,7 +120,6 @@ export default {
 		Folder,
 		Actions,
 		ActionButton,
-		ActionRouter,
 	},
 	props: {
 		mode: {

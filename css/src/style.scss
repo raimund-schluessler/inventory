@@ -42,6 +42,10 @@
 	margin-left: auto !important;
 }
 
+.error input[type='text'] {
+	border: 1px solid red !important;
+}
+
 #app-content {
 	max-width: 100%;
 
@@ -50,15 +54,15 @@
 
 		.app-content-details {
 			max-width: 100%;
-		}
 	
-		.notice {
-			color: $gray;
-			font-size: 16px;
-			position: absolute;
-			text-align: center;
-			top: 50%;
-			width: 100%;
+			&.notice {
+				color: $gray;
+				font-size: 16px;
+				position: absolute;
+				text-align: center;
+				top: 50%;
+				width: 100%;
+			}
 		}
 	}
 }
