@@ -24,7 +24,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="controls">
 			<Breadcrumbs :path="$route.params.path" />
 			<Actions default-icon="icon-add" :open.sync="actionsOpen" @close="addingFolder = false">
-				<ActionRouter to="/folders/additems" icon="icon-add">
+				<ActionRouter :to="`/folders/${($route.params.path) ? $route.params.path + '/' : ''}additems`" icon="icon-add">
 					{{ t('inventory', 'Add items') }}
 				</ActionRouter>
 				<ActionButton v-if="!addingFolder"
