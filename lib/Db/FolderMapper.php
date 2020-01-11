@@ -68,4 +68,13 @@ class FolderMapper extends QBMapper {
 
 		return $this->findEntities($qb);
 	}
+
+	public function add(string $name, string $path, int $parentId, string $uid) {
+		$folder = new Folder();
+		$folder->setName($name);
+		$folder->setPath($path);
+		$folder->setUid($uid);
+		$folder->setParentid($parentId);
+		return $this->insert($folder);
+	}
 }

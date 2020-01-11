@@ -46,4 +46,38 @@ class FoldersController extends Controller {
 	public function getByPath($path) {
 		return $this->foldersService->getByPath($path);
 	}
+
+	/**
+	 * Adds a folder
+	 * 
+	 * @NoAdminRequired
+	 * @param $name	The new folder name
+	 * @param $path	The path to create the folder at
+	 * @return \OCP\AppFramework\Db\Entity
+	 */
+	public function add($name, $path) {
+		return $this->foldersService->add($name, $path);
+	}
+
+	/**
+	 * Deletes a folder
+	 * 
+	 * @NoAdminRequired
+	 * @param $folderID		The id of the folder to delete
+	 */
+	public function delete($folderID) {
+		return $this->foldersService->delete($folderID);
+	}
+
+	/**
+	 * Edits a folder
+	 * 
+	 * @NoAdminRequired
+	 * @param $folderID		The id of the folder to edit
+	 * @param $newName		The newName
+	 * @param $newPath		The newPath
+	 */
+	public function edit($folderID, $newName, $newPath) {
+		return $this->foldersService->edit($folderId, $newName, $newPath);
+	}
 }

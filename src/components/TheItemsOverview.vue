@@ -23,7 +23,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div id="controls">
 			<Breadcrumbs :path="$route.params.path" />
-			<Actions default-icon="icon-add" @close="addingFolder = false">
+			<Actions default-icon="icon-add" :open.sync="actionsOpen" @close="addingFolder = false">
 				<ActionRouter to="/folders/additems" icon="icon-add">
 					{{ t('inventory', 'Add items') }}
 				</ActionRouter>
@@ -33,12 +33,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ t('inventory', 'New Folder') }}
 				</ActionButton>
 				<ActionInput v-if="addingFolder"
-					:class="{ 'error': folderNameError }"
 					v-tooltip="{
 						show: folderNameError,
 						content: errorString,
 						trigger: 'manual',
 					}"
+					:class="{ 'error': folderNameError }"
 					icon="icon-folder"
 					@submit="addFolder"
 					@input="checkFoldername"
@@ -76,6 +76,7 @@ export default {
 			addingFolder: false,
 			errorString: null,
 			folderNameError: false,
+			actionsOpen: false,
 		}
 	},
 	computed: {
@@ -95,6 +96,10 @@ export default {
 		next()
 	},
 	methods: {
+		...mapActions([
+			'createFolder'
+		]),
+
 		async getFolders(path) {
 			await this.getFoldersByPath(path)
 		},
@@ -107,8 +112,14 @@ export default {
 			this.addingFolder = !this.addingFolder
 		},
 
-		addFolder(event) {
-			const newName = event.target.querySelector('input[type=text]').value
+		async addFolder(event) {
+			if (this.folderNameError) {
+				return
+			}
+			const name = event.target.querySelector('input[type=text]').value
+			await this.createFolder({ name, path: this.$route.params.path })
+			this.addingFolder = false
+			this.actionsOpen = false
 		},
 
 		checkFoldername(event) {

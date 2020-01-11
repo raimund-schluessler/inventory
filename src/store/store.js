@@ -295,6 +295,16 @@ export default new Vuex.Store({
 		setFolders(state, payload) {
 			state.folders = payload.folders
 		},
+
+		/**
+		 * Adds an item to the store
+		 *
+		 * @param {Object} state Default state
+		 * @param {Object} payload The folders object
+		 */
+		addFolder(state, payload) {
+			state.folders.push(payload.folder)
+		},
 	},
 
 	getters: {
@@ -646,6 +656,16 @@ export default new Vuex.Store({
 			} catch {
 				console.debug('Could not load the folders.')
 			}
-		}
+		},
+
+		async createFolder(context, { name, path }) {
+			try {
+				const response = await Axios.post(OC.generateUrl('apps/inventory/folders/add'), { name, path })
+				const folder = new Folder(response.data)
+				context.commit('addFolder', { folder })
+			} catch {
+				console.debug('Could not create the folder.')
+			}
+		},
 	}
 })

@@ -46,5 +46,8 @@ return [
 		['name' => 'settings#get',			'url' => '/settings',									'verb' => 'GET'],
 		['name' => 'settings#set',			'url' => '/settings/{setting}/{value}',					'verb' => 'POST'],
 		['name' => 'folders#getByPath',		'url' => '/folders',									'verb' => 'POST'],
+		['name' => 'folders#add',			'url' => '/folders/add',								'verb' => 'POST'],
+		['name' => 'folders#delete',		'url' => '/folders/{folderID}/delete',					'verb' => 'DELETE'],
+		['name' => 'folders#edit',			'url' => '/folders/{folderID}/edit',					'verb' => 'PATCH'],
 	]
 ];

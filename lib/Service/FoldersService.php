@@ -25,6 +25,8 @@ namespace OCA\Inventory\Service;
 use OCP\IConfig;
 use OCA\Inventory\Db\Folder;
 use OCA\Inventory\Db\FolderMapper;
+use OCA\Inventory\BadRequestException;
+use OCP\AppFramework\Db\DoesNotExistException;
 
 class FoldersService {
 
@@ -46,17 +48,12 @@ class FoldersService {
 	}
 
 	/**
-	 * Get the current settings
+	 * Get the folders by path
 	 *
 	 * @return array
 	 */
 	public function getByPath($path):array {
-		if ($path === '') {
-			$parentId = -1;
-		} else {
-			$parent = $this->folderMapper->findFolderByPath($this->userId, $path);
-			$parentId = $parent->id;
-		}
+		$parentId = $this->getIdByPath($path);
 		return $this->folderMapper->findByParentId($this->userId, $parentId);
 	}
 	
@@ -64,7 +61,7 @@ class FoldersService {
 	* Add a folder
 	*
 	*/
-	public function add($folder) {
+	public function add($name, $path) {
 		/**
 		 * Check that the folder name is valid.
 		 * 
@@ -73,7 +70,52 @@ class FoldersService {
 		 * "additem"
 		 * "additems"
 		 * are not allowed as they interfere with the routing.
+		 * 
+		 * Also the name must not be empty, already exist or contain "/".
 		 */
 
+		$name = trim($name);
+
+		if ( strpos($name, "/") ) {
+			throw new BadRequestException('"/" is not allowed inside a folder name.');
+		}
+		if ( $name === "" ) {
+			throw new BadRequestException('Folder name cannot be empty.');
+		}
+
+		if (preg_match('/item-\d+/', $name) || in_array($name, array('additem', 'additems'))) {
+			throw new BadRequestException('This name is not allowed');
+		}
+
+		if ($path !== "") {
+			$fullPath = $path . "/" . $name;
+		} else {
+			$fullPath = $name;
+		}
+		if ($this->doesFolderExist($fullPath)) {
+			throw new BadRequestException('Folder ' . $name . ' already exists.');
+		}
+
+		$parentId = $this->getIdByPath($path);
+		return $this->folderMapper->add($name, $fullPath, $parentId, $this->userId);
+	}
+
+	private function getIdByPath($path) {
+		if ($path === '') {
+			$parentId = -1;
+		} else {
+			$parent = $this->folderMapper->findFolderByPath($this->userId, $path);
+			$parentId = $parent->id;
+		}
+		return $parentId;
+	}
+
+	private function doesFolderExist($path) {
+		try {
+			$folder = $this->folderMapper->findFolderByPath($this->userId, $path);
+			return true;
+		} catch (DoesNotExistException $e) {
+			return false;
+		}
 	}
 }
