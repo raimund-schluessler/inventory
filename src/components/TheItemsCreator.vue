@@ -112,6 +112,7 @@ export default {
 					message: this.t('inventory', 'The item has not been saved to the server yet.'),
 				}
 				item.categories = categories
+				item.path = this.$route.params.path
 				item = new Item(item)
 				this.items.push(item)
 			}

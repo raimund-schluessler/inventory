@@ -214,6 +214,10 @@ class ItemsService {
 	 */
 	public function enlist($item) {
 		$item['uid'] = $this->userId;
+
+		$folder = $this->folderMapper->findFolderByPath($this->userId, $item['path']);
+		$item['folderid'] = $folder->id;
+
 		$added = $this->itemMapper->add($item);
 
 		foreach ($item['categories'] as $category) {
