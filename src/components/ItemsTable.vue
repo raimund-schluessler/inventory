@@ -20,88 +20,115 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<table class="itemstable">
-		<thead>
-			<tr>
-				<th :id="`headerSelection-${_uid}`" class="column-selection">
-					<input :id="`select_all_items-${_uid}`" v-model="allVisibleItemsSelected" class="select-all checkbox"
-						type="checkbox"
-					>
-					<label :for="`select_all_items-${_uid}`">
-						<span class="hidden-visually">
-							{{ t('inventory', 'Select all') }}
-						</span>
-					</label>
-				</th>
-				<th>
-					<div>
-						<a class="name sort columntitle" data-sort="name" @click="setSortOrder('name')">
-							<span>{{ t('inventory', 'Name') }}</span>
-							<span v-show="sortOrder === 'name'"
-								:class="sortOrderIcon('name')" class="sort-indicator"
+	<div>
+		<table class="itemstable">
+			<thead>
+				<tr>
+					<th :id="`headerSelection-${_uid}`" class="column-selection">
+						<input :id="`select_all_items-${_uid}`" v-model="allVisibleItemsSelected" class="select-all checkbox"
+							type="checkbox"
+						>
+						<label :for="`select_all_items-${_uid}`">
+							<span class="hidden-visually">
+								{{ t('inventory', 'Select all') }}
+							</span>
+						</label>
+					</th>
+					<th>
+						<div>
+							<a class="name sort columntitle" data-sort="name" @click="setSortOrder('name')">
+								<span>{{ t('inventory', 'Name') }}</span>
+								<span v-show="sortOrder === 'name'"
+									:class="sortOrderIcon('name')" class="sort-indicator"
+								/>
+							</a>
+						</div>
+					</th>
+					<th>
+						<div>
+							<a class="maker sort columntitle" data-sort="maker" @click="setSortOrder('maker')">
+								<span>{{ t('inventory', 'Maker') }}</span>
+								<span v-show="sortOrder === 'maker'"
+									:class="sortOrderIcon('maker')" class="sort-indicator"
+								/>
+							</a>
+						</div>
+					</th>
+					<th>
+						<div>
+							<a class="description sort columntitle" data-sort="description" @click="setSortOrder('description')">
+								<span>{{ t('inventory', 'Description') }}</span>
+								<span v-show="sortOrder === 'description'"
+									:class="sortOrderIcon('description')" class="sort-indicator"
+								/>
+							</a>
+						</div>
+					</th>
+					<th class="hide-if-narrow">
+						<div>
+							<a class="categories sort columntitle" data-sort="categories">
+								<span>{{ t('inventory', 'Categories') }}</span>
+							</a>
+						</div>
+					</th>
+					<th>
+						<div>
+							<Actions v-if="showDropdown">
+								<ActionButton v-if="selectedItems.length" icon="icon-delete"
+									:close-after-click="true" @click="removeItems"
+								>
+									{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
+								</ActionButton>
+							</Actions>
+							<Actions v-show="unlink && selectedItems.length">
+								<ActionButton icon="icon-delete"
+									:close-after-click="true" @click="$emit('unlink')"
+								>
+									{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
+								</ActionButton>
+							</Actions>
+						</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-if="!filteredItems.length">
+					<td class="center" colspan="6">
+						{{ emptyListMessage }}
+					</td>
+				</tr>
+				<component :is="entityType(item)" v-for="item in sort(filteredItems, sortOrder, sortDirection)" v-else
+					:key="item.id" :entity="item" :is-selected="isSelected(item)"
+					:class="{ 'dragged': isDragged(item) }"
+					:select-entity="selectItem" :uuid="_uid"
+					draggable="true"
+					class="entity"
+					@selectItem="selectItem"
+					@dragstart.native="dragStart(item, $event)"
+					@dragend.native="dragEnd"
+					@drop.native="dropped(item, $event)"
+					@dragover.native="dragOver"
+					@dragenter.native="($event) => dragEnter(item, $event)"
+					@dragleave.native="dragLeave"
+				/>
+			</tbody>
+		</table>
+		<div id="drag-preview">
+			<table>
+				<tr v-for="item in draggedItems" :key="item.id">
+					<td>
+						<div class="thumbnail-wrapper">
+							<div v-if="entityType(item) === 'Folder'" :style="{ backgroundImage: `url(${OC.generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
+								class="thumbnail folder"
 							/>
-						</a>
-					</div>
-				</th>
-				<th>
-					<div>
-						<a class="maker sort columntitle" data-sort="maker" @click="setSortOrder('maker')">
-							<span>{{ t('inventory', 'Maker') }}</span>
-							<span v-show="sortOrder === 'maker'"
-								:class="sortOrderIcon('maker')" class="sort-indicator"
-							/>
-						</a>
-					</div>
-				</th>
-				<th>
-					<div>
-						<a class="description sort columntitle" data-sort="description" @click="setSortOrder('description')">
-							<span>{{ t('inventory', 'Description') }}</span>
-							<span v-show="sortOrder === 'description'"
-								:class="sortOrderIcon('description')" class="sort-indicator"
-							/>
-						</a>
-					</div>
-				</th>
-				<th class="hide-if-narrow">
-					<div>
-						<a class="categories sort columntitle" data-sort="categories">
-							<span>{{ t('inventory', 'Categories') }}</span>
-						</a>
-					</div>
-				</th>
-				<th>
-					<div>
-						<Actions v-if="showDropdown">
-							<ActionButton v-if="selectedItems.length" icon="icon-delete"
-								:close-after-click="true" @click="removeItems"
-							>
-								{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
-							</ActionButton>
-						</Actions>
-						<Actions v-show="unlink && selectedItems.length">
-							<ActionButton icon="icon-delete"
-								:close-after-click="true" @click="$emit('unlink')"
-							>
-								{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
-							</ActionButton>
-						</Actions>
-					</div>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr v-if="!filteredItems.length">
-				<td class="center" colspan="6">
-					{{ emptyListMessage }}
-				</td>
-			</tr>
-			<component :is="entityType(item)" v-for="item in sort(filteredItems, sortOrder, sortDirection)" v-else
-				:key="item.id" :entity="item" :is-selected="isSelected(item)"
-				:select-entity="selectItem" :uuid="_uid" @selectItem="selectItem"
-			/>
-		</tbody>
-	</table>
+							<div v-else :style="{ backgroundImage: `url(${getIconUrl(item)})` }" class="thumbnail default" />
+						</div>
+						<span>{{ item.name }}</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -156,7 +183,8 @@ export default {
 	},
 	data: function() {
 		return {
-			selectedItems: []
+			selectedItems: [],
+			draggedItems: [],
 		}
 	},
 	computed: {
@@ -376,6 +404,82 @@ export default {
 			} else {
 				return 'icon-triangle-n'
 			}
+		},
+
+		/**
+		 * Drag and drop handlers
+		 */
+
+		/**
+		 * Handler for starting the drag operation
+		 *
+		 * @param {Object} entity	The dragged item or folder
+		 * @param {Object} e		The dragStart event
+		 */
+		dragStart(entity, e) {
+			if (this.selectedItems.length > 0) {
+				// We want a copy, not a reference
+				this.draggedItems = sort([...this.selectedItems], this.sortOrder, this.sortDirection)
+			} else {
+				this.draggedItems.push(entity)
+			}
+			e.dataTransfer.setData('text/plain', 'dragging')
+			const dragHelper = document.getElementById('drag-preview')
+			e.dataTransfer.setDragImage(dragHelper, 10, 10)
+		},
+		dragEnd(e) {
+			this.draggedItems = []
+			const folders = document.querySelectorAll('tr.entity')
+			folders.forEach((f) => { f.classList.remove('over') })
+		},
+		dropped(entity, e) {
+			e.stopPropagation()
+			e.preventDefault()
+			if (this.entityType(entity) === 'Folder' && !this.isDragged(entity)) {
+				console.debug('Dropped ' + this.draggedItems.length + ' entities onto ' + entity.name)
+			}
+			return false
+		},
+		dragOver(e) {
+			if (e.preventDefault) {
+				e.preventDefault()
+			}
+			return false
+		},
+		dragEnter(entity, e) {
+			// We don't add the hover state if
+			// the entity itself is dragged or is not a folder.
+			if (this.isDragged(entity) || this.entityType(entity) !== 'Folder') {
+				return
+			}
+			// Get the correct element, in case we hover a child.
+			if (e.target.closest) {
+				const target = e.target.closest('tr.entity')
+				if (target.classList && target.classList.contains('entity')) {
+					const folders = document.querySelectorAll('tr.entity')
+					folders.forEach((f) => { f.classList.remove('over') })
+					target.classList.add('over')
+				}
+			}
+		},
+		dragLeave(e) {
+			// Don't do anything if we leave towards a child element.
+			if (e.target.contains(e.relatedTarget)) {
+				return
+			}
+			// Get the correct element, in case we leave directly from a child.
+			if (e.target.closest) {
+				const target = e.target.closest('tr.entity')
+				if (target.contains(e.relatedTarget)) {
+					return
+				}
+				if (target.classList && target.classList.contains('entity')) {
+					target.classList.remove('over')
+				}
+			}
+		},
+		isDragged: function(item) {
+			return this.draggedItems.includes(item)
 		},
 	}
 }
