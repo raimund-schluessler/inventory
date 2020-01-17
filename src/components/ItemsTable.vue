@@ -429,7 +429,7 @@ export default {
 		},
 		dragEnd(e) {
 			this.draggedItems = []
-			const folders = document.querySelectorAll('tr.entity')
+			const folders = document.querySelectorAll('.over')
 			folders.forEach((f) => { f.classList.remove('over') })
 		},
 		dropped(entity, e) {
@@ -456,7 +456,7 @@ export default {
 			if (e.target.closest) {
 				const target = e.target.closest('tr.entity')
 				if (target.classList && target.classList.contains('entity')) {
-					const folders = document.querySelectorAll('tr.entity')
+					const folders = document.querySelectorAll('.over')
 					folders.forEach((f) => { f.classList.remove('over') })
 					target.classList.add('over')
 				}

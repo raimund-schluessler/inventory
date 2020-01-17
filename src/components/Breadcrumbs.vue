@@ -21,12 +21,27 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div class="breadcrumb">
-		<div data-dir="/" class="crumb svg">
+		<div data-dir="#/folders/" class="crumb svg"
+			draggable="true"
+			@dragstart="dragstart"
+			@drop="dropped('/', $event)"
+			@dragover="dragOver"
+			@dragenter="($event) => dragEnter(0, $event)"
+			@dragleave="dragLeave"
+		>
 			<a href="#/folders/">
 				<span class="icon icon-bw icon-items" />
 			</a>
 		</div>
-		<div v-for="(folder, index) in folders" :key="index" class="crumb svg">
+		<div v-for="(folder, index) in folders" :key="index"
+			class="crumb svg"
+			draggable="true"
+			@dragstart="dragstart"
+			@drop="dropped(folderPath(index), $event)"
+			@dragover="dragOver($event)"
+			@dragenter="($event) => dragEnter(index, $event)"
+			@dragleave="dragLeave"
+		>
 			<a :href="`#/folders/${folderPath(index)}`">
 				<span>{{ folder }}</span>
 			</a>
@@ -61,7 +76,55 @@ export default {
 	methods: {
 		folderPath(index) {
 			return this.folders.slice(0, index + 1).join('/')
-		}
+		},
+
+		dragstart(e) {
+			return false
+		},
+		dropped(path, e) {
+			e.stopPropagation()
+			e.preventDefault()
+			console.debug('Dropped something onto ' + path)
+			return false
+		},
+		dragOver(e) {
+			if (e.preventDefault) {
+				e.preventDefault()
+			}
+			return false
+		},
+		dragEnter(index, e) {
+			// If it is the last element in the path,
+			// don't do anything
+			if (index === (this.folders.length - 1)) {
+				return
+			}
+			// Get the correct element, in case we hover a child.
+			if (e.target.closest) {
+				const target = e.target.closest('div.crumb')
+				if (target.classList && target.classList.contains('crumb')) {
+					const folders = document.querySelectorAll('div.crumb')
+					folders.forEach((f) => { f.classList.remove('over') })
+					target.classList.add('over')
+				}
+			}
+		},
+		dragLeave(e) {
+			// Don't do anything if we leave towards a child element.
+			if (e.target.contains(e.relatedTarget)) {
+				return
+			}
+			// Get the correct element, in case we leave directly from a child.
+			if (e.target.closest) {
+				const target = e.target.closest('div.crumb')
+				if (target.contains(e.relatedTarget)) {
+					return
+				}
+				if (target.classList && target.classList.contains('crumb')) {
+					target.classList.remove('over')
+				}
+			}
+		},
 	}
 }
 </script>
