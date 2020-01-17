@@ -24,9 +24,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<div data-dir="#/folders/" class="crumb svg"
 			draggable="true"
 			@dragstart="dragstart"
-			@drop="dropped('/', $event)"
+			@drop="dropped(-1, $event)"
 			@dragover="dragOver"
-			@dragenter="($event) => dragEnter(0, $event)"
+			@dragenter="($event) => dragEnter(-1, $event)"
 			@dragleave="dragLeave"
 		>
 			<a href="#/folders/">
@@ -37,7 +37,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			class="crumb svg"
 			draggable="true"
 			@dragstart="dragstart"
-			@drop="dropped(folderPath(index), $event)"
+			@drop="dropped(index, $event)"
 			@dragover="dragOver($event)"
 			@dragenter="($event) => dragEnter(index, $event)"
 			@dragleave="dragLeave"
@@ -75,16 +75,24 @@ export default {
 	},
 	methods: {
 		folderPath(index) {
+			if (index === -1) {
+				return '/'
+			}
 			return this.folders.slice(0, index + 1).join('/')
 		},
 
 		dragstart(e) {
 			return false
 		},
-		dropped(path, e) {
+		dropped(index, e) {
 			e.stopPropagation()
 			e.preventDefault()
-			console.debug('Dropped something onto ' + path)
+			// If it is the last element in the path,
+			// don't do anything
+			if (index === (this.folders.length - 1)) {
+				return
+			}
+			console.debug('Dropped something onto ' + this.folderPath(index))
 			return false
 		},
 		dragOver(e) {
