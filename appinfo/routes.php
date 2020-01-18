@@ -38,6 +38,7 @@ return [
 		['name' => 'items#enlist',			'url' => '/item/add',									'verb' => 'POST'],
 		['name' => 'items#delete',			'url' => '/item/{itemID}/delete',						'verb' => 'DELETE'],
 		['name' => 'items#edit',			'url' => '/item/{itemID}/edit',							'verb' => 'PATCH'],
+		['name' => 'items#move',			'url' => '/item/{itemID}/move',							'verb' => 'PATCH'],
 		['name' => 'instance#add',			'url' => '/item/{itemID}/instance/add',					'verb' => 'POST'],
 		['name' => 'instance#delete',		'url' => '/item/{itemID}/instance/{instanceID}/delete',	'verb' => 'DELETE'],
 		['name' => 'instance#edit',			'url' => '/item/{itemID}/instance/{instanceID}/edit',	'verb' => 'PATCH'],
@@ -49,5 +50,6 @@ return [
 		['name' => 'folders#add',			'url' => '/folders/add',								'verb' => 'POST'],
 		['name' => 'folders#delete',		'url' => '/folders/{folderID}/delete',					'verb' => 'DELETE'],
 		['name' => 'folders#edit',			'url' => '/folders/{folderID}/edit',					'verb' => 'PATCH'],
+		['name' => 'folders#move',			'url' => '/folders/{folderID}/move',					'verb' => 'PATCH'],
 	]
 ];

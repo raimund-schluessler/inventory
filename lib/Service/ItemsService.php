@@ -462,6 +462,31 @@ class ItemsService {
 	}
 
 	/**
+	 * Move an item to other folder
+	 * 
+	 * @param $itemId
+	 * @param $newPath
+	 * @return Item
+	 * @throws DoesNotExistException
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws BadRequestException
+	 */
+	public function move($itemId, $newPath) {
+
+		if ( is_numeric($itemId) === false ) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
+		$folder = $this->folderMapper->findFolderByPath($this->userId, $newPath);
+		$item = $this->itemMapper->find($itemId, $this->userId);
+		
+		$item->setFolderid($folder->id);
+		$item->setPath($folder->path);
+		$editedItem = $this->itemMapper->update($item);
+		return $this->getItemDetails($editedItem);
+	}
+
+	/**
 	 * finds items by query
 	 *
 	 * @return array

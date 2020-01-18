@@ -338,6 +338,8 @@ export default {
 		...mapActions([
 			'deleteItems',
 			'unlinkItems',
+			'moveItem',
+			'moveFolder',
 		]),
 
 		entityType(entity) {
@@ -432,11 +434,17 @@ export default {
 			const folders = document.querySelectorAll('.over')
 			folders.forEach((f) => { f.classList.remove('over') })
 		},
-		dropped(entity, e) {
+		dropped(targetEntity, e) {
 			e.stopPropagation()
 			e.preventDefault()
-			if (this.entityType(entity) === 'Folder' && !this.isDragged(entity)) {
-				console.debug('Dropped ' + this.draggedItems.length + ' entities onto ' + entity.name)
+			if (this.entityType(targetEntity) === 'Folder' && !this.isDragged(targetEntity)) {
+				this.draggedItems.forEach((entity) => {
+					if (entity instanceof Item) {
+						this.moveItem({ itemID: entity.id, newPath: targetEntity.path })
+					} else {
+						this.moveFolder({ folderID: entity.id, newPath: targetEntity.path })
+					}
+				})
 			}
 			return false
 		},

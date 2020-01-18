@@ -75,9 +75,19 @@ class FoldersController extends Controller {
 	 * @NoAdminRequired
 	 * @param $folderID		The id of the folder to edit
 	 * @param $newName		The newName
-	 * @param $newPath		The newPath
 	 */
-	public function edit($folderID, $newName, $newPath) {
-		return $this->foldersService->edit($folderId, $newName, $newPath);
+	public function edit($folderID, $newName) {
+		return $this->foldersService->edit($folderID, $newName);
+	}
+
+	/**
+	 * Moves a folder
+	 * 
+	 * @NoAdminRequired
+	 * @param $folderID		The id of the folder to edit
+	 * @param $path			The new path
+	 */
+	public function move($folderID, $path) {
+		return $this->foldersService->move($folderID, $path);
 	}
 }

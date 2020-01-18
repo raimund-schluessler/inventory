@@ -529,6 +529,16 @@ export default new Vuex.Store({
 				console.debug('Item editing failed.')
 			}
 		},
+		async moveItem({ commit }, { itemID, newPath }) {
+			try {
+				const response = await Axios.patch(OC.generateUrl(`apps/inventory/item/${itemID}/move`), { path: newPath })
+				// Vue.set(item, 'response', response.data)
+				// item.updateItem()
+				// commit('moveItem', item)
+			} catch {
+				console.debug('Item editing failed.')
+			}
+		},
 		async linkItems(context, { itemID, relation, items }) {
 			if (!Array.isArray(items) || !items.length) {
 				return
@@ -665,6 +675,17 @@ export default new Vuex.Store({
 				context.commit('addFolder', { folder })
 			} catch {
 				console.debug('Could not create the folder.')
+			}
+		},
+
+		async moveFolder({ commit }, { folderID, newPath }) {
+			try {
+				const response = await Axios.patch(OC.generateUrl(`apps/inventory/folders/${folderID}/move`), { path: newPath })
+				// Vue.set(item, 'response', response.data)
+				// item.updateFolder()
+				// commit('moveFolder', item)
+			} catch {
+				console.debug('Could not move the folder.')
 			}
 		},
 	}

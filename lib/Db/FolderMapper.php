@@ -53,6 +53,25 @@ class FolderMapper extends QBMapper {
 	}
 
 	/**
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
+	 */
+	public function findFolderById(string $uid, int $folderId) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_folders')
+			->where(
+				$qb->expr()->eq('id', $qb->createNamedParameter($folderId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntity($qb);
+	}
+
+	/**
 	 */
 	public function findByParentId(string $uid, int $parentId) {
 		$qb = $this->db->getQueryBuilder();

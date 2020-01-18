@@ -100,6 +100,51 @@ class FoldersService {
 		return $this->folderMapper->add($name, $fullPath, $parentId, $this->userId);
 	}
 
+	/**
+	 * Move an item to other folder
+	 * 
+	 * @param $folderId
+	 * @param $newPath
+	 * @return Item
+	 * @throws DoesNotExistException
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws BadRequestException
+	 */
+	public function move($folderId, $newPath) {
+
+		if ($newPath === 1) {
+			return;
+		}
+
+		if ( is_numeric($folderId) === false ) {
+			throw new BadRequestException('Folder id must be a number.');
+		}
+
+		$folder = $this->folderMapper->findFolderById($this->userId, $folderId);
+		$newParent = $this->folderMapper->findFolderByPath($this->userId, $newPath);
+
+		return $this->moveFolder($folder, $newParent);
+	}
+
+	private function moveFolder($folder, $newParent) {
+		$oldFullPath = $folder->path;
+		$newFullPath = $newParent->path . '/' . $folder->name;
+
+		$folder->setPath($newFullPath);
+		$folder->setParentid($newParent->id);
+
+		// Move all items in this folder
+
+		// Move all subfolders
+		$subFolders = $this->getByPath($oldFullPath);
+		foreach ($subFolders as $subFolder) {
+			$this->moveFolder($subFolder, $folder);
+		}
+
+		// Move the folder itself
+		return $this->folderMapper->update($folder);
+	}
+
 	private function getIdByPath($path) {
 		if ($path === '') {
 			$parentId = -1;

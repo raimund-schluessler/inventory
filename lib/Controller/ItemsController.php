@@ -124,4 +124,11 @@ class ItemsController extends Controller {
 	public function edit($itemID, $item){
 		return $this->itemsService->edit($itemID, $item);
 	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function move($itemID, $path){
+		return $this->itemsService->move($itemID, $path);
+	}
 }
