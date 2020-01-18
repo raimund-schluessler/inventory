@@ -112,10 +112,6 @@ class FoldersService {
 	 */
 	public function move($folderId, $newPath) {
 
-		if ($newPath === 1) {
-			return;
-		}
-
 		if ( is_numeric($folderId) === false ) {
 			throw new BadRequestException('Folder id must be a number.');
 		}
