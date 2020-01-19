@@ -123,6 +123,9 @@ class FoldersService {
 		$newParent = $this->folderMapper->findFolderByPath($this->userId, $newPath);
 
 		// Check that the new parent does not have a child named like this already.
+		if ( $this->doesFolderExist($newParent->path . '/' . $folder->name) ) {
+			throw new BadRequestException('Could not move "' . $folder->name . '", target exists.');
+		}
 
 		return $this->moveFolder($folder, $newParent);
 	}
