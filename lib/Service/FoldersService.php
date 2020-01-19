@@ -25,6 +25,7 @@ namespace OCA\Inventory\Service;
 use OCP\IConfig;
 use OCA\Inventory\Db\Folder;
 use OCA\Inventory\Db\FolderMapper;
+use OCA\Inventory\Db\ItemMapper;
 use OCA\Inventory\BadRequestException;
 use OCP\AppFramework\Db\DoesNotExistException;
 
@@ -34,17 +35,19 @@ class FoldersService {
 	private $settings;
 	private $AppName;
 	private $folderMapper;
+	private $itemMapper;
 
 	/**
 	 * @param string $userId
 	 * @param IConfig $settings
 	 * @param string $AppName
 	 */
-	public function __construct(string $userId, IConfig $settings, string $AppName, FolderMapper $folderMapper) {
+	public function __construct(string $userId, IConfig $settings, string $AppName, FolderMapper $folderMapper, ItemMapper $itemMapper) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->settings = $settings;
 		$this->folderMapper = $folderMapper;
+		$this->itemMapper = $itemMapper;
 	}
 
 	/**
@@ -101,11 +104,11 @@ class FoldersService {
 	}
 
 	/**
-	 * Move an item to other folder
+	 * Move a folder to a new parent
 	 * 
 	 * @param $folderId
 	 * @param $newPath
-	 * @return Item
+	 * @return Folder
 	 * @throws DoesNotExistException
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
 	 * @throws BadRequestException
@@ -119,6 +122,8 @@ class FoldersService {
 		$folder = $this->folderMapper->findFolderById($this->userId, $folderId);
 		$newParent = $this->folderMapper->findFolderByPath($this->userId, $newPath);
 
+		// Check that the new parent does not have a child named like this already.
+
 		return $this->moveFolder($folder, $newParent);
 	}
 
@@ -130,6 +135,11 @@ class FoldersService {
 		$folder->setParentid($newParent->id);
 
 		// Move all items in this folder
+		$items = $this->itemMapper->findByFolderId($this->userId, $folder->id);
+		foreach ($items as $item) {
+			$item->setPath($newFullPath);
+			$this->itemMapper->update($item);
+		}
 
 		// Move all subfolders
 		$subFolders = $this->getByPath($oldFullPath);
