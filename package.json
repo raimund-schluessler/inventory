@@ -31,7 +31,7 @@
 		"papaparse": "5.1.1",
 		"qr-image": "3.2.0",
 		"search-query-parser": "1.5.4",
-		"v-tooltip": "2.0.2",
+		"v-tooltip": "2.0.3",
 		"vue": "2.6.11",
 		"vue-click-outside": "1.0.7",
 		"vue-qrcode-reader": "2.1.1",
