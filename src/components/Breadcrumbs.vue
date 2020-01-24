@@ -22,7 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div class="breadcrumb">
 		<div data-dir="#/folders/" class="crumb svg"
-			draggable="true"
+			draggable="false"
 			@dragstart="dragstart"
 			@drop="dropped(-1, $event)"
 			@dragover="dragOver"
@@ -35,7 +35,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div v-for="(folder, index) in folders" :key="index"
 			class="crumb svg"
-			draggable="true"
+			draggable="false"
 			@dragstart="dragstart"
 			@drop="dropped(index, $event)"
 			@dragover="dragOver($event)"
@@ -82,6 +82,8 @@ export default {
 		},
 
 		dragstart(e) {
+			e.stopPropagation()
+			e.preventDefault()
 			return false
 		},
 		dropped(index, e) {
