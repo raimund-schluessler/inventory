@@ -55,6 +55,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
 	props: {
@@ -69,6 +70,10 @@ export default {
 		}
 	},
 	computed: {
+		...mapGetters({
+			draggedEntities: 'getDraggedEntities'
+		}),
+
 		folders() {
 			return (this.path === '') ? [] : this.path.split('/')
 		}
@@ -87,6 +92,7 @@ export default {
 			return false
 		},
 		dropped(index, e) {
+			const entities = this.draggedEntities
 			e.stopPropagation()
 			e.preventDefault()
 			// If it is the last element in the path,
@@ -94,7 +100,7 @@ export default {
 			if (index === (this.folders.length - 1)) {
 				return
 			}
-			console.debug('Dropped something onto ' + this.folderPath(index))
+			console.debug('Dropped ' + entities.length + ' entities onto ' + this.folderPath(index))
 			return false
 		},
 		dragOver(e) {

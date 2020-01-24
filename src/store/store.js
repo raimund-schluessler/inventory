@@ -42,6 +42,7 @@ export default new Vuex.Store({
 		itemCandidates: [],
 		settings: {},
 		folders: {},
+		draggedEntities: [],
 	},
 	mutations: {
 
@@ -305,6 +306,10 @@ export default new Vuex.Store({
 		addFolder(state, payload) {
 			state.folders.push(payload.folder)
 		},
+
+		setDraggedEntities(state, entities) {
+			state.draggedEntities = entities
+		},
 	},
 
 	getters: {
@@ -392,6 +397,8 @@ export default new Vuex.Store({
 		 * @returns {Array} The folders
 		 */
 		getFoldersByPath: (state) => Object.values(state.folders),
+
+		getDraggedEntities: (state) => state.draggedEntities,
 	},
 
 	actions: {

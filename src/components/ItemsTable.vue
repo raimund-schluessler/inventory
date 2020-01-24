@@ -136,7 +136,7 @@ import ItemComponent from './Item'
 import Item from '../models/item.js'
 import Folder from './Folder'
 import searchQueryParser from 'search-query-parser'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
 import { sort } from '../store/storeHelper'
@@ -342,6 +342,10 @@ export default {
 			'moveFolder',
 		]),
 
+		...mapMutations([
+			'setDraggedEntities',
+		]),
+
 		entityType(entity) {
 			return (entity instanceof Item) ? 'ItemComponent' : 'Folder'
 		},
@@ -425,12 +429,14 @@ export default {
 			} else {
 				this.draggedItems.push(entity)
 			}
+			this.setDraggedEntities(this.draggedItems)
 			e.dataTransfer.setData('text/plain', 'dragging')
 			const dragHelper = document.getElementById('drag-preview')
 			e.dataTransfer.setDragImage(dragHelper, 10, 10)
 		},
 		dragEnd(e) {
 			this.draggedItems = []
+			this.setDraggedEntities(this.draggedItems)
 			const folders = document.querySelectorAll('.over')
 			folders.forEach((f) => { f.classList.remove('over') })
 		},
