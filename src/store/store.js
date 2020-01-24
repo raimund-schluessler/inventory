@@ -538,7 +538,7 @@ export default new Vuex.Store({
 		},
 		async moveItem({ commit }, { itemID, newPath }) {
 			try {
-				const response = await Axios.patch(OC.generateUrl(`apps/inventory/item/${itemID}/move`), { path: newPath })
+				await Axios.patch(OC.generateUrl(`apps/inventory/item/${itemID}/move`), { path: newPath })
 				// Vue.set(item, 'response', response.data)
 				// item.updateItem()
 				// commit('moveItem', item)
@@ -687,7 +687,7 @@ export default new Vuex.Store({
 
 		async moveFolder({ commit }, { folderID, newPath }) {
 			try {
-				const response = await Axios.patch(OC.generateUrl(`apps/inventory/folders/${folderID}/move`), { path: newPath })
+				await Axios.patch(OC.generateUrl(`apps/inventory/folders/${folderID}/move`), { path: newPath })
 				// Vue.set(item, 'response', response.data)
 				// item.updateFolder()
 				// commit('moveFolder', item)
