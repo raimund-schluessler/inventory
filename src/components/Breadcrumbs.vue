@@ -55,7 +55,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import Item from '../models/item.js'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
 	props: {
@@ -79,6 +80,11 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions([
+			'moveItem',
+			'moveFolder',
+		]),
+
 		folderPath(index) {
 			if (index === -1) {
 				return '/'
@@ -100,7 +106,14 @@ export default {
 			if (index === (this.folders.length - 1)) {
 				return
 			}
-			console.debug('Dropped ' + entities.length + ' entities onto ' + this.folderPath(index))
+			const newPath = (index === -1) ? '' : this.folderPath(index)
+			entities.forEach((entity) => {
+				if (entity instanceof Item) {
+					this.moveItem({ itemID: entity.id, newPath })
+				} else {
+					this.moveFolder({ folderID: entity.id, newPath })
+				}
+			})
 			return false
 		},
 		dragOver(e) {

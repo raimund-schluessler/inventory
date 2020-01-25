@@ -120,10 +120,20 @@ class FoldersService {
 		}
 
 		$folder = $this->folderMapper->findFolderById($this->userId, $folderId);
-		$newParent = $this->folderMapper->findFolderByPath($this->userId, $newPath);
+		if ($newPath === '') {
+			$newParent->id = -1;
+			$newParent->path = '';
+		} else {
+			$newParent = $this->folderMapper->findFolderByPath($this->userId, $newPath);
+		}
 
 		// Check that the new parent does not have a child named like this already.
-		if ( $this->doesFolderExist($newParent->path . '/' . $folder->name) ) {
+		if ($newParent->path === '') {
+			$newFullPath = $folder->name;
+		} else {
+			$newFullPath = $newParent->path . '/' . $folder->name;
+		}
+		if ( $this->doesFolderExist($newFullPath) ) {
 			throw new BadRequestException('Could not move "' . $folder->name . '", target exists.');
 		}
 
@@ -132,7 +142,11 @@ class FoldersService {
 
 	private function moveFolder($folder, $newParent) {
 		$oldFullPath = $folder->path;
-		$newFullPath = $newParent->path . '/' . $folder->name;
+		if ($newParent->path === '') {
+			$newFullPath = $folder->name;
+		} else {
+			$newFullPath = $newParent->path . '/' . $folder->name;
+		}
 
 		$folder->setPath($newFullPath);
 		$folder->setParentid($newParent->id);

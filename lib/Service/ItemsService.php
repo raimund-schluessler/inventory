@@ -477,7 +477,12 @@ class ItemsService {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
-		$folder = $this->folderMapper->findFolderByPath($this->userId, $newPath);
+		if ($newPath === '') {
+			$folder->id = -1;
+			$folder->path = '';
+		} else {
+			$folder = $this->folderMapper->findFolderByPath($this->userId, $newPath);
+		}
 		$item = $this->itemMapper->find($itemId, $this->userId);
 		
 		$item->setFolderid($folder->id);
