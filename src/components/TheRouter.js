@@ -47,5 +47,6 @@ const routes = [
 Vue.use(VueRouter)
 
 export default new VueRouter({
+	linkActiveClass: 'active',
 	routes // short for `routes: routes`
 })

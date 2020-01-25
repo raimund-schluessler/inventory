@@ -22,7 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div>
 		<div v-if="item" class="app-content-details">
-			<div class="itemnavigation">
+			<div id="controls" class="itemnavigation">
 				<Breadcrumbs :path="item.path" :item="item" />
 				<Actions>
 					<ActionButton icon="icon-add" :close-after-click="true" @click="openModal">

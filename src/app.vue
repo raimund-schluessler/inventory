@@ -21,34 +21,36 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div id="content" class="app-inventory">
-		<div id="app-navigation">
+		<AppNavigation>
 			<ul>
-				<RouterLink
+				<AppNavigationItem
 					v-for="view in views"
 					:key="view.id"
 					:to="`/${view.id}/`"
-					:class="`icon-${view.icon}`"
-					tag="li"
-					active-class="active"
-				>
-					<a class="sprite">
-						<span class="title">
-							{{ view.name }}
-						</span>
-					</a>
-				</RouterLink>
+					:icon="`icon-${view.icon}`"
+					:title="view.name"
+				/>
 			</ul>
-		</div>
+		</AppNavigation>
 
-		<div id="app-content">
+		<AppContent>
 			<RouterView />
-		</div>
+		</AppContent>
 	</div>
 </template>
 
 <script>
+import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
+import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
+import AppContent from '@nextcloud/vue/dist/Components/AppContent'
+
 export default {
 	name: 'App',
+	components: {
+		AppNavigation,
+		AppNavigationItem,
+		AppContent,
+	},
 	data: function() {
 		return {
 			active: 'folders',
