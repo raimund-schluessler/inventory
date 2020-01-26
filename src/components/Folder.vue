@@ -20,7 +20,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<tr :class="{ selected: isSelected }" class="handler"
+	<tr :class="{ selected: isSelected, deleted: !!deleteTimeout }" class="handler"
 		@click.ctrl="selectEntity(entity)"
 	>
 		<td class="selection">
@@ -45,12 +45,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 					<span>{{ entity.name }}</span>
 				</RouterLink>
-				<Actions>
+				<Actions v-if="!deleteTimeout">
 					<ActionButton icon="icon-rename" @click="renameFolder()">
 						{{ t('inventory', 'Rename') }}
 					</ActionButton>
-					<ActionButton icon="icon-delete" @click="deleteFolder()">
+					<ActionButton icon="icon-delete" @click="scheduleDelete()">
 						{{ t('inventory', 'Delete folder') }}
+					</ActionButton>
+				</Actions>
+				<Actions v-if="!!deleteTimeout">
+					<ActionButton
+						icon="icon-history"
+						@click.prevent.stop="cancelDelete"
+					>
+						{{ n('inventory', 'Deleting the folder in {countdown} second', 'Deleting the folder in {countdown} seconds', countdown, { countdown }) }}
 					</ActionButton>
 				</Actions>
 			</div>
@@ -59,8 +67,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
+
+const CD_DURATION = 7
 
 export default {
 	components: {
@@ -85,11 +96,55 @@ export default {
 			required: true,
 		},
 	},
+	data() {
+		return {
+			// Deleting
+			deleteInterval: null,
+			deleteTimeout: null,
+			countdown: CD_DURATION,
+		}
+	},
 	methods: {
+		...mapActions([
+			'deleteFolder',
+		]),
+
 		async renameFolder() {
 		},
 
-		async deleteFolder() {
+		/**
+		 * Deletes the folder
+		 */
+		scheduleDelete() {
+			this.deleteInterval = setInterval(() => {
+				this.countdown--
+				if (this.countdown < 0) {
+					this.countdown = 0
+				}
+			}, 1000)
+			this.deleteTimeout = setTimeout(async() => {
+				try {
+					await this.deleteFolder(this.entity)
+				} catch (error) {
+					this.$toast.error(this.$t('inventory', 'An error occurred, unable to delete the folder.'))
+					console.error(error)
+				} finally {
+					clearInterval(this.deleteInterval)
+					this.deleteTimeout = null
+					this.deleteInterval = null
+					this.countdown = CD_DURATION
+				}
+			}, 1e3 * CD_DURATION)
+		},
+		/**
+		 * Cancels the deletion of a calendar
+		 */
+		cancelDelete() {
+			clearTimeout(this.deleteTimeout)
+			clearInterval(this.deleteInterval)
+			this.deleteTimeout = null
+			this.deleteInterval = null
+			this.countdown = CD_DURATION
 		},
 	},
 }

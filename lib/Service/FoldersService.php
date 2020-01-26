@@ -25,6 +25,7 @@ namespace OCA\Inventory\Service;
 use OCP\IConfig;
 use OCA\Inventory\Db\Folder;
 use OCA\Inventory\Db\FolderMapper;
+use OCA\Inventory\Service\ItemsService;
 use OCA\Inventory\Db\ItemMapper;
 use OCA\Inventory\BadRequestException;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -35,6 +36,7 @@ class FoldersService {
 	private $settings;
 	private $AppName;
 	private $folderMapper;
+	private $itemsService;
 	private $itemMapper;
 
 	/**
@@ -42,11 +44,12 @@ class FoldersService {
 	 * @param IConfig $settings
 	 * @param string $AppName
 	 */
-	public function __construct(string $userId, IConfig $settings, string $AppName, FolderMapper $folderMapper, ItemMapper $itemMapper) {
+	public function __construct(string $userId, IConfig $settings, string $AppName, FolderMapper $folderMapper, ItemsService $itemsService, ItemMapper $itemMapper) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->settings = $settings;
 		$this->folderMapper = $folderMapper;
+		$this->itemsService = $itemsService;
 		$this->itemMapper = $itemMapper;
 	}
 
@@ -101,6 +104,42 @@ class FoldersService {
 
 		$parentId = $this->getIdByPath($path);
 		return $this->folderMapper->add($name, $fullPath, $parentId, $this->userId);
+	}
+	
+	/**
+	 * Delete a folder
+	 * 
+	 * @param int $folderId		The id of the folder to delete
+	 * @throws DoesNotExistException
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws BadRequestException
+	 */
+	public function delete($folderId) {
+
+		if ( is_numeric($folderId) === false ) {
+			throw new BadRequestException('Folder id must be a number.');
+		}
+
+		$folder = $this->folderMapper->findFolderById($this->userId, $folderId);
+
+		return $this->deleteFolder($folder);
+	}
+
+	private function deleteFolder($folder) {
+		// Delete all items in this folder
+		$items = $this->itemMapper->findByFolderId($this->userId, $folder->id);
+		foreach ($items as $item) {
+			$this->itemsService->deleteItem($item);
+		}
+
+		// Delete all subfolders
+		$subFolders = $this->folderMapper->findByParentId($this->userId, $folder->id);
+		foreach ($subFolders as $subFolder) {
+			$this->deleteFolder($subFolder);
+		}
+
+		// Delete the folder itself
+		return $this->folderMapper->delete($folder);
 	}
 
 	/**

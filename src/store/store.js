@@ -695,5 +695,13 @@ export default new Vuex.Store({
 				console.debug('Could not move the folder.')
 			}
 		},
+
+		async deleteFolder(context, folder) {
+			try {
+				await Axios.delete(OC.generateUrl(`apps/inventory/folders/${folder.id}/delete`))
+			} catch {
+				console.debug('Could not delete the folder.')
+			}
+		},
 	}
 })

@@ -240,8 +240,9 @@ class ItemsService {
 	}
 
 	/**
-	 * delete item
+	 * Delete an item
 	 *
+	 * @param int $itemId		The id of the item to delete
 	 * @return array
 	 */
 	public function delete($itemId) {
@@ -253,19 +254,28 @@ class ItemsService {
 		// Find the item by Id
 		$item = $this->itemMapper->find($itemId, $this->userId);
 
+		$this->deleteItem($item);
+	}
+
+	/**
+	 * Delete an item
+	 *
+	 * @param Item $item		The item to delete
+	 */
+	public function deleteItem($item) {
 		// Delete all instances belonging to this item
-		$this->iteminstanceService->deleteAllInstancesOfItem($itemId);
+		$this->iteminstanceService->deleteAllInstancesOfItem($item->id);
 
 		// Delete all links to categories
-		$itemCategories = $this->itemCategoriesMapper->findCategories($itemId, $this->userId);
+		$itemCategories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
 		$this->itemCategoriesMapper->deleteItemCategories($itemCategories);
 
 		// Delete all relations including this item
 		// Parent
-		$relations = $this->itemParentMapper->find($itemId);
+		$relations = $this->itemParentMapper->find($item->id);
 		$this->itemParentMapper->deleteRelations($relations);
 		// Related
-		$relations = $this->itemRelationMapper->find($itemId, $this->userId);
+		$relations = $this->itemRelationMapper->find($item->id, $this->userId);
 		$this->itemRelationMapper->deleteRelations($relations);
 
 		// Delete the item itself

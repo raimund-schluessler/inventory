@@ -134,6 +134,14 @@
 			background-color: var(--color-background-darker) !important;
 		}
 
+		&.deleted {
+			text-decoration: line-through;
+
+			.thumbnail {
+				opacity: 0.3 !important;
+			}
+		}
+
 		th {
 			height: 50px;
 
