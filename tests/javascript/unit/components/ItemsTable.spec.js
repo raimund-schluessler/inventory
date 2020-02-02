@@ -1,5 +1,5 @@
 import { mount, shallowMount } from '@vue/test-utils'
-import ItemsTable from '@/components/ItemsTable.vue'
+import ItemsTable from 'Components/ItemsTable.vue'
 
 import { store, localVue } from '../setupStore'
 

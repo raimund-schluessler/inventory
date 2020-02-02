@@ -62,8 +62,6 @@
 		"file-loader": "5.0.2",
 		"jest": "25.1.0",
 		"jest-serializer-vue": "2.0.2",
-		"jsdom": "16.1.0",
-		"jsdom-global": "3.0.2",
 		"node-sass": "4.13.1",
 		"prettier-eslint": "9.0.1",
 		"raw-loader": "4.0.0",
@@ -91,7 +89,15 @@
 			"vue"
 		],
 		"moduleNameMapper": {
-			"^@/(.*)$": "<rootDir>/src/$1"
+			"^@/(.*)$": "<rootDir>/src/$1",
+			"^Assets/(.*)$": "<rootDir>/src/assets/$1",
+			"^Components/(.*)$": "<rootDir>/src/components/$1",
+			"^Directives/(.*)$": "<rootDir>/src/directives/$1",
+			"^Fonts/(.*)$": "<rootDir>/src/fonts/$1",
+			"^Mixins/(.*)$": "<rootDir>/src/mixins/$1",
+			"^Models/(.*)$": "<rootDir>/src/models/$1",
+			"^Store/(.*)$": "<rootDir>/src/store/$1",
+			"^Utils/(.*)$": "<rootDir>/src/utils/$1"
 		},
 		"transform": {
 			"^.+\\.js$": "<rootDir>/node_modules/babel-jest",
