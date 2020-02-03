@@ -68,20 +68,76 @@ class FoldersService {
 	*
 	*/
 	public function add($name, $path) {
-		/**
-		 * Check that the folder name is valid.
-		 * 
-		 * The names
-		 * "item-(\\d+)"
-		 * "additem"
-		 * "additems"
-		 * are not allowed as they interfere with the routing.
-		 * 
-		 * Also the name must not be empty, already exist or contain "/".
-		 */
-
 		$name = trim($name);
 
+		if ($path !== "") {
+			$fullPath = $path . "/" . $name;
+		} else {
+			$fullPath = $name;
+		}
+
+		$this->isNameAllowed($name, $fullPath);
+
+		$parentId = $this->getIdByPath($path);
+		return $this->folderMapper->add($name, $fullPath, $parentId, $this->userId);
+	}
+
+	/**
+	 * Rename a folder
+	 */
+	public function rename($folderId, $newName) {
+		$name = trim($name);
+
+		$folder = $this->folderMapper->findFolderById($this->userId, $folderId);
+
+		if ($folder->parentid === -1) {
+			$fullPath = $newName;
+		} else {
+			$parent = $this->folderMapper->findFolderById($this->userId, $folder->parentid);
+			$fullPath = $parent->path . '/' . $newName;
+		}
+
+		$this->isNameAllowed($newName, $fullPath);
+
+		return $this->renameFolder($folder, $fullPath, $newName);
+	}
+
+	private function renameFolder($folder, $newPath, $newName = null) {
+		$folder->setPath($newPath);
+		if ($newName) {
+			$folder->setName($newName);
+		}
+
+		// Update all items in this folder
+		$items = $this->itemMapper->findByFolderId($this->userId, $folder->id);
+		foreach ($items as $item) {
+			$item->setPath($newPath);
+			$this->itemMapper->update($item);
+		}
+
+		// Update all subfolders
+		$subFolders = $this->folderMapper->findByParentId($this->userId, $folder->id);
+		foreach ($subFolders as $subFolder) {
+			$fullPath = $folder->path . '/' . $subFolder->name;
+			$this->renameFolder($subFolder, $fullPath);
+		}
+
+		// Rename the folder itself
+		return $this->folderMapper->update($folder);
+	}
+
+	/**
+	 * Check that the folder name is valid.
+	 * 
+	 * The names
+	 * "item-(\\d+)"
+	 * "additem"
+	 * "additems"
+	 * are not allowed as they interfere with the routing.
+	 * 
+	 * Also the name must not be empty, already exist or contain "/".
+	 */
+	private function isNameAllowed($name, $fullPath) {
 		if ( strpos($name, "/") ) {
 			throw new BadRequestException('"/" is not allowed inside a folder name.');
 		}
@@ -93,17 +149,10 @@ class FoldersService {
 			throw new BadRequestException('This name is not allowed');
 		}
 
-		if ($path !== "") {
-			$fullPath = $path . "/" . $name;
-		} else {
-			$fullPath = $name;
-		}
 		if ($this->doesFolderExist($fullPath)) {
 			throw new BadRequestException('Folder ' . $name . ' already exists.');
 		}
-
-		$parentId = $this->getIdByPath($path);
-		return $this->folderMapper->add($name, $fullPath, $parentId, $this->userId);
+		return true;
 	}
 	
 	/**

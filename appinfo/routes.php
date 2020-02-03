@@ -49,7 +49,7 @@ return [
 		['name' => 'folders#getByPath',		'url' => '/folders',									'verb' => 'POST'],
 		['name' => 'folders#add',			'url' => '/folders/add',								'verb' => 'POST'],
 		['name' => 'folders#delete',		'url' => '/folders/{folderID}/delete',					'verb' => 'DELETE'],
-		['name' => 'folders#edit',			'url' => '/folders/{folderID}/edit',					'verb' => 'PATCH'],
+		['name' => 'folders#rename',		'url' => '/folders/{folderID}/rename',					'verb' => 'PATCH'],
 		['name' => 'folders#move',			'url' => '/folders/{folderID}/move',					'verb' => 'PATCH'],
 	]
 ];

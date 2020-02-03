@@ -43,13 +43,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							class="thumbnail folder"
 						/>
 					</div>
-					<span>{{ entity.name }}</span>
+					<span v-show="!renaming">{{ entity.name }}</span>
 				</RouterLink>
+				<form v-if="renaming" v-click-outside="{ handler: finishRenaming, middleware: checkClickOutside }" @submit.prevent="rename">
+					<input v-model="newName" v-focus
+						@keyup="checkName"
+					>
+				</form>
 				<Actions v-if="!deleteTimeout">
-					<ActionButton icon="icon-rename" @click="renameFolder()">
+					<ActionButton class="startRename" icon="icon-rename" :close-after-click="true"
+						@click="startRename"
+					>
 						{{ t('inventory', 'Rename') }}
 					</ActionButton>
-					<ActionButton icon="icon-delete" @click="scheduleDelete()">
+					<ActionButton icon="icon-delete" @click="scheduleDelete">
 						{{ t('inventory', 'Delete folder') }}
 					</ActionButton>
 				</Actions>
@@ -70,6 +77,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import { mapActions } from 'vuex'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
+import ClickOutside from 'v-click-outside'
+import focus from '../directives/focus'
 
 const CD_DURATION = 7
 
@@ -77,6 +86,10 @@ export default {
 	components: {
 		Actions,
 		ActionButton,
+	},
+	directives: {
+		ClickOutside: ClickOutside.directive,
+		focus,
 	},
 	props: {
 		entity: {
@@ -102,14 +115,47 @@ export default {
 			deleteInterval: null,
 			deleteTimeout: null,
 			countdown: CD_DURATION,
+			newName: '',
+			renaming: false,
 		}
 	},
 	methods: {
 		...mapActions([
+			'renameFolder',
 			'deleteFolder',
 		]),
 
-		async renameFolder() {
+		startRename() {
+			this.newName = this.entity.name
+			this.renaming = true
+		},
+
+		finishRenaming($event) {
+			this.renaming = false
+		},
+
+		rename() {
+			this.renaming = false
+			// Don't do anything if the name has not changed
+			if (this.newName === this.entity.name) {
+				return
+			}
+			this.renameFolder({ folderID: this.entity.id, newName: this.newName })
+		},
+
+		checkClickOutside($event) {
+			return !$event.target.classList.contains('startRename')
+		},
+
+		/**
+		 * Check if the name is allowed
+		 *
+		 * @param {Object} $event The event
+		 */
+		checkName($event) {
+			if ($event.keyCode === 27) {
+				this.finishRenaming($event)
+			}
 		},
 
 		/**

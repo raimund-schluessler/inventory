@@ -70,14 +70,14 @@ class FoldersController extends Controller {
 	}
 
 	/**
-	 * Edits a folder
+	 * Renames a folder
 	 * 
 	 * @NoAdminRequired
 	 * @param $folderID		The id of the folder to edit
 	 * @param $newName		The newName
 	 */
-	public function edit($folderID, $newName) {
-		return $this->foldersService->edit($folderID, $newName);
+	public function rename($folderID, $newName) {
+		return $this->foldersService->rename($folderID, $newName);
 	}
 
 	/**

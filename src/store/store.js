@@ -307,6 +307,19 @@ export default new Vuex.Store({
 			state.folders.push(payload.folder)
 		},
 
+		/**
+		 * Updates a folder
+		 *
+		 * @param {Object} state Default state
+		 * @param {Object} newFolder The folders object
+		 */
+		updateFolder(state, { newFolder }) {
+			// Find index of folder to update
+			const index = state.folders.findIndex(folder => folder.id === newFolder.id)
+			// Replace folder with new data
+			Vue.set(state.folders, index, newFolder)
+		},
+
 		setDraggedEntities(state, entities) {
 			state.draggedEntities = entities
 		},
@@ -701,6 +714,15 @@ export default new Vuex.Store({
 				await Axios.delete(OC.generateUrl(`apps/inventory/folders/${folder.id}/delete`))
 			} catch {
 				console.debug('Could not delete the folder.')
+			}
+		},
+
+		async renameFolder(context, { folderID, newName }) {
+			try {
+				const response = await Axios.patch(OC.generateUrl(`apps/inventory/folders/${folderID}/rename`), { newName })
+				context.commit('updateFolder', { newFolder: new Folder(response.data) })
+			} catch {
+				console.debug('Could not rename the folder.')
 			}
 		},
 	}
