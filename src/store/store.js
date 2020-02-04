@@ -298,13 +298,26 @@ export default new Vuex.Store({
 		},
 
 		/**
-		 * Adds an item to the store
+		 * Adds a folder
 		 *
 		 * @param {Object} state Default state
 		 * @param {Object} payload The folders object
 		 */
 		addFolder(state, payload) {
 			state.folders.push(payload.folder)
+		},
+
+		/**
+		 * Deletes a folder
+		 *
+		 * @param {Object} state Default state
+		 * @param {Object} newFolder The folders object
+		 */
+		deleteFolder(state, { folder }) {
+			// Find index of folder to update
+			const index = state.folders.findIndex(f => f.id === folder.id)
+			// Replace folder with new data
+			Vue.delete(state.folders, index)
 		},
 
 		/**
@@ -711,7 +724,8 @@ export default new Vuex.Store({
 
 		async deleteFolder(context, folder) {
 			try {
-				await Axios.delete(OC.generateUrl(`apps/inventory/folders/${folder.id}/delete`))
+				const response = await Axios.delete(OC.generateUrl(`apps/inventory/folders/${folder.id}/delete`))
+				context.commit('deleteFolder', { folder: new Folder(response.data) })
 			} catch {
 				console.debug('Could not delete the folder.')
 			}
