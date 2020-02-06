@@ -55,7 +55,7 @@ export default new Vuex.Store({
 		addItems(state, items = []) {
 			state.items = items.reduce(function(list, item) {
 				if (item instanceof Item) {
-					Vue.set(list, item.id, item)
+					Vue.set(list, 'item' + item.id, item)
 				} else {
 					console.error('Wrong item object', item)
 				}
@@ -72,7 +72,7 @@ export default new Vuex.Store({
 		setItems(state, items = []) {
 			state.items = items.reduce(function(list, item) {
 				if (item instanceof Item) {
-					Vue.set(list, item.id, item)
+					Vue.set(list, 'item' + item.id, item)
 				} else {
 					console.error('Wrong item object', item)
 				}
@@ -87,7 +87,7 @@ export default new Vuex.Store({
 		 * @param {Item} item The item to add
 		 */
 		addItem(state, item) {
-			Vue.set(state.items, item.id, item)
+			Vue.set(state.items, 'item' + item.id, item)
 		},
 
 		/**
@@ -97,8 +97,8 @@ export default new Vuex.Store({
 		 * @param {Item} item The item to delete
 		 */
 		deleteItem(state, item) {
-			if (state.items[item.id] && item instanceof Item) {
-				Vue.delete(state.items, item.id)
+			if (state.items['item' + item.id] && item instanceof Item) {
+				Vue.delete(state.items, 'item' + item.id)
 			}
 		},
 
@@ -110,7 +110,7 @@ export default new Vuex.Store({
 		 */
 		editItem(state, item) {
 			if (state.items[item.id] && item instanceof Item) {
-				Vue.set(state.items, item.id, item)
+				Vue.set(state.items, 'item' + item.id, item)
 			}
 			if (state.item.id === item.id) {
 				state.item = item
@@ -125,7 +125,7 @@ export default new Vuex.Store({
 		 */
 		unlinkParents(state, items) {
 			items.forEach((item) => {
-				if (state.parentItems[item.id] && item instanceof Item) {
+				if (state.parentItems['item' + item.id] && item instanceof Item) {
 					Vue.delete(state.parentItems, item.id)
 				}
 			})
@@ -139,7 +139,7 @@ export default new Vuex.Store({
 		 */
 		unlinkRelated(state, items) {
 			items.forEach((item) => {
-				if (state.relatedItems[item.id] && item instanceof Item) {
+				if (state.relatedItems['item' + item.id] && item instanceof Item) {
 					Vue.delete(state.relatedItems, item.id)
 				}
 			})
@@ -153,7 +153,7 @@ export default new Vuex.Store({
 		 */
 		unlinkSub(state, items) {
 			items.forEach((item) => {
-				if (state.subItems[item.id] && item instanceof Item) {
+				if (state.subItems['item' + item.id] && item instanceof Item) {
 					Vue.delete(state.subItems, item.id)
 				}
 			})
@@ -236,7 +236,7 @@ export default new Vuex.Store({
 		setSubItems(state, items) {
 			state.subItems = items.reduce(function(list, item) {
 				if (item instanceof Item) {
-					Vue.set(list, item.id, item)
+					Vue.set(list, 'item' + item.id, item)
 				} else {
 					console.error('Wrong item object', item)
 				}
@@ -246,7 +246,7 @@ export default new Vuex.Store({
 		setParentItems(state, items) {
 			state.parentItems = items.reduce(function(list, item) {
 				if (item instanceof Item) {
-					Vue.set(list, item.id, item)
+					Vue.set(list, 'item' + item.id, item)
 				} else {
 					console.error('Wrong item object', item)
 				}
@@ -256,7 +256,7 @@ export default new Vuex.Store({
 		setRelatedItems(state, items) {
 			state.relatedItems = items.reduce(function(list, item) {
 				if (item instanceof Item) {
-					Vue.set(list, item.id, item)
+					Vue.set(list, 'item' + item.id, item)
 				} else {
 					console.error('Wrong item object', item)
 				}
@@ -564,10 +564,9 @@ export default new Vuex.Store({
 		},
 		async moveItem({ commit }, { itemID, newPath }) {
 			try {
-				await Axios.patch(OC.generateUrl(`apps/inventory/item/${itemID}/move`), { path: newPath })
-				// Vue.set(item, 'response', response.data)
-				// item.updateItem()
-				// commit('moveItem', item)
+				const response = await Axios.patch(OC.generateUrl(`apps/inventory/item/${itemID}/move`), { path: newPath })
+				const item = new Item(response.data)
+				commit('deleteItem', item)
 			} catch {
 				console.debug('Item editing failed.')
 			}
@@ -713,10 +712,8 @@ export default new Vuex.Store({
 
 		async moveFolder({ commit }, { folderID, newPath }) {
 			try {
-				await Axios.patch(OC.generateUrl(`apps/inventory/folders/${folderID}/move`), { path: newPath })
-				// Vue.set(item, 'response', response.data)
-				// item.updateFolder()
-				// commit('moveFolder', item)
+				const response = await Axios.patch(OC.generateUrl(`apps/inventory/folders/${folderID}/move`), { path: newPath })
+				commit('deleteFolder', { folder: new Folder(response.data) })
 			} catch {
 				console.debug('Could not move the folder.')
 			}
