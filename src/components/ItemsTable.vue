@@ -25,7 +25,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<thead>
 				<tr>
 					<th :id="`headerSelection-${_uid}`" class="column-selection">
-						<input :id="`select_all_items-${_uid}`" v-model="allVisibleItemsSelected" class="select-all checkbox"
+						<input :id="`select_all_items-${_uid}`" v-model="allVisibleEntitiesSelected" class="select-all checkbox"
 							type="checkbox"
 						>
 						<label :for="`select_all_items-${_uid}`">
@@ -92,12 +92,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-if="!filteredItems.length">
+				<tr v-if="!filteredEntities.length">
 					<td class="center" colspan="6">
 						{{ emptyListMessage }}
 					</td>
 				</tr>
-				<component :is="entityType(item)" v-for="item in sort(filteredItems, sortOrder, sortDirection)" v-else
+				<component :is="entityType(item)" v-for="item in sort(filteredEntities, sortOrder, sortDirection)" v-else
 					:key="item.id" :entity="item" :is-selected="isSelected(item)"
 					:class="{ 'dragged': isDragged(item) }"
 					:select-entity="selectItem" :uuid="_uid"
@@ -183,46 +183,61 @@ export default {
 	},
 	data: function() {
 		return {
-			selectedItems: [],
+			selectedEntities: [],
 			draggedItems: [],
 		}
 	},
 	computed: {
-		allVisibleItemsSelected: {
+		allVisibleEntitiesSelected: {
 			set(select) {
 				if (select) {
-					// add all filteredItems to selectedItems
-					for (var i = 0; i < this.filteredItems.length; i++) {
-						var index = this.selectedItems.indexOf(this.filteredItems[i])
+					// add all filteredEntities to selectedEntities
+					for (var i = 0; i < this.filteredEntities.length; i++) {
+						var index = this.selectedEntities.indexOf(this.filteredEntities[i])
 						if (index === -1) {
-							this.selectedItems.push(this.filteredItems[i])
+							this.selectedEntities.push(this.filteredEntities[i])
 						}
 					}
 				} else {
-					// remove all filteredItems from selectedItems
-					for (i = 0; i < this.filteredItems.length; i++) {
-						index = this.selectedItems.indexOf(this.filteredItems[i])
+					// remove all filteredEntities from selectedEntities
+					for (i = 0; i < this.filteredEntities.length; i++) {
+						index = this.selectedEntities.indexOf(this.filteredEntities[i])
 						if (index !== -1) {
-							this.selectedItems.splice(index, 1)
+							this.selectedEntities.splice(index, 1)
 						}
 					}
 				}
 				this.$emit('selectedItemsChanged', this.selectedItems)
 			},
 			get() {
-				for (var i = 0; i < this.filteredItems.length; i++) {
-					var index = this.selectedItems.indexOf(this.filteredItems[i])
+				for (var i = 0; i < this.filteredEntities.length; i++) {
+					var index = this.selectedEntities.indexOf(this.filteredEntities[i])
 					if (index === -1) {
 						return false
 					}
 				}
-				if (!Array.isArray(this.filteredItems) || !this.filteredItems.length) {
+				if (!Array.isArray(this.filteredEntities) || !this.filteredEntities.length) {
 					return false
 				}
 				return true
 			}
 		},
-		filteredItems() {
+		selectedItems: {
+			set(items) {
+				for (var i = 0; i < this.selectedEntities.length; i++) {
+					if (this.selectedEntities[i] instanceof Item && !items.includes(this.selectedEntities[i])) {
+						this.selectedEntities.splice(i, 1)
+						i--
+					}
+				}
+			},
+			get() {
+				return this.selectedEntities.filter(entity => {
+					return (entity instanceof Item)
+				})
+			}
+		},
+		filteredEntities() {
 			if (!this.searchString) {
 				return this.items.concat(this.folders)
 			}
@@ -244,7 +259,16 @@ export default {
 				searchQueryObj.searchTerms = searchQueryObj.text.match(/[\wäöüß]+|"(?:\\"|[^"])+"/g)
 			}
 
-			return this.items.filter(item => {
+			const filteredFolders = this.folders.filter(folder => {
+				for (var jj = 0; jj < searchQueryObj.searchTerms.length; jj++) {
+					if (folder.name.toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
+						return true
+					}
+					return false
+				}
+			})
+
+			const filteredItems = this.items.filter(item => {
 				var keyword
 				var found = false
 				for (var i = 0; i < options.keywords.length; i++) {
@@ -304,6 +328,8 @@ export default {
 				}
 				return true
 			})
+
+			return filteredItems.concat(filteredFolders)
 		},
 		emptyListMessage() {
 			if (this.loading) {
@@ -351,16 +377,19 @@ export default {
 		},
 
 		/**
-		 * Check for every item in the selectedItems array
+		 * Check for every item in the selectedEntities array
 		 * whether it is still in the items array.
 		 * If not, remove from selected.
 		 */
 		checkSelected: function() {
-			const before = this.selectedItems.length
-			this.selectedItems = this.selectedItems.filter((selected) => {
-				return (this.items.indexOf(selected) > -1)
+			const before = this.selectedEntities.length
+			this.selectedEntities = this.selectedEntities.filter((entity) => {
+				if (!(entity instanceof Item)) {
+					return true
+				}
+				return (this.items.indexOf(entity) > -1)
 			})
-			if (before !== this.selectedItems.length) {
+			if (before !== this.selectedEntities.length) {
 				this.$emit('selectedItemsChanged', this.selectedItems)
 			}
 		},
@@ -378,17 +407,17 @@ export default {
 		},
 		selectItem: function(item) {
 			if (this.isSelected(item)) {
-				var index = this.selectedItems.indexOf(item)
+				var index = this.selectedEntities.indexOf(item)
 				if (index !== -1) {
-					this.selectedItems.splice(index, 1)
+					this.selectedEntities.splice(index, 1)
 				}
 			} else {
-				this.selectedItems.push(item)
+				this.selectedEntities.push(item)
 			}
 			this.$emit('selectedItemsChanged', this.selectedItems)
 		},
 		isSelected: function(item) {
-			return this.selectedItems.includes(item)
+			return this.selectedEntities.includes(item)
 		},
 		itemRoute(item) {
 			const itemStatus = item.syncstatus ? item.syncstatus.type : null
@@ -423,9 +452,9 @@ export default {
 		 * @param {Object} e		The dragStart event
 		 */
 		dragStart(entity, e) {
-			if (this.selectedItems.length > 0) {
+			if (this.selectedEntities.length > 0) {
 				// We want a copy, not a reference
-				this.draggedItems = sort([...this.selectedItems], this.sortOrder, this.sortDirection)
+				this.draggedItems = sort([...this.selectedEntities], this.sortOrder, this.sortDirection)
 			} else {
 				this.draggedItems.push(entity)
 			}

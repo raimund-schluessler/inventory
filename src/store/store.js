@@ -551,6 +551,7 @@ export default new Vuex.Store({
 			items.forEach(async(item) => {
 				await queue.add(() => context.dispatch('deleteItem', item))
 			})
+			await queue.onIdle()
 		},
 		async editItem({ commit }, item) {
 			try {
