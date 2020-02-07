@@ -546,6 +546,10 @@ div.crumb > a {
 				flex: 1;
 				overflow-y: auto;
 
+				> div {
+					width: 100%;
+				}
+
 				thead {
 					top: 0;
 				}
