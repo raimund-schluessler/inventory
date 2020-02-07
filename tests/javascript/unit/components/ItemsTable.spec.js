@@ -18,7 +18,7 @@ describe('ItemsTable.vue', () => {
 				searchString: ''
 			},
 		})
-		var itemsFound = wrapper.vm.filteredItems
+		var itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(3)
 	})
 
@@ -32,7 +32,7 @@ describe('ItemsTable.vue', () => {
 				searchString: 'Cat1'
 			},
 		})
-		var itemsFound = wrapper.vm.filteredItems
+		var itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(2)
 	})
 
@@ -46,7 +46,7 @@ describe('ItemsTable.vue', () => {
 				searchString: 'Maker1'
 			},
 		})
-		var itemsFound = wrapper.vm.filteredItems
+		var itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(2)
 	})
 
@@ -60,7 +60,7 @@ describe('ItemsTable.vue', () => {
 				searchString: 'categories:Cat1'
 			},
 		})
-		var itemsFound = wrapper.vm.filteredItems
+		var itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(2)
 	})
 
@@ -74,7 +74,7 @@ describe('ItemsTable.vue', () => {
 				searchString: 'comment:Maker1'
 			},
 		})
-		var itemsFound = wrapper.vm.filteredItems
+		var itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(1)
 	})
 
@@ -88,7 +88,7 @@ describe('ItemsTable.vue', () => {
 				searchString: 'itemNumber:42'
 			},
 		})
-		var itemsFound = wrapper.vm.filteredItems
+		var itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(0)
 	})
 
@@ -101,7 +101,7 @@ describe('ItemsTable.vue', () => {
 				searchString: ''
 			},
 		})
-		var itemsFound = wrapper.vm.filteredItems
+		var itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(0)
 	})
 
@@ -119,7 +119,7 @@ describe('ItemsTable.vue', () => {
 		wrapper.find('label[for="select-item-2-' + wrapper.vm._uid + '"]').trigger('click')
 		wrapper.find('label[for="select-item-3-' + wrapper.vm._uid + '"]').trigger('click')
 		var itemsFound = wrapper.vm.selectedItems
-		var allSelected = wrapper.vm.allVisibleItemsSelected
+		var allSelected = wrapper.vm.allVisibleEntitiesSelected
 		expect(itemsFound.length).toBe(3)
 		expect(allSelected).toBe(true)
 	})
@@ -136,12 +136,12 @@ describe('ItemsTable.vue', () => {
 		})
 		wrapper.find('input.select-all.checkbox').trigger('click')
 		var itemsFound = wrapper.vm.selectedItems
-		var allSelected = wrapper.vm.allVisibleItemsSelected
+		var allSelected = wrapper.vm.allVisibleEntitiesSelected
 		expect(itemsFound.length).toBe(3)
 		expect(allSelected).toBe(true)
 		wrapper.find('input.select-all.checkbox').trigger('click')
 		itemsFound = wrapper.vm.selectedItems
-		allSelected = wrapper.vm.allVisibleItemsSelected
+		allSelected = wrapper.vm.allVisibleEntitiesSelected
 		expect(itemsFound.length).toBe(0)
 		expect(allSelected).toBe(false)
 	})
@@ -158,11 +158,11 @@ describe('ItemsTable.vue', () => {
 		})
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		var selectedItems = wrapper.vm.selectedItems
-		var allSelected = wrapper.vm.allVisibleItemsSelected
+		var allSelected = wrapper.vm.allVisibleEntitiesSelected
 		expect(selectedItems.length).toBe(1)
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		selectedItems = wrapper.vm.selectedItems
-		allSelected = wrapper.vm.allVisibleItemsSelected
+		allSelected = wrapper.vm.allVisibleEntitiesSelected
 		expect(selectedItems.length).toBe(0)
 		expect(allSelected).toBe(false)
 	})
