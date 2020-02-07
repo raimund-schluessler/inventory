@@ -1,10 +1,10 @@
 module.exports = {
+	env: {
+		jest: true
+	},
+	// Do to https://github.com/benmosher/eslint-plugin-import/issues/1451
 	rules: {
-		"node/no-missing-require": ['off'],
 		"node/no-missing-import": ["off"],
-		// es6 import/export and require
-		'node/no-unpublished-require': ['off'],
-		'node/no-unpublished-import': ['off'],
-
+		"import/no-unresolved": ["off"],
 	}
-}; 
+}

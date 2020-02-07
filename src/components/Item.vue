@@ -20,13 +20,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<tr :class="{ selected: isSelected }" class="handler"
-		@click.ctrl="selectEntity(entity)"
-	>
+	<tr :class="{ selected: isSelected }"
+		class="handler"
+		@click.ctrl="selectEntity(entity)">
 		<td class="selection">
-			<input :id="`select-item-${entity.id}-${uuid}`" :value="entity.id" :checked="isSelected"
-				class="selectCheckBox checkbox" type="checkbox"
-			>
+			<input :id="`select-item-${entity.id}-${uuid}`"
+				:value="entity.id"
+				:checked="isSelected"
+				class="selectCheckBox checkbox"
+				type="checkbox">
 			<label :for="`select-item-${entity.id}-${uuid}`" @click.prevent="selectEntity(entity)">
 				<span class="hidden-visually">
 					{{ t('inventory', 'Select') }}
@@ -82,7 +84,7 @@ export default {
 		},
 		selectEntity: {
 			type: Function,
-			default: () => {}
+			default: () => {},
 		},
 		uuid: {
 			type: Number,

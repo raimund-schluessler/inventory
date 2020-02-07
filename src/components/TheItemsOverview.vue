@@ -28,8 +28,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ t('inventory', 'Add items') }}
 				</ActionRouter>
 				<ActionButton v-if="!addingFolder"
-					icon="icon-folder" @click.prevent.stop="openFolderInput()"
-				>
+					icon="icon-folder"
+					@click.prevent.stop="openFolderInput()">
 					{{ t('inventory', 'New Folder') }}
 				</ActionButton>
 				<ActionInput v-if="addingFolder"
@@ -41,15 +41,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:class="{ 'error': folderNameError }"
 					icon="icon-folder"
 					@submit="addFolder"
-					@input="checkFoldername"
-				>
+					@input="checkFoldername">
 					{{ t('inventory', 'New Folder') }}
 				</ActionInput>
 			</Actions>
 		</div>
-		<ItemsTable :items="items" :folders="folders" :loading="loading"
-			:show-dropdown="true" :search-string="$root.searchString"
-		/>
+		<ItemsTable :items="items"
+			:folders="folders"
+			:loading="loading"
+			:show-dropdown="true"
+			:search-string="$root.searchString" />
 	</div>
 </template>
 
@@ -97,7 +98,7 @@ export default {
 	},
 	methods: {
 		...mapActions([
-			'createFolder'
+			'createFolder',
 		]),
 
 		async getFolders(path) {

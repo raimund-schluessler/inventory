@@ -20,13 +20,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<tr :class="{ selected: isSelected, deleted: !!deleteTimeout }" class="handler"
-		@click.ctrl="selectEntity(entity)"
-	>
+	<tr :class="{ selected: isSelected, deleted: !!deleteTimeout }"
+		class="handler"
+		@click.ctrl="selectEntity(entity)">
 		<td class="selection">
-			<input :id="`select-folder-${entity.id}-${uuid}`" :value="entity.id" :checked="isSelected"
-				class="selectCheckBox checkbox" type="checkbox"
-			>
+			<input :id="`select-folder-${entity.id}-${uuid}`"
+				:value="entity.id"
+				:checked="isSelected"
+				class="selectCheckBox checkbox"
+				type="checkbox">
 			<label :for="`select-folder-${entity.id}-${uuid}`" @click.prevent="selectEntity(entity)">
 				<span class="hidden-visually">
 					{{ t('inventory', 'Select') }}
@@ -35,25 +37,25 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</td>
 		<td colspan="5">
 			<div>
-				<RouterLink :to="`/folders/${entity.path}`" tag="a"
-					@click.ctrl.prevent
-				>
+				<RouterLink :to="`/folders/${entity.path}`"
+					tag="a"
+					@click.ctrl.prevent>
 					<div class="thumbnail-wrapper">
 						<div :style="{ backgroundImage: `url(${OC.generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
-							class="thumbnail folder"
-						/>
+							class="thumbnail folder" />
 					</div>
 					<span v-show="!renaming">{{ entity.name }}</span>
 				</RouterLink>
 				<form v-if="renaming" v-click-outside="{ handler: finishRenaming, middleware: checkClickOutside }" @submit.prevent="rename">
-					<input v-model="newName" v-focus
-						@keyup="checkName"
-					>
+					<input v-model="newName"
+						v-focus
+						@keyup="checkName">
 				</form>
 				<Actions v-if="!deleteTimeout">
-					<ActionButton class="startRename" icon="icon-rename" :close-after-click="true"
-						@click="startRename"
-					>
+					<ActionButton class="startRename"
+						icon="icon-rename"
+						:close-after-click="true"
+						@click="startRename">
 						{{ t('inventory', 'Rename') }}
 					</ActionButton>
 					<ActionButton icon="icon-delete" @click="scheduleDelete">
@@ -63,8 +65,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<Actions v-if="!!deleteTimeout">
 					<ActionButton
 						icon="icon-history"
-						@click.prevent.stop="cancelDelete"
-					>
+						@click.prevent.stop="cancelDelete">
 						{{ n('inventory', 'Deleting the folder in {countdown} second', 'Deleting the folder in {countdown} seconds', countdown, { countdown }) }}
 					</ActionButton>
 				</Actions>
@@ -102,7 +103,7 @@ export default {
 		},
 		selectEntity: {
 			type: Function,
-			default: () => {}
+			default: () => {},
 		},
 		uuid: {
 			type: Number,

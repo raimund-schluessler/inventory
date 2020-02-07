@@ -41,12 +41,12 @@ const routes = [
 	// reliably with router-link due to
 	// https://github.com/vuejs/vue-router/issues/419
 	{ path: '/places', component: Places },
-	{ path: '/categories', component: Categories }
+	{ path: '/categories', component: Categories },
 ]
 
 Vue.use(VueRouter)
 
 export default new VueRouter({
 	linkActiveClass: 'active',
-	routes // short for `routes: routes`
+	routes, // short for `routes: routes`
 })

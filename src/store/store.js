@@ -737,5 +737,5 @@ export default new Vuex.Store({
 				console.debug('Could not rename the folder.')
 			}
 		},
-	}
+	},
 })

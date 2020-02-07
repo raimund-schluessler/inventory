@@ -23,9 +23,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<Modal v-if="qrModalOpen"
 		:out-transition="true"
 		size="full"
-		@close="closeModal"
-	>
-		<qrcode-stream @decode="onDecode" @init="onInit" />
+		@close="closeModal">
+		<QrcodeStream @decode="onDecode" @init="onInit" />
 	</Modal>
 </template>
 
@@ -41,7 +40,7 @@ export default {
 	props: {
 		qrModalOpen: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 	},
 	data() {
@@ -77,6 +76,6 @@ export default {
 				console.debug(error)
 			}
 		},
-	}
+	},
 }
 </script>

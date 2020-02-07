@@ -15,10 +15,10 @@ describe('ItemsTable.vue', () => {
 			propsData: {
 				items: items,
 				showDropdown: false,
-				searchString: ''
+				searchString: '',
 			},
 		})
-		var itemsFound = wrapper.vm.filteredEntities
+		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(3)
 	})
 
@@ -29,10 +29,10 @@ describe('ItemsTable.vue', () => {
 			propsData: {
 				items: items,
 				showDropdown: false,
-				searchString: 'Cat1'
+				searchString: 'Cat1',
 			},
 		})
-		var itemsFound = wrapper.vm.filteredEntities
+		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(2)
 	})
 
@@ -43,10 +43,10 @@ describe('ItemsTable.vue', () => {
 			propsData: {
 				items: items,
 				showDropdown: false,
-				searchString: 'Maker1'
+				searchString: 'Maker1',
 			},
 		})
-		var itemsFound = wrapper.vm.filteredEntities
+		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(2)
 	})
 
@@ -57,10 +57,10 @@ describe('ItemsTable.vue', () => {
 			propsData: {
 				items: items,
 				showDropdown: false,
-				searchString: 'categories:Cat1'
+				searchString: 'categories:Cat1',
 			},
 		})
-		var itemsFound = wrapper.vm.filteredEntities
+		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(2)
 	})
 
@@ -71,10 +71,10 @@ describe('ItemsTable.vue', () => {
 			propsData: {
 				items: items,
 				showDropdown: false,
-				searchString: 'comment:Maker1'
+				searchString: 'comment:Maker1',
 			},
 		})
-		var itemsFound = wrapper.vm.filteredEntities
+		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(1)
 	})
 
@@ -85,10 +85,10 @@ describe('ItemsTable.vue', () => {
 			propsData: {
 				items: items,
 				showDropdown: false,
-				searchString: 'itemNumber:42'
+				searchString: 'itemNumber:42',
 			},
 		})
-		var itemsFound = wrapper.vm.filteredEntities
+		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(0)
 	})
 
@@ -98,10 +98,10 @@ describe('ItemsTable.vue', () => {
 			store,
 			propsData: {
 				showDropdown: false,
-				searchString: ''
+				searchString: '',
 			},
 		})
-		var itemsFound = wrapper.vm.filteredEntities
+		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(0)
 	})
 
@@ -112,14 +112,14 @@ describe('ItemsTable.vue', () => {
 			propsData: {
 				items: items,
 				showDropdown: false,
-				searchString: ''
+				searchString: '',
 			},
 		})
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		wrapper.find('label[for="select-item-2-' + wrapper.vm._uid + '"]').trigger('click')
 		wrapper.find('label[for="select-item-3-' + wrapper.vm._uid + '"]').trigger('click')
-		var itemsFound = wrapper.vm.selectedItems
-		var allSelected = wrapper.vm.allVisibleEntitiesSelected
+		const itemsFound = wrapper.vm.selectedItems
+		const allSelected = wrapper.vm.allVisibleEntitiesSelected
 		expect(itemsFound.length).toBe(3)
 		expect(allSelected).toBe(true)
 	})
@@ -131,12 +131,12 @@ describe('ItemsTable.vue', () => {
 			propsData: {
 				items: items,
 				showDropdown: false,
-				searchString: ''
+				searchString: '',
 			},
 		})
 		wrapper.find('input.select-all.checkbox').trigger('click')
-		var itemsFound = wrapper.vm.selectedItems
-		var allSelected = wrapper.vm.allVisibleEntitiesSelected
+		let itemsFound = wrapper.vm.selectedItems
+		let allSelected = wrapper.vm.allVisibleEntitiesSelected
 		expect(itemsFound.length).toBe(3)
 		expect(allSelected).toBe(true)
 		wrapper.find('input.select-all.checkbox').trigger('click')
@@ -153,12 +153,12 @@ describe('ItemsTable.vue', () => {
 			propsData: {
 				items: items,
 				showDropdown: false,
-				searchString: ''
+				searchString: '',
 			},
 		})
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
-		var selectedItems = wrapper.vm.selectedItems
-		var allSelected = wrapper.vm.allVisibleEntitiesSelected
+		let selectedItems = wrapper.vm.selectedItems
+		let allSelected = wrapper.vm.allVisibleEntitiesSelected
 		expect(selectedItems.length).toBe(1)
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		selectedItems = wrapper.vm.selectedItems

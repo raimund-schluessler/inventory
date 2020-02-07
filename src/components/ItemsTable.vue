@@ -25,9 +25,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<thead>
 				<tr>
 					<th :id="`headerSelection-${_uid}`" class="column-selection">
-						<input :id="`select_all_items-${_uid}`" v-model="allVisibleEntitiesSelected" class="select-all checkbox"
-							type="checkbox"
-						>
+						<input :id="`select_all_items-${_uid}`"
+							v-model="allVisibleEntitiesSelected"
+							class="select-all checkbox"
+							type="checkbox">
 						<label :for="`select_all_items-${_uid}`">
 							<span class="hidden-visually">
 								{{ t('inventory', 'Select all') }}
@@ -39,8 +40,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<a class="name sort columntitle" data-sort="name" @click="setSortOrder('name')">
 								<span>{{ t('inventory', 'Name') }}</span>
 								<span v-show="sortOrder === 'name'"
-									:class="sortOrderIcon('name')" class="sort-indicator"
-								/>
+									:class="sortOrderIcon('name')"
+									class="sort-indicator" />
 							</a>
 						</div>
 					</th>
@@ -49,8 +50,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<a class="maker sort columntitle" data-sort="maker" @click="setSortOrder('maker')">
 								<span>{{ t('inventory', 'Maker') }}</span>
 								<span v-show="sortOrder === 'maker'"
-									:class="sortOrderIcon('maker')" class="sort-indicator"
-								/>
+									:class="sortOrderIcon('maker')"
+									class="sort-indicator" />
 							</a>
 						</div>
 					</th>
@@ -59,8 +60,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<a class="description sort columntitle" data-sort="description" @click="setSortOrder('description')">
 								<span>{{ t('inventory', 'Description') }}</span>
 								<span v-show="sortOrder === 'description'"
-									:class="sortOrderIcon('description')" class="sort-indicator"
-								/>
+									:class="sortOrderIcon('description')"
+									class="sort-indicator" />
 							</a>
 						</div>
 					</th>
@@ -74,16 +75,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<th>
 						<div>
 							<Actions v-if="showDropdown">
-								<ActionButton v-if="selectedItems.length" icon="icon-delete"
-									:close-after-click="true" @click="removeItems"
-								>
+								<ActionButton v-if="selectedItems.length"
+									icon="icon-delete"
+									:close-after-click="true"
+									@click="removeItems">
 									{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
 								</ActionButton>
 							</Actions>
 							<Actions v-show="unlink && selectedItems.length">
 								<ActionButton icon="icon-delete"
-									:close-after-click="true" @click="$emit('unlink')"
-								>
+									:close-after-click="true"
+									@click="$emit('unlink')">
 									{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
 								</ActionButton>
 							</Actions>
@@ -97,10 +99,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						{{ emptyListMessage }}
 					</td>
 				</tr>
-				<component :is="entityType(item)" v-for="item in sort(filteredEntities, sortOrder, sortDirection)" v-else
-					:key="item.id" :entity="item" :is-selected="isSelected(item)"
+				<component :is="entityType(item)"
+					v-for="item in sort(filteredEntities, sortOrder, sortDirection)"
+					v-else
+					:key="item.id"
+					:entity="item"
+					:is-selected="isSelected(item)"
 					:class="{ 'dragged': isDragged(item) }"
-					:select-entity="selectItem" :uuid="_uid"
+					:select-entity="selectItem"
+					:uuid="_uid"
 					draggable="true"
 					class="entity"
 					@selectItem="selectItem"
@@ -109,8 +116,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					@drop.native="dropped(item, $event)"
 					@dragover.native="dragOver"
 					@dragenter.native="($event) => dragEnter(item, $event)"
-					@dragleave.native="dragLeave"
-				/>
+					@dragleave.native="dragLeave" />
 			</tbody>
 		</table>
 		<div id="drag-preview">
@@ -118,9 +124,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<tr v-for="item in draggedItems" :key="item.id">
 					<td>
 						<div class="thumbnail-wrapper">
-							<div v-if="entityType(item) === 'Folder'" :style="{ backgroundImage: `url(${OC.generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
-								class="thumbnail folder"
-							/>
+							<div v-if="entityType(item) === 'Folder'"
+								:style="{ backgroundImage: `url(${OC.generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
+								class="thumbnail folder" />
 							<div v-else :style="{ backgroundImage: `url(${getIconUrl(item)})` }" class="thumbnail default" />
 						</div>
 						<span>{{ item.name }}</span>
@@ -151,7 +157,7 @@ export default {
 	props: {
 		mode: {
 			type: String,
-			default: 'navigation'
+			default: 'navigation',
 		},
 		folders: {
 			type: Array,
@@ -161,25 +167,25 @@ export default {
 		items: {
 			type: Array,
 			default: () => [],
-			required: true
+			required: true,
 		},
 		loading: {
 			type: Boolean,
 			default: false,
-			required: false
+			required: false,
 		},
 		showDropdown: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		unlink: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		searchString: {
 			type: String,
-			default: ''
-		}
+			default: '',
+		},
 	},
 	data: function() {
 		return {
@@ -192,16 +198,16 @@ export default {
 			set(select) {
 				if (select) {
 					// add all filteredEntities to selectedEntities
-					for (var i = 0; i < this.filteredEntities.length; i++) {
-						var index = this.selectedEntities.indexOf(this.filteredEntities[i])
+					for (let i = 0; i < this.filteredEntities.length; i++) {
+						const index = this.selectedEntities.indexOf(this.filteredEntities[i])
 						if (index === -1) {
 							this.selectedEntities.push(this.filteredEntities[i])
 						}
 					}
 				} else {
 					// remove all filteredEntities from selectedEntities
-					for (i = 0; i < this.filteredEntities.length; i++) {
-						index = this.selectedEntities.indexOf(this.filteredEntities[i])
+					for (let i = 0; i < this.filteredEntities.length; i++) {
+						const index = this.selectedEntities.indexOf(this.filteredEntities[i])
 						if (index !== -1) {
 							this.selectedEntities.splice(index, 1)
 						}
@@ -210,8 +216,8 @@ export default {
 				this.$emit('selectedItemsChanged', this.selectedItems)
 			},
 			get() {
-				for (var i = 0; i < this.filteredEntities.length; i++) {
-					var index = this.selectedEntities.indexOf(this.filteredEntities[i])
+				for (let i = 0; i < this.filteredEntities.length; i++) {
+					const index = this.selectedEntities.indexOf(this.filteredEntities[i])
 					if (index === -1) {
 						return false
 					}
@@ -220,11 +226,11 @@ export default {
 					return false
 				}
 				return true
-			}
+			},
 		},
 		selectedItems: {
 			set(items) {
-				for (var i = 0; i < this.selectedEntities.length; i++) {
+				for (let i = 0; i < this.selectedEntities.length; i++) {
 					if (this.selectedEntities[i] instanceof Item && !items.includes(this.selectedEntities[i])) {
 						this.selectedEntities.splice(i, 1)
 						i--
@@ -235,16 +241,16 @@ export default {
 				return this.selectedEntities.filter(entity => {
 					return (entity instanceof Item)
 				})
-			}
+			},
 		},
 		filteredEntities() {
 			if (!this.searchString) {
 				return this.items.concat(this.folders)
 			}
 
-			var options = { keywords: ['maker', 'name', 'description', 'categories', 'itemNumber', 'gtin', 'details', 'comment'] }
+			const options = { keywords: ['maker', 'name', 'description', 'categories', 'itemNumber', 'gtin', 'details', 'comment'] }
 
-			var searchQueryObj = searchQueryParser.parse(this.searchString, options)
+			let searchQueryObj = searchQueryParser.parse(this.searchString, options)
 			// bring into same structure if no keywords were matched
 			if (Object.prototype.toString.call(searchQueryObj) === '[object String]') {
 				searchQueryObj = { text: searchQueryObj }
@@ -260,7 +266,7 @@ export default {
 			}
 
 			const filteredFolders = this.folders.filter(folder => {
-				for (var jj = 0; jj < searchQueryObj.searchTerms.length; jj++) {
+				for (let jj = 0; jj < searchQueryObj.searchTerms.length; jj++) {
 					if (folder.name.toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
 						return true
 					}
@@ -269,9 +275,9 @@ export default {
 			})
 
 			const filteredItems = this.items.filter(item => {
-				var keyword
-				var found = false
-				for (var i = 0; i < options.keywords.length; i++) {
+				let keyword
+				let found = false
+				for (let i = 0; i < options.keywords.length; i++) {
 					keyword = options.keywords[i]
 					// check if keywords were given, if yes, check if value is found
 					if (Object.prototype.hasOwnProperty.call(searchQueryObj, keyword)) {
@@ -280,7 +286,7 @@ export default {
 						}
 						if (keyword === 'categories') {
 							found = false
-							for (var jj = 0; jj < item.categories.length; jj++) {
+							for (let jj = 0; jj < item.categories.length; jj++) {
 								if (item.categories[jj].name.toLowerCase().indexOf(searchQueryObj[keyword].toLowerCase()) > -1) {
 									found = true
 									break
@@ -300,15 +306,15 @@ export default {
 				// check if text is matched
 				if (Object.prototype.hasOwnProperty.call(searchQueryObj, 'searchTerms')) {
 					// console.log(searchQueryObj);
-					for (jj = 0; jj < searchQueryObj.searchTerms.length; jj++) {
+					for (let jj = 0; jj < searchQueryObj.searchTerms.length; jj++) {
 						found = false
-						for (i = 0; i < options.keywords.length; i++) {
+						for (let i = 0; i < options.keywords.length; i++) {
 							keyword = options.keywords[i]
 							if (!item[keyword]) {
 								continue
 							}
 							if (keyword === 'categories') {
-								for (var kk = 0; kk < item.categories.length; kk++) {
+								for (let kk = 0; kk < item.categories.length; kk++) {
 									if (item.categories[kk].name.toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
 										found = true
 										break
@@ -346,7 +352,7 @@ export default {
 			},
 			set(order) {
 				this.$store.dispatch('setSetting', { type: 'sortOrder', value: order })
-			}
+			},
 		},
 		sortDirection: {
 			get() {
@@ -354,7 +360,7 @@ export default {
 			},
 			set(direction) {
 				this.$store.dispatch('setSetting', { type: 'sortDirection', value: +direction })
-			}
+			},
 		},
 	},
 	watch: {
@@ -407,7 +413,7 @@ export default {
 		},
 		selectItem: function(item) {
 			if (this.isSelected(item)) {
-				var index = this.selectedEntities.indexOf(item)
+				const index = this.selectedEntities.indexOf(item)
 				if (index !== -1) {
 					this.selectedEntities.splice(index, 1)
 				}
@@ -448,8 +454,8 @@ export default {
 		/**
 		 * Handler for starting the drag operation
 		 *
-		 * @param {Object} entity	The dragged item or folder
-		 * @param {Object} e		The dragStart event
+		 * @param {Object} entity The dragged item or folder
+		 * @param {Object} e The dragStart event
 		 */
 		dragStart(entity, e) {
 			if (this.selectedEntities.length > 0) {
@@ -524,6 +530,6 @@ export default {
 		isDragged: function(item) {
 			return this.draggedItems.includes(item)
 		},
-	}
+	},
 }
 </script>

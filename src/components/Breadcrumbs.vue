@@ -21,27 +21,27 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div class="breadcrumb">
-		<div data-dir="#/folders/" class="crumb svg"
+		<div data-dir="#/folders/"
+			class="crumb svg"
 			draggable="false"
 			@dragstart="dragstart"
 			@drop="dropped(-1, $event)"
 			@dragover="dragOver"
 			@dragenter="($event) => dragEnter(-1, $event)"
-			@dragleave="dragLeave"
-		>
+			@dragleave="dragLeave">
 			<a href="#/folders/">
 				<span class="icon icon-bw icon-items" />
 			</a>
 		</div>
-		<div v-for="(folder, index) in folders" :key="index"
+		<div v-for="(folder, index) in folders"
+			:key="index"
 			class="crumb svg"
 			draggable="false"
 			@dragstart="dragstart"
 			@drop="dropped(index, $event)"
 			@dragover="dragOver($event)"
 			@dragenter="($event) => dragEnter(index, $event)"
-			@dragleave="dragLeave"
-		>
+			@dragleave="dragLeave">
 			<a :href="`#/folders/${folderPath(index)}`">
 				<span>{{ folder }}</span>
 			</a>
@@ -68,16 +68,16 @@ export default {
 			type: Object,
 			required: false,
 			default: undefined,
-		}
+		},
 	},
 	computed: {
 		...mapGetters({
-			draggedEntities: 'getDraggedEntities'
+			draggedEntities: 'getDraggedEntities',
 		}),
 
 		folders() {
 			return (this.path === '') ? [] : this.path.split('/')
-		}
+		},
 	},
 	methods: {
 		...mapActions([
@@ -154,6 +154,6 @@ export default {
 				}
 			}
 		},
-	}
+	},
 }
 </script>

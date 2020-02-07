@@ -28,8 +28,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:key="view.id"
 					:to="`/${view.id}/`"
 					:icon="`icon-${view.icon}`"
-					:title="view.name"
-				/>
+					:title="view.name" />
 			</ul>
 		</AppNavigation>
 
@@ -69,8 +68,8 @@ export default {
 					name: this.t('inventory', 'Categories'),
 					id: 'categories',
 					icon: 'categories',
-				}
-			]
+				},
+			],
 		}
 	},
 }

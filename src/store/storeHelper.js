@@ -32,7 +32,7 @@ import Folder from '../models/folder.js'
  */
 function sort(items, sortOrder, sortDirection) {
 	try {
-		var sortedItems = items.sort((itemA, itemB) => {
+		const sortedItems = items.sort((itemA, itemB) => {
 			return sortAlphabetically(itemA, itemB, sortOrder)
 		})
 		return sortDirection ? sortedItems.reverse() : sortedItems
