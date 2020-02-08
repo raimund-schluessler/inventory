@@ -4,7 +4,7 @@
 	<name>Inventory</name>
 	<summary>The inventory app for Nextcloud</summary>
 	<description>Inventory App</description>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<licence>agpl</licence>
 	<author mail="raimund.schluessler@mailbox.org">Raimund Schlüßler</author>
 	<namespace>Inventory</namespace>
@@ -12,7 +12,7 @@
 	<website>https://gitlab.rschluessler.com/raimund.schluessler/Inventory</website>
 	<bugs>https://gitlab.rschluessler.com/raimund.schluessler/Inventory/issues</bugs>
 	<dependencies>
-		<nextcloud min-version="16" max-version="18"/>
+		<nextcloud min-version="16" max-version="19"/>
 	</dependencies>
 	<navigations>
 		<navigation>
