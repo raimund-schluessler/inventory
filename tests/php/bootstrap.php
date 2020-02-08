@@ -9,4 +9,4 @@
  * @copyright 2019 Raimund Schlüßler raimund.schluessler@mailbox.org
  */
 
-require_once __DIR__ . '/../../../tests/bootstrap.php';
+require_once __DIR__ . '/../../../../tests/bootstrap.php';

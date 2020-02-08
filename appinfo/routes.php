@@ -23,6 +23,7 @@ return [
 	'routes' => [
 		['name' => 'page#index',			'url' => '/',											'verb' => 'GET'],
 		['name' => 'items#getAll',			'url' => '/items',										'verb' => 'GET'],
+		['name' => 'items#getByPath',		'url' => '/items',										'verb' => 'POST'],
 		['name' => 'items#get',				'url' => '/item/{itemID}',								'verb' => 'GET'],
 		['name' => 'attachment#getAll',		'url' => '/item/{itemID}/attachments',					'verb' => 'GET'],
 		['name' => 'attachment#getInstance','url' => '/item/{itemID}/instance/{instanceID}/attachments',	'verb' => 'GET'],
@@ -37,6 +38,7 @@ return [
 		['name' => 'items#enlist',			'url' => '/item/add',									'verb' => 'POST'],
 		['name' => 'items#delete',			'url' => '/item/{itemID}/delete',						'verb' => 'DELETE'],
 		['name' => 'items#edit',			'url' => '/item/{itemID}/edit',							'verb' => 'PATCH'],
+		['name' => 'items#move',			'url' => '/item/{itemID}/move',							'verb' => 'PATCH'],
 		['name' => 'instance#add',			'url' => '/item/{itemID}/instance/add',					'verb' => 'POST'],
 		['name' => 'instance#delete',		'url' => '/item/{itemID}/instance/{instanceID}/delete',	'verb' => 'DELETE'],
 		['name' => 'instance#edit',			'url' => '/item/{itemID}/instance/{instanceID}/edit',	'verb' => 'PATCH'],
@@ -44,5 +46,10 @@ return [
 		['name' => 'instance#deleteUuid',	'url' => '/item/{itemID}/instance/{instanceID}/uuid/{uuid}',	'verb' => 'DELETE'],
 		['name' => 'settings#get',			'url' => '/settings',									'verb' => 'GET'],
 		['name' => 'settings#set',			'url' => '/settings/{setting}/{value}',					'verb' => 'POST'],
+		['name' => 'folders#getByPath',		'url' => '/folders',									'verb' => 'POST'],
+		['name' => 'folders#add',			'url' => '/folders/add',								'verb' => 'POST'],
+		['name' => 'folders#delete',		'url' => '/folders/{folderID}/delete',					'verb' => 'DELETE'],
+		['name' => 'folders#rename',		'url' => '/folders/{folderID}/rename',					'verb' => 'PATCH'],
+		['name' => 'folders#move',			'url' => '/folders/{folderID}/move',					'verb' => 'PATCH'],
 	]
 ];

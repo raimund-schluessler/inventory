@@ -20,7 +20,7 @@
  */
 'use strict'
 
-import App from './app'
+import App from './App'
 
 import Vue from 'vue'
 
@@ -62,14 +62,13 @@ OCA.Inventory.App = new Vue({
 	store,
 	data: function() {
 		return {
-			searchString: ''
+			searchString: '',
 		}
 	},
 	mounted: function() {
 		OC.Search = new OCA.Search(this.filter, this.cleanSearch)
 	},
 	beforeMount() {
-		this.$store.dispatch('loadItems')
 		this.$store.dispatch('loadSettings')
 	},
 	methods: {
@@ -78,7 +77,7 @@ OCA.Inventory.App = new Vue({
 		},
 		cleanSearch() {
 			this.searchString = ''
-		}
+		},
 	},
-	render: h => h(App)
+	render: h => h(App),
 })

@@ -50,8 +50,8 @@ export default {
 				return '-'
 			}
 			const precision = 2
-			var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB']
-			var number = Math.floor(Math.log(bytes) / Math.log(1024))
+			const units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB']
+			const number = Math.floor(Math.log(bytes) / Math.log(1024))
 			return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number]
 		},
 		relativeDateFilter: function(timestamp) {
@@ -69,7 +69,7 @@ export default {
 		attachmentMimetype(attachment) {
 			const url = OC.MimeType.getIconUrl(attachment.extendedData.mimetype)
 			return {
-				'background-image': `url("${url}")`
+				'background-image': `url("${url}")`,
 			}
 		},
 
@@ -80,6 +80,6 @@ export default {
 				return OC.generateUrl(`/apps/inventory/item/${attachment.itemid}/attachment/${attachment.id}`)
 			}
 		},
-	}
+	},
 }
 </script>

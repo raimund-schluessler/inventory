@@ -25,6 +25,6 @@ export default {
 		if (binding.expression === undefined || binding.value) {
 			el.focus()
 		}
-	}
+	},
 }
 </script>

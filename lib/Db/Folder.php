@@ -24,25 +24,17 @@ namespace OCA\Inventory\Db;
 
 use OCP\AppFramework\Db\Entity;
 
-class Item extends Entity {
+class Folder extends Entity {
 
 	public $id;
 	public $uid;
 	public $name;
-	public $maker;
-	public $description;
-	public $itemNumber;
-	public $link;
-	public $gtin;
-	public $details;
-	public $comment;
-	public $type;
-	public $folderid;
 	public $path;
+	public $parentid;
 
 	public function __construct() {
 		// add types in constructor
 		$this->addType('id', 'integer');
-		$this->addType('type', 'integer');
+		$this->addType('parentid', 'integer');
 	}
 }

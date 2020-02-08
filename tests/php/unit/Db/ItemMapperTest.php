@@ -53,10 +53,10 @@ class ItemMapperTest extends MapperTestUtility  {
 			$this->dbConnection
 		);
 		$this->items = [
-			$this->createItemEntity('unit_tester_1', 'Testitem 1', 'Maker 1', 'A new red Item', 123, 'www.item1.de', null, 'Red, big, new', '', null),
-			$this->createItemEntity('unit_tester_1', 'Testitem 2', 'Maker 2', 'A new blue Item', 124, 'www.item2.de', null, 'Blue, small, new', '', null),
-			$this->createItemEntity('unit_tester_1', 'Testitem 3', 'Maker 3', 'A new green Item', 125, 'www.item3.de', '3165140777223', 'Green, big, new', 'Borrowed', null),
-			$this->createItemEntity('unit_tester_2', 'Testitem 4', 'Maker 4', 'A new black Item', 126, 'www.item4.de', null, 'Black, big, old', '', null)
+			$this->createItemEntity('unit_tester_1', 'Testitem 1', 'Maker 1', 'A new red Item', '123', 'www.item1.de', null, 'Red, big, new', '', 0, '', -1),
+			$this->createItemEntity('unit_tester_1', 'Testitem 2', 'Maker 2', 'A new blue Item', '124', 'www.item2.de', null, 'Blue, small, new', '', 0, '', -1),
+			$this->createItemEntity('unit_tester_1', 'Testitem 3', 'Maker 3', 'A new green Item', '125', 'www.item3.de', '3165140777223', 'Green, big, new', 'Borrowed', 0, '', -1),
+			$this->createItemEntity('unit_tester_2', 'Testitem 4', 'Maker 4', 'A new black Item', '126', 'www.item4.de', null, 'Black, big, old', '', 0, '', -1)
 		];
 		foreach ($this->items as $item) {
 			$entry = $this->itemMapper->insert($item);
@@ -66,7 +66,7 @@ class ItemMapperTest extends MapperTestUtility  {
 	}
 
 	private function createItemEntity($uid, $name, $maker, $description,
-		$item_number, $link, $gtin, $details, $comment, $type) {
+		$item_number, $link, $gtin, $details, $comment, $type, $path, $folderid) {
 		$item = new Item();
 		$item->setUid($uid);
 		$item->setName($name);
@@ -78,6 +78,8 @@ class ItemMapperTest extends MapperTestUtility  {
 		$item->setDetails($details);
 		$item->setComment($comment);
 		$item->setType($type);
+		$item->setPath($path);
+		$item->setFolderid($folderid);
 		return $item;
 	}
 
@@ -116,6 +118,8 @@ class ItemMapperTest extends MapperTestUtility  {
 		$params['details'] = null;
 		$params['comment'] = null;
 		$params['type'] = null;
+		$params['folderid'] = -1;
+		$params['path'] = '';
 
 		$entry = $this->itemMapper->add($params);
 		$entry->resetUpdatedFields();
@@ -131,6 +135,8 @@ class ItemMapperTest extends MapperTestUtility  {
 		$item->setDetails($params['details']);
 		$item->setComment($params['comment']);
 		$item->setType($params['type']);
+		$item->setFolderid($params['folderid']);
+		$item->setPath($params['path']);
 		$item->setId($entry->getId());
 		$item->resetUpdatedFields();
 

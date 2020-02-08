@@ -1,5 +1,5 @@
 export default {
 	Accessibility: {
-		theme: 'themedark'
-	}
+		theme: 'themedark',
+	},
 }

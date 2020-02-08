@@ -65,12 +65,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<div v-if="instanceProperty.key === 'place'">
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</div>
-							<input v-else v-model="editedInstance[instanceProperty.key]"
+							<input v-else
+								v-model="editedInstance[instanceProperty.key]"
 								type="text"
 								:placeholder="getInstanceProperty(instance, instanceProperty)"
 								:name="instanceProperty.key"
-								form="edit_instance"
-							>
+								form="edit_instance">
 						</td>
 						<td class="actions">
 							<!-- Submit button -->
@@ -79,25 +79,24 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</button>
 						</td>
 					</tr>
-					<tr v-if="addUuidTo === instance.id" :key="`uuidInput-${instance.id}`"
-						v-click-outside="() => hideUuidInput(instance)"
-					>
+					<tr v-if="addUuidTo === instance.id"
+						:key="`uuidInput-${instance.id}`"
+						v-click-outside="() => hideUuidInput(instance)">
 						<td :colspan="instanceProperties.length + 1" class="add-uuid">
 							<form name="addUuid" @submit.prevent="setUuid(instance)">
 								<input v-model="newUuid"
 									v-focus
 									:placeholder="t('inventory', 'Add UUID')"
 									type="text"
-									@keyup.27="addUuidTo = null"
-								>
-								<input type="button" :class="{valid: newUuidValid(instance.uuids)}"
+									@keyup.27="addUuidTo = null">
+								<input type="button"
+									:class="{valid: newUuidValid(instance.uuids)}"
 									class="icon-qrcode"
-									@click="openQrModal"
-								>
-								<input v-if="newUuidValid(instance.uuids)" type="submit"
+									@click="openQrModal">
+								<input v-if="newUuidValid(instance.uuids)"
+									type="submit"
 									class="icon-confirm"
-									value=""
-								>
+									value="">
 							</form>
 						</td>
 					</tr>
@@ -128,7 +127,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							{{ t('inventory', 'Attachments') }}
 						</td>
 						<td :colspan="instanceProperties.length" class="attachment-list">
-							<attachments :attachments="instance.attachments" />
+							<Attachments :attachments="instance.attachments" />
 						</td>
 					</tr>
 				</template>
@@ -143,8 +142,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							type="text"
 							:placeholder="instanceProperty.name"
 							:name="instanceProperty.key"
-							form="new_instance"
-						>
+							form="new_instance">
 					</td>
 					<td class="actions">
 						<!-- Submit button -->
@@ -158,14 +156,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="new_instance" method="POST" @submit.prevent="putInstance" />
 		<form id="edit_instance" method="POST" @submit.prevent="saveInstance" />
 		<!-- qrcode -->
-		<modal v-if="qrcode" id="qrcode-modal"
+		<Modal v-if="qrcode"
+			id="qrcode-modal"
 			size="full"
-			@close="closeQrModal"
-		>
+			@close="closeQrModal">
 			<div>
 				<img :src="`data:image/svg+xml;base64,${qrcode}`" class="qrcode">
 			</div>
-		</modal>
+		</Modal>
 		<QrScanModal :qr-modal-open.sync="qrModalOpen" @recognizedQrCode="foundUuid" />
 	</div>
 </template>
@@ -197,7 +195,7 @@ export default {
 		item: {
 			type: Object,
 			required: true,
-		}
+		},
 	},
 	data: function() {
 		return {
@@ -214,7 +212,7 @@ export default {
 				}, {
 					key: 'date',
 					name: this.t('inventory', 'Date'),
-					class: 'hide-if-narrow'
+					class: 'hide-if-narrow',
 				}, {
 					key: 'vendor',
 					name: this.t('inventory', 'Vendor'),
@@ -369,7 +367,7 @@ export default {
 			'editInstance',
 			'addUuid',
 			'deleteUuid',
-		])
-	}
+		]),
+	},
 }
 </script>

@@ -22,19 +22,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div>
 		<div v-if="item" class="app-content-details">
-			<div class="itemnavigation">
-				<div class="breadcrumb">
-					<div data-dir="/" class="crumb svg">
-						<a href="#/items">
-							<span class="icon icon-bw icon-items" />
-						</a>
-					</div>
-					<div class="crumb svg">
-						<a :href="`#/items/${item.id}`">
-							{{ item.description }}
-						</a>
-					</div>
-				</div>
+			<div id="controls" class="itemnavigation">
+				<Breadcrumbs :path="item.path" :item="item" />
 				<Actions>
 					<ActionButton icon="icon-add" :close-after-click="true" @click="openModal">
 						{{ t('inventory', 'Link items') }}
@@ -73,8 +62,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 												type="text"
 												:placeholder="itemProperty.name"
 												:name="itemProperty.key"
-												form="edit_item"
-											>
+												form="edit_item">
 										</span>
 									</td>
 									<td v-else-if="itemProperty.key === 'categories'">
@@ -92,8 +80,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 												type="text"
 												:placeholder="itemProperty.name"
 												:name="itemProperty.key"
-												form="edit_item"
-											>
+												form="edit_item">
 										</span>
 									</td>
 								</tr>
@@ -102,7 +89,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 										{{ t('inventory', 'Attachments') }}
 									</td>
 									<td class="attachment-list">
-										<attachments :attachments="item.attachments" />
+										<Attachments :attachments="item.attachments" />
 									</td>
 								</tr>
 								<tr v-if="editingItem">
@@ -120,16 +107,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Instances') }}</span>
 					</h3>
-					<item-instances :item="item" />
+					<ItemInstances :item="item" />
 				</div>
 				<div v-if="parentItems.length" class="paragraph">
 					<h3>
 						<span>{{ t('inventory', 'Parent items') }}</span>
 					</h3>
 					<div>
-						<ItemsTable :items="parentItems" :unlink="true" :search-string="$root.searchString"
-							@selectedItemsChanged="selectedParentsChanged" @unlink="unlink('parent')"
-						/>
+						<ItemsTable :items="parentItems"
+							:unlink="true"
+							:search-string="$root.searchString"
+							@selectedItemsChanged="selectedParentsChanged"
+							@unlink="unlink('parent')" />
 					</div>
 				</div>
 				<div v-if="subItems.length" class="paragraph">
@@ -137,9 +126,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Sub items') }}</span>
 					</h3>
 					<div>
-						<ItemsTable :items="subItems" :unlink="true" :search-string="$root.searchString"
-							@selectedItemsChanged="selectedSubChanged" @unlink="unlink('sub')"
-						/>
+						<ItemsTable :items="subItems"
+							:unlink="true"
+							:search-string="$root.searchString"
+							@selectedItemsChanged="selectedSubChanged"
+							@unlink="unlink('sub')" />
 					</div>
 				</div>
 				<div v-if="relatedItems.length" class="paragraph">
@@ -147,9 +138,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Related items') }}</span>
 					</h3>
 					<div>
-						<ItemsTable :items="relatedItems" :unlink="true" :search-string="$root.searchString"
-							@selectedItemsChanged="selectedRelatedChanged" @unlink="unlink('related')"
-						/>
+						<ItemsTable :items="relatedItems"
+							:unlink="true"
+							:search-string="$root.searchString"
+							@selectedItemsChanged="selectedRelatedChanged"
+							@unlink="unlink('related')" />
 					</div>
 				</div>
 			</div>
@@ -167,6 +160,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import { mapActions, mapState, mapGetters } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 import Attachments from './Attachments.vue'
+import Breadcrumbs from './Breadcrumbs.vue'
 import RelationModal from './RelationModal.vue'
 import ItemInstances from './TheItemInstances.vue'
 import focus from '../directives/focus'
@@ -182,6 +176,7 @@ export default {
 		RelationModal,
 		ItemInstances,
 		Attachments,
+		Breadcrumbs,
 	},
 	directives: {
 		ClickOutside,
@@ -190,8 +185,12 @@ export default {
 	props: {
 		id: {
 			type: String,
-			default: '0'
-		}
+			default: '0',
+		},
+		path: {
+			type: String,
+			default: '',
+		},
 	},
 	data: function() {
 		return {
@@ -237,7 +236,7 @@ export default {
 	},
 	computed: {
 		...mapState({
-			item:	state => state.item,
+			item: state => state.item,
 		}),
 		...mapGetters({
 			parentItems: 'getParentItems',
@@ -340,7 +339,7 @@ export default {
 			'editItem',
 			'linkItems',
 			'unlinkItems',
-		])
-	}
+		]),
+	},
 }
 </script>

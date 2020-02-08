@@ -20,227 +20,237 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<table class="itemstable">
-		<thead>
-			<tr>
-				<th :id="`headerSelection-${_uid}`" class="column-selection">
-					<input :id="`select_all_items-${_uid}`" v-model="allVisibleItemsSelected" class="select-all checkbox"
-						type="checkbox"
-					>
-					<label :for="`select_all_items-${_uid}`">
-						<span class="hidden-visually">
-							{{ t('inventory', 'Select all') }}
-						</span>
-					</label>
-				</th>
-				<th>
-					<div>
-						<a class="name sort columntitle" data-sort="name" @click="setSortOrder('name')">
-							<span>{{ t('inventory', 'Name') }}</span>
-							<span v-show="sortOrder === 'name'"
-								:class="sortOrderIcon('name')" class="sort-indicator"
-							/>
-						</a>
-					</div>
-				</th>
-				<th>
-					<div>
-						<a class="maker sort columntitle" data-sort="maker" @click="setSortOrder('maker')">
-							<span>{{ t('inventory', 'Maker') }}</span>
-							<span v-show="sortOrder === 'maker'"
-								:class="sortOrderIcon('maker')" class="sort-indicator"
-							/>
-						</a>
-					</div>
-				</th>
-				<th>
-					<div>
-						<a class="description sort columntitle" data-sort="description" @click="setSortOrder('description')">
-							<span>{{ t('inventory', 'Description') }}</span>
-							<span v-show="sortOrder === 'description'"
-								:class="sortOrderIcon('description')" class="sort-indicator"
-							/>
-						</a>
-					</div>
-				</th>
-				<th class="hide-if-narrow">
-					<div>
-						<a class="categories sort columntitle" data-sort="categories">
-							<span>{{ t('inventory', 'Categories') }}</span>
-						</a>
-					</div>
-				</th>
-				<th>
-					<div>
-						<Actions v-if="showDropdown">
-							<ActionRouter to="/items/additem" icon="icon-add">
-								{{ t('inventory', 'Add single item') }}
-							</ActionRouter>
-							<ActionRouter to="/items/additems" icon="icon-add">
-								{{ t('inventory', 'Add multiple items') }}
-							</ActionRouter>
-							<ActionButton v-if="selectedItems.length" icon="icon-delete"
-								:close-after-click="true" @click="removeItems"
-							>
-								{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
-							</ActionButton>
-						</Actions>
-						<Actions v-show="unlink && selectedItems.length">
-							<ActionButton icon="icon-delete"
-								:close-after-click="true" @click="$emit('unlink')"
-							>
-								{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
-							</ActionButton>
-						</Actions>
-					</div>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr v-if="!filteredItems.length">
-				<td class="center" colspan="6">
-					{{ emptyListMessage }}
-				</td>
-			</tr>
-			<tr v-for="item in sort(filteredItems, sortOrder, sortDirection)" v-else
-				:key="item.id" :class="{ selected: isSelected(item) }" class="handler"
-				@click.ctrl="selectItem(item)"
-			>
-				<td class="selection">
-					<input :id="`select-item-${item.id}-${_uid}`" :value="item.id" :checked="isSelected(item)"
-						class="selectCheckBox checkbox" type="checkbox"
-					>
-					<label :for="`select-item-${item.id}-${_uid}`" @click.prevent="selectItem(item)">
-						<span class="hidden-visually">
-							{{ t('inventory', 'Select') }}
-						</span>
-					</label>
-				</td>
-				<td>
-					<a :href="itemRoute(item)" @click.ctrl.prevent>
+	<div>
+		<table class="itemstable">
+			<thead>
+				<tr>
+					<th :id="`headerSelection-${_uid}`" class="column-selection">
+						<input :id="`select_all_items-${_uid}`"
+							v-model="allVisibleEntitiesSelected"
+							class="select-all checkbox"
+							type="checkbox">
+						<label :for="`select_all_items-${_uid}`">
+							<span class="hidden-visually">
+								{{ t('inventory', 'Select all') }}
+							</span>
+						</label>
+					</th>
+					<th>
+						<div>
+							<a class="name sort columntitle" data-sort="name" @click="setSortOrder('name')">
+								<span>{{ t('inventory', 'Name') }}</span>
+								<span v-show="sortOrder === 'name'"
+									:class="sortOrderIcon('name')"
+									class="sort-indicator" />
+							</a>
+						</div>
+					</th>
+					<th>
+						<div>
+							<a class="maker sort columntitle" data-sort="maker" @click="setSortOrder('maker')">
+								<span>{{ t('inventory', 'Maker') }}</span>
+								<span v-show="sortOrder === 'maker'"
+									:class="sortOrderIcon('maker')"
+									class="sort-indicator" />
+							</a>
+						</div>
+					</th>
+					<th>
+						<div>
+							<a class="description sort columntitle" data-sort="description" @click="setSortOrder('description')">
+								<span>{{ t('inventory', 'Description') }}</span>
+								<span v-show="sortOrder === 'description'"
+									:class="sortOrderIcon('description')"
+									class="sort-indicator" />
+							</a>
+						</div>
+					</th>
+					<th class="hide-if-narrow">
+						<div>
+							<a class="categories sort columntitle" data-sort="categories">
+								<span>{{ t('inventory', 'Categories') }}</span>
+							</a>
+						</div>
+					</th>
+					<th>
+						<div>
+							<Actions v-if="showDropdown">
+								<ActionButton v-if="selectedItems.length"
+									icon="icon-delete"
+									:close-after-click="true"
+									@click="removeItems">
+									{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
+								</ActionButton>
+							</Actions>
+							<Actions v-show="unlink && selectedItems.length">
+								<ActionButton icon="icon-delete"
+									:close-after-click="true"
+									@click="$emit('unlink')">
+									{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
+								</ActionButton>
+							</Actions>
+						</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-if="!filteredEntities.length">
+					<td class="center" colspan="6">
+						{{ emptyListMessage }}
+					</td>
+				</tr>
+				<component :is="entityType(item)"
+					v-for="item in sort(filteredEntities, sortOrder, sortDirection)"
+					v-else
+					:key="item.id"
+					:entity="item"
+					:is-selected="isSelected(item)"
+					:class="{ 'dragged': isDragged(item) }"
+					:select-entity="selectItem"
+					:uuid="_uid"
+					draggable="true"
+					class="entity"
+					@selectItem="selectItem"
+					@dragstart.native="dragStart(item, $event)"
+					@dragend.native="dragEnd"
+					@drop.native="dropped(item, $event)"
+					@dragover.native="dragOver"
+					@dragenter.native="($event) => dragEnter(item, $event)"
+					@dragleave.native="dragLeave" />
+			</tbody>
+		</table>
+		<div id="drag-preview">
+			<table>
+				<tr v-for="item in draggedItems" :key="item.id">
+					<td>
 						<div class="thumbnail-wrapper">
-							<div :style="{ backgroundImage: `url(${getIconUrl(item)})` }" class="thumbnail default" />
+							<div v-if="entityType(item) === 'Folder'"
+								:style="{ backgroundImage: `url(${OC.generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
+								class="thumbnail folder" />
+							<div v-else :style="{ backgroundImage: `url(${getIconUrl(item)})` }" class="thumbnail default" />
 						</div>
 						<span>{{ item.name }}</span>
-					</a>
-				</td>
-				<td>
-					<a :href="itemRoute(item)" @click.ctrl.prevent>
-						{{ item.maker }}
-					</a>
-				</td>
-				<td>
-					<a :href="itemRoute(item)" @click.ctrl.prevent>
-						{{ item.description }}
-					</a>
-				</td>
-				<td class="hide-if-narrow">
-					<ul class="categories">
-						<li v-for="category in item.categories" :key="category.id">
-							<span>{{ category.name }}</span>
-						</li>
-					</ul>
-				</td>
-				<td>
-					<ItemStatusDisplay :item="item" />
-				</td>
-			</tr>
-		</tbody>
-	</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
 </template>
 
 <script>
-import ItemStatusDisplay from './ItemStatusDisplay'
+import ItemComponent from './Item'
+import Item from '../models/item.js'
+import Folder from './Folder'
 import searchQueryParser from 'search-query-parser'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
-import { ActionRouter } from '@nextcloud/vue/dist/Components/ActionRouter'
 import { sort } from '../store/storeHelper'
 
 export default {
 	components: {
+		ItemComponent,
+		Folder,
 		Actions,
 		ActionButton,
-		ActionRouter,
-		ItemStatusDisplay,
 	},
 	props: {
 		mode: {
 			type: String,
-			default: 'navigation'
+			default: 'navigation',
+		},
+		folders: {
+			type: Array,
+			default: () => [],
+			required: false,
 		},
 		items: {
 			type: Array,
 			default: () => [],
-			required: true
+			required: true,
 		},
 		loading: {
 			type: Boolean,
 			default: false,
-			required: false
+			required: false,
 		},
 		showDropdown: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		unlink: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		searchString: {
 			type: String,
-			default: ''
-		}
+			default: '',
+		},
 	},
 	data: function() {
 		return {
-			selectedItems: []
+			selectedEntities: [],
+			draggedItems: [],
 		}
 	},
 	computed: {
-		allVisibleItemsSelected: {
+		allVisibleEntitiesSelected: {
 			set(select) {
 				if (select) {
-					// add all filteredItems to selectedItems
-					for (var i = 0; i < this.filteredItems.length; i++) {
-						var index = this.selectedItems.indexOf(this.filteredItems[i])
+					// add all filteredEntities to selectedEntities
+					for (let i = 0; i < this.filteredEntities.length; i++) {
+						const index = this.selectedEntities.indexOf(this.filteredEntities[i])
 						if (index === -1) {
-							this.selectedItems.push(this.filteredItems[i])
+							this.selectedEntities.push(this.filteredEntities[i])
 						}
 					}
 				} else {
-					// remove all filteredItems from selectedItems
-					for (i = 0; i < this.filteredItems.length; i++) {
-						index = this.selectedItems.indexOf(this.filteredItems[i])
+					// remove all filteredEntities from selectedEntities
+					for (let i = 0; i < this.filteredEntities.length; i++) {
+						const index = this.selectedEntities.indexOf(this.filteredEntities[i])
 						if (index !== -1) {
-							this.selectedItems.splice(index, 1)
+							this.selectedEntities.splice(index, 1)
 						}
 					}
 				}
 				this.$emit('selectedItemsChanged', this.selectedItems)
 			},
 			get() {
-				for (var i = 0; i < this.filteredItems.length; i++) {
-					var index = this.selectedItems.indexOf(this.filteredItems[i])
+				for (let i = 0; i < this.filteredEntities.length; i++) {
+					const index = this.selectedEntities.indexOf(this.filteredEntities[i])
 					if (index === -1) {
 						return false
 					}
 				}
-				if (!Array.isArray(this.filteredItems) || !this.filteredItems.length) {
+				if (!Array.isArray(this.filteredEntities) || !this.filteredEntities.length) {
 					return false
 				}
 				return true
-			}
+			},
 		},
-		filteredItems() {
+		selectedItems: {
+			set(items) {
+				for (let i = 0; i < this.selectedEntities.length; i++) {
+					if (this.selectedEntities[i] instanceof Item && !items.includes(this.selectedEntities[i])) {
+						this.selectedEntities.splice(i, 1)
+						i--
+					}
+				}
+			},
+			get() {
+				return this.selectedEntities.filter(entity => {
+					return (entity instanceof Item)
+				})
+			},
+		},
+		filteredEntities() {
 			if (!this.searchString) {
-				return this.items
+				return this.items.concat(this.folders)
 			}
 
-			var options = { keywords: ['maker', 'name', 'description', 'categories', 'itemNumber', 'gtin', 'details', 'comment'] }
+			const options = { keywords: ['maker', 'name', 'description', 'categories', 'itemNumber', 'gtin', 'details', 'comment'] }
 
-			var searchQueryObj = searchQueryParser.parse(this.searchString, options)
+			let searchQueryObj = searchQueryParser.parse(this.searchString, options)
 			// bring into same structure if no keywords were matched
 			if (Object.prototype.toString.call(searchQueryObj) === '[object String]') {
 				searchQueryObj = { text: searchQueryObj }
@@ -255,10 +265,19 @@ export default {
 				searchQueryObj.searchTerms = searchQueryObj.text.match(/[\wäöüß]+|"(?:\\"|[^"])+"/g)
 			}
 
-			return this.items.filter(item => {
-				var keyword
-				var found = false
-				for (var i = 0; i < options.keywords.length; i++) {
+			const filteredFolders = this.folders.filter(folder => {
+				for (let jj = 0; jj < searchQueryObj.searchTerms.length; jj++) {
+					if (folder.name.toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
+						return true
+					}
+					return false
+				}
+			})
+
+			const filteredItems = this.items.filter(item => {
+				let keyword
+				let found = false
+				for (let i = 0; i < options.keywords.length; i++) {
 					keyword = options.keywords[i]
 					// check if keywords were given, if yes, check if value is found
 					if (Object.prototype.hasOwnProperty.call(searchQueryObj, keyword)) {
@@ -267,7 +286,7 @@ export default {
 						}
 						if (keyword === 'categories') {
 							found = false
-							for (var jj = 0; jj < item.categories.length; jj++) {
+							for (let jj = 0; jj < item.categories.length; jj++) {
 								if (item.categories[jj].name.toLowerCase().indexOf(searchQueryObj[keyword].toLowerCase()) > -1) {
 									found = true
 									break
@@ -287,15 +306,15 @@ export default {
 				// check if text is matched
 				if (Object.prototype.hasOwnProperty.call(searchQueryObj, 'searchTerms')) {
 					// console.log(searchQueryObj);
-					for (jj = 0; jj < searchQueryObj.searchTerms.length; jj++) {
+					for (let jj = 0; jj < searchQueryObj.searchTerms.length; jj++) {
 						found = false
-						for (i = 0; i < options.keywords.length; i++) {
+						for (let i = 0; i < options.keywords.length; i++) {
 							keyword = options.keywords[i]
 							if (!item[keyword]) {
 								continue
 							}
 							if (keyword === 'categories') {
-								for (var kk = 0; kk < item.categories.length; kk++) {
+								for (let kk = 0; kk < item.categories.length; kk++) {
 									if (item.categories[kk].name.toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
 										found = true
 										break
@@ -315,6 +334,8 @@ export default {
 				}
 				return true
 			})
+
+			return filteredItems.concat(filteredFolders)
 		},
 		emptyListMessage() {
 			if (this.loading) {
@@ -331,7 +352,7 @@ export default {
 			},
 			set(order) {
 				this.$store.dispatch('setSetting', { type: 'sortOrder', value: order })
-			}
+			},
 		},
 		sortDirection: {
 			get() {
@@ -339,7 +360,7 @@ export default {
 			},
 			set(direction) {
 				this.$store.dispatch('setSetting', { type: 'sortDirection', value: +direction })
-			}
+			},
 		},
 	},
 	watch: {
@@ -349,19 +370,32 @@ export default {
 		...mapActions([
 			'deleteItems',
 			'unlinkItems',
+			'moveItem',
+			'moveFolder',
 		]),
 
+		...mapMutations([
+			'setDraggedEntities',
+		]),
+
+		entityType(entity) {
+			return (entity instanceof Item) ? 'ItemComponent' : 'Folder'
+		},
+
 		/**
-		 * Check for every item in the selectedItems array
+		 * Check for every item in the selectedEntities array
 		 * whether it is still in the items array.
 		 * If not, remove from selected.
 		 */
 		checkSelected: function() {
-			const before = this.selectedItems.length
-			this.selectedItems = this.selectedItems.filter((selected) => {
-				return (this.items.indexOf(selected) > -1)
+			const before = this.selectedEntities.length
+			this.selectedEntities = this.selectedEntities.filter((entity) => {
+				if (!(entity instanceof Item)) {
+					return true
+				}
+				return (this.items.indexOf(entity) > -1)
 			})
-			if (before !== this.selectedItems.length) {
+			if (before !== this.selectedEntities.length) {
 				this.$emit('selectedItemsChanged', this.selectedItems)
 			}
 		},
@@ -379,17 +413,17 @@ export default {
 		},
 		selectItem: function(item) {
 			if (this.isSelected(item)) {
-				var index = this.selectedItems.indexOf(item)
+				const index = this.selectedEntities.indexOf(item)
 				if (index !== -1) {
-					this.selectedItems.splice(index, 1)
+					this.selectedEntities.splice(index, 1)
 				}
 			} else {
-				this.selectedItems.push(item)
+				this.selectedEntities.push(item)
 			}
 			this.$emit('selectedItemsChanged', this.selectedItems)
 		},
 		isSelected: function(item) {
-			return this.selectedItems.includes(item)
+			return this.selectedEntities.includes(item)
 		},
 		itemRoute(item) {
 			const itemStatus = item.syncstatus ? item.syncstatus.type : null
@@ -412,6 +446,90 @@ export default {
 				return 'icon-triangle-n'
 			}
 		},
-	}
+
+		/**
+		 * Drag and drop handlers
+		 */
+
+		/**
+		 * Handler for starting the drag operation
+		 *
+		 * @param {Object} entity The dragged item or folder
+		 * @param {Object} e The dragStart event
+		 */
+		dragStart(entity, e) {
+			if (this.selectedEntities.length > 0) {
+				// We want a copy, not a reference
+				this.draggedItems = sort([...this.selectedEntities], this.sortOrder, this.sortDirection)
+			} else {
+				this.draggedItems.push(entity)
+			}
+			this.setDraggedEntities(this.draggedItems)
+			e.dataTransfer.setData('text/plain', 'dragging')
+			const dragHelper = document.getElementById('drag-preview')
+			e.dataTransfer.setDragImage(dragHelper, 10, 10)
+		},
+		dragEnd(e) {
+			this.draggedItems = []
+			this.setDraggedEntities(this.draggedItems)
+			const folders = document.querySelectorAll('.over')
+			folders.forEach((f) => { f.classList.remove('over') })
+		},
+		dropped(targetEntity, e) {
+			e.stopPropagation()
+			e.preventDefault()
+			if (this.entityType(targetEntity) === 'Folder' && !this.isDragged(targetEntity)) {
+				this.draggedItems.forEach((entity) => {
+					if (entity instanceof Item) {
+						this.moveItem({ itemID: entity.id, newPath: targetEntity.path })
+					} else {
+						this.moveFolder({ folderID: entity.id, newPath: targetEntity.path })
+					}
+				})
+			}
+			return false
+		},
+		dragOver(e) {
+			if (e.preventDefault) {
+				e.preventDefault()
+			}
+			return false
+		},
+		dragEnter(entity, e) {
+			// We don't add the hover state if
+			// the entity itself is dragged or is not a folder.
+			if (this.isDragged(entity) || this.entityType(entity) !== 'Folder') {
+				return
+			}
+			// Get the correct element, in case we hover a child.
+			if (e.target.closest) {
+				const target = e.target.closest('tr.entity')
+				if (target.classList && target.classList.contains('entity')) {
+					const folders = document.querySelectorAll('.over')
+					folders.forEach((f) => { f.classList.remove('over') })
+					target.classList.add('over')
+				}
+			}
+		},
+		dragLeave(e) {
+			// Don't do anything if we leave towards a child element.
+			if (e.target.contains(e.relatedTarget)) {
+				return
+			}
+			// Get the correct element, in case we leave directly from a child.
+			if (e.target.closest) {
+				const target = e.target.closest('tr.entity')
+				if (target.contains(e.relatedTarget)) {
+					return
+				}
+				if (target.classList && target.classList.contains('entity')) {
+					target.classList.remove('over')
+				}
+			}
+		},
+		isDragged: function(item) {
+			return this.draggedItems.includes(item)
+		},
+	},
 }
 </script>

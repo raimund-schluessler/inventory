@@ -62,6 +62,8 @@ export default class Item {
 		this._categories = this.response.categories || []
 		this._instances = this.response.instances || []
 		this._attachments = this.response.attachments || []
+		this._path = this.response.path || ''
+		this._folderid = this.response.folderid || ''
 		if (this.response.syncstatus) {
 			this.syncstatus = new Status(this.response.syncstatus.type, this.response.syncstatus.message)
 		}
@@ -105,6 +107,26 @@ export default class Item {
 	 */
 	get uid() {
 		return this._uid
+	}
+
+	/**
+	 * Return the path
+	 *
+	 * @readonly
+	 * @memberof Item
+	 */
+	get path() {
+		return this._path
+	}
+
+	/**
+	 * Return the folderid
+	 *
+	 * @readonly
+	 * @memberof Item
+	 */
+	get folderid() {
+		return this._folderid
 	}
 
 	/**

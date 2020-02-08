@@ -23,6 +23,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Item from '../models/item.js'
+import Folder from '../models/folder.js'
 import PQueue from 'p-queue'
 import Status from '../models/status'
 import Axios from 'axios'
@@ -40,6 +41,8 @@ export default new Vuex.Store({
 		relatedItems: {},
 		itemCandidates: [],
 		settings: {},
+		folders: {},
+		draggedEntities: [],
 	},
 	mutations: {
 
@@ -52,12 +55,29 @@ export default new Vuex.Store({
 		addItems(state, items = []) {
 			state.items = items.reduce(function(list, item) {
 				if (item instanceof Item) {
-					Vue.set(list, item.id, item)
+					Vue.set(list, 'item' + item.id, item)
 				} else {
 					console.error('Wrong item object', item)
 				}
 				return list
 			}, state.items)
+		},
+
+		/**
+		 * Sets the items in the store
+		 *
+		 * @param {Object} state Default state
+		 * @param {Array<Item>} items The items to set
+		 */
+		setItems(state, items = []) {
+			state.items = items.reduce(function(list, item) {
+				if (item instanceof Item) {
+					Vue.set(list, 'item' + item.id, item)
+				} else {
+					console.error('Wrong item object', item)
+				}
+				return list
+			}, [])
 		},
 
 		/**
@@ -67,7 +87,7 @@ export default new Vuex.Store({
 		 * @param {Item} item The item to add
 		 */
 		addItem(state, item) {
-			Vue.set(state.items, item.id, item)
+			Vue.set(state.items, 'item' + item.id, item)
 		},
 
 		/**
@@ -77,8 +97,8 @@ export default new Vuex.Store({
 		 * @param {Item} item The item to delete
 		 */
 		deleteItem(state, item) {
-			if (state.items[item.id] && item instanceof Item) {
-				Vue.delete(state.items, item.id)
+			if (state.items['item' + item.id] && item instanceof Item) {
+				Vue.delete(state.items, 'item' + item.id)
 			}
 		},
 
@@ -90,7 +110,7 @@ export default new Vuex.Store({
 		 */
 		editItem(state, item) {
 			if (state.items[item.id] && item instanceof Item) {
-				Vue.set(state.items, item.id, item)
+				Vue.set(state.items, 'item' + item.id, item)
 			}
 			if (state.item.id === item.id) {
 				state.item = item
@@ -105,7 +125,7 @@ export default new Vuex.Store({
 		 */
 		unlinkParents(state, items) {
 			items.forEach((item) => {
-				if (state.parentItems[item.id] && item instanceof Item) {
+				if (state.parentItems['item' + item.id] && item instanceof Item) {
 					Vue.delete(state.parentItems, item.id)
 				}
 			})
@@ -119,7 +139,7 @@ export default new Vuex.Store({
 		 */
 		unlinkRelated(state, items) {
 			items.forEach((item) => {
-				if (state.relatedItems[item.id] && item instanceof Item) {
+				if (state.relatedItems['item' + item.id] && item instanceof Item) {
 					Vue.delete(state.relatedItems, item.id)
 				}
 			})
@@ -133,7 +153,7 @@ export default new Vuex.Store({
 		 */
 		unlinkSub(state, items) {
 			items.forEach((item) => {
-				if (state.subItems[item.id] && item instanceof Item) {
+				if (state.subItems['item' + item.id] && item instanceof Item) {
 					Vue.delete(state.subItems, item.id)
 				}
 			})
@@ -216,7 +236,7 @@ export default new Vuex.Store({
 		setSubItems(state, items) {
 			state.subItems = items.reduce(function(list, item) {
 				if (item instanceof Item) {
-					Vue.set(list, item.id, item)
+					Vue.set(list, 'item' + item.id, item)
 				} else {
 					console.error('Wrong item object', item)
 				}
@@ -226,7 +246,7 @@ export default new Vuex.Store({
 		setParentItems(state, items) {
 			state.parentItems = items.reduce(function(list, item) {
 				if (item instanceof Item) {
-					Vue.set(list, item.id, item)
+					Vue.set(list, 'item' + item.id, item)
 				} else {
 					console.error('Wrong item object', item)
 				}
@@ -236,7 +256,7 @@ export default new Vuex.Store({
 		setRelatedItems(state, items) {
 			state.relatedItems = items.reduce(function(list, item) {
 				if (item instanceof Item) {
-					Vue.set(list, item.id, item)
+					Vue.set(list, 'item' + item.id, item)
 				} else {
 					console.error('Wrong item object', item)
 				}
@@ -265,6 +285,56 @@ export default new Vuex.Store({
 		 */
 		setSetting(state, payload) {
 			state.settings[payload.type] = payload.value
+		},
+
+		/**
+		 * Adds an item to the store
+		 *
+		 * @param {Object} state Default state
+		 * @param {Object} payload The folders object
+		 */
+		setFolders(state, payload) {
+			state.folders = payload.folders
+		},
+
+		/**
+		 * Adds a folder
+		 *
+		 * @param {Object} state Default state
+		 * @param {Object} payload The folders object
+		 */
+		addFolder(state, payload) {
+			state.folders.push(payload.folder)
+		},
+
+		/**
+		 * Deletes a folder
+		 *
+		 * @param {Object} state Default state
+		 * @param {Object} newFolder The folders object
+		 */
+		deleteFolder(state, { folder }) {
+			// Find index of folder to update
+			const index = state.folders.findIndex(f => f.id === folder.id)
+			// Replace folder with new data
+			Vue.delete(state.folders, index)
+		},
+
+		/**
+		 * Updates a folder
+		 *
+		 * @param {Object} state Default state
+		 * @param {Object} newFolder The folders object
+		 */
+		updateFolder(state, { newFolder }) {
+			// Find index of folder to update
+			const index = state.folders.findIndex(folder => folder.id === newFolder.id)
+			// Replace folder with new data
+			Vue.set(state.folders, index, newFolder)
+		},
+
+		setDraggedEntities(state, entities) {
+			state.draggedEntities = entities
 		},
 	},
 
@@ -345,6 +415,16 @@ export default new Vuex.Store({
 		 * @returns {String} The sort direction
 		 */
 		sortDirection: (state) => state.settings.sortDirection,
+
+		/**
+		 * Returns all folders
+		 *
+		 * @param {Object} state The store data
+		 * @returns {Array} The folders
+		 */
+		getFoldersByPath: (state) => Object.values(state.folders),
+
+		getDraggedEntities: (state) => state.draggedEntities,
 	},
 
 	actions: {
@@ -356,6 +436,16 @@ export default new Vuex.Store({
 				return new Item(payload)
 			})
 			commit('addItems', items)
+			state.loadingItems = false
+		},
+
+		async getItemsByPath({ commit, state }, path) {
+			state.loadingItems = true
+			const response = await Axios.post(OC.generateUrl('apps/inventory/items'), { path })
+			const items = response.data.map(payload => {
+				return new Item(payload)
+			})
+			commit('setItems', items)
 			state.loadingItems = false
 		},
 
@@ -461,6 +551,7 @@ export default new Vuex.Store({
 			items.forEach(async(item) => {
 				await queue.add(() => context.dispatch('deleteItem', item))
 			})
+			await queue.onIdle()
 		},
 		async editItem({ commit }, item) {
 			try {
@@ -468,6 +559,15 @@ export default new Vuex.Store({
 				Vue.set(item, 'response', response.data)
 				item.updateItem()
 				commit('editItem', item)
+			} catch {
+				console.debug('Item editing failed.')
+			}
+		},
+		async moveItem({ commit }, { itemID, newPath }) {
+			try {
+				const response = await Axios.patch(OC.generateUrl(`apps/inventory/item/${itemID}/move`), { path: newPath })
+				const item = new Item(response.data)
+				commit('deleteItem', item)
 			} catch {
 				console.debug('Item editing failed.')
 			}
@@ -580,6 +680,62 @@ export default new Vuex.Store({
 			} catch {
 				console.debug('Could not load settings.')
 			}
-		}
-	}
+		},
+
+		/**
+		 * Requests all folders for a given path
+		 *
+		 * @param {Object} context The store context
+		 * @param {String} path The path to look at
+		 * @returns {Promise}
+		 */
+		async getFoldersByPath({ commit }, path) {
+			try {
+				const response = await Axios.post(OC.generateUrl('apps/inventory/folders'), { path })
+				const folders = response.data.map(payload => {
+					return new Folder(payload)
+				})
+				commit('setFolders', { folders })
+			} catch {
+				console.debug('Could not load the folders.')
+			}
+		},
+
+		async createFolder(context, { name, path }) {
+			try {
+				const response = await Axios.post(OC.generateUrl('apps/inventory/folders/add'), { name, path })
+				const folder = new Folder(response.data)
+				context.commit('addFolder', { folder })
+			} catch {
+				console.debug('Could not create the folder.')
+			}
+		},
+
+		async moveFolder({ commit }, { folderID, newPath }) {
+			try {
+				const response = await Axios.patch(OC.generateUrl(`apps/inventory/folders/${folderID}/move`), { path: newPath })
+				commit('deleteFolder', { folder: new Folder(response.data) })
+			} catch {
+				console.debug('Could not move the folder.')
+			}
+		},
+
+		async deleteFolder(context, folder) {
+			try {
+				const response = await Axios.delete(OC.generateUrl(`apps/inventory/folders/${folder.id}/delete`))
+				context.commit('deleteFolder', { folder: new Folder(response.data) })
+			} catch {
+				console.debug('Could not delete the folder.')
+			}
+		},
+
+		async renameFolder(context, { folderID, newName }) {
+			try {
+				const response = await Axios.patch(OC.generateUrl(`apps/inventory/folders/${folderID}/rename`), { newName })
+				context.commit('updateFolder', { newFolder: new Folder(response.data) })
+			} catch {
+				console.debug('Could not rename the folder.')
+			}
+		},
+	},
 })

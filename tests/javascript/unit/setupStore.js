@@ -1,14 +1,13 @@
 import { createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 
-import store from '../src/store/store'
-import Item from '../src/models/item'
-
+import store from 'Store/store'
+import Item from 'Models/item'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-var itemsData = [
+const itemsData = [
 	{
 		id: 1,
 		name: 'Item1',
@@ -18,13 +17,13 @@ var itemsData = [
 		categories: [
 			{
 				name: 'Cat1',
-				id: 1
+				id: 1,
 			},
 			{
 				name: 'Cat2',
-				id: 2
-			}
-		]
+				id: 2,
+			},
+		],
 	},
 	{
 		id: 2,
@@ -34,9 +33,9 @@ var itemsData = [
 		categories: [
 			{
 				name: 'Cat1',
-				id: 1
-			}
-		]
+				id: 1,
+			},
+		],
 	},
 	{
 		id: 3,
@@ -46,10 +45,10 @@ var itemsData = [
 		categories: [
 			{
 				name: 'Cat3',
-				id: 3
-			}
-		]
-	}
+				id: 3,
+			},
+		],
+	},
 ]
 
 const items = itemsData.map(item => {

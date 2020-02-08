@@ -21,7 +21,7 @@ module.exports = {
 				use: ['vue-style-loader', 'css-loader', 'sass-loader']
 			},
 			{
-				test: /(src|tests)\/.*\.(js|vue)$/,
+				test: /src\/.*\.(js|vue)$/,
 				use: 'eslint-loader',
 				enforce: 'pre'
 			},
@@ -31,7 +31,16 @@ module.exports = {
 			},
 			{
 				test: /\.js$/,
-				loader: 'babel-loader',
+				use: {
+					loader: 'babel-loader',
+					options: {
+						plugins: [
+							'@babel/plugin-syntax-dynamic-import',
+							'@babel/plugin-proposal-object-rest-spread'
+						],
+						presets: ['@babel/preset-env']
+					}
+				},
 				exclude: /node_modules/
 			},
 			{

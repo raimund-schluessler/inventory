@@ -24,8 +24,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		:out-transition="true"
 		size="full"
 		class="relation-modal"
-		@close="closeModal"
-	>
+		@close="closeModal">
 		<div class="content">
 			<div class="header">
 				<span class="title">
@@ -41,18 +40,23 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:options="relationTypes"
 					:close-on-select="true"
 					class="multiselect-vue"
-					@input="changeRelationType"
-				/>
-				<form class="searchbox" action="#" method="post"
-					role="search" novalidate=""
-				>
+					@input="changeRelationType" />
+				<form class="searchbox"
+					action="#"
+					method="post"
+					role="search"
+					novalidate="">
 					<label for="modalSearchbox" class="hidden-visually">
 						{{ t('inventory', 'Search') }}
 					</label>
-					<input id="modalSearchbox" v-model="searchString" class="icon-search-white"
-						name="query" value="" required=""
-						autocomplete="off" type="search"
-					>
+					<input id="modalSearchbox"
+						v-model="searchString"
+						class="icon-search-white"
+						name="query"
+						value=""
+						required=""
+						autocomplete="off"
+						type="search">
 					<button class="icon-close-white" type="reset" @click="searchString=''">
 						<span class="hidden-visually">
 							{{ t('inventory', 'Reset search') }}
@@ -62,9 +66,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 
 			<div class="body">
-				<ItemsTable :items="items" :show-dropdown="false" :search-string="searchString"
-					mode="selection" :loading="loading" @selectedItemsChanged="selectedItemsChanged"
-				/>
+				<ItemsTable :items="items"
+					:show-dropdown="false"
+					:search-string="searchString"
+					mode="selection"
+					:loading="loading"
+					@selectedItemsChanged="selectedItemsChanged" />
 			</div>
 
 			<div class="footer">
@@ -97,11 +104,11 @@ export default {
 	props: {
 		modalOpen: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		link: {
 			type: Function,
-			default: () => {}
+			default: () => {},
 		},
 		itemId: {
 			type: String,
@@ -131,7 +138,7 @@ export default {
 			return this.t('inventory', 'Please select the relation of the items:')
 		},
 		statusString: function() {
-			var singular, plural
+			let singular, plural
 			switch (this.relationType) {
 			case 'parent':
 				singular = 'Add %n item as parent item.'
@@ -152,8 +159,8 @@ export default {
 			}
 		},
 		...mapState({
-			items: state => state.itemCandidates
-		})
+			items: state => state.itemCandidates,
+		}),
 	},
 	watch: {
 		modalOpen: 'loadItems',
@@ -188,7 +195,7 @@ export default {
 
 		...mapActions([
 			'loadItemCandidates',
-		])
-	}
+		]),
+	},
 }
 </script>

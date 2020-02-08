@@ -21,51 +21,55 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div id="content" class="app-inventory">
-		<div id="app-navigation">
+		<AppNavigation>
 			<ul>
-				<RouterLink
+				<AppNavigationItem
 					v-for="view in views"
 					:key="view.id"
-					:to="`/${view.id}`"
-					:class="`icon-${view.id}`"
-					tag="li"
-					active-class="active"
-				>
-					<a class="sprite">
-						<span class="title">
-							{{ view.name }}
-						</span>
-					</a>
-				</RouterLink>
+					:to="`/${view.id}/`"
+					:icon="`icon-${view.icon}`"
+					:title="view.name" />
 			</ul>
-		</div>
+		</AppNavigation>
 
-		<div id="app-content">
-			<RouterView id="app-content-wrapper" />
-		</div>
+		<AppContent>
+			<RouterView />
+		</AppContent>
 	</div>
 </template>
 
 <script>
+import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
+import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
+import AppContent from '@nextcloud/vue/dist/Components/AppContent'
+
 export default {
 	name: 'App',
+	components: {
+		AppNavigation,
+		AppNavigationItem,
+		AppContent,
+	},
 	data: function() {
 		return {
-			active: 'items',
+			active: 'folders',
 			views: [
 				{
 					name: this.t('inventory', 'Items'),
-					id: 'items'
+					id: 'folders',
+					icon: 'items',
 				},
 				{
 					name: this.t('inventory', 'Places'),
-					id: 'places'
+					id: 'places',
+					icon: 'places',
 				},
 				{
 					name: this.t('inventory', 'Categories'),
-					id: 'categories'
-				}
-			]
+					id: 'categories',
+					icon: 'categories',
+				},
+			],
 		}
 	},
 }

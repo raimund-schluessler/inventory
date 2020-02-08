@@ -1,4 +1,3 @@
-import 'regenerator-runtime/runtime'
 import { config } from '@vue/test-utils'
 import { OC } from './OC.js'
 import OCA from './OCA.js'

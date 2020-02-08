@@ -3,7 +3,7 @@
  * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2017 Raimund Schlüßler raimund.schluessler@mailbox.org
+ * @copyright 2020 Raimund Schlüßler raimund.schluessler@mailbox.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -31,6 +31,7 @@ use OCA\Inventory\Db\ItemparentMapper;
 use OCA\Inventory\Service\IteminstanceService;
 use OCA\Inventory\Db\ItemrelationMapper;
 use OCA\Inventory\Db\ItemtypeMapper;
+use OCA\Inventory\Db\FolderMapper;
 use OCA\Inventory\BadRequestException;
 use OCP\AppFramework\Db\DoesNotExistException;
 
@@ -45,10 +46,11 @@ class ItemsService {
 	private $itemParentMapper;
 	private $itemRelationMapper;
 	private $itemtypeMapper;
+	private $folderMapper;
 
 	public function __construct($userId, $AppName, ItemMapper $itemMapper, IteminstanceService $iteminstanceService,
 		CategoryMapper $categoryMapper, ItemcategoriesMapper $itemcategoriesMapper, ItemparentMapper $itemParentMapper,
-		ItemRelationMapper $itemRelationMapper, ItemtypeMapper $itemtypeMapper) {
+		ItemRelationMapper $itemRelationMapper, ItemtypeMapper $itemtypeMapper, FolderMapper $folderMapper) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->itemMapper = $itemMapper;
@@ -58,6 +60,7 @@ class ItemsService {
 		$this->itemParentMapper = $itemParentMapper;
 		$this->itemRelationMapper = $itemRelationMapper;
 		$this->itemtypeMapper = $itemtypeMapper;
+		$this->folderMapper = $folderMapper;
 	}
 
 	/**
@@ -67,6 +70,25 @@ class ItemsService {
 	 */
 	public function getAll() {
 		$items = $this->itemMapper->findAll($this->userId);
+		foreach ($items as $item) {
+			$item = $this->getItemDetails($item);
+		}
+		return $items;
+	}
+
+	/**
+	 * get items by path
+	 *
+	 * @return array
+	 */
+	public function getByPath($path) {
+		if ($path === '') {
+			$folderId = -1;
+		} else {
+			$folder = $this->folderMapper->findFolderByPath($this->userId, $path);
+			$folderId = $folder->id;
+		}
+		$items = $this->itemMapper->findByFolderId($this->userId, $folderId);
 		foreach ($items as $item) {
 			$item = $this->getItemDetails($item);
 		}
@@ -192,6 +214,10 @@ class ItemsService {
 	 */
 	public function enlist($item) {
 		$item['uid'] = $this->userId;
+
+		$folder = $this->folderMapper->findFolderByPath($this->userId, $item['path']);
+		$item['folderid'] = $folder->id;
+
 		$added = $this->itemMapper->add($item);
 
 		foreach ($item['categories'] as $category) {
@@ -214,8 +240,9 @@ class ItemsService {
 	}
 
 	/**
-	 * delete item
+	 * Delete an item
 	 *
+	 * @param int $itemId		The id of the item to delete
 	 * @return array
 	 */
 	public function delete($itemId) {
@@ -227,19 +254,28 @@ class ItemsService {
 		// Find the item by Id
 		$item = $this->itemMapper->find($itemId, $this->userId);
 
+		$this->deleteItem($item);
+	}
+
+	/**
+	 * Delete an item
+	 *
+	 * @param Item $item		The item to delete
+	 */
+	public function deleteItem($item) {
 		// Delete all instances belonging to this item
-		$this->iteminstanceService->deleteAllInstancesOfItem($itemId);
+		$this->iteminstanceService->deleteAllInstancesOfItem($item->id);
 
 		// Delete all links to categories
-		$itemCategories = $this->itemCategoriesMapper->findCategories($itemId, $this->userId);
+		$itemCategories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
 		$this->itemCategoriesMapper->deleteItemCategories($itemCategories);
 
 		// Delete all relations including this item
 		// Parent
-		$relations = $this->itemParentMapper->find($itemId);
+		$relations = $this->itemParentMapper->find($item->id);
 		$this->itemParentMapper->deleteRelations($relations);
 		// Related
-		$relations = $this->itemRelationMapper->find($itemId, $this->userId);
+		$relations = $this->itemRelationMapper->find($item->id, $this->userId);
 		$this->itemRelationMapper->deleteRelations($relations);
 
 		// Delete the item itself
@@ -433,6 +469,36 @@ class ItemsService {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Move an item to other folder
+	 * 
+	 * @param $itemId
+	 * @param $newPath
+	 * @return Item
+	 * @throws DoesNotExistException
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws BadRequestException
+	 */
+	public function move($itemId, $newPath) {
+
+		if ( is_numeric($itemId) === false ) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
+		if ($newPath === '') {
+			$folder->id = -1;
+			$folder->path = '';
+		} else {
+			$folder = $this->folderMapper->findFolderByPath($this->userId, $newPath);
+		}
+		$item = $this->itemMapper->find($itemId, $this->userId);
+		
+		$item->setFolderid($folder->id);
+		$item->setPath($folder->path);
+		$editedItem = $this->itemMapper->update($item);
+		return $this->getItemDetails($editedItem);
 	}
 
 	/**
