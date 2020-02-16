@@ -78,6 +78,14 @@ class IteminstanceService {
 			throw new BadRequestException('Available must be a number.');
 		}
 
+		if ($instance['available'] === '') {
+			$instance['available'] = NULL;
+		}
+
+		if ($instance['count'] === '') {
+			$instance['count'] = NULL;
+		}
+
 		$instance['uid'] = $this->userId;
 		if ($instance['place']) {
 			$place = $this->placeMapper->findPlaceByName($instance['place'], $this->userId);
