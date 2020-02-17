@@ -300,6 +300,31 @@ class ItemsService {
 			throw new BadRequestException('Item name must not be empty.');
 		}
 
+		// Check that string length does not exceed database column length
+		if ( strlen($item['name']) > 100 ) {
+			throw new BadRequestException('Item name must not exceed 100 characters.');
+		}
+
+		if ( strlen($item['maker']) > 100 ) {
+			throw new BadRequestException('Item maker must not exceed 100 characters.');
+		}
+
+		if ( strlen($item['link']) > 255 ) {
+			throw new BadRequestException('Item link must not exceed 255 characters.');
+		}
+
+		if ( strlen($item['comment']) > 65000 ) {
+			throw new BadRequestException('Item comment must not exceed 65000 characters.');
+		}
+
+		if ( strlen($item['details']) > 65000 ) {
+			throw new BadRequestException('Item details must not exceed 65000 characters.');
+		}
+
+		if ( strlen($item['description']) > 65000 ) {
+			throw new BadRequestException('Item description must not exceed 65000 characters.');
+		}
+
 		if ( $item['gtin'] !== '' && strlen($item['gtin']) !== 13 ) {
 			throw new BadRequestException('The provided GTIN is invalid.');
 		}
