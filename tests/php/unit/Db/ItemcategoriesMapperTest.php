@@ -45,7 +45,7 @@ class ItemcategoriesMapperTest extends MapperTestUtility  {
 	private $itemcategories;
 	private $itemcategoriesById = [];
 
-	public function setup(){
+	public function setup(): void {
 		parent::setUp();
 
 		$this->dbConnection = \OC::$server->getDatabaseConnection();
@@ -103,7 +103,7 @@ class ItemcategoriesMapperTest extends MapperTestUtility  {
 		$this->itemcategories[] = $itemcategory;
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		$this->itemcategoriesMapper->deleteItemCategories($this->itemcategories);
 	}

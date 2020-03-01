@@ -45,7 +45,7 @@ class AttachmentMapperTest extends MapperTestUtility  {
 	private $attachments;
 	private $attachmentsById = [];
 
-	public function setup(){
+	public function setup(): void {
 		parent::setUp();
 
 		$this->dbConnection = \OC::$server->getDatabaseConnection();
@@ -120,7 +120,7 @@ class AttachmentMapperTest extends MapperTestUtility  {
 		$this->assertEquals(false, $this->attachmentMapper->findByName($itemId, $attachmentBasename));
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		foreach ($this->attachments as $attachment) {
 			$this->attachmentMapper->delete($attachment);

@@ -45,7 +45,7 @@ class ItemrelationMapperTest extends MapperTestUtility  {
 	private $itemrelations;
 	private $itemrelationsById = [];
 
-	public function setup(){
+	public function setup(): void {
 		parent::setUp();
 
 		$this->dbConnection = \OC::$server->getDatabaseConnection();
@@ -136,7 +136,7 @@ class ItemrelationMapperTest extends MapperTestUtility  {
 		$this->itemrelations[] = $itemrelation;
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		$this->itemrelationMapper->deleteRelations($this->itemrelations);
 	}
