@@ -45,7 +45,7 @@ class CategoryMapperTest extends MapperTestUtility  {
 	private $categories;
 	private $categoriesById = [];
 
-	public function setup(){
+	public function setup(): void {
 		parent::setUp();
 
 		$this->dbConnection = \OC::$server->getDatabaseConnection();
@@ -118,7 +118,7 @@ class CategoryMapperTest extends MapperTestUtility  {
 		$this->categories[] = $category;
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		foreach ($this->categories as $category) {
 			$this->categoryMapper->delete($category);

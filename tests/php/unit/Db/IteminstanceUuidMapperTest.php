@@ -45,7 +45,7 @@ class IteminstanceUuidMapperTest extends MapperTestUtility  {
 	private $iteminstanceUuids;
 	private $iteminstanceUuidById = [];
 
-	public function setup(){
+	public function setup(): void {
 		parent::setUp();
 
 		$this->dbConnection = \OC::$server->getDatabaseConnection();
@@ -125,7 +125,7 @@ class IteminstanceUuidMapperTest extends MapperTestUtility  {
 		$this->iteminstanceUuids[] = $iteminstanceUuid;
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		foreach ($this->iteminstanceUuids as $iteminstanceUuid) {
 			$this->iteminstanceUuidMapper->delete($iteminstanceUuid);

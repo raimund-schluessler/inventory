@@ -45,7 +45,7 @@ class ItemtypeMapperTest extends MapperTestUtility  {
 	private $itemtypes;
 	private $itemtypesById = [];
 
-	public function setup(){
+	public function setup(): void {
 		parent::setUp();
 
 		$this->dbConnection = \OC::$server->getDatabaseConnection();
@@ -118,7 +118,7 @@ class ItemtypeMapperTest extends MapperTestUtility  {
 		$this->itemtypes[] = $itemtype;
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		foreach ($this->itemtypes as $itemtype) {
 			$this->itemtypeMapper->delete($itemtype);

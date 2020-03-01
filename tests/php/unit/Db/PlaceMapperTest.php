@@ -45,7 +45,7 @@ class PlaceMapperTest extends MapperTestUtility  {
 	private $places;
 	private $placesById = [];
 
-	public function setup(){
+	public function setup(): void {
 		parent::setUp();
 
 		$this->dbConnection = \OC::$server->getDatabaseConnection();
@@ -118,7 +118,7 @@ class PlaceMapperTest extends MapperTestUtility  {
 		$this->places[] = $place;
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		foreach ($this->places as $place) {
 			$this->placeMapper->delete($place);

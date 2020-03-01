@@ -45,7 +45,7 @@ class IteminstanceMapperTest extends MapperTestUtility  {
 	private $iteminstances;
 	private $iteminstancesById = [];
 
-	public function setup(){
+	public function setup(): void {
 		parent::setUp();
 
 		$this->dbConnection = \OC::$server->getDatabaseConnection();
@@ -139,7 +139,7 @@ class IteminstanceMapperTest extends MapperTestUtility  {
 		$this->assertEquals($entry, $this->iteminstanceMapper->update($entry));
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		$this->iteminstanceMapper->deleteInstances($this->iteminstances);
 	}
