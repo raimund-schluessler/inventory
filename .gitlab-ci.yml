@@ -20,7 +20,7 @@ javascript:
     - npm install --progress=false
     - npm run test
 
-PHP7.2 + SQLite:
+PHP7.3 + SQLite:
   image: test-nextcloud:latest
   stage: test
   artifacts:
@@ -32,7 +32,7 @@ PHP7.2 + SQLite:
     - cp -r . /tmp/inventory
     - mkdir -p /var/www/html ; pushd /var/www/html
     #- wget -q https://download.nextcloud.com/server/releases/nextcloud-16.0.1.zip ; unzip -q nextcloud-16.0.1.zip ; rm nextcloud-16.0.1.zip
-    - git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b stable17 nextcloud
+    - git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b stable18 nextcloud
     # temporary fix of autoloader.php
     - sed -i $'s|if (substr($fullPath, 0, strlen($root) + 1) === $root . \'/\')|if (is_string($root) and substr($fullPath, 0, strlen($root) + 1) === $root . \'/\')|g' nextcloud/lib/autoloader.php
     - chown -R www-data:www-data nextcloud && pushd nextcloud/apps && mv /tmp/inventory ./
@@ -46,7 +46,7 @@ PHP7.2 + SQLite:
     # check PHP code
     - sudo -u www-data make -C /var/www/html/nextcloud/apps/inventory test-php
 
-PHP7.2 + PostgreSQL:
+PHP7.3 + PostgreSQL:
   image: test-nextcloud:latest
   stage: test
   services:
@@ -56,12 +56,12 @@ PHP7.2 + PostgreSQL:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ""
   script:
-    - DEBIAN_FRONTEND=noninteractive apt-get install php7.2-pgsql postgresql-client -yqq > /dev/null 2>&1
+    - DEBIAN_FRONTEND=noninteractive apt-get install php7.3-pgsql postgresql-client -yqq > /dev/null 2>&1
     # copy local copy that has been cloned already
     - cp -r . /tmp/inventory
     - mkdir -p /var/www/html ; pushd /var/www/html
     #- wget -q https://download.nextcloud.com/server/releases/nextcloud-16.0.1.zip ; unzip -q nextcloud-16.0.1.zip ; rm nextcloud-16.0.1.zip
-    - git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b stable17 nextcloud
+    - git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b stable18 nextcloud
     # temporary fix of autoloader.php
     - sed -i $'s|if (substr($fullPath, 0, strlen($root) + 1) === $root . \'/\')|if (is_string($root) and substr($fullPath, 0, strlen($root) + 1) === $root . \'/\')|g' nextcloud/lib/autoloader.php
     - chown -R www-data:www-data nextcloud && pushd nextcloud/apps && mv /tmp/inventory ./
@@ -75,14 +75,14 @@ PHP7.2 + PostgreSQL:
     # check PHP code
     - sudo -u www-data make -C /var/www/html/nextcloud/apps/inventory test-php
 
-# PHP7.2 + MySQL:
+# PHP7.3 + MySQL:
 #   image: ubuntu:18.10
 #   stage: test
 #   before_script:
 #     - bash ci/docker_install.sh
 #   script:
 #     # DB
-#     - DEBIAN_FRONTEND=noninteractive apt-get install mariadb-server php7.2-mysql -yqq > /dev/null 2>&1
+#     - DEBIAN_FRONTEND=noninteractive apt-get install mariadb-server php7.3-mysql -yqq > /dev/null 2>&1
 #     - service mysql start
 #     - mysql -u root -e 'create database oc_autotest;'
 #     - mysql -u root -e "CREATE USER 'oc_autotest'@'localhost' IDENTIFIED BY '';"
@@ -91,7 +91,7 @@ PHP7.2 + PostgreSQL:
 #     - cp -r . /tmp/inventory
 #     - mkdir -p /var/www/html ; pushd /var/www/html
 #     #- wget -q https://download.nextcloud.com/server/releases/nextcloud-16.0.1.zip ; unzip -q nextcloud-16.0.1.zip ; rm nextcloud-16.0.1.zip
-#     - git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b stable17 nextcloud
+#     - git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b stable18 nextcloud
 #     # temporary fix of autoloader.php
 #     - sed -i $'s|if (substr($fullPath, 0, strlen($root) + 1) === $root . \'/\')|if (is_string($root) and substr($fullPath, 0, strlen($root) + 1) === $root . \'/\')|g' nextcloud/lib/autoloader.php
 #     - chown -R www-data:www-data nextcloud && pushd nextcloud/apps && mv /tmp/inventory ./

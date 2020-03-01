@@ -1,4 +1,4 @@
-FROM ubuntu:18.10
+FROM ubuntu:19.10
 RUN	set -xe; \
 	export DEBIAN_FRONTEND=noninteractive; \
 	apt-get update -yqq; \
@@ -6,14 +6,14 @@ RUN	set -xe; \
 		git \
 		sudo \
 		php-xdebug \
-		php7.2-sqlite3 \
-		php7.2-curl \
-		php7.2-xml \
-		php7.2-mbstring \
-		php7.2-json \
-		php7.2-zip \
-		php7.2-gd \
-		php7.2-intl \
+		php7.3-sqlite3 \
+		php7.3-curl \
+		php7.3-xml \
+		php7.3-mbstring \
+		php7.3-json \
+		php7.3-zip \
+		php7.3-gd \
+		php7.3-intl \
 		unzip \
 		curl \
 		wget \
