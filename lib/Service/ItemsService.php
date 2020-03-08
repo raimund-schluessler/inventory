@@ -360,9 +360,14 @@ class ItemsService {
 				'name'	=> $name->name
 			);
 		}
-		$type = $this->itemtypeMapper->find($item->type, $this->userId);
-		$item->icon = $type->icon;
-		$item->type = $type->name;
+		if ($item->type !== 0) {
+			$type = $this->itemtypeMapper->find($item->type, $this->userId);
+			$item->icon = $type->icon;
+			$item->type = $type->name;
+		} else {
+			$item->icon = 'default';
+			$item->type = 'default';
+		}
 		$item->categories = $categoriesNames;
 		$item->instances = $this->iteminstanceService->getByItemID($item->id);
 		return $item;
