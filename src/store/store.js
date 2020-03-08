@@ -26,8 +26,7 @@ import Item from '../models/item.js'
 import Folder from '../models/folder.js'
 import PQueue from 'p-queue'
 import Status from '../models/status'
-import Axios from 'axios'
-Axios.defaults.headers.common.requesttoken = OC.requestToken
+import Axios from '@nextcloud/axios'
 
 Vue.use(Vuex)
 
