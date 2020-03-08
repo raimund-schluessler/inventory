@@ -102,7 +102,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<component :is="entityType(item)"
 					v-for="item in sort(filteredEntities, sortOrder, sortDirection)"
 					v-else
-					:key="item.id"
+					:key="entityType(item) + item.id"
 					:entity="item"
 					:is-selected="isSelected(item)"
 					:class="{ 'dragged': isDragged(item) }"
@@ -121,7 +121,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</table>
 		<div id="drag-preview">
 			<table>
-				<tr v-for="item in draggedItems" :key="item.id">
+				<tr v-for="item in draggedItems" :key="entityType(item) + item.id">
 					<td>
 						<div class="thumbnail-wrapper">
 							<div v-if="entityType(item) === 'Folder'"
