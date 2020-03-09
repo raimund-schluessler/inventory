@@ -487,6 +487,10 @@ div.crumb > a {
 	top: 50px;
 	background-color: var(--color-main-background-translucent);
 	z-index: 60;
+
+	.breadcrumb {
+		overflow: hidden;
+	}
 }
 
 @media only screen and (max-width: 768px) {
