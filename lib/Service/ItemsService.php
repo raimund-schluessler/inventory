@@ -364,11 +364,11 @@ class ItemsService {
 				'name'	=> $name->name
 			);
 		}
-		if ($item->type !== 0) {
+		try {
 			$type = $this->itemtypeMapper->find($item->type, $this->userId);
 			$item->icon = $type->icon;
 			$item->type = $type->name;
-		} else {
+		} catch (DoesNotExistException $e) {
 			$item->icon = 'default';
 			$item->type = 'default';
 		}
