@@ -20,9 +20,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div class="breadcrumb">
+	<div ref="container" class="breadcrumb">
 		<div data-dir="#/folders/"
-			class="crumb svg"
+			class="crumb svg root"
 			draggable="false"
 			@dragstart="dragstart"
 			@drop="dropped(-1, $event)"
@@ -33,9 +33,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="icon icon-bw icon-items" />
 			</a>
 		</div>
-		<div v-for="(folder, index) in folders"
-			:key="index"
-			class="crumb svg"
+		<div v-for="(folder, index) in folders1"
+			:key="`f1${index}`"
+			class="crumb svg folder"
+			:class="{'hidden': isHidden(index)}"
 			draggable="false"
 			@dragstart="dragstart"
 			@drop="dropped(index, $event)"
@@ -46,7 +47,30 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<span>{{ folder }}</span>
 			</a>
 		</div>
-		<div v-if="item" class="crumb svg">
+		<Actions v-if="hiddenFolders.length" class="crumb dropdown" :force-menu="true">
+			<ActionRouter
+				v-for="(folder, index) in hiddenFolders"
+				:key="`dropdown${index}`"
+				:to="`/folders/${folderPath(hiddenIndices[index])}`"
+				icon="icon-folder">
+				{{ folder }}
+			</ActionRouter>
+		</Actions>
+		<div v-for="(folder, index) in folders2"
+			:key="`f2${index}`"
+			class="crumb svg folder"
+			:class="{'hidden': isHidden(index + folders1.length)}"
+			draggable="false"
+			@dragstart="dragstart"
+			@drop="dropped(index + folders1.length, $event)"
+			@dragover="dragOver($event)"
+			@dragenter="($event) => dragEnter(index + folders1.length, $event)"
+			@dragleave="dragLeave">
+			<a :href="`#/folders/${folderPath(index + folders1.length)}`">
+				<span>{{ folder }}</span>
+			</a>
+		</div>
+		<div v-if="item" class="crumb svg item">
 			<a :href="`#/folders/${(item.path) ? item.path + '/' : ''}item-${item.id}`">
 				<span>{{ item.description }}</span>
 			</a>
@@ -57,8 +81,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import Item from '../models/item.js'
 import { mapActions, mapGetters } from 'vuex'
+import debounce from 'debounce'
+import { Actions } from '@nextcloud/vue/dist/Components/Actions'
+import { ActionRouter } from '@nextcloud/vue/dist/Components/ActionRouter'
 
 export default {
+	components: {
+		Actions,
+		ActionRouter,
+	},
 	props: {
 		path: {
 			type: String,
@@ -70,6 +101,11 @@ export default {
 			default: undefined,
 		},
 	},
+	data: function() {
+		return {
+			hiddenIndices: [],
+		}
+	},
 	computed: {
 		...mapGetters({
 			draggedEntities: 'getDraggedEntities',
@@ -78,12 +114,98 @@ export default {
 		folders() {
 			return (this.path === '') ? [] : this.path.split('/')
 		},
+
+		folders1() {
+			if (this.hiddenIndices.length) {
+				return this.folders.slice(0, Math.round(this.folders.length / 2))
+			}
+			return this.folders
+		},
+
+		folders2() {
+			if (this.hiddenIndices.length) {
+				return this.folders.slice(Math.round(this.folders.length / 2))
+			}
+			return []
+		},
+
+		hiddenFolders() {
+			const folders = []
+			for (let jj = 0; jj < this.hiddenIndices.length; jj++) {
+				folders.push(this.folders[this.hiddenIndices[jj]])
+			}
+			return folders
+		},
+
+		crumbs() {
+			return document.getElementsByClassName('crumb folder')
+		},
+	},
+	watch: {
+		path: function(val) {
+			this.$nextTick(() => this.handleWindowResize())
+		},
+	},
+	created() {
+		window.addEventListener('resize', debounce(() => {
+			this.handleWindowResize()
+		}, 100))
+	},
+	mounted() {
+		this.handleWindowResize()
+	},
+	beforeDestroy() {
+		window.removeEventListener('resize', this.handleWindowResize)
 	},
 	methods: {
 		...mapActions([
 			'moveItem',
 			'moveFolder',
 		]),
+
+		isHidden(index) {
+			return this.hiddenIndices.includes(index)
+		},
+
+		handleWindowResize() {
+			if (this.$refs.container) {
+				const availableWidth = this.$refs.container.offsetWidth
+				const totalWidth = this.getTotalWidth()
+				let overflow = totalWidth - availableWidth
+				// If we overflow, we have to take the action-item width into account as well.
+				overflow += (overflow > 0) ? 51 : 0
+				let i = 0
+				let currentIndex
+				const hiddenIndices = []
+				const startIndex = Math.floor(this.crumbs.length / 2) - 1
+				while (overflow > 0 && i < this.crumbs.length) {
+					currentIndex = startIndex - ((i % 2) ? i + 1 : i) / 2 * Math.pow(-1, i)
+					overflow -= this.getWidth(this.crumbs[currentIndex])
+					i++
+					hiddenIndices.push(currentIndex)
+				}
+				this.hiddenIndices = hiddenIndices.sort()
+			}
+		},
+
+		getTotalWidth() {
+			const crumbs = document.querySelectorAll('.crumb:not(.dropdown)')
+			let totalWidth = 0
+			for (let i = 0; i < crumbs.length; i++) {
+				totalWidth += this.getWidth(crumbs[i])
+			}
+			return totalWidth
+		},
+
+		getWidth(el) {
+			const hide = el.classList.contains('hidden')
+			el.classList.remove('hidden')
+			const w = el.offsetWidth
+			if (hide) {
+				el.classList.add('hidden')
+			}
+			return w
+		},
 
 		folderPath(index) {
 			if (index === -1) {

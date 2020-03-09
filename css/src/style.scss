@@ -450,14 +450,33 @@ table {
 	}
 }
 
-div.crumb > a {
-	align-items: center;
-	display: inline-flex;
+.breadcrumb {
+	width: calc(100% - 88px);
+	flex-grow: 1;
 
-	> span {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+	div.crumb {
+		&.item {
+			background-image: none;
+		}
+		&.action-item {
+			margin-left: unset !important;
+			ul {
+				overflow-y: auto;
+				-webkit-overflow-scrolling: touch;
+				min-height: calc(44px * 1.5);
+				max-height: calc(100vh - 50px * 2);
+			}
+		}
+		> a {
+			align-items: center;
+			display: inline-flex;
+
+			> span {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		}
 	}
 }
 
@@ -487,10 +506,6 @@ div.crumb > a {
 	top: 50px;
 	background-color: var(--color-main-background-translucent);
 	z-index: 60;
-
-	.breadcrumb {
-		overflow: hidden;
-	}
 }
 
 @media only screen and (max-width: 768px) {
