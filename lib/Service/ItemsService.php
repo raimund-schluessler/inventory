@@ -329,7 +329,7 @@ class ItemsService {
 			throw new BadRequestException('Item description must not exceed 65000 characters.');
 		}
 
-		if ( $item['gtin'] !== '' && strlen($item['gtin']) !== 13 ) {
+		if ( $item['gtin'] !== null && $item['gtin'] !== '' && strlen($item['gtin']) !== 13 ) {
 			throw new BadRequestException('The provided GTIN is invalid.');
 		}
 
