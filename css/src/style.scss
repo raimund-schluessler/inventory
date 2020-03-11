@@ -81,7 +81,7 @@
 }
 
 .over {
-	background-color: rgba( $color-primary, .3 );
+	background-color: transparentize( $color-primary, .9 );
 }
 
 .dragged {
