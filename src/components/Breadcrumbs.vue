@@ -177,7 +177,7 @@ export default {
 				let i = 0
 				let currentIndex
 				const hiddenIndices = []
-				const startIndex = Math.floor(this.crumbs.length / 2) - 1
+				const startIndex = Math.round(this.crumbs.length / 2) - 1
 				while (overflow > 0 && i < this.crumbs.length) {
 					currentIndex = startIndex - ((i % 2) ? i + 1 : i) / 2 * Math.pow(-1, i)
 					overflow -= this.getWidth(this.crumbs[currentIndex])
