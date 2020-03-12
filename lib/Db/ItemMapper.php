@@ -66,6 +66,23 @@ class ItemMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
+	public function findByString(string $uid, string $searchString, $limit=null, $offset=null) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_items')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
+			->where(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			)
+			->andWhere(
+				$qb->expr()->eq('name', $qb->createNamedParameter($searchString, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntities($qb);
+	}
+
 	public function findByFolderId(string $uid, int $folderid, $limit=null, $offset=null) {
 		$qb = $this->db->getQueryBuilder();
 

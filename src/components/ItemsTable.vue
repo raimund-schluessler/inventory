@@ -117,6 +117,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					@dragover.native="dragOver"
 					@dragenter.native="($event) => dragEnter(item, $event)"
 					@dragleave.native="dragLeave" />
+				<tr v-if="searchString">
+					<td class="center" colspan="6">
+						{{ searchMessage }}
+					</td>
+				</tr>
+				<component :is="entityType(item)"
+					v-for="item in sort([...searchResults], sortOrder, sortDirection)"
+					:key="`${entityType(item) + item.id}_search`"
+					:entity="item"
+					:is-selected="isSelected(item)"
+					:class="{ 'dragged': isDragged(item) }"
+					:select-entity="selectItem"
+					:uuid="_uid" />
 			</tbody>
 		</table>
 		<div id="drag-preview">
@@ -142,7 +155,7 @@ import ItemComponent from './Item'
 import Item from '../models/item.js'
 import Folder from './Folder'
 import searchQueryParser from 'search-query-parser'
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
 import { sort } from '../store/storeHelper'
@@ -194,6 +207,11 @@ export default {
 		}
 	},
 	computed: {
+		...mapGetters({
+			searching: 'searching',
+			searchResults: 'searchResults',
+		}),
+
 		allVisibleEntitiesSelected: {
 			set(select) {
 				if (select) {
@@ -346,6 +364,15 @@ export default {
 				return this.t('inventory', 'The item list is empty.')
 			}
 		},
+		searchMessage() {
+			if (this.searching) {
+				return this.t('inventory', 'Searching in other folders.')
+			} else if (!this.searchResults.length) {
+				return this.t('inventory', 'No items found in other folders.')
+			} else {
+				return this.t('inventory', 'Found in other folders:')
+			}
+		},
 		sortOrder: {
 			get() {
 				return this.$store.state.settings.sortOrder
@@ -365,6 +392,11 @@ export default {
 	},
 	watch: {
 		items: 'checkSelected',
+		searchString: function(newVal, oldVal) {
+			if (newVal) {
+				this.$store.dispatch('search', newVal)
+			}
+		},
 	},
 	methods: {
 		...mapActions([
@@ -372,6 +404,7 @@ export default {
 			'unlinkItems',
 			'moveItem',
 			'moveFolder',
+			'search',
 		]),
 
 		...mapMutations([

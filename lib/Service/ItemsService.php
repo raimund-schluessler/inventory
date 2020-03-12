@@ -347,6 +347,14 @@ class ItemsService {
 		return $this->getItemDetails($editedItem);
 	}
 
+	public function findByString($searchString) {
+		$items = $this->itemMapper->findByString($this->userId, $searchString);
+		foreach ($items as $item) {
+			$item = $this->getItemDetails($item);
+		}
+		return $items;
+	}
+
 	/**
 	 * Gets the of an item
 	 * 

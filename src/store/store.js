@@ -42,6 +42,8 @@ export default new Vuex.Store({
 		settings: {},
 		folders: {},
 		draggedEntities: [],
+		searching: false,
+		searchResults: [],
 	},
 	mutations: {
 
@@ -335,6 +337,16 @@ export default new Vuex.Store({
 		setDraggedEntities(state, entities) {
 			state.draggedEntities = entities
 		},
+
+		/**
+		 * Sets the search results
+		 *
+		 * @param {Object} state Default state
+		 * @param {Object} entities The search results
+		 */
+		setSearchResults(state, entities) {
+			state.searchResults = entities
+		},
 	},
 
 	getters: {
@@ -424,6 +436,22 @@ export default new Vuex.Store({
 		getFoldersByPath: (state) => Object.values(state.folders),
 
 		getDraggedEntities: (state) => state.draggedEntities,
+
+		/**
+		 * Returns the search results from the server
+		 *
+		 * @param {Object} state The store data
+		 * @returns {Array} The results
+		 */
+		searchResults: (state) => state.searchResults,
+
+		/**
+		 * Returns the search results from the server
+		 *
+		 * @param {Object} state The store data
+		 * @returns {Array} The results
+		 */
+		searching: (state) => state.searching,
 	},
 
 	actions: {
@@ -734,6 +762,24 @@ export default new Vuex.Store({
 				context.commit('updateFolder', { newFolder: new Folder(response.data) })
 			} catch {
 				console.debug('Could not rename the folder.')
+			}
+		},
+
+		async search({ commit, state }, searchString) {
+			try {
+				commit('setSearchResults', [])
+				state.searching = true
+				const response = await Axios.post(OC.generateUrl('apps/inventory/search'), { searchString })
+				const items = response.data.items.map(item => {
+					return new Item(item)
+				})
+				const folders = response.data.folders.map(folder => {
+					return new Folder(folder)
+				})
+				state.searching = false
+				commit('setSearchResults', folders.concat(items))
+			} catch {
+				console.debug('Searching on the server failed.')
 			}
 		},
 	},

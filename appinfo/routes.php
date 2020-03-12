@@ -51,5 +51,6 @@ return [
 		['name' => 'folders#delete',		'url' => '/folders/{folderID}/delete',					'verb' => 'DELETE'],
 		['name' => 'folders#rename',		'url' => '/folders/{folderID}/rename',					'verb' => 'PATCH'],
 		['name' => 'folders#move',			'url' => '/folders/{folderID}/move',					'verb' => 'PATCH'],
+		['name' => 'search#find',			'url' => '/search',										'verb' => 'POST'],
 	]
 ];
