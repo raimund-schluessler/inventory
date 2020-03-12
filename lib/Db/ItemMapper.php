@@ -73,12 +73,18 @@ class ItemMapper extends QBMapper {
 			->from('*PREFIX*invtry_items')
 			->setMaxResults($limit)
 			->setFirstResult($offset)
-			->where(
+			->andWhere('LOWER(name) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(maker) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(description) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(item_number) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(link) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(gtin) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(details) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(comment) LIKE LOWER(:searchString)')
+			->andWhere(
 				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			)
-			->andWhere(
-				$qb->expr()->eq('name', $qb->createNamedParameter($searchString, IQueryBuilder::PARAM_STR))
-			);
+			->setParameter('searchString', '%' . $searchString . '%');
 
 		return $this->findEntities($qb);
 	}

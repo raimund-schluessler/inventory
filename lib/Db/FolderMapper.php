@@ -105,9 +105,8 @@ class FolderMapper extends QBMapper {
 			->where(
 				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			)
-			->andWhere(
-				$qb->expr()->eq('name', $qb->createNamedParameter($searchString, IQueryBuilder::PARAM_STR))
-			);
+			->andWhere('LOWER(name) LIKE LOWER(:searchString)')
+			->setParameter('searchString', '%' . $searchString . '%');
 
 		return $this->findEntities($qb);
 	}
