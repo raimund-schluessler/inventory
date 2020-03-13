@@ -24,7 +24,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		class="handler"
 		@click.ctrl="selectEntity(entity)">
 		<td class="selection">
-			<input :id="`select-item-${entity.id}-${uuid}`"
+			<input v-if="showActions"
+				:id="`select-item-${entity.id}-${uuid}`"
 				:value="entity.id"
 				:checked="isSelected"
 				class="selectCheckBox checkbox"
@@ -89,6 +90,10 @@ export default {
 		uuid: {
 			type: Number,
 			required: true,
+		},
+		showActions: {
+			type: Boolean,
+			default: true,
 		},
 	},
 	computed: {

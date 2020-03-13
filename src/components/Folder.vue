@@ -29,7 +29,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:checked="isSelected"
 				class="selectCheckBox checkbox"
 				type="checkbox">
-			<label :for="`select-folder-${entity.id}-${uuid}`" @click.prevent="selectEntity(entity)">
+			<label v-if="showActions" :for="`select-folder-${entity.id}-${uuid}`" @click.prevent="selectEntity(entity)">
 				<span class="hidden-visually">
 					{{ t('inventory', 'Select') }}
 				</span>
@@ -51,7 +51,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						v-focus
 						@keyup="checkName">
 				</form>
-				<Actions v-if="!deleteTimeout">
+				<Actions v-if="!deleteTimeout && showActions">
 					<ActionButton class="startRename"
 						icon="icon-rename"
 						:close-after-click="true"
@@ -108,6 +108,10 @@ export default {
 		uuid: {
 			type: Number,
 			required: true,
+		},
+		showActions: {
+			type: Boolean,
+			default: true,
 		},
 	},
 	data() {

@@ -129,7 +129,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:is-selected="isSelected(item)"
 					:class="{ 'dragged': isDragged(item) }"
 					:select-entity="selectItem"
-					:uuid="_uid" />
+					:uuid="_uid"
+					:show-actions="false" />
 			</tbody>
 		</table>
 		<div id="drag-preview">
