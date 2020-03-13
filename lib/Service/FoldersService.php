@@ -228,6 +228,16 @@ class FoldersService {
 		return $this->moveFolder($folder, $newParent);
 	}
 
+	/**
+	 * Get the folders by strings
+	 *
+	 * @param $searchString
+	 * @return array
+	 */
+	public function findByString($searchString) {
+		return $this->folderMapper->findByString($this->userId, $searchString);
+	}
+
 	private function moveFolder($folder, $newParent) {
 		$oldFullPath = $folder->path;
 		if ($newParent->path === '') {

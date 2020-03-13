@@ -75,9 +75,13 @@ OCA.Inventory.App = new Vue({
 	methods: {
 		filter(query) {
 			this.searchString = query
+			if (!query) {
+				this.$store.commit('setSearchResults', [])
+			}
 		},
 		cleanSearch() {
 			this.searchString = ''
+			this.$store.commit('setSearchResults', [])
 		},
 	},
 	render: h => h(App),

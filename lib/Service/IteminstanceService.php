@@ -138,6 +138,17 @@ class IteminstanceService {
 		return $this->getInstanceDetails($editedInstance);
 	}
 
+	public function findByString($searchString) {
+		// Find instances directly
+		$instances = $this->iteminstanceMapper->findByString($this->userId, $searchString);
+		// Also find instances with a UUID
+		$uuids = $this->iteminstanceUuidMapper->findByString($this->userId, $searchString);
+		foreach ($uuids as $uuid) {
+			$instances[] = $this->iteminstanceMapper->find($uuid->instanceid, $this->userId);
+		}
+		return $instances;
+	}
+
 	/**
 	 * Gets the place details and the UUIDs of an instance
 	 * 

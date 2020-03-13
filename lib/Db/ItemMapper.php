@@ -66,6 +66,29 @@ class ItemMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
+	public function findByString(string $uid, string $searchString, $limit=null, $offset=null) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_items')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
+			->andWhere('LOWER(name) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(maker) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(description) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(item_number) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(link) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(gtin) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(details) LIKE LOWER(:searchString)')
+			->orWhere('LOWER(comment) LIKE LOWER(:searchString)')
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			)
+			->setParameter('searchString', '%' . $searchString . '%');
+
+		return $this->findEntities($qb);
+	}
+
 	public function findByFolderId(string $uid, int $folderid, $limit=null, $offset=null) {
 		$qb = $this->db->getQueryBuilder();
 

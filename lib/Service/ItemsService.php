@@ -347,6 +347,26 @@ class ItemsService {
 		return $this->getItemDetails($editedItem);
 	}
 
+	public function findByString($searchString) {
+		// Find items which contain this string directly
+		$items = $this->itemMapper->findByString($this->userId, $searchString);
+
+		$itemIds = array_map(function($item) {return $item->id;}, $items);
+		// Find instances and corresponding items
+		$instances = $this->iteminstanceService->findByString($searchString);
+		foreach ($instances as $instance) {
+			// We only add the item if it is not present already
+			if (!in_array($instance->itemid, $itemIds)) {
+				$items[] = $this->itemMapper->find($instance->itemid, $this->userId);
+			}
+		}
+
+		foreach ($items as $item) {
+			$item = $this->getItemDetails($item);
+		}
+		return $items;
+	}
+
 	/**
 	 * Gets the of an item
 	 * 

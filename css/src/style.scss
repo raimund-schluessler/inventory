@@ -142,6 +142,47 @@
 			}
 		}
 
+		&.no_items_header {
+			td span {
+				vertical-align: middle;
+
+				&.icon-loading {
+					display: inline-block;
+					width: 44px;
+				}
+			}
+		}
+
+		&.search_header {
+			&:hover {
+				background-color: unset;
+			}
+
+			td {
+				padding: 0 14px;
+				line-height: 60px !important;
+				font-weight: bold;
+				color: var(--color-text-light);
+
+				&.done {
+					text-align: left !important;
+
+					span.icon-loading {
+						display: none;
+					}
+				}
+
+				span {
+					vertical-align: middle;
+
+					&.icon-loading {
+						display: inline-block;
+						width: 44px;
+					}
+				}
+			}
+		}
+
 		th {
 			height: 50px;
 
