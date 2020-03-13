@@ -68,6 +68,22 @@ class IteminstanceUuidMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
+	public function findByString(string $uid, string $searchString, $limit=null, $offset=null) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_instance_uuids')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
+			->andWhere('LOWER(uuid) LIKE LOWER(:searchString)')
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			)
+			->setParameter('searchString', '%' . $searchString . '%');
+
+		return $this->findEntities($qb);
+	}
+
 	public function add($params) {
 		$uuid = new IteminstanceUuid();
 		$uuid->setInstanceid($params['instanceid']);
