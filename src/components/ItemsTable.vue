@@ -94,9 +94,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-if="!filteredEntities.length">
+				<tr v-if="!filteredEntities.length" class="no_items_header">
 					<td class="center" colspan="6">
-						{{ emptyListMessage }}
+						<span v-if="loading" class="icon-loading" />
+						<span>{{ emptyListMessage }}</span>
 					</td>
 				</tr>
 				<component :is="entityType(item)"
@@ -118,8 +119,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					@dragenter.native="($event) => dragEnter(item, $event)"
 					@dragleave.native="dragLeave" />
 				<tr v-if="searchString" class="search_header">
-					<td class="center" colspan="6">
-						{{ searchMessage }}
+					<td class="center" colspan="6" :class="{done: !searching}">
+						<span class="icon-loading" />
+						<span>{{ searchMessage }}</span>
 					</td>
 				</tr>
 				<component :is="entityType(item)"
