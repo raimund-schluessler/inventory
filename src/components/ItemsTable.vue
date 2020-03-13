@@ -117,7 +117,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					@dragover.native="dragOver"
 					@dragenter.native="($event) => dragEnter(item, $event)"
 					@dragleave.native="dragLeave" />
-				<tr v-if="searchString">
+				<tr v-if="searchString" class="search_header">
 					<td class="center" colspan="6">
 						{{ searchMessage }}
 					</td>

@@ -142,6 +142,17 @@
 			}
 		}
 
+		&.search_header {
+			&:hover {
+				background-color: unset;
+			}
+
+			td {
+				text-align: left !important;
+				padding: 0 14px;
+			}
+		}
+
 		th {
 			height: 50px;
 
