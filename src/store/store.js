@@ -443,7 +443,19 @@ export default new Vuex.Store({
 		 * @param {Object} state The store data
 		 * @returns {Array} The results
 		 */
-		searchResults: (state) => state.searchResults,
+		searchResults: (state) => {
+			return state.searchResults.filter(entity => {
+				if (entity instanceof Item) {
+					return entity.path !== state.route.params.path
+				}
+				if (entity instanceof Folder) {
+					// Don't show folders in the same folder
+					// or their parent folder (since we are already in the folder)
+					return entity.path !== state.route.params.path
+					&& entity.path !== `${state.route.params.path}/${entity.name}`
+				}
+			})
+		},
 
 		/**
 		 * Returns the search results from the server

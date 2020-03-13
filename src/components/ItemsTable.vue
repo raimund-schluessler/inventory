@@ -123,7 +123,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</td>
 				</tr>
 				<component :is="entityType(item)"
-					v-for="item in sort([...searchResults], sortOrder, sortDirection)"
+					v-for="item in sort(searchResults, sortOrder, sortDirection)"
 					:key="`${entityType(item) + item.id}_search`"
 					:entity="item"
 					:is-selected="isSelected(item)"
