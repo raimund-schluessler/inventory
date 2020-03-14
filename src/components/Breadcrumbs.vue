@@ -47,15 +47,32 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<span>{{ folder }}</span>
 			</a>
 		</div>
-		<Actions v-if="hiddenFolders.length" class="crumb dropdown" :force-menu="true">
-			<ActionRouter
-				v-for="(folder, index) in hiddenFolders"
-				:key="`dropdown${index}`"
-				:to="`/folders/${folderPath(hiddenIndices[index])}`"
-				icon="icon-folder">
-				{{ folder }}
-			</ActionRouter>
-		</Actions>
+		<div v-if="hiddenFolders.length" class="crumb svg exclude">
+			<Actions class="dropdown"
+				:force-menu="true"
+				:open.sync="actionsOpen"
+				draggable="false"
+				@dragstart.native="dragstart"
+				@dragover.native="dragOver($event)"
+				@drop.native="dropOnActions"
+				@dragenter.native="actionsOpen = true"
+				@dragleave.native="closeActions">
+				<ActionRouter
+					v-for="(folder, index) in hiddenFolders"
+					:key="`dropdown${index}`"
+					:to="`/folders/${folderPath(hiddenIndices[index])}`"
+					icon="icon-folder"
+					class="crumb exclude"
+					draggable="false"
+					@dragstart.native="dragstart"
+					@drop.native="dropped(hiddenIndices[index], $event)"
+					@dragover.native="dragOver($event)"
+					@dragenter.native="($event) => dragEnter(hiddenIndices[index], $event)"
+					@dragleave.native="dragLeave">
+					{{ folder }}
+				</ActionRouter>
+			</Actions>
+		</div>
 		<div v-for="(folder, index) in folders2"
 			:key="`f2${index}`"
 			class="crumb svg folder"
@@ -102,6 +119,7 @@ export default {
 	data: function() {
 		return {
 			hiddenIndices: [],
+			actionsOpen: false,
 		}
 	},
 	computed: {
@@ -137,6 +155,7 @@ export default {
 	},
 	watch: {
 		path: function(val) {
+			this.actionsOpen = false
 			this.$nextTick(() => this.handleWindowResize())
 		},
 	},
@@ -152,6 +171,18 @@ export default {
 		window.removeEventListener('resize', this.handleWindowResize)
 	},
 	methods: {
+		closeActions(e) {
+			// Get the correct element, the events are bound to the <a>
+			if (e.target.closest) {
+				const target = e.target.closest('.crumb .dropdown')
+				// Don't do anything if we leave towards a child element.
+				if (target.contains(e.relatedTarget)) {
+					return
+				}
+				this.actionsOpen = false
+			}
+		},
+
 		isHidden(index) {
 			return this.hiddenIndices.includes(index)
 		},
@@ -177,7 +208,7 @@ export default {
 		},
 
 		getTotalWidth() {
-			const crumbs = document.querySelectorAll('.crumb:not(.dropdown)')
+			const crumbs = document.querySelectorAll('.crumb:not(.exclude)')
 			return Array.from(crumbs).reduce((width, crumb) => width + this.getWidth(crumb), 0)
 		},
 
@@ -197,15 +228,20 @@ export default {
 			}
 			return this.folders.slice(0, index + 1).join('/')
 		},
-
-		dragstart(e) {
+		cancelEvent(e) {
 			e.stopPropagation()
 			e.preventDefault()
 			return false
 		},
+		dropOnActions(e) {
+			this.actionsOpen = false
+			return this.cancelEvent(e)
+		},
+		dragstart(e) {
+			return this.cancelEvent(e)
+		},
 		dropped(index, e) {
-			e.stopPropagation()
-			e.preventDefault()
+			this.cancelEvent(e)
 			// If it is the last element in the path,
 			// don't do anything
 			if (index === (this.folders.length - 1)) {
@@ -213,6 +249,7 @@ export default {
 			}
 			const newPath = (index === -1) ? '' : this.folderPath(index)
 			this.$emit('dropped', newPath)
+			this.actionsOpen = false
 			return false
 		},
 		dragOver(e) {
@@ -229,9 +266,9 @@ export default {
 			}
 			// Get the correct element, in case we hover a child.
 			if (e.target.closest) {
-				const target = e.target.closest('div.crumb')
+				const target = e.target.closest('.crumb')
 				if (target.classList && target.classList.contains('crumb')) {
-					const folders = document.querySelectorAll('div.crumb')
+					const folders = document.querySelectorAll('.crumb')
 					folders.forEach((f) => { f.classList.remove('over') })
 					target.classList.add('over')
 				}
@@ -244,7 +281,7 @@ export default {
 			}
 			// Get the correct element, in case we leave directly from a child.
 			if (e.target.closest) {
-				const target = e.target.closest('div.crumb')
+				const target = e.target.closest('.crumb')
 				if (target.contains(e.relatedTarget)) {
 					return
 				}
