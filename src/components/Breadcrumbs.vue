@@ -79,8 +79,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import Item from '../models/item.js'
-import { mapActions, mapGetters } from 'vuex'
 import debounce from 'debounce'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionRouter } from '@nextcloud/vue/dist/Components/ActionRouter'
@@ -107,10 +105,6 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters({
-			draggedEntities: 'getDraggedEntities',
-		}),
-
 		folders() {
 			return (this.path === '') ? [] : this.path.split('/')
 		},
@@ -158,11 +152,6 @@ export default {
 		window.removeEventListener('resize', this.handleWindowResize)
 	},
 	methods: {
-		...mapActions([
-			'moveItem',
-			'moveFolder',
-		]),
-
 		isHidden(index) {
 			return this.hiddenIndices.includes(index)
 		},
@@ -215,7 +204,6 @@ export default {
 			return false
 		},
 		dropped(index, e) {
-			const entities = this.draggedEntities
 			e.stopPropagation()
 			e.preventDefault()
 			// If it is the last element in the path,
@@ -224,13 +212,7 @@ export default {
 				return
 			}
 			const newPath = (index === -1) ? '' : this.folderPath(index)
-			entities.forEach((entity) => {
-				if (entity instanceof Item) {
-					this.moveItem({ itemID: entity.id, newPath })
-				} else {
-					this.moveFolder({ folderID: entity.id, newPath })
-				}
-			})
+			this.$emit('dropped', newPath)
 			return false
 		},
 		dragOver(e) {
