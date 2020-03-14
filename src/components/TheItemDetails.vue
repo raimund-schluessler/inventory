@@ -23,7 +23,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div v-if="item" class="app-content-details">
 			<div id="controls" class="itemnavigation">
-				<Breadcrumbs :path="item.path" :item="item" root-icon="icon-bw icon-items" />
+				<Breadcrumbs :breadcrumbs="breadcrumbs" :item="item" root-icon="icon-bw icon-items" />
 				<Actions>
 					<ActionButton icon="icon-add" :close-after-click="true" @click="openModal">
 						{{ t('inventory', 'Link items') }}
@@ -243,6 +243,20 @@ export default {
 			subItems: 'getSubItems',
 			relatedItems: 'getRelatedItems',
 		}),
+
+		breadcrumbs() {
+			const path = this.$route.params.path
+			const crumbs = (path === '') ? [] : path.split('/')
+			return [{ name: t('inventory', 'Items'), path: '/folders/' }].concat(crumbs.map((crumb, i) => {
+				return {
+					name: crumb,
+					path: '/folders/' + crumbs.slice(0, i + 1).join('/'),
+				}
+			})).concat([{
+				name: this.item.description,
+				path: `/folders/${(this.item.path) ? this.item.path + '/' : ''}item-${this.item.id}`,
+			}])
+		},
 	},
 	created: function() {
 		this.getItem(this.id)

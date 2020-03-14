@@ -21,19 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div ref="container" class="breadcrumb">
-		<div data-dir="#/folders/"
-			class="crumb svg root"
-			draggable="false"
-			@dragstart="dragstart"
-			@drop="dropped(-1, $event)"
-			@dragover="dragOver"
-			@dragenter="($event) => dragEnter(-1, $event)"
-			@dragleave="dragLeave">
-			<a href="#/folders/">
-				<span :class="rootIcon" class="icon" />
-			</a>
-		</div>
-		<div v-for="(folder, index) in folders1"
+		<div v-for="(crumb, index) in crumbs1"
 			:key="`f1${index}`"
 			class="crumb svg folder"
 			:class="{'hidden': isHidden(index)}"
@@ -43,11 +31,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			@dragover="dragOver($event)"
 			@dragenter="($event) => dragEnter(index, $event)"
 			@dragleave="dragLeave">
-			<a :href="`#/folders/${folderPath(index)}`">
-				<span>{{ folder }}</span>
+			<a :href="'#' + crumb.path">
+				<span v-if="!index" :class="rootIcon" class="icon" />
+				<span v-else>{{ crumb.name }}</span>
 			</a>
 		</div>
-		<div v-if="hiddenFolders.length" class="crumb svg exclude">
+		<div v-if="hiddenCrumbs.length" class="crumb svg exclude">
 			<Actions class="dropdown"
 				:force-menu="true"
 				:open.sync="actionsOpen"
@@ -58,9 +47,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				@dragenter.native="actionsOpen = true"
 				@dragleave.native="closeActions">
 				<ActionRouter
-					v-for="(folder, index) in hiddenFolders"
+					v-for="(crumb, index) in hiddenCrumbs"
 					:key="`dropdown${index}`"
-					:to="`/folders/${folderPath(hiddenIndices[index])}`"
+					:to="crumb.path"
 					icon="icon-folder"
 					class="crumb exclude"
 					draggable="false"
@@ -69,27 +58,22 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					@dragover.native="dragOver($event)"
 					@dragenter.native="($event) => dragEnter(hiddenIndices[index], $event)"
 					@dragleave.native="dragLeave">
-					{{ folder }}
+					{{ crumb.name }}
 				</ActionRouter>
 			</Actions>
 		</div>
-		<div v-for="(folder, index) in folders2"
+		<div v-for="(crumb, index) in crumbs2"
 			:key="`f2${index}`"
 			class="crumb svg folder"
-			:class="{'hidden': isHidden(index + folders1.length)}"
+			:class="{'hidden': isHidden(index + crumbs1.length)}"
 			draggable="false"
 			@dragstart="dragstart"
-			@drop="dropped(index + folders1.length, $event)"
+			@drop="dropped(index + crumbs1.length, $event)"
 			@dragover="dragOver($event)"
-			@dragenter="($event) => dragEnter(index + folders1.length, $event)"
+			@dragenter="($event) => dragEnter(index + crumbs1.length, $event)"
 			@dragleave="dragLeave">
-			<a :href="`#/folders/${folderPath(index + folders1.length)}`">
-				<span>{{ folder }}</span>
-			</a>
-		</div>
-		<div v-if="item" class="crumb svg item">
-			<a :href="`#/folders/${(item.path) ? item.path + '/' : ''}item-${item.id}`">
-				<span>{{ item.description }}</span>
+			<a :href="'#' + crumb.path">
+				<span>{{ crumb.name }}</span>
 			</a>
 		</div>
 	</div>
@@ -106,14 +90,10 @@ export default {
 		ActionRouter,
 	},
 	props: {
-		path: {
-			type: String,
-			default: '',
-		},
-		item: {
-			type: Object,
-			required: false,
-			default: undefined,
+		breadcrumbs: {
+			type: Array,
+			required: true,
+			default: () => [],
 		},
 		rootIcon: {
 			type: String,
@@ -128,38 +108,30 @@ export default {
 		}
 	},
 	computed: {
-		folders() {
-			return (this.path === '') ? [] : this.path.split('/')
-		},
-
-		folders1() {
+		crumbs1() {
 			if (this.hiddenIndices.length) {
-				return this.folders.slice(0, Math.round(this.folders.length / 2))
+				return this.breadcrumbs.slice(0, Math.round(this.breadcrumbs.length / 2))
 			}
-			return this.folders
+			return this.breadcrumbs
 		},
 
-		folders2() {
+		crumbs2() {
 			if (this.hiddenIndices.length) {
-				return this.folders.slice(Math.round(this.folders.length / 2))
+				return this.breadcrumbs.slice(Math.round(this.breadcrumbs.length / 2))
 			}
 			return []
 		},
 
-		hiddenFolders() {
-			const folders = []
+		hiddenCrumbs() {
+			const crumbs = []
 			for (let jj = 0; jj < this.hiddenIndices.length; jj++) {
-				folders.push(this.folders[this.hiddenIndices[jj]])
+				crumbs.push(this.breadcrumbs[this.hiddenIndices[jj]])
 			}
-			return folders
-		},
-
-		crumbs() {
-			return document.getElementsByClassName('crumb folder')
+			return crumbs
 		},
 	},
 	watch: {
-		path: function(val) {
+		breadcrumbs: function(val) {
 			this.actionsOpen = false
 			this.$nextTick(() => this.handleWindowResize())
 		},
@@ -194,6 +166,7 @@ export default {
 
 		handleWindowResize() {
 			if (this.$refs.container) {
+				const crumbs = document.getElementsByClassName('crumb folder')
 				const hiddenIndices = []
 				const availableWidth = this.$refs.container.offsetWidth
 				const totalWidth = this.getTotalWidth()
@@ -201,10 +174,10 @@ export default {
 				// If we overflow, we have to take the action-item width into account as well.
 				overflow += (overflow > 0) ? 51 : 0
 				let i = 0
-				const startIndex = ((this.crumbs.length % 2) ? this.crumbs.length + 1 : this.crumbs.length) / 2 - 1
-				while (overflow > 0 && i < this.crumbs.length) {
-					const currentIndex = startIndex - ((i % 2) ? i + 1 : i) / 2 * Math.pow(-1, i + (this.crumbs.length % 2))
-					overflow -= this.getWidth(this.crumbs[currentIndex])
+				const startIndex = ((crumbs.length % 2) ? crumbs.length + 1 : crumbs.length) / 2 - 1
+				while (overflow > 0 && i < crumbs.length - 2) {
+					const currentIndex = startIndex - ((i % 2) ? i + 1 : i) / 2 * Math.pow(-1, i + (crumbs.length % 2))
+					overflow -= this.getWidth(crumbs[currentIndex])
 					hiddenIndices.push(currentIndex)
 					i++
 				}
@@ -226,13 +199,6 @@ export default {
 			}
 			return w
 		},
-
-		folderPath(index) {
-			if (index === -1) {
-				return '/'
-			}
-			return this.folders.slice(0, index + 1).join('/')
-		},
 		cancelEvent(e) {
 			e.stopPropagation()
 			e.preventDefault()
@@ -249,11 +215,10 @@ export default {
 			this.cancelEvent(e)
 			// If it is the last element in the path,
 			// don't do anything
-			if (index === (this.folders.length - 1)) {
+			if (index === (this.breadcrumbs.length - 1)) {
 				return
 			}
-			const newPath = (index === -1) ? '' : this.folderPath(index)
-			this.$emit('dropped', newPath)
+			this.$emit('dropped', this.breadcrumbs[index].path)
 			this.actionsOpen = false
 			return false
 		},
@@ -266,15 +231,15 @@ export default {
 		dragEnter(index, e) {
 			// If it is the last element in the path,
 			// don't do anything
-			if (index === (this.folders.length - 1)) {
+			if (index === (this.breadcrumbs.length - 1)) {
 				return
 			}
 			// Get the correct element, in case we hover a child.
 			if (e.target.closest) {
 				const target = e.target.closest('.crumb')
 				if (target.classList && target.classList.contains('crumb')) {
-					const folders = document.querySelectorAll('.crumb')
-					folders.forEach((f) => { f.classList.remove('over') })
+					const crumbs = document.querySelectorAll('.crumb')
+					crumbs.forEach((f) => { f.classList.remove('over') })
 					target.classList.add('over')
 				}
 			}
