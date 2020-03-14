@@ -23,6 +23,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div ref="container" class="breadcrumb">
 		<div v-for="(crumb, index) in crumbs1"
 			:key="`f1${index}`"
+			:ref="`crumb_${index}`"
 			class="crumb svg folder"
 			:class="{'hidden': isHidden(index)}"
 			draggable="false"
@@ -36,7 +37,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<span v-else>{{ crumb.name }}</span>
 			</a>
 		</div>
-		<div v-if="hiddenCrumbs.length" class="crumb svg exclude">
+		<div v-if="hiddenCrumbs.length" class="crumb svg">
 			<Actions class="dropdown"
 				:force-menu="true"
 				:open.sync="actionsOpen"
@@ -51,7 +52,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:key="`dropdown${index}`"
 					:to="crumb.path"
 					icon="icon-folder"
-					class="crumb exclude"
+					class="crumb"
 					draggable="false"
 					@dragstart.native="dragstart"
 					@drop.native="dropped(hiddenIndices[index], $event)"
@@ -64,6 +65,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div v-for="(crumb, index) in crumbs2"
 			:key="`f2${index}`"
+			:ref="`crumb_${index + crumbs1.length}`"
 			class="crumb svg folder"
 			:class="{'hidden': isHidden(index + crumbs1.length)}"
 			draggable="false"
@@ -166,7 +168,7 @@ export default {
 
 		handleWindowResize() {
 			if (this.$refs.container) {
-				const crumbs = document.getElementsByClassName('crumb folder')
+				const nrCrumbs = this.breadcrumbs.length
 				const hiddenIndices = []
 				const availableWidth = this.$refs.container.offsetWidth
 				const totalWidth = this.getTotalWidth()
@@ -174,10 +176,10 @@ export default {
 				// If we overflow, we have to take the action-item width into account as well.
 				overflow += (overflow > 0) ? 51 : 0
 				let i = 0
-				const startIndex = ((crumbs.length % 2) ? crumbs.length + 1 : crumbs.length) / 2 - 1
-				while (overflow > 0 && i < crumbs.length - 2) {
-					const currentIndex = startIndex - ((i % 2) ? i + 1 : i) / 2 * Math.pow(-1, i + (crumbs.length % 2))
-					overflow -= this.getWidth(crumbs[currentIndex])
+				const startIndex = ((nrCrumbs % 2) ? nrCrumbs + 1 : nrCrumbs) / 2 - 1
+				while (overflow > 0 && i < nrCrumbs - 2) {
+					const currentIndex = startIndex - ((i % 2) ? i + 1 : i) / 2 * Math.pow(-1, i + (nrCrumbs % 2))
+					overflow -= this.getWidth(this.$refs[`crumb_${currentIndex}`][0])
 					hiddenIndices.push(currentIndex)
 					i++
 				}
@@ -186,8 +188,7 @@ export default {
 		},
 
 		getTotalWidth() {
-			const crumbs = document.querySelectorAll('.crumb:not(.exclude)')
-			return Array.from(crumbs).reduce((width, crumb) => width + this.getWidth(crumb), 0)
+			return this.breadcrumbs.reduce((width, crumb, index) => width + this.getWidth(this.$refs[`crumb_${index}`][0]), 0)
 		},
 
 		getWidth(el) {
