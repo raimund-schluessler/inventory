@@ -23,7 +23,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div v-if="item" class="app-content-details">
 			<div id="controls" class="itemnavigation">
-				<Breadcrumbs :path="item.path" :item="item" />
+				<Breadcrumbs :path="item.path" :item="item" root-icon="icon-bw icon-items" />
 				<Actions>
 					<ActionButton icon="icon-add" :close-after-click="true" @click="openModal">
 						{{ t('inventory', 'Link items') }}

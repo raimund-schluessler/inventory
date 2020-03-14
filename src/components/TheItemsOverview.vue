@@ -22,7 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div>
 		<div id="controls">
-			<Breadcrumbs :path="$route.params.path" @dropped="moveEntities" />
+			<Breadcrumbs :path="$route.params.path" root-icon="icon-bw icon-items" @dropped="moveEntities" />
 			<Actions default-icon="icon-add" :open.sync="actionsOpen" @close="addingFolder = false">
 				<ActionRouter :to="`/folders/${($route.params.path) ? $route.params.path + '/' : ''}additems`" icon="icon-add">
 					{{ t('inventory', 'Add items') }}

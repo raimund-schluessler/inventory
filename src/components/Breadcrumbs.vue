@@ -30,7 +30,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			@dragenter="($event) => dragEnter(-1, $event)"
 			@dragleave="dragLeave">
 			<a href="#/folders/">
-				<span class="icon icon-bw icon-items" />
+				<span :class="rootIcon" class="icon" />
 			</a>
 		</div>
 		<div v-for="(folder, index) in folders1"
@@ -114,6 +114,11 @@ export default {
 			type: Object,
 			required: false,
 			default: undefined,
+		},
+		rootIcon: {
+			type: String,
+			required: false,
+			default: 'icon-home',
 		},
 	},
 	data: function() {
