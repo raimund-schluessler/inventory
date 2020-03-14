@@ -169,20 +169,19 @@ export default {
 
 		handleWindowResize() {
 			if (this.$refs.container) {
+				const hiddenIndices = []
 				const availableWidth = this.$refs.container.offsetWidth
 				const totalWidth = this.getTotalWidth()
 				let overflow = totalWidth - availableWidth
 				// If we overflow, we have to take the action-item width into account as well.
 				overflow += (overflow > 0) ? 51 : 0
 				let i = 0
-				let currentIndex
-				const hiddenIndices = []
-				const startIndex = Math.round(this.crumbs.length / 2) - 1
+				const startIndex = ((this.crumbs.length % 2) ? this.crumbs.length + 1 : this.crumbs.length) / 2 - 1
 				while (overflow > 0 && i < this.crumbs.length) {
-					currentIndex = startIndex - ((i % 2) ? i + 1 : i) / 2 * Math.pow(-1, i)
+					const currentIndex = startIndex - ((i % 2) ? i + 1 : i) / 2 * Math.pow(-1, i + (this.crumbs.length % 2))
 					overflow -= this.getWidth(this.crumbs[currentIndex])
-					i++
 					hiddenIndices.push(currentIndex)
+					i++
 				}
 				this.hiddenIndices = hiddenIndices.sort()
 			}
