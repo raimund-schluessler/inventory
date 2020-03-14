@@ -491,34 +491,8 @@ table {
 	}
 }
 
-.breadcrumb {
-	width: calc(100% - 88px);
-	flex-grow: 1;
-
-	div.crumb {
-		&.item {
-			background-image: none;
-		}
-		&.action-item {
-			margin-left: unset !important;
-			ul {
-				overflow-y: auto;
-				-webkit-overflow-scrolling: touch;
-				min-height: calc(44px * 1.5);
-				max-height: calc(100vh - 50px * 2);
-			}
-		}
-		> a {
-			align-items: center;
-			display: inline-flex;
-
-			> span {
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
-		}
-	}
+.breadcrumb .crumb.action-item {
+	margin-left: unset !important;
 }
 
 .categories li {

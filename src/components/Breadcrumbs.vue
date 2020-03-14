@@ -221,6 +221,8 @@ export default {
 			}
 			this.$emit('dropped', this.breadcrumbs[index].path)
 			this.actionsOpen = false
+			const crumbs = document.querySelectorAll('.crumb')
+			crumbs.forEach((f) => { f.classList.remove('over') })
 			return false
 		},
 		dragOver(e) {
@@ -264,3 +266,34 @@ export default {
 	},
 }
 </script>
+
+<style lang="scss" scoped>
+.breadcrumb {
+	width: calc(100% - 88px);
+	flex-grow: 1;
+
+	.crumb {
+		&.item {
+			background-image: none;
+		}
+		&.action-item {
+			ul {
+				overflow-y: auto;
+				-webkit-overflow-scrolling: touch;
+				min-height: calc(44px * 1.5);
+				max-height: calc(100vh - 50px * 2);
+			}
+		}
+		> a {
+			align-items: center;
+			display: inline-flex;
+
+			> span {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		}
+	}
+}
+</style>
