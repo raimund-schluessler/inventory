@@ -189,11 +189,7 @@ export default {
 
 		getTotalWidth() {
 			const crumbs = document.querySelectorAll('.crumb:not(.dropdown)')
-			let totalWidth = 0
-			for (let i = 0; i < crumbs.length; i++) {
-				totalWidth += this.getWidth(crumbs[i])
-			}
-			return totalWidth
+			return Array.from(crumbs).reduce((width, crumb) => width + this.getWidth(crumb), 0)
 		},
 
 		getWidth(el) {
