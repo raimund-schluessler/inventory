@@ -176,9 +176,9 @@ export default {
 				// If we overflow, we have to take the action-item width into account as well.
 				overflow += (overflow > 0) ? 51 : 0
 				let i = 0
-				const startIndex = ((nrCrumbs % 2) ? nrCrumbs + 1 : nrCrumbs) / 2 - 1
+				const startIndex = Math.floor(nrCrumbs / 2)
 				while (overflow > 0 && i < nrCrumbs - 2) {
-					const currentIndex = startIndex - ((i % 2) ? i + 1 : i) / 2 * Math.pow(-1, i + (nrCrumbs % 2))
+					const currentIndex = startIndex + ((i % 2) ? i + 1 : i) / 2 * Math.pow(-1, i + (nrCrumbs % 2))
 					overflow -= this.getWidth(this.$refs[`crumb_${currentIndex}`][0])
 					hiddenIndices.push(currentIndex)
 					i++
