@@ -22,7 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div>
 		<div id="controls">
-			<Breadcrumbs :path="$route.params.path" />
+			<Breadcrumbs :breadcrumbs="breadcrumbs" root-icon="icon-bw icon-items" @dropped="moveEntities" />
 			<Actions default-icon="icon-add" :open.sync="actionsOpen" @close="addingFolder = false">
 				<ActionRouter :to="`/folders/${($route.params.path) ? $route.params.path + '/' : ''}additems`" icon="icon-add">
 					{{ t('inventory', 'Add items') }}
@@ -55,6 +55,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
+import Item from '../models/item.js'
 import { mapGetters, mapActions } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 import Breadcrumbs from './Breadcrumbs.vue'
@@ -85,7 +86,19 @@ export default {
 			items: 'getAllItems',
 			folders: 'getFoldersByPath',
 			loading: 'loadingItems',
+			draggedEntities: 'getDraggedEntities',
 		}),
+
+		breadcrumbs() {
+			const path = this.$route.params.path
+			const crumbs = (path === '') ? [] : path.split('/')
+			return [{ name: t('inventory', 'Items'), path: '/folders/' }].concat(crumbs.map((crumb, i) => {
+				return {
+					name: crumb,
+					path: '/folders/' + crumbs.slice(0, i + 1).join('/'),
+				}
+			}))
+		},
 	},
 	created: function() {
 		this.getFolders(this.$route.params.path)
@@ -99,7 +112,20 @@ export default {
 	methods: {
 		...mapActions([
 			'createFolder',
+			'moveItem',
+			'moveFolder',
 		]),
+
+		moveEntities(newPath) {
+			newPath = newPath.replace('/folders/', '')
+			this.draggedEntities.forEach((entity) => {
+				if (entity instanceof Item) {
+					this.moveItem({ itemID: entity.id, newPath })
+				} else {
+					this.moveFolder({ folderID: entity.id, newPath })
+				}
+			})
+		},
 
 		async getFolders(path) {
 			await this.getFoldersByPath(path)
