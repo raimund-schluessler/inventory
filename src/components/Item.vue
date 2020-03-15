@@ -101,7 +101,7 @@ export default {
 			if (!this.entity.iconurl) {
 				let color = '000'
 				if (OCA.Accessibility) {
-					color = (OCA.Accessibility.theme === 'themedark' ? 'fff' : '000')
+					color = (OCA.Accessibility.theme === 'dark' ? 'fff' : '000')
 				}
 				return OC.generateUrl(`svg/inventory/item_${this.entity.icon}?color=${color}`)
 			} else {

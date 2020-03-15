@@ -23,8 +23,6 @@
 	display: none;
 }
 
-@include icon-black-white('inventory', 'inventory', 1, false);
-
 .icon {
 	height: 16px;
 	width: 16px;
@@ -34,13 +32,11 @@
 	opacity: .5;
 }
 
-.icon-qrcode {
-	@include icon-color('qrcode', 'inventory', $color-black, 3);
-}
+@include icon-black-white('inventory', 'inventory', 1, false);
 
-.icon-gtin {
-	@include icon-color('gtin', 'inventory', $color-black, 3);
-}
+@include icon-black-white('qrcode', 'inventory', 1, false);
+
+@include icon-black-white('gtin', 'inventory', 1, false);
 
 .action-item {
 	margin-left: auto !important;
@@ -275,11 +271,7 @@
 						margin: 4px;
 						background-size: 32px;
 						background-repeat:  no-repeat;
-
-						&.default {
-							background-image: url('../../svg/inventory/inventory');
-							opacity: .57;
-						}
+						opacity: .57;
 					}
 				}
 
