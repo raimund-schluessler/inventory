@@ -229,9 +229,37 @@ export default new Vuex.Store({
 			Vue.set(state.item, 'attachments', attachments)
 		},
 
+		createAttachment(state, { attachment }) {
+			state.item.attachments.push(attachment)
+		},
+
+		updateAttachment(state, { attachment }) {
+			const index = state.item.attachments.findIndex(a => a.id === attachment.id)
+			if (index > -1) {
+				Vue.set(state.item.attachments, index, attachment)
+			}
+		},
+
 		setInstanceAttachments(state, { instanceID, attachments }) {
 			const instance = state.item.instances.find(instance => instance.id === instanceID)
 			Vue.set(instance, 'attachments', attachments)
+		},
+
+		createInstanceAttachment(state, { attachment, instanceId }) {
+			const instance = state.item.instances.find(instance => +instance.id === +instanceId)
+			if (instance) {
+				instance.attachments.push(attachment)
+			}
+		},
+
+		updateInstanceAttachment(state, { attachment, instanceId }) {
+			const instance = state.item.instances.find(instance => +instance.id === +instanceId)
+			if (instance) {
+				const index = instance.attachments.findIndex(a => a.id === attachment.id)
+				if (index > -1) {
+					Vue.set(instance.attachments, index, attachment)
+				}
+			}
 		},
 
 		setSubItems(state, items) {
@@ -532,6 +560,27 @@ export default new Vuex.Store({
 				commit('setInstanceAttachments', { instanceID, attachments: [] })
 			}
 		},
+
+		async createAttachment({ commit }, { itemId, formData, instanceId }) {
+			if (instanceId) {
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment`), formData)
+				commit('createInstanceAttachment', { itemId, attachment: response.data, instanceId })
+			} else {
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment`), formData)
+				commit('createAttachment', { itemId, attachment: response.data })
+			}
+		},
+
+		async updateAttachment({ commit }, { itemId, attachmentId, formData, instanceId }) {
+			if (instanceId) {
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}`), formData)
+				commit('updateInstanceAttachment', { itemId, attachment: response.data, instanceId })
+			} else {
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}`), formData)
+				commit('updateAttachment', { itemId, attachment: response.data })
+			}
+		},
+
 		async loadSubItems({ commit }, itemID) {
 			try {
 				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}/sub`))

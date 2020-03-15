@@ -95,4 +95,27 @@ class AttachmentController extends Controller {
 	public function displayInstance($itemID, $instanceID, $attachmentID) {
 		return $this->attachmentService->display($itemID, $attachmentID, $instanceID);
 	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function create($itemID, $instanceID = null) {
+		return $this->attachmentService->create(
+			$itemID,
+			$this->request->getParam('data'),
+			$instanceID
+		);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function update($itemID, $attachmentID, $instanceID = null) {
+		return $this->attachmentService->update(
+			$itemID,
+			$attachmentID,
+			$this->request->getParam('data'),
+			$instanceID
+		);
+	}
 }

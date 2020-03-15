@@ -27,6 +27,9 @@ namespace OCA\Inventory\Storage;
 
 use OC\Security\CSP\ContentSecurityPolicyManager;
 use OCA\Inventory\Db\Attachment;
+use OCA\Inventory\Db\AttachmentMapper;
+use OCA\Inventory\Exceptions\ConflictException;
+use OCA\Inventory\StatusException;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\EmptyContentSecurityPolicy;
 use OCP\AppFramework\Http\FileDisplayResponse;
@@ -36,17 +39,26 @@ use OCP\Files\IAppData;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
+use OCP\IRequest;
+use OCP\IL10N;
 
 class AttachmentStorage {
 
 	private $userId;
 	private $appData;
 	private $rootFolder;
+	private $request;
+	private $l10n;
+	private $attachmentMapper;
 
-	public function __construct($userId, IAppData $appData, IRootFolder $rootFolder) {
+	public function __construct($userId, IAppData $appData, IRootFolder $rootFolder,
+	IRequest $request, IL10N $l10n, AttachmentMapper $attachmentMapper) {
 		$this->userId = $userId;
 		$this->appData = $appData;
 		$this->rootFolder = $rootFolder;
+		$this->request = $request;
+		$this->l10n = $l10n;
+		$this->attachmentMapper = $attachmentMapper;
 	}
 
 	/**
@@ -64,7 +76,23 @@ class AttachmentStorage {
 			$folder = $appDataFolder->newFolder('inventory');
 		}
 		return $folder;
+	}
 
+	/**
+	 * Get the folder
+	 *
+	 * @param Attachment $attachment
+	 * @param boolean $create			Create the folder if it not exists
+	 * @return \OCP\Files\Node
+	 * @throws \Exception
+	 */
+	private function getFolder(Attachment $attachment, $create = false) {
+		$instanceID = $attachment->getInstanceid();
+		if (!$instanceID) {
+			return $this->getItemFolder((int)$attachment->getItemid(), $create);
+		} else {
+			return $this->getInstanceFolder((int)$attachment->getItemid(), (int)$instanceID, $create);
+		}
 	}
 
 	/**
@@ -74,10 +102,17 @@ class AttachmentStorage {
 	 * @return \OCP\Files\Node
 	 * @throws \Exception
 	 */
-	private function getItemFolder(int $itemID) {
+	private function getItemFolder(int $itemID, $create = false) {
 		$appDataFolder = $this->getRootFolder();
 		$itemFolderName = 'item-' . (int)$itemID;
-		return $appDataFolder->get($itemFolderName);
+		try {
+			return $appDataFolder->get($itemFolderName);
+		} catch (NotFoundException $e) {
+			if ($create) {
+				return $appDataFolder->newFolder($itemFolderName);
+			}
+			throw $e;
+		}
 	}
 
 	/**
@@ -88,10 +123,18 @@ class AttachmentStorage {
 	 * @return \OCP\Files\Node
 	 * @throws \Exception
 	 */
-	private function getInstanceFolder(int $itemID, int $instanceID) {
-		$itemFolder = $this->getItemFolder($itemID);
+	private function getInstanceFolder(int $itemID, int $instanceID, $create = false) {
+		$itemFolder = $this->getItemFolder($itemID, $create);
 		$instanceFolderName = 'instances/instance-' . (int)$instanceID;
-		return $itemFolder->get($instanceFolderName);
+		try {
+			return $itemFolder->get($instanceFolderName);
+		} catch (NotFoundException $e) {
+			if ($create) {
+				return $itemFolder->newFolder($instanceFolderName);
+			}
+			throw $e;
+		}
+
 	}
 
 	/**
@@ -102,12 +145,7 @@ class AttachmentStorage {
 	 * @throws \Exception
 	 */
 	private function getFileFromRootFolder(Attachment $attachment) {
-		$instanceID = $attachment->getInstanceid();
-		if (!$instanceID) {
-			$folder = $this->getItemFolder((int)$attachment->getItemid());
-		} else {
-			$folder = $this->getInstanceFolder((int)$attachment->getItemid(), (int)$instanceID);
-		}
+		$folder = $this->getFolder($attachment);
 		return $folder->get($attachment->getBasename());
 	}
 
@@ -183,5 +221,86 @@ class AttachmentStorage {
 		}
 		$response->addHeader('Content-Type', $file->getMimeType());
 		return $response;
+	}
+
+	/**
+	 * @return array
+	 * @throws StatusException
+	 */
+	private function getUploadedFile () {
+		$file = $this->request->getUploadedFile('file');
+		$error = null;
+		$phpFileUploadErrors = [
+		UPLOAD_ERR_OK => $this->l10n->t('The file was uploaded'),
+		UPLOAD_ERR_INI_SIZE => $this->l10n->t('The uploaded file exceeds the upload_max_filesize directive in php.ini'),
+		UPLOAD_ERR_FORM_SIZE => $this->l10n->t('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form'),
+		UPLOAD_ERR_PARTIAL => $this->l10n->t('The file was only partially uploaded'),
+		UPLOAD_ERR_NO_FILE => $this->l10n->t('No file was uploaded'),
+		UPLOAD_ERR_NO_TMP_DIR => $this->l10n->t('Missing a temporary folder'),
+		UPLOAD_ERR_CANT_WRITE => $this->l10n->t('Could not write file to disk'),
+		UPLOAD_ERR_EXTENSION => $this->l10n->t('A PHP extension stopped the file upload'),
+		];
+
+		if (empty($file)) {
+			$error = $this->l10n->t('No file uploaded or file size exceeds maximum of %s', [\OCP\Util::humanFileSize(\OCP\Util::uploadLimit())]);
+		}
+		if (!empty($file) && array_key_exists('error', $file) && $file['error'] !== UPLOAD_ERR_OK) {
+			$error = $phpFileUploadErrors[$file['error']];
+		}
+		if ($error !== null) {
+			throw new StatusException($error);
+		}
+		return $file;
+	}
+
+	/**
+	 * @param Attachment $attachment
+	 * @throws NotPermittedException
+	 * @throws StatusException
+	 * @throws ConflictException
+	 */
+	public function create(Attachment $attachment) {
+		$file = $this->getUploadedFile();
+		$folder = $this->getFolder($attachment, true);
+		$fileName = $file['name'];
+
+		$attachment->setBasename($fileName);
+		if ($folder->nodeExists($fileName)) {
+			$attachment = $this->attachmentMapper->findByName($attachment->getItemid(), $fileName, $attachment->getInstanceid());
+			throw new ConflictException('File already exists.', $attachment);
+		}
+
+		$target = $folder->newFile($fileName);
+		$content = fopen($file['tmp_name'], 'rb');
+		if ($content === false) {
+			throw new StatusException('Could not read file.');
+		}
+		$target->putContent($content);
+		if (is_resource($content)) {
+			fclose($content);
+		}
+	}
+
+	/**
+	 * This method requires to be used with POST so we can properly get the form data
+	 *
+	 * @throws \Exception
+	 */
+	public function update(Attachment $attachment) {
+		$file = $this->getUploadedFile();
+		$fileName = $file['name'];
+		$attachment->setBasename($fileName);
+
+		$target = $this->getFileFromRootFolder($attachment);
+		$content = fopen($file['tmp_name'], 'rb');
+		if ($content === false) {
+			throw new StatusException('Could not read file');
+		}
+		$target->putContent($content);
+		if (is_resource($content)) {
+			fclose($content);
+		}
+
+		$attachment->setLastModified(time());
 	}
 }

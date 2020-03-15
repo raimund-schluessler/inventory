@@ -5,6 +5,9 @@
  * @author Raimund Schlüßler
  * @copyright 2017 Raimund Schlüßler raimund.schluessler@mailbox.org
  *
+ * @author Julius Härtl
+ * @copyright 2020 Julius Härtl jus@bitgrid.net
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
  * License as published by the Free Software Foundation; either
@@ -31,8 +34,6 @@ use OCA\Inventory\NoPermissionException;
 use OCA\Inventory\NotFoundException;
 use OCA\Inventory\StatusException;
 use OCP\AppFramework\Http\Response;
-use OCP\ICache;
-use OCP\ICacheFactory;
 use OCP\IL10N;
 
 class AttachmentService {
@@ -148,5 +149,93 @@ class AttachmentService {
 				throw new NotFoundException();
 			}
 		}
+	}
+
+	/**
+	 * @param $itemID
+	 * @param $data
+	 * @param $instanceID
+	 * @return Attachment|\OCP\AppFramework\Db\Entity
+	 * @throws NoPermissionException
+	 * @throws StatusException
+	 * @throws BadRequestException
+	 */
+	public function create($itemID, $data, int $instanceID = null) {
+
+		if (is_numeric($itemID) === false) {
+			throw new BadRequestException('Item id must be a number');
+		}
+
+		if ($data === false || $data === null) {
+			// throw new BadRequestException('data must be provided');
+		}
+
+		$attachment = new Attachment();
+		$attachment->setItemid($itemID);
+		$attachment->setInstanceid($instanceID);
+		$attachment->setCreatedBy($this->userId);
+		$attachment->setLastModified(time());
+		$attachment->setCreatedAt(time());
+
+		try {
+			$this->attachmentStorage->create($attachment);
+		} catch (InvalidAttachmentType $e) {
+			// just store the data
+		}
+		if ($attachment->getBasename() === null) {
+			throw new StatusException($this->l10n->t('No data was provided to create an attachment.'));
+		}
+		$attachment = $this->attachmentMapper->insert($attachment);
+
+		// extend data so the frontend can use it properly after creating
+		try {
+			$this->attachmentStorage->extendAttachment($attachment);
+		} catch (InvalidAttachmentType $e) {
+			// just store the data
+		}
+		return $attachment;
+	}
+
+	/**
+	 * Update an attachment with custom data
+	 *
+	 * @param $itemID
+	 * @param $attachmentID
+	 * @param $data
+	 * @return mixed
+	 * @throws \OCA\Deck\NoPermissionException
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws BadRequestException
+	 */
+	public function update($itemID, $attachmentID, $data, int $instanceID = null) {
+
+		if (is_numeric($itemID) === false) {
+			throw new BadRequestException('Item id must be a number');
+		}
+
+		if (is_numeric($attachmentID) === false) {
+			throw new BadRequestException('Attachment id must be a number');
+		}
+
+		if ($data === false || $data === null) {
+			//throw new BadRequestException('data must be provided');
+		}
+
+		$attachment = $this->attachmentMapper->findAttachment($itemID, $attachmentID, $instanceID);
+		try {
+			$this->attachmentStorage->update($attachment);
+		} catch (InvalidAttachmentType $e) {
+			// just update without further action
+		}
+		$attachment->setLastModified(time());
+		$this->attachmentMapper->update($attachment);
+		// extend data so the frontend can use it properly after creating
+		try {
+			$this->attachmentStorage->extendAttachment($attachment);
+		} catch (InvalidAttachmentType $e) {
+			// just store the data
+		}
+		return $attachment;
 	}
 }

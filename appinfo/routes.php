@@ -3,7 +3,10 @@
 * Nextcloud - Inventory
 *
 * @author Raimund Schlüßler
-* @copyright 2017 Raimund Schlüßler raimund.schluessler@mailbox.org
+* @copyright 2020 Raimund Schlüßler raimund.schluessler@mailbox.org
+*
+* @author Julius Härtl
+* @copyright 2018 Julius Härtl <jus@bitgrid.net>
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -25,10 +28,20 @@ return [
 		['name' => 'items#getAll',			'url' => '/items',										'verb' => 'GET'],
 		['name' => 'items#getByPath',		'url' => '/items',										'verb' => 'POST'],
 		['name' => 'items#get',				'url' => '/item/{itemID}',								'verb' => 'GET'],
+
 		['name' => 'attachment#getAll',		'url' => '/item/{itemID}/attachments',					'verb' => 'GET'],
 		['name' => 'attachment#getInstance','url' => '/item/{itemID}/instance/{instanceID}/attachments',	'verb' => 'GET'],
 		['name' => 'attachment#display',	'url' => '/item/{itemID}/attachment/{attachmentID}',	'verb' => 'GET'],
 		['name' => 'attachment#displayInstance',	'url' => '/item/{itemID}/instance/{instanceID}/attachment/{attachmentID}',	'verb' => 'GET'],
+		['name' => 'attachment#create',		'url' => '/item/{itemID}/attachment',					'verb' => 'POST'],
+		['name' => 'attachment#update',		'url' => '/item/{itemID}/attachment/{attachmentID}',	'verb' => 'PUT'],
+		// also allow to use POST for updates so we can properly access files when using application/x-www-form-urlencoded
+		['name' => 'attachment#update',		'url' => '/item/{itemID}/attachment/{attachmentID}',	'verb' => 'POST'],
+		['name' => 'attachment#create',		'url' => '/item/{itemID}/instance/{instanceID}/attachment',					'verb' => 'POST'],
+		['name' => 'attachment#update',		'url' => '/item/{itemID}/instance/{instanceID}/attachment/{attachmentID}',	'verb' => 'PUT'],
+		// also allow to use POST for updates so we can properly access files when using application/x-www-form-urlencoded
+		['name' => 'attachment#update',		'url' => '/item/{itemID}/instance/{instanceID}/attachment/{attachmentID}',	'verb' => 'POST'],
+
 		['name' => 'items#getSub',			'url' => '/item/{itemID}/sub',							'verb' => 'GET'],
 		['name' => 'items#getParent',		'url' => '/item/{itemID}/parent',						'verb' => 'GET'],
 		['name' => 'items#getRelated',		'url' => '/item/{itemID}/related',						'verb' => 'GET'],
