@@ -48,46 +48,57 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<table class="properties">
 							<tbody v-click-outside="hideEditItem">
 								<tr v-for="itemProperty in itemProperties" :key="itemProperty.key">
-									<td>
+									<th>
 										<span>{{ itemProperty.name }}</span>
-									</td>
+									</th>
 									<td v-if="itemProperty.key === 'link'">
-										<span :class="{ 'visibility-hidden': editingItem }">
-											<a :href="item.link" target="_blank">
-												{{ item.link }}
-											</a>
-										</span>
-										<span v-if="editingItem">
-											<input v-model="editedItem.link"
-												type="text"
-												:placeholder="itemProperty.name"
-												:name="itemProperty.key"
-												form="edit_item">
-										</span>
+										<div class="wrapper">
+											<span :class="{ 'visibility-hidden': editingItem }">
+												<a :href="item.link" target="_blank">
+													{{ item.link }}
+												</a>
+											</span>
+											<span v-if="editingItem" class="input">
+												<input v-model="editedItem.link"
+													type="text"
+													:placeholder="itemProperty.name"
+													:name="itemProperty.key"
+													form="edit_item">
+											</span>
+										</div>
 									</td>
 									<td v-else-if="itemProperty.key === 'categories'">
-										<ul class="categories">
-											<li v-for="category in item.categories" :key="category.id">
-												<span>{{ category.name }}</span>
-											</li>
-										</ul>
+										<div class="wrapper">
+											<ul class="categories">
+												<li v-for="category in item.categories" :key="category.id">
+													<span>{{ category.name }}</span>
+												</li>
+											</ul>
+										</div>
 									</td>
 									<td v-else>
-										<span :class="{ 'visibility-hidden': editingItem }">{{ item[itemProperty.key] }}</span>
-										<span v-if="editingItem">
-											<input v-model="editedItem[itemProperty.key]"
-												v-focus="itemProperty.key === 'name'"
-												type="text"
-												:placeholder="itemProperty.name"
-												:name="itemProperty.key"
-												form="edit_item">
-										</span>
+										<div class="wrapper">
+											<span :class="{ 'visibility-hidden': editingItem }">{{ item[itemProperty.key] }}</span>
+											<Actions v-if="itemProperty.key === 'gtin' && !editingItem">
+												<ActionButton icon="icon-gtin" :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
+													{{ t('inventory', 'Show GTIN') }}
+												</ActionButton>
+											</Actions>
+											<span v-if="editingItem" class="input">
+												<input v-model="editedItem[itemProperty.key]"
+													v-focus="itemProperty.key === 'name'"
+													type="text"
+													:placeholder="itemProperty.name"
+													:name="itemProperty.key"
+													form="edit_item">
+											</span>
+										</div>
 									</td>
 								</tr>
 								<tr>
-									<td>
+									<th>
 										{{ t('inventory', 'Attachments') }}
-									</td>
+									</th>
 									<td class="attachment-list">
 										<Attachments :attachments="item.attachments" />
 									</td>
@@ -107,7 +118,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Instances') }}</span>
 					</h3>
-					<ItemInstances :item="item" />
+					<ItemInstances :item="item" @openBarcode="(uuid) => openBarcode(uuid)" />
 				</div>
 				<div v-if="parentItems.length" class="paragraph">
 					<h3>
@@ -153,6 +164,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<span v-else>{{ t('inventory', 'Item not found!') }}</span>
 		</div>
 		<form id="edit_item" method="POST" @submit.prevent="saveItem" />
+		<Modal v-if="showBarcode"
+			id="qrcode-modal"
+			size="full"
+			@close="closeBarcode">
+			<div>
+				<canvas ref="canvas" class="qrcode" />
+			</div>
+		</Modal>
 	</div>
 </template>
 
@@ -164,9 +183,11 @@ import Breadcrumbs from './Breadcrumbs.vue'
 import RelationModal from './RelationModal.vue'
 import ItemInstances from './TheItemInstances.vue'
 import focus from '../directives/focus'
+import bwipjs from 'bwip-js'
 import ClickOutside from 'vue-click-outside'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
+import { Modal } from '@nextcloud/vue/dist/Components/Modal'
 
 export default {
 	components: {
@@ -177,6 +198,7 @@ export default {
 		ItemInstances,
 		Attachments,
 		Breadcrumbs,
+		Modal,
 	},
 	directives: {
 		ClickOutside,
@@ -202,6 +224,7 @@ export default {
 			editingItem: false,
 			editedItem: {},
 			closing: true,
+			showBarcode: false,
 			itemProperties: [
 				{
 					key: 'name',
@@ -272,6 +295,35 @@ export default {
 		next()
 	},
 	methods: {
+
+		/**
+		 * Generate a barcode for the given string
+		 * @param {String} value The string to show as barcode
+		 * @param {String} type The barcode type
+		 * @param {String} options The barcode options
+		 */
+		openBarcode(value, type = 'qrcode', options = '') {
+			if (value.length > 0) {
+				this.showBarcode = true
+				// We have to wait for the modal to render before
+				// drawing on the qr code canvas.
+				this.$nextTick(() => {
+					bwipjs.toCanvas(this.$refs.canvas, {
+						bcid: type,
+						scale: 6,
+						text: value,
+						height: 20,
+						includetext: true,
+					})
+				})
+			}
+		},
+
+		// reset the current qrcode
+		closeBarcode() {
+			this.showBarcode = false
+		},
+
 		async getItem(itemID) {
 			await this.loadItem(itemID)
 			this.getAttachments(itemID)
