@@ -268,14 +268,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .breadcrumb {
 	width: calc(100% - 88px);
 	flex-grow: 1;
 
 	.crumb {
-		&.item {
-			background-image: none;
+		&.over {
+			background-color: var(--color-primary-light);
 		}
+
 		&.action-item {
 			ul {
 				overflow-y: auto;
