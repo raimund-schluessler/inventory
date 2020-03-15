@@ -110,7 +110,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 									<span>{{ uuid.uuid }}</span>
 									<div class="actions">
 										<Actions>
-											<ActionButton icon="icon-qrcode" :close-after-click="true" @click="showQRcode(uuid.uuid)">
+											<ActionButton icon="icon-qrcode" :close-after-click="true" @click="$emit('openBarcode', uuid.uuid)">
 												{{ t('inventory', 'Show QR Code') }}
 											</ActionButton>
 											<ActionButton icon="icon-delete" @click="removeUuid(instance, uuid.uuid)">
@@ -156,14 +156,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="new_instance" method="POST" @submit.prevent="putInstance" />
 		<form id="edit_instance" method="POST" @submit.prevent="saveInstance" />
 		<!-- qrcode -->
-		<Modal v-if="qrcode"
-			id="qrcode-modal"
-			size="full"
-			@close="closeQrModal">
-			<div>
-				<img :src="`data:image/svg+xml;base64,${qrcode}`" class="qrcode">
-			</div>
-		</Modal>
 		<QrScanModal :qr-modal-open.sync="qrModalOpen" @recognizedQrCode="foundUuid" />
 	</div>
 </template>
@@ -173,15 +165,12 @@ import { mapActions } from 'vuex'
 import focus from '../directives/focus'
 import Attachments from './Attachments.vue'
 import ClickOutside from 'vue-click-outside'
-import qr from 'qr-image'
 import QrScanModal from './QrScanModal.vue'
-import { Modal } from '@nextcloud/vue/dist/Components/Modal'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
 
 export default {
 	components: {
-		Modal,
 		Actions,
 		ActionButton,
 		Attachments,
@@ -230,7 +219,6 @@ export default {
 			addUuidTo: null,
 			addingInstance: false,
 			newInstance: {},
-			qrcode: null,
 			editedInstance: {},
 			closing: true,
 			qrModalOpen: false,
@@ -252,24 +240,10 @@ export default {
 		openQrModal: function() {
 			this.qrModalOpen = true
 		},
-		/**
-		 * Generate a qrcode for the UUID
-		 * @param {String} uuid The UUID
-		 */
-		showQRcode(uuid) {
-			if (uuid.length > 0) {
-				this.qrcode = btoa(qr.imageSync(uuid, { type: 'svg' }))
-			}
-		},
 
 		foundUuid(uuid) {
 			this.newUuid = uuid
 			this.qrModalOpen = false
-		},
-
-		// reset the current qrcode
-		closeQrModal() {
-			this.qrcode = null
 		},
 
 		toggleEditInstance: function(instance) {

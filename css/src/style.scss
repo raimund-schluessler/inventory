@@ -38,6 +38,10 @@
 	@include icon-color('qrcode', 'inventory', $color-black, 3);
 }
 
+.icon-gtin {
+	@include icon-color('gtin', 'inventory', $color-black, 3);
+}
+
 .action-item {
 	margin-left: auto !important;
 }
@@ -385,13 +389,24 @@ table {
 				}
 			}
 
+			div.wrapper {
+				width: 100%;
+				display: inline-flex;
+				align-items: center;
+				flex-wrap: wrap;
+			}
+
 			div.add-instance {
 				padding: 0 14px;
 			}
 
-			input {
+			span.input {
 				width: 100%;
-				margin-left: -7px;
+
+				input {
+					width: 100%;
+					margin-left: -7px;
+				}
 			}
 
 			.icon:hover  {
