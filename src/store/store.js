@@ -230,7 +230,10 @@ export default new Vuex.Store({
 		},
 
 		createAttachment(state, { attachment }) {
-			state.item.attachments.push(attachment)
+			const index = state.item.attachments.findIndex(a => a.id === attachment.id)
+			if (index < 0) {
+				state.item.attachments.push(attachment)
+			}
 		},
 
 		updateAttachment(state, { attachment }) {
@@ -248,7 +251,10 @@ export default new Vuex.Store({
 		createInstanceAttachment(state, { attachment, instanceId }) {
 			const instance = state.item.instances.find(instance => +instance.id === +instanceId)
 			if (instance) {
-				instance.attachments.push(attachment)
+				const index = instance.attachments.findIndex(a => a.id === attachment.id)
+				if (index < 0) {
+					instance.attachments.push(attachment)
+				}
 			}
 		},
 
@@ -578,6 +584,16 @@ export default new Vuex.Store({
 			} else {
 				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}`), formData)
 				commit('updateAttachment', { itemId, attachment: response.data })
+			}
+		},
+
+		async linkAttachment({ commit }, { itemId, attachment, instanceId }) {
+			if (instanceId) {
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/link`), { attachment })
+				commit('createInstanceAttachment', { itemId, attachment: response.data, instanceId })
+			} else {
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/link`), { attachment })
+				commit('createAttachment', { itemId, attachment: response.data })
 			}
 		},
 

@@ -118,4 +118,40 @@ class AttachmentController extends Controller {
 			$instanceID
 		);
 	}
+
+	/**
+	 * Link a file as attachment
+	 * 
+	 * @param int $itemID
+	 * @param string $attachment
+	 * @param int $instanceID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function link($itemID, $attachment) {
+		return $this->attachmentService->link(
+			$itemID,
+			$attachment,
+			null
+		);
+	}
+
+	/**
+	 * Link a file as attachment
+	 * 
+	 * @param int $itemID
+	 * @param string $attachment
+	 * @param int $instanceID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function linkInstance($itemID, $attachment, $instanceID = null) {
+		return $this->attachmentService->link(
+			$itemID,
+			$attachment,
+			$instanceID
+		);
+	}
 }

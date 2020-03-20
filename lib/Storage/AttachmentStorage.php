@@ -62,14 +62,24 @@ class AttachmentStorage {
 	}
 
 	/**
-	 * Get the attachment storage root folder
+	 * Get the files root folder
 	 *
 	 * @return \OCP\Files\Node
 	 * @throws \Exception
 	 */
 	private function getRootFolder() {
 		$name = $this->userId . '/files';
-		$appDataFolder = $this->rootFolder->get($name);
+		return $this->rootFolder->get($name);
+	}
+
+	/**
+	 * Get the attachment storage folder
+	 *
+	 * @return \OCP\Files\Node
+	 * @throws \Exception
+	 */
+	private function getBaseFolder() {
+		$appDataFolder = $this->getRootFolder();
 		try {
 			$folder = $appDataFolder->get('inventory');
 		} catch (NotFoundException $e) {
@@ -103,7 +113,7 @@ class AttachmentStorage {
 	 * @throws \Exception
 	 */
 	private function getItemFolder(int $itemID, $create = false) {
-		$appDataFolder = $this->getRootFolder();
+		$appDataFolder = $this->getBaseFolder();
 		$itemFolderName = 'item-' . (int)$itemID;
 		try {
 			return $appDataFolder->get($itemFolderName);
@@ -144,9 +154,13 @@ class AttachmentStorage {
 	 * @return \OCP\Files\Node
 	 * @throws \Exception
 	 */
-	private function getFileFromRootFolder(Attachment $attachment) {
-		$folder = $this->getFolder($attachment);
-		return $folder->get($attachment->getBasename());
+	private function getFileFromRootFolder(Attachment $attachment) {#
+		if (strpos($attachment->getBasename(), '/') === 0) {
+			$folder = $this->getRootFolder();
+		} else {
+			$folder = $this->getFolder($attachment);
+		}
+		return $folder->get(ltrim($attachment->getBasename(), '/'));
 	}
 
 	/**

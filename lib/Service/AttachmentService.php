@@ -238,4 +238,51 @@ class AttachmentService {
 		}
 		return $attachment;
 	}
+
+	/**
+	 * @param int $itemID
+	 * @param string $attachment
+	 * @param int $instanceID
+	 * @return Attachment|\OCP\AppFramework\Db\Entity
+	 * @throws NoPermissionException
+	 * @throws StatusException
+	 * @throws BadRequestException
+	 */
+	public function link(int $itemID, string $attachmentPath, int $instanceID = null) {
+
+		if (is_numeric($itemID) === false) {
+			throw new BadRequestException('Item id must be a number');
+		}
+
+		if ($instanceID !== null && is_numeric($instanceID) === false) {
+			throw new BadRequestException('Instance id must be a number.');
+		}
+
+		$newAttachment = new Attachment();
+		$newAttachment->setItemid($itemID);
+		$newAttachment->setInstanceid($instanceID);
+		$newAttachment->setCreatedBy($this->userId);
+		$newAttachment->setLastModified(time());
+		$newAttachment->setCreatedAt(time());
+		$newAttachment->setBasename($attachmentPath);
+
+		// Check that the file exists
+		try {
+			$this->attachmentStorage->extendAttachment($newAttachment);
+		} catch (\OCP\Files\NotFoundException $e) {
+			throw new BadRequestException('The selected file does not exist.');
+		}
+
+		// Check if the same file is already linked
+		$attachment = $this->attachmentMapper->findByName(
+			$newAttachment->getItemid(),
+			$newAttachment->getBasename(),
+			$newAttachment->getInstanceid()
+		);
+		if (!$attachment) {
+			$attachment = $this->attachmentMapper->insert($newAttachment);
+		}
+
+		return $this->attachmentStorage->extendAttachment($attachment);
+	}
 }

@@ -158,6 +158,19 @@ export default {
 		},
 
 		select() {
+			OC.dialogs.filepicker(t('inventory', 'Select a file to link as attachment'), this.linkAttachment)
+		},
+
+		async linkAttachment(attachment) {
+			try {
+				await this.$store.dispatch('linkAttachment', {
+					itemId: this.itemId,
+					attachment,
+					instanceId: this.instanceId,
+				})
+			} catch (err) {
+				showError(err.response.data.message)
+			}
 		},
 
 		handleDropFiles(event) {

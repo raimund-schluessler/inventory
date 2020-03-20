@@ -119,6 +119,9 @@
 
 .itemstable {
 	position: relative;
+	white-space: unset;
+	width: 100%;
+	min-width: 300px;
 
 	thead {
 		position: sticky;
@@ -181,6 +184,14 @@
 					}
 				}
 			}
+		}
+
+		th,
+		td {
+			border-bottom: 1px solid var(--color-border-dark);
+			text-align: left;
+			font-weight: normal;
+			line-height: 30px;
 		}
 
 		th {
@@ -271,7 +282,10 @@
 						margin: 4px;
 						background-size: 32px;
 						background-repeat:  no-repeat;
-						opacity: .57;
+
+						&.default {
+							opacity: .57;
+						}
 					}
 				}
 
@@ -284,28 +298,24 @@
 }
 
 table {
-	white-space: unset;
-	width: 100%;
-	min-width: 300px;
-
-	tr {
-		transition: background-color .3s ease;
-	}
-
-	th,
-	td {
-		border-bottom: 1px solid var(--color-border-dark);
-		text-align: left;
-		font-weight: normal;
-		line-height: 30px;
-	}
-
 	&.instances,
 	&.properties {
+		white-space: unset;
+		width: 100%;
+		min-width: 300px;
+
+		tr {
+			transition: background-color .3s ease;
+		}
+
 		th,
 		td {
 			height: 44px;
 			padding: 0 10px;
+			border-bottom: 1px solid var(--color-border-dark);
+			text-align: left;
+			font-weight: normal;
+			line-height: 30px;
 
 			&.actions {
 				padding: 0;
