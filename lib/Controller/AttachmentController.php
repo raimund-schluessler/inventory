@@ -154,4 +154,77 @@ class AttachmentController extends Controller {
 			$instanceID
 		);
 	}
+
+	/**
+	 * Delete an attachment
+	 * 
+	 * @param int $itemID
+	 * @param int $attachmentID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function delete($itemID, $attachmentID) {
+		return $this->attachmentService->unlink(
+			$itemID,
+			$attachmentID,
+			null,
+			true
+		);
+	}
+
+	/**
+	 * Delete an attachment
+	 * 
+	 * @param int $itemID
+	 * @param int $attachmentID
+	 * @param int $instanceID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function deleteInstance($itemID, $attachmentID, $instanceID = null) {
+		return $this->attachmentService->unlink(
+			$itemID,
+			$attachmentID,
+			$instanceID,
+			true
+		);
+	}
+
+	/**
+	 * Unlink an attachment
+	 * 
+	 * @param int $itemID
+	 * @param int $attachmentID
+	 * @param int $instanceID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function unlink($itemID, $attachmentID) {
+		return $this->attachmentService->unlink(
+			$itemID,
+			$attachmentID,
+			null
+		);
+	}
+
+	/**
+	 * Unlink an attachment
+	 * 
+	 * @param int $itemID
+	 * @param int $attachmentID
+	 * @param int $instanceID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function unlinkInstance($itemID, $attachmentID, $instanceID = null) {
+		return $this->attachmentService->unlink(
+			$itemID,
+			$attachmentID,
+			$instanceID
+		);
+	}
 }

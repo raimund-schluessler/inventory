@@ -666,7 +666,7 @@ table {
 		width: calc(100% - 48px);
 		display: inline-block;
 
-		ul {
+		>ul {
 			display: grid;
 			grid-gap: 5px;
 			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

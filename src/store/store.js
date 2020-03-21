@@ -243,6 +243,13 @@ export default new Vuex.Store({
 			}
 		},
 
+		deleteAttachment(state, { attachmentId }) {
+			const index = state.item.attachments.findIndex(a => a.id === attachmentId)
+			if (index > -1) {
+				Vue.delete(state.item.attachments, index)
+			}
+		},
+
 		setInstanceAttachments(state, { instanceID, attachments }) {
 			const instance = state.item.instances.find(instance => instance.id === instanceID)
 			Vue.set(instance, 'attachments', attachments)
@@ -264,6 +271,16 @@ export default new Vuex.Store({
 				const index = instance.attachments.findIndex(a => a.id === attachment.id)
 				if (index > -1) {
 					Vue.set(instance.attachments, index, attachment)
+				}
+			}
+		},
+
+		deleteInstanceAttachment(state, { attachmentId, instanceId }) {
+			const instance = state.item.instances.find(instance => +instance.id === +instanceId)
+			if (instance) {
+				const index = instance.attachments.findIndex(a => a.id === attachmentId)
+				if (index > -1) {
+					Vue.delete(instance.attachments, index)
 				}
 			}
 		},
@@ -569,21 +586,33 @@ export default new Vuex.Store({
 
 		async createAttachment({ commit }, { itemId, formData, instanceId }) {
 			if (instanceId) {
-				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment`), formData)
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/create`), formData)
 				commit('createInstanceAttachment', { itemId, attachment: response.data, instanceId })
 			} else {
-				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment`), formData)
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/create`), formData)
 				commit('createAttachment', { itemId, attachment: response.data })
 			}
 		},
 
 		async updateAttachment({ commit }, { itemId, attachmentId, formData, instanceId }) {
 			if (instanceId) {
-				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}`), formData)
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/update`), formData)
 				commit('updateInstanceAttachment', { itemId, attachment: response.data, instanceId })
 			} else {
-				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}`), formData)
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/update`), formData)
 				commit('updateAttachment', { itemId, attachment: response.data })
+			}
+		},
+
+		async deleteAttachment({ commit }, { itemId, attachmentId, instanceId }) {
+			if (instanceId) {
+				const response = await Axios.delete(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/delete`))
+				commit('deleteInstanceAttachment', { itemId, attachmentId, instanceId })
+				return response
+			} else {
+				const response = await Axios.delete(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/delete`))
+				commit('deleteAttachment', { itemId, attachmentId })
+				return response
 			}
 		},
 
@@ -594,6 +623,18 @@ export default new Vuex.Store({
 			} else {
 				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/link`), { attachment })
 				commit('createAttachment', { itemId, attachment: response.data })
+			}
+		},
+
+		async unlinkAttachment({ commit }, { itemId, attachmentId, instanceId }) {
+			if (instanceId) {
+				const response = await Axios.delete(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/unlink`))
+				commit('deleteInstanceAttachment', { itemId, attachmentId, instanceId })
+				return response
+			} else {
+				const response = await Axios.delete(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/unlink`))
+				commit('deleteAttachment', { itemId, attachmentId })
+				return response
 			}
 		},
 

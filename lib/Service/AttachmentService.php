@@ -285,4 +285,40 @@ class AttachmentService {
 
 		return $this->attachmentStorage->extendAttachment($attachment);
 	}
+
+	/**
+	 * @param int $itemID
+	 * @param int $attachmentID
+	 * @param int $instanceID
+	 * @param bool $delete
+	 * @return Attachment|\OCP\AppFramework\Db\Entity
+	 * @throws NoPermissionException
+	 * @throws StatusException
+	 * @throws BadRequestException
+	 */
+	public function unlink(int $itemID, int $attachmentID, int $instanceID = null, bool $delete = false) {
+
+		if (is_numeric($itemID) === false) {
+			throw new BadRequestException('Item id must be a number');
+		}
+
+		if (is_numeric($attachmentID) === false) {
+			throw new BadRequestException('Attachment id must be a number');
+		}
+
+		if ($instanceID !== null && is_numeric($instanceID) === false) {
+			throw new BadRequestException('Instance id must be a number.');
+		}
+
+		// Unlink the file
+		$attachment = $this->attachmentMapper->findAttachment($itemID, $attachmentID, $instanceID);
+		if ($attachment) {
+			$this->attachmentMapper->delete($attachment);
+		}
+
+		// If requested we delete the file from the storage
+		if ($delete) {
+			$this->attachmentStorage->delete($attachment);
+		}
+	}
 }

@@ -317,4 +317,18 @@ class AttachmentStorage {
 
 		$attachment->setLastModified(time());
 	}
+
+	/**
+	 * Delete a file
+	 *
+	 * @param Attachment $attachment
+	 * @throws NotPermittedException
+	 */
+	public function delete(Attachment $attachment) {
+		try {
+			$file = $this->getFileFromRootFolder($attachment);
+			$file->delete();
+		} catch (NotFoundException $e) {
+		}
+	}
 }

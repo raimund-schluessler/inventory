@@ -42,6 +42,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<span class="filedate">{{ t('inventory', 'by') + ' ' + attachment.createdBy }}</span>
 						</a>
 					</div>
+					<Actions>
+						<ActionButton
+							icon="icon-delete"
+							:close-after-click="true"
+							@click="deleteAttachment(attachment)">
+							{{ t('inventory', 'Delete attachment') }}
+						</ActionButton>
+						<ActionButton v-if="canUnlink(attachment)"
+							icon="icon-close"
+							:close-after-click="true"
+							@click="unlinkAttachment(attachment)">
+							{{ t('inventory', 'Unlink attachment') }}
+						</ActionButton>
+					</Actions>
 				</li>
 				<li v-if="!attachments.length">
 					{{ t('inventory', 'No files attached.') }}
@@ -152,6 +166,40 @@ export default {
 		}
 	},
 	methods: {
+		/**
+		 * Whether an attachment can be unlinked or only deleted.
+		 * Files that have been linked start with a '/' which indicates the path is absolute
+		 *
+		 * @param {Attachment} attachment The attachment to check
+		 * @returns {Boolean}
+		 */
+		canUnlink(attachment) {
+			return attachment.basename.startsWith('/')
+		},
+
+		async unlinkAttachment(attachment) {
+			try {
+				await this.$store.dispatch('unlinkAttachment', {
+					itemId: this.itemId,
+					attachmentId: attachment.id,
+					instanceId: this.instanceId,
+				})
+			} catch (err) {
+				showError(err.response.data.message)
+			}
+		},
+
+		async deleteAttachment(attachment) {
+			try {
+				await this.$store.dispatch('deleteAttachment', {
+					itemId: this.itemId,
+					attachmentId: attachment.id,
+					instanceId: this.instanceId,
+				})
+			} catch (err) {
+				showError(err.response.data.message)
+			}
+		},
 
 		upload() {
 			this.$refs.localAttachments.click()
