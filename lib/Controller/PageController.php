@@ -28,6 +28,7 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Controller;
 use OCP\IConfig;
+use OCP\IInitialStateService;
 
 /**
  * Controller class for main page.
@@ -36,13 +37,20 @@ class PageController extends Controller {
 	private $userId;
 
 	/**
+	 * @var IInitialStateService
+	 */
+	private $initialStateService;
+
+	/**
 	 * @param string $AppName
 	 * @param IConfig $Config
+	 * @param IInitialStateService $initialStateService
 	 */
-	public function __construct($AppName, IRequest $request, $UserId, IConfig $Config){
+	public function __construct($AppName, IRequest $request, $UserId, IConfig $Config, IInitialStateService $initialStateService){
 		parent::__construct($AppName, $request);
 		$this->userId = $UserId;
 		$this->config = $Config;
+		$this->initialStateService = $initialStateService;
 	}
 
 	/**
@@ -50,6 +58,9 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index() {
+		$attachmentFolder = $this->config->getUserValue($this->userId, $this->appName, 'attachmentFolder', '/inventory');
+		$this->initialStateService->provideInitialState($this->appName, 'attachmentFolder', $attachmentFolder);
+
 		$response = new TemplateResponse('inventory', 'main');
 		return $response;
 	}

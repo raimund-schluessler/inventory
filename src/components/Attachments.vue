@@ -288,9 +288,9 @@ export default {
 
 		attachmentUrl(attachment) {
 			if (attachment.instanceid) {
-				return OC.generateUrl(`/apps/inventory/item/${attachment.itemid}/instance/${attachment.instanceid}/attachment/${attachment.id}`)
+				return OC.generateUrl(`/apps/inventory/item/${attachment.itemid}/instance/${attachment.instanceid}/attachment/${attachment.id}/display`)
 			} else {
-				return OC.generateUrl(`/apps/inventory/item/${attachment.itemid}/attachment/${attachment.id}`)
+				return OC.generateUrl(`/apps/inventory/item/${attachment.itemid}/attachment/${attachment.id}/display`)
 			}
 		},
 	},

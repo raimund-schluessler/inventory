@@ -27,6 +27,7 @@ import Folder from '../models/folder.js'
 import PQueue from 'p-queue'
 import Status from '../models/status'
 import Axios from '@nextcloud/axios'
+import { loadState } from '@nextcloud/initial-state'
 
 Vue.use(Vuex)
 
@@ -636,6 +637,18 @@ export default new Vuex.Store({
 				commit('deleteAttachment', { itemId, attachmentId })
 				return response
 			}
+		},
+
+		async getAttachmentFolder() {
+			try {
+				return loadState('inventory', 'attachmentFolder')
+			} catch (error) {
+				return ''
+			}
+		},
+
+		async setAttachmentFolder(context, { path }) {
+			return Axios.post(OC.generateUrl('apps/inventory/settings/attachmentFolder/set'), { path })
 		},
 
 		async loadSubItems({ commit }, itemID) {

@@ -41,6 +41,7 @@ use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OCP\IRequest;
 use OCP\IL10N;
+use OCP\IConfig;
 
 class AttachmentStorage {
 
@@ -50,15 +51,19 @@ class AttachmentStorage {
 	private $request;
 	private $l10n;
 	private $attachmentMapper;
+	private $settings;
+	private $AppName;
 
 	public function __construct($userId, IAppData $appData, IRootFolder $rootFolder,
-	IRequest $request, IL10N $l10n, AttachmentMapper $attachmentMapper) {
+	IRequest $request, IL10N $l10n, AttachmentMapper $attachmentMapper, IConfig $settings, string $AppName) {
 		$this->userId = $userId;
 		$this->appData = $appData;
 		$this->rootFolder = $rootFolder;
 		$this->request = $request;
 		$this->l10n = $l10n;
 		$this->attachmentMapper = $attachmentMapper;
+		$this->settings = $settings;
+		$this->appName = $AppName;
 	}
 
 	/**
@@ -80,10 +85,11 @@ class AttachmentStorage {
 	 */
 	private function getBaseFolder() {
 		$appDataFolder = $this->getRootFolder();
+		$attachmentFolder = ltrim($this->settings->getUserValue($this->userId, $this->appName, 'attachmentFolder', '/inventory'), '/');
 		try {
-			$folder = $appDataFolder->get('inventory');
+			$folder = $appDataFolder->get($attachmentFolder);
 		} catch (NotFoundException $e) {
-			$folder = $appDataFolder->newFolder('inventory');
+			$folder = $appDataFolder->newFolder($attachmentFolder);
 		}
 		return $folder;
 	}

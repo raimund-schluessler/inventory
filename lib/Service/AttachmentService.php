@@ -35,12 +35,15 @@ use OCA\Inventory\NotFoundException;
 use OCA\Inventory\StatusException;
 use OCP\AppFramework\Http\Response;
 use OCP\IL10N;
+use OCP\IConfig;
 
 class AttachmentService {
 
 	private $userId;
 	private $attachmentMapper;
 	private $attachmentStorage;
+	private $settings;
+	private $AppName;
 
 	/**
 	 * AttachmentService constructor.
@@ -48,12 +51,16 @@ class AttachmentService {
 	 * @param $userId
 	 * @param AttachmentMapper $attachmentMapper
 	 * @param AttachmentStorage $attachmentStorage
+	 * @param IConfig $settings
+	 * @param string $AppName
 	 * @throws \OCP\AppFramework\QueryException
 	 */
-	public function __construct($userId, AttachmentMapper $attachmentMapper, AttachmentStorage $attachmentStorage) {
+	public function __construct($userId, AttachmentMapper $attachmentMapper, AttachmentStorage $attachmentStorage, IConfig $settings, string $AppName) {
 		$this->userId = $userId;
 		$this->attachmentMapper = $attachmentMapper;
 		$this->attachmentStorage = $attachmentStorage;
+		$this->settings = $settings;
+		$this->appName = $AppName;
 	}
 
 	/**
@@ -320,5 +327,15 @@ class AttachmentService {
 		if ($delete) {
 			$this->attachmentStorage->delete($attachment);
 		}
+	}
+
+	/**
+	 * @param string $path
+	 * @throws NoPermissionException
+	 * @throws StatusException
+	 * @throws BadRequestException
+	 */
+	public function setFolder(string $path) {
+		return $this->settings->setUserValue($this->userId, $this->appName, 'attachmentFolder', $path);
 	}
 }

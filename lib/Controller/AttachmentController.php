@@ -99,7 +99,18 @@ class AttachmentController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	public function create($itemID, $instanceID = null) {
+	public function create($itemID) {
+		return $this->attachmentService->create(
+			$itemID,
+			$this->request->getParam('data'),
+			null
+		);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function createInstance($itemID, $instanceID = null) {
 		return $this->attachmentService->create(
 			$itemID,
 			$this->request->getParam('data'),
@@ -110,7 +121,19 @@ class AttachmentController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	public function update($itemID, $attachmentID, $instanceID = null) {
+	public function update($itemID, $attachmentID) {
+		return $this->attachmentService->update(
+			$itemID,
+			$attachmentID,
+			$this->request->getParam('data'),
+			null
+		);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function updateInstance($itemID, $attachmentID, $instanceID = null) {
 		return $this->attachmentService->update(
 			$itemID,
 			$attachmentID,
@@ -226,5 +249,17 @@ class AttachmentController extends Controller {
 			$attachmentID,
 			$instanceID
 		);
+	}
+
+	/**
+	 * Sets the attachment folder
+	 * 
+	 * @param string $path
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function setFolder($path) {
+		return $this->attachmentService->setFolder($path);
 	}
 }

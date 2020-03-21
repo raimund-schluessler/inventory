@@ -33,12 +33,14 @@ class PageControllerTest extends Base {
 	public function setUp(): void {
 		$request = $this->getMockBuilder('OCP\IRequest')->getMock();
 		$config = $this->getMockBuilder('OCP\IConfig')->getMock();
+		$initialState = $this->getMockBuilder('OCP\IInitialStateService')->getMock();
 
 		$this->controller = new PageController(
 			'inventory',
 			$request,
 			'admin',
-			$config
+			$config,
+			$initialState
 		);
 	}
 
