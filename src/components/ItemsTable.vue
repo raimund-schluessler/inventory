@@ -211,10 +211,10 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters({
-			searching: 'searching',
-			searchResults: 'searchResults',
-		}),
+		...mapGetters([
+			'searching',
+			'searchResults',
+		]),
 
 		allVisibleEntitiesSelected: {
 			set(select) {
@@ -379,7 +379,7 @@ export default {
 		},
 		sortOrder: {
 			get() {
-				return this.$store.state.settings.sortOrder
+				return this.$store.getters.sortOrder
 			},
 			set(order) {
 				this.$store.dispatch('setSetting', { type: 'sortOrder', value: order })
@@ -387,7 +387,7 @@ export default {
 		},
 		sortDirection: {
 			get() {
-				return this.$store.state.settings.sortDirection
+				return this.$store.getters.sortDirection
 			},
 			set(direction) {
 				this.$store.dispatch('setSetting', { type: 'sortDirection', value: +direction })
