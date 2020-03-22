@@ -95,4 +95,171 @@ class AttachmentController extends Controller {
 	public function displayInstance($itemID, $instanceID, $attachmentID) {
 		return $this->attachmentService->display($itemID, $attachmentID, $instanceID);
 	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function create($itemID) {
+		return $this->attachmentService->create(
+			$itemID,
+			$this->request->getParam('data'),
+			null
+		);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function createInstance($itemID, $instanceID = null) {
+		return $this->attachmentService->create(
+			$itemID,
+			$this->request->getParam('data'),
+			$instanceID
+		);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function update($itemID, $attachmentID) {
+		return $this->attachmentService->update(
+			$itemID,
+			$attachmentID,
+			$this->request->getParam('data'),
+			null
+		);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function updateInstance($itemID, $attachmentID, $instanceID = null) {
+		return $this->attachmentService->update(
+			$itemID,
+			$attachmentID,
+			$this->request->getParam('data'),
+			$instanceID
+		);
+	}
+
+	/**
+	 * Link a file as attachment
+	 * 
+	 * @param int $itemID
+	 * @param string $attachment
+	 * @param int $instanceID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function link($itemID, $attachment) {
+		return $this->attachmentService->link(
+			$itemID,
+			$attachment,
+			null
+		);
+	}
+
+	/**
+	 * Link a file as attachment
+	 * 
+	 * @param int $itemID
+	 * @param string $attachment
+	 * @param int $instanceID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function linkInstance($itemID, $attachment, $instanceID = null) {
+		return $this->attachmentService->link(
+			$itemID,
+			$attachment,
+			$instanceID
+		);
+	}
+
+	/**
+	 * Delete an attachment
+	 * 
+	 * @param int $itemID
+	 * @param int $attachmentID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function delete($itemID, $attachmentID) {
+		return $this->attachmentService->unlink(
+			$itemID,
+			$attachmentID,
+			null,
+			true
+		);
+	}
+
+	/**
+	 * Delete an attachment
+	 * 
+	 * @param int $itemID
+	 * @param int $attachmentID
+	 * @param int $instanceID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function deleteInstance($itemID, $attachmentID, $instanceID = null) {
+		return $this->attachmentService->unlink(
+			$itemID,
+			$attachmentID,
+			$instanceID,
+			true
+		);
+	}
+
+	/**
+	 * Unlink an attachment
+	 * 
+	 * @param int $itemID
+	 * @param int $attachmentID
+	 * @param int $instanceID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function unlink($itemID, $attachmentID) {
+		return $this->attachmentService->unlink(
+			$itemID,
+			$attachmentID,
+			null
+		);
+	}
+
+	/**
+	 * Unlink an attachment
+	 * 
+	 * @param int $itemID
+	 * @param int $attachmentID
+	 * @param int $instanceID
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function unlinkInstance($itemID, $attachmentID, $instanceID = null) {
+		return $this->attachmentService->unlink(
+			$itemID,
+			$attachmentID,
+			$instanceID
+		);
+	}
+
+	/**
+	 * Sets the attachment folder
+	 * 
+	 * @param string $path
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return \OCP\AppFramework\Http\Response
+	 */
+	public function setFolder($path) {
+		return $this->attachmentService->setFolder($path);
+	}
 }

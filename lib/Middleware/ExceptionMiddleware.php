@@ -29,6 +29,7 @@ use OCP\AppFramework\Middleware;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http\JSONResponse;
 use OCA\Inventory\StatusException;
+use OCA\Inventory\Exceptions\ConflictException;
 
 
 class ExceptionMiddleware extends Middleware {
@@ -49,6 +50,14 @@ class ExceptionMiddleware extends Middleware {
 	 * @throws \Exception
 	 */
 	public function afterException($controller, $methodName, \Exception $exception) {
+		if ($exception instanceof ConflictException) {
+			return new JSONResponse([
+				'status' => $exception->getStatus(),
+				'message' => $exception->getMessage(),
+				'data' => $exception->getData(),
+			], $exception->getStatus());
+		}
+
 		if ($exception instanceof StatusException) {
 			return new JSONResponse([
 				'status' => $exception->getStatus(),

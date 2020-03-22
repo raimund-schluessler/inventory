@@ -27,6 +27,7 @@ import Folder from '../models/folder.js'
 import PQueue from 'p-queue'
 import Status from '../models/status'
 import Axios from '@nextcloud/axios'
+import { loadState } from '@nextcloud/initial-state'
 
 Vue.use(Vuex)
 
@@ -229,9 +230,60 @@ export default new Vuex.Store({
 			Vue.set(state.item, 'attachments', attachments)
 		},
 
+		createAttachment(state, { attachment }) {
+			const index = state.item.attachments.findIndex(a => a.id === attachment.id)
+			if (index < 0) {
+				state.item.attachments.push(attachment)
+			}
+		},
+
+		updateAttachment(state, { attachment }) {
+			const index = state.item.attachments.findIndex(a => a.id === attachment.id)
+			if (index > -1) {
+				Vue.set(state.item.attachments, index, attachment)
+			}
+		},
+
+		deleteAttachment(state, { attachmentId }) {
+			const index = state.item.attachments.findIndex(a => a.id === attachmentId)
+			if (index > -1) {
+				Vue.delete(state.item.attachments, index)
+			}
+		},
+
 		setInstanceAttachments(state, { instanceID, attachments }) {
 			const instance = state.item.instances.find(instance => instance.id === instanceID)
 			Vue.set(instance, 'attachments', attachments)
+		},
+
+		createInstanceAttachment(state, { attachment, instanceId }) {
+			const instance = state.item.instances.find(instance => +instance.id === +instanceId)
+			if (instance) {
+				const index = instance.attachments.findIndex(a => a.id === attachment.id)
+				if (index < 0) {
+					instance.attachments.push(attachment)
+				}
+			}
+		},
+
+		updateInstanceAttachment(state, { attachment, instanceId }) {
+			const instance = state.item.instances.find(instance => +instance.id === +instanceId)
+			if (instance) {
+				const index = instance.attachments.findIndex(a => a.id === attachment.id)
+				if (index > -1) {
+					Vue.set(instance.attachments, index, attachment)
+				}
+			}
+		},
+
+		deleteInstanceAttachment(state, { attachmentId, instanceId }) {
+			const instance = state.item.instances.find(instance => +instance.id === +instanceId)
+			if (instance) {
+				const index = instance.attachments.findIndex(a => a.id === attachmentId)
+				if (index > -1) {
+					Vue.delete(instance.attachments, index)
+				}
+			}
 		},
 
 		setSubItems(state, items) {
@@ -532,6 +584,73 @@ export default new Vuex.Store({
 				commit('setInstanceAttachments', { instanceID, attachments: [] })
 			}
 		},
+
+		async createAttachment({ commit }, { itemId, formData, instanceId }) {
+			if (instanceId) {
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/create`), formData)
+				commit('createInstanceAttachment', { itemId, attachment: response.data, instanceId })
+			} else {
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/create`), formData)
+				commit('createAttachment', { itemId, attachment: response.data })
+			}
+		},
+
+		async updateAttachment({ commit }, { itemId, attachmentId, formData, instanceId }) {
+			if (instanceId) {
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/update`), formData)
+				commit('updateInstanceAttachment', { itemId, attachment: response.data, instanceId })
+			} else {
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/update`), formData)
+				commit('updateAttachment', { itemId, attachment: response.data })
+			}
+		},
+
+		async deleteAttachment({ commit }, { itemId, attachmentId, instanceId }) {
+			if (instanceId) {
+				const response = await Axios.delete(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/delete`))
+				commit('deleteInstanceAttachment', { itemId, attachmentId, instanceId })
+				return response
+			} else {
+				const response = await Axios.delete(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/delete`))
+				commit('deleteAttachment', { itemId, attachmentId })
+				return response
+			}
+		},
+
+		async linkAttachment({ commit }, { itemId, attachment, instanceId }) {
+			if (instanceId) {
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/link`), { attachment })
+				commit('createInstanceAttachment', { itemId, attachment: response.data, instanceId })
+			} else {
+				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/link`), { attachment })
+				commit('createAttachment', { itemId, attachment: response.data })
+			}
+		},
+
+		async unlinkAttachment({ commit }, { itemId, attachmentId, instanceId }) {
+			if (instanceId) {
+				const response = await Axios.delete(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/unlink`))
+				commit('deleteInstanceAttachment', { itemId, attachmentId, instanceId })
+				return response
+			} else {
+				const response = await Axios.delete(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/unlink`))
+				commit('deleteAttachment', { itemId, attachmentId })
+				return response
+			}
+		},
+
+		async getAttachmentFolder() {
+			try {
+				return loadState('inventory', 'attachmentFolder')
+			} catch (error) {
+				return ''
+			}
+		},
+
+		async setAttachmentFolder(context, { path }) {
+			return Axios.post(OC.generateUrl('apps/inventory/settings/attachmentFolder/set'), { path })
+		},
+
 		async loadSubItems({ commit }, itemID) {
 			try {
 				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}/sub`))

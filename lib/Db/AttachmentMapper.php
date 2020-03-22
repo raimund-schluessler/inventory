@@ -34,7 +34,7 @@ class AttachmentMapper extends QBMapper {
 		parent::__construct($db, 'invtry_attachments');
 	}
 
-	public function findAll(int $itemID, int $instanceID = null, $limit = null, $offset = null) {
+	public function findAll(string $uid, int $itemID, int $instanceID = null, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -43,6 +43,9 @@ class AttachmentMapper extends QBMapper {
 			->setFirstResult($offset)
 			->where(
 				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('created_by', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			);
 			if ($instanceID === null) {
 				$qb->andWhere(
@@ -57,7 +60,7 @@ class AttachmentMapper extends QBMapper {
 	}
 
 
-	public function findAttachment(int $itemID, int $attachmentID, int $instanceID = null) {
+	public function findAttachment(string $uid, int $itemID, int $attachmentID, int $instanceID = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -67,6 +70,9 @@ class AttachmentMapper extends QBMapper {
 			)
 			->andWhere(
 				$qb->expr()->eq('id', $qb->createNamedParameter($attachmentID, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('created_by', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			);
 			if ($instanceID === null) {
 				$qb->andWhere(
@@ -85,7 +91,7 @@ class AttachmentMapper extends QBMapper {
 		}
 	}
 
-	public function findByName(int $itemID, string $name, int $instanceID = null) {
+	public function findByName(string $uid, int $itemID, string $name, int $instanceID = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -95,6 +101,9 @@ class AttachmentMapper extends QBMapper {
 			)
 			->andWhere(
 				$qb->expr()->eq('basename', $qb->createNamedParameter($name, IQueryBuilder::PARAM_STR))
+			)
+			->andWhere(
+				$qb->expr()->eq('created_by', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			);
 			if ($instanceID === null) {
 				$qb->andWhere(

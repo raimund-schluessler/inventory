@@ -5,6 +5,9 @@
  * @author Raimund Schlüßler
  * @copyright 2017 Raimund Schlüßler raimund.schluessler@mailbox.org
  *
+ * @author Julius Härtl
+ * @copyright 2020 Julius Härtl jus@bitgrid.net
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
  * License as published by the Free Software Foundation; either
@@ -31,15 +34,16 @@ use OCA\Inventory\NoPermissionException;
 use OCA\Inventory\NotFoundException;
 use OCA\Inventory\StatusException;
 use OCP\AppFramework\Http\Response;
-use OCP\ICache;
-use OCP\ICacheFactory;
 use OCP\IL10N;
+use OCP\IConfig;
 
 class AttachmentService {
 
 	private $userId;
 	private $attachmentMapper;
 	private $attachmentStorage;
+	private $settings;
+	private $AppName;
 
 	/**
 	 * AttachmentService constructor.
@@ -47,12 +51,16 @@ class AttachmentService {
 	 * @param $userId
 	 * @param AttachmentMapper $attachmentMapper
 	 * @param AttachmentStorage $attachmentStorage
+	 * @param IConfig $settings
+	 * @param string $AppName
 	 * @throws \OCP\AppFramework\QueryException
 	 */
-	public function __construct($userId, AttachmentMapper $attachmentMapper, AttachmentStorage $attachmentStorage) {
+	public function __construct($userId, AttachmentMapper $attachmentMapper, AttachmentStorage $attachmentStorage, IConfig $settings, string $AppName) {
 		$this->userId = $userId;
 		$this->attachmentMapper = $attachmentMapper;
 		$this->attachmentStorage = $attachmentStorage;
+		$this->settings = $settings;
+		$this->appName = $AppName;
 	}
 
 	/**
@@ -75,7 +83,7 @@ class AttachmentService {
 		// Scan for new files in the item folder
 		$this->scanItemFolder($itemID, $instanceID);
 		// Get attachments from the database
-		$attachments = $this->attachmentMapper->findAll($itemID, $instanceID);
+		$attachments = $this->attachmentMapper->findAll($this->userId, $itemID, $instanceID);
 		foreach($attachments as $key => &$attachment) {
 			try {
 				$this->attachmentStorage->extendAttachment($attachment);
@@ -100,7 +108,7 @@ class AttachmentService {
 		// Add them to the database if not present already
 		foreach ($files as $file) {
 			$name = $file['basename'];
-			if (!$this->attachmentMapper->findByName($itemID, $name, $instanceID)) {
+			if (!$this->attachmentMapper->findByName($this->userId, $itemID, $name, $instanceID)) {
 				$attachment = new Attachment();
 				$attachment->setItemid($itemID);
 				$attachment->setInstanceid($instanceID);
@@ -140,7 +148,7 @@ class AttachmentService {
 			throw new BadRequestException('Instance id must be a number.');
 		}
 
-		$attachment = $this->attachmentMapper->findAttachment($itemID, $attachmentID, $instanceID);
+		$attachment = $this->attachmentMapper->findAttachment($this->userId, $itemID, $attachmentID, $instanceID);
 		if ($attachment) {
 			try {
 				return $this->attachmentStorage->display($attachment);
@@ -148,5 +156,187 @@ class AttachmentService {
 				throw new NotFoundException();
 			}
 		}
+	}
+
+	/**
+	 * @param $itemID
+	 * @param $data
+	 * @param $instanceID
+	 * @return Attachment|\OCP\AppFramework\Db\Entity
+	 * @throws NoPermissionException
+	 * @throws StatusException
+	 * @throws BadRequestException
+	 */
+	public function create($itemID, $data, int $instanceID = null) {
+
+		if (is_numeric($itemID) === false) {
+			throw new BadRequestException('Item id must be a number');
+		}
+
+		if ($data === false || $data === null) {
+			// throw new BadRequestException('data must be provided');
+		}
+
+		$attachment = new Attachment();
+		$attachment->setItemid($itemID);
+		$attachment->setInstanceid($instanceID);
+		$attachment->setCreatedBy($this->userId);
+		$attachment->setLastModified(time());
+		$attachment->setCreatedAt(time());
+
+		try {
+			$this->attachmentStorage->create($attachment);
+		} catch (InvalidAttachmentType $e) {
+			// just store the data
+		}
+		if ($attachment->getBasename() === null) {
+			throw new StatusException($this->l10n->t('No data was provided to create an attachment.'));
+		}
+		$attachment = $this->attachmentMapper->insert($attachment);
+
+		// extend data so the frontend can use it properly after creating
+		try {
+			$this->attachmentStorage->extendAttachment($attachment);
+		} catch (InvalidAttachmentType $e) {
+			// just store the data
+		}
+		return $attachment;
+	}
+
+	/**
+	 * Update an attachment with custom data
+	 *
+	 * @param $itemID
+	 * @param $attachmentID
+	 * @param $data
+	 * @return mixed
+	 * @throws \OCA\Deck\NoPermissionException
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws BadRequestException
+	 */
+	public function update($itemID, $attachmentID, $data, int $instanceID = null) {
+
+		if (is_numeric($itemID) === false) {
+			throw new BadRequestException('Item id must be a number');
+		}
+
+		if (is_numeric($attachmentID) === false) {
+			throw new BadRequestException('Attachment id must be a number');
+		}
+
+		if ($data === false || $data === null) {
+			//throw new BadRequestException('data must be provided');
+		}
+
+		$attachment = $this->attachmentMapper->findAttachment($this->userId, $itemID, $attachmentID, $instanceID);
+		try {
+			$this->attachmentStorage->update($attachment);
+		} catch (InvalidAttachmentType $e) {
+			// just update without further action
+		}
+		$attachment->setLastModified(time());
+		$this->attachmentMapper->update($attachment);
+		// extend data so the frontend can use it properly after creating
+		try {
+			$this->attachmentStorage->extendAttachment($attachment);
+		} catch (InvalidAttachmentType $e) {
+			// just store the data
+		}
+		return $attachment;
+	}
+
+	/**
+	 * @param int $itemID
+	 * @param string $attachment
+	 * @param int $instanceID
+	 * @return Attachment|\OCP\AppFramework\Db\Entity
+	 * @throws NoPermissionException
+	 * @throws StatusException
+	 * @throws BadRequestException
+	 */
+	public function link(int $itemID, string $attachmentPath, int $instanceID = null) {
+
+		if (is_numeric($itemID) === false) {
+			throw new BadRequestException('Item id must be a number');
+		}
+
+		if ($instanceID !== null && is_numeric($instanceID) === false) {
+			throw new BadRequestException('Instance id must be a number.');
+		}
+
+		$newAttachment = new Attachment();
+		$newAttachment->setItemid($itemID);
+		$newAttachment->setInstanceid($instanceID);
+		$newAttachment->setCreatedBy($this->userId);
+		$newAttachment->setLastModified(time());
+		$newAttachment->setCreatedAt(time());
+		$newAttachment->setBasename($attachmentPath);
+
+		// Check that the file exists
+		try {
+			$this->attachmentStorage->extendAttachment($newAttachment);
+		} catch (\OCP\Files\NotFoundException $e) {
+			throw new BadRequestException('The selected file does not exist.');
+		}
+
+		// Check if the same file is already linked
+		$attachment = $this->attachmentMapper->findByName(
+			$newAttachment->getCreatedBy(),
+			$newAttachment->getItemid(),
+			$newAttachment->getBasename(),
+			$newAttachment->getInstanceid()
+		);
+		if (!$attachment) {
+			$attachment = $this->attachmentMapper->insert($newAttachment);
+		}
+
+		return $this->attachmentStorage->extendAttachment($attachment);
+	}
+
+	/**
+	 * @param int $itemID
+	 * @param int $attachmentID
+	 * @param int $instanceID
+	 * @param bool $delete
+	 * @return Attachment|\OCP\AppFramework\Db\Entity
+	 * @throws NoPermissionException
+	 * @throws StatusException
+	 * @throws BadRequestException
+	 */
+	public function unlink(int $itemID, int $attachmentID, int $instanceID = null, bool $delete = false) {
+
+		if (is_numeric($itemID) === false) {
+			throw new BadRequestException('Item id must be a number');
+		}
+
+		if (is_numeric($attachmentID) === false) {
+			throw new BadRequestException('Attachment id must be a number');
+		}
+
+		if ($instanceID !== null && is_numeric($instanceID) === false) {
+			throw new BadRequestException('Instance id must be a number.');
+		}
+
+		// Unlink the file
+		$attachment = $this->attachmentMapper->findAttachment($this->userId, $itemID, $attachmentID, $instanceID);
+		if ($attachment) {
+			$this->attachmentMapper->delete($attachment);
+		}
+
+		// If requested we delete the file from the storage
+		if ($delete) {
+			$this->attachmentStorage->delete($attachment);
+		}
+	}
+
+	/**
+	 * @param string $path
+	 * @throws NoPermissionException
+	 * @throws StatusException
+	 * @throws BadRequestException
+	 */
+	public function setFolder(string $path) {
+		return $this->settings->setUserValue($this->userId, $this->appName, 'attachmentFolder', $path);
 	}
 }

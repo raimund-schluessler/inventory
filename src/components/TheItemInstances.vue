@@ -122,12 +122,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</ul>
 						</td>
 					</tr>
-					<tr v-if="instance.attachments && instance.attachments.length" :key="`attachments${instance.id}`">
+					<tr :key="`attachments${instance.id}`">
 						<td class="center">
 							{{ t('inventory', 'Attachments') }}
 						</td>
 						<td :colspan="instanceProperties.length" class="attachment-list">
-							<Attachments :attachments="instance.attachments" />
+							<Attachments :attachments="instance.attachments" :item-id="String(item.id)" :instance-id="String(instance.id)" />
 						</td>
 					</tr>
 				</template>

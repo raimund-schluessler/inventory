@@ -2,7 +2,7 @@
 Nextcloud - Inventory
 
 @author Raimund Schlüßler
-@copyright 2017 Raimund Schlüßler <raimund.schluessler@mailbox.org>
+@copyright 2020 Raimund Schlüßler <raimund.schluessler@mailbox.org>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -30,6 +30,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:icon="`icon-${view.icon}`"
 					:title="view.name" />
 			</ul>
+			<AppNavigationSettings>
+				<TheSettings />
+			</AppNavigationSettings>
 		</AppNavigation>
 
 		<AppContent>
@@ -41,14 +44,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
 import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
+import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
 import AppContent from '@nextcloud/vue/dist/Components/AppContent'
+import TheSettings from './components/AppNavigation/TheSettings'
 
 export default {
 	name: 'App',
 	components: {
 		AppNavigation,
 		AppNavigationItem,
+		AppNavigationSettings,
 		AppContent,
+		TheSettings,
 	},
 	data: function() {
 		return {
