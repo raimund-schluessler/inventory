@@ -44,9 +44,12 @@ class AttachmentMapperTest extends MapperTestUtility  {
 	// Data
 	private $attachments;
 	private $attachmentsById = [];
+	private $userId;
 
 	public function setup(): void {
 		parent::setUp();
+
+		$this->userId = 'inventory_tester';
 
 		$this->dbConnection = \OC::$server->getDatabaseConnection();
 		$this->attachmentMapper = new AttachmentMapper(
@@ -71,20 +74,23 @@ class AttachmentMapperTest extends MapperTestUtility  {
 		$attachment->setItemid($itemId);
 		$attachment->setInstanceid($instanceId);
 		$attachment->setBasename($basename);
-		$attachment->setCreatedBy('admin');
+		$attachment->setCreatedBy($this->userId);
 		return $attachment;
 	}
 
 	public function testFind() {
 		foreach ($this->attachmentsById as $id => $attachment) {
-			$this->assertEquals($attachment, $this->attachmentMapper->findAttachment($attachment->getItemid(), $id, $attachment->getInstanceid()));
+			$this->assertEquals(
+				$attachment,
+				$this->attachmentMapper->findAttachment($this->userId, $attachment->getItemid(), $id, $attachment->getInstanceid())
+			);
 		}
 	}
 	
 	public function testFindNotFound() {
 		$itemId = 1;
 		$attachmentId = 10;
-		$this->assertEquals(false, $this->attachmentMapper->findAttachment($itemId, $attachmentId));
+		$this->assertEquals(false, $this->attachmentMapper->findAttachment($this->userId, $itemId, $attachmentId));
 	}
 
 	public function testFindAll() {
@@ -94,30 +100,30 @@ class AttachmentMapperTest extends MapperTestUtility  {
 			array_slice($this->attachments, 3, 1),
 			array_slice($this->attachments, 4, 1)
 		];
-		$this->assertEquals($attachmentsByItem[0], $this->attachmentMapper->findAll(1));
-		$this->assertEquals($attachmentsByItem[1], $this->attachmentMapper->findAll(2));
-		$this->assertEquals($attachmentsByItem[2], $this->attachmentMapper->findAll(3));
-		$this->assertEquals($attachmentsByItem[3], $this->attachmentMapper->findAll(1, 123));
-		$this->assertEquals([], $this->attachmentMapper->findAll(5));
+		$this->assertEquals($attachmentsByItem[0], $this->attachmentMapper->findAll($this->userId, 1));
+		$this->assertEquals($attachmentsByItem[1], $this->attachmentMapper->findAll($this->userId, 2));
+		$this->assertEquals($attachmentsByItem[2], $this->attachmentMapper->findAll($this->userId, 3));
+		$this->assertEquals($attachmentsByItem[3], $this->attachmentMapper->findAll($this->userId, 1, 123));
+		$this->assertEquals([], $this->attachmentMapper->findAll($this->userId, 5));
 	}
 	
 	public function testFindByName() {
 		$itemId = 1;
 		$attachmentBasename = 'file1.pdf';
-		$this->assertEquals($this->attachments[0], $this->attachmentMapper->findByName($itemId, $attachmentBasename));
+		$this->assertEquals($this->attachments[0], $this->attachmentMapper->findByName($this->userId, $itemId, $attachmentBasename));
 	}
 	
 	public function testFindByNameAndInstance() {
 		$itemId = 1;
 		$attachmentBasename = 'file5.pdf';
 		$instanceId = 123;
-		$this->assertEquals($this->attachments[4], $this->attachmentMapper->findByName($itemId, $attachmentBasename, $instanceId));
+		$this->assertEquals($this->attachments[4], $this->attachmentMapper->findByName($this->userId, $itemId, $attachmentBasename, $instanceId));
 	}
 	
 	public function testFindByNameNotFound() {
 		$itemId = 1;
 		$attachmentBasename = 'file3.pdf';
-		$this->assertEquals(false, $this->attachmentMapper->findByName($itemId, $attachmentBasename));
+		$this->assertEquals(false, $this->attachmentMapper->findByName($this->userId, $itemId, $attachmentBasename));
 	}
 
 	public function tearDown(): void {

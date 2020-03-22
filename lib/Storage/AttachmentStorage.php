@@ -286,7 +286,7 @@ class AttachmentStorage {
 
 		$attachment->setBasename($fileName);
 		if ($folder->nodeExists($fileName)) {
-			$attachment = $this->attachmentMapper->findByName($attachment->getItemid(), $fileName, $attachment->getInstanceid());
+			$attachment = $this->attachmentMapper->findByName($attachment->getCreatedBy(), $attachment->getItemid(), $fileName, $attachment->getInstanceid());
 			throw new ConflictException('File already exists.', $attachment);
 		}
 

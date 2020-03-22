@@ -83,7 +83,7 @@ class AttachmentService {
 		// Scan for new files in the item folder
 		$this->scanItemFolder($itemID, $instanceID);
 		// Get attachments from the database
-		$attachments = $this->attachmentMapper->findAll($itemID, $instanceID);
+		$attachments = $this->attachmentMapper->findAll($this->userId, $itemID, $instanceID);
 		foreach($attachments as $key => &$attachment) {
 			try {
 				$this->attachmentStorage->extendAttachment($attachment);
@@ -108,7 +108,7 @@ class AttachmentService {
 		// Add them to the database if not present already
 		foreach ($files as $file) {
 			$name = $file['basename'];
-			if (!$this->attachmentMapper->findByName($itemID, $name, $instanceID)) {
+			if (!$this->attachmentMapper->findByName($this->userId, $itemID, $name, $instanceID)) {
 				$attachment = new Attachment();
 				$attachment->setItemid($itemID);
 				$attachment->setInstanceid($instanceID);
@@ -148,7 +148,7 @@ class AttachmentService {
 			throw new BadRequestException('Instance id must be a number.');
 		}
 
-		$attachment = $this->attachmentMapper->findAttachment($itemID, $attachmentID, $instanceID);
+		$attachment = $this->attachmentMapper->findAttachment($this->userId, $itemID, $attachmentID, $instanceID);
 		if ($attachment) {
 			try {
 				return $this->attachmentStorage->display($attachment);
@@ -229,7 +229,7 @@ class AttachmentService {
 			//throw new BadRequestException('data must be provided');
 		}
 
-		$attachment = $this->attachmentMapper->findAttachment($itemID, $attachmentID, $instanceID);
+		$attachment = $this->attachmentMapper->findAttachment($this->userId, $itemID, $attachmentID, $instanceID);
 		try {
 			$this->attachmentStorage->update($attachment);
 		} catch (InvalidAttachmentType $e) {
@@ -282,6 +282,7 @@ class AttachmentService {
 
 		// Check if the same file is already linked
 		$attachment = $this->attachmentMapper->findByName(
+			$newAttachment->getCreatedBy(),
 			$newAttachment->getItemid(),
 			$newAttachment->getBasename(),
 			$newAttachment->getInstanceid()
@@ -318,7 +319,7 @@ class AttachmentService {
 		}
 
 		// Unlink the file
-		$attachment = $this->attachmentMapper->findAttachment($itemID, $attachmentID, $instanceID);
+		$attachment = $this->attachmentMapper->findAttachment($this->userId, $itemID, $attachmentID, $instanceID);
 		if ($attachment) {
 			$this->attachmentMapper->delete($attachment);
 		}
