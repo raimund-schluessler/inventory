@@ -141,7 +141,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<td>
 						<div class="thumbnail-wrapper">
 							<div v-if="entityType(item) === 'Folder'"
-								:style="{ backgroundImage: `url(${OC.generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
+								:style="{ backgroundImage: `url(${generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
 								class="thumbnail folder" />
 							<div v-else :style="{ backgroundImage: `url(${getIconUrl(item)})` }" class="thumbnail default" />
 						</div>
@@ -157,11 +157,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import ItemComponent from './Item'
 import Item from '../models/item.js'
 import Folder from './Folder'
+import { sort } from '../store/storeHelper'
 import searchQueryParser from 'search-query-parser'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
-import { sort } from '../store/storeHelper'
+import { generateUrl } from '@nextcloud/router'
 
 export default {
 	components: {
@@ -442,7 +443,7 @@ export default {
 				if (OCA.Accessibility) {
 					color = (OCA.Accessibility.theme === 'themedark' ? 'fff' : '000')
 				}
-				return OC.generateUrl(`svg/inventory/item_${item.icon}?color=${color}`)
+				return generateUrl(`svg/inventory/item_${item.icon}?color=${color}`)
 			} else {
 				return item.iconurl
 			}

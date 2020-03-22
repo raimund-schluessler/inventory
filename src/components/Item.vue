@@ -69,6 +69,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import ItemStatusDisplay from './ItemStatusDisplay'
+import { generateUrl } from '@nextcloud/router'
 
 export default {
 	components: {
@@ -103,7 +104,7 @@ export default {
 				if (OCA.Accessibility) {
 					color = (OCA.Accessibility.theme === 'dark' ? 'fff' : '000')
 				}
-				return OC.generateUrl(`svg/inventory/item_${this.entity.icon}?color=${color}`)
+				return generateUrl(`svg/inventory/item_${this.entity.icon}?color=${color}`)
 			} else {
 				return this.entity.iconurl
 			}

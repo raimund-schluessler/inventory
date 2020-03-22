@@ -41,7 +41,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					tag="a"
 					@click.ctrl.prevent>
 					<div class="thumbnail-wrapper">
-						<div :style="{ backgroundImage: `url(${OC.generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
+						<div :style="{ backgroundImage: getThumbnailUrl }"
 							class="thumbnail folder" />
 					</div>
 					<span v-show="!renaming">{{ entity.name }}</span>
@@ -80,6 +80,7 @@ import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
 import ClickOutside from 'v-click-outside'
 import focus from '../directives/focus'
+import { generateUrl } from '@nextcloud/router'
 
 const CD_DURATION = 7
 
@@ -123,6 +124,11 @@ export default {
 			newName: '',
 			renaming: false,
 		}
+	},
+	computed: {
+		getThumbnailUrl() {
+			return `url(${generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})`
+		},
 	},
 	methods: {
 		...mapActions([

@@ -24,10 +24,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Item from '../models/item.js'
 import Folder from '../models/folder.js'
-import PQueue from 'p-queue'
 import Status from '../models/status'
+import PQueue from 'p-queue'
 import Axios from '@nextcloud/axios'
 import { loadState } from '@nextcloud/initial-state'
+import { generateUrl } from '@nextcloud/router'
 
 Vue.use(Vuex)
 
@@ -522,7 +523,7 @@ export default new Vuex.Store({
 
 		async loadItems({ commit, state }) {
 			state.loadingItems = true
-			const response = await Axios.get(OC.generateUrl('apps/inventory/items'))
+			const response = await Axios.get(generateUrl('apps/inventory/items'))
 			const items = response.data.map(payload => {
 				return new Item(payload)
 			})
@@ -532,7 +533,7 @@ export default new Vuex.Store({
 
 		async getItemsByPath({ commit, state }, path) {
 			state.loadingItems = true
-			const response = await Axios.post(OC.generateUrl('apps/inventory/items'), { path })
+			const response = await Axios.post(generateUrl('apps/inventory/items'), { path })
 			const items = response.data.map(payload => {
 				return new Item(payload)
 			})
@@ -545,7 +546,7 @@ export default new Vuex.Store({
 			items.forEach(async(item) => {
 				await queue.add(async() => {
 					try {
-						const response = await Axios.post(OC.generateUrl('apps/inventory/item/add'), { item: item.response })
+						const response = await Axios.post(generateUrl('apps/inventory/item/add'), { item: item.response })
 						Vue.set(item, 'response', response.data)
 						item.updateItem()
 						item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
@@ -559,7 +560,7 @@ export default new Vuex.Store({
 
 		async getItemById({ commit }, itemID) {
 			try {
-				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}`))
+				const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}`))
 				const item = new Item(response.data)
 				commit('setItem', { item })
 			} catch {
@@ -569,7 +570,7 @@ export default new Vuex.Store({
 
 		async getAttachments({ commit }, itemID) {
 			try {
-				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}/attachments`))
+				const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}/attachments`))
 				commit('setAttachments', { attachments: response.data })
 			} catch {
 				commit('setAttachments', { attachments: [] })
@@ -578,7 +579,7 @@ export default new Vuex.Store({
 
 		async getInstanceAttachments({ commit }, { itemID, instanceID }) {
 			try {
-				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}/instance/${instanceID}/attachments`))
+				const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}/instance/${instanceID}/attachments`))
 				commit('setInstanceAttachments', { instanceID, attachments: response.data })
 			} catch {
 				commit('setInstanceAttachments', { instanceID, attachments: [] })
@@ -587,31 +588,31 @@ export default new Vuex.Store({
 
 		async createAttachment({ commit }, { itemId, formData, instanceId }) {
 			if (instanceId) {
-				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/create`), formData)
+				const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/create`), formData)
 				commit('createInstanceAttachment', { itemId, attachment: response.data, instanceId })
 			} else {
-				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/create`), formData)
+				const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/attachment/create`), formData)
 				commit('createAttachment', { itemId, attachment: response.data })
 			}
 		},
 
 		async updateAttachment({ commit }, { itemId, attachmentId, formData, instanceId }) {
 			if (instanceId) {
-				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/update`), formData)
+				const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/update`), formData)
 				commit('updateInstanceAttachment', { itemId, attachment: response.data, instanceId })
 			} else {
-				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/update`), formData)
+				const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/update`), formData)
 				commit('updateAttachment', { itemId, attachment: response.data })
 			}
 		},
 
 		async deleteAttachment({ commit }, { itemId, attachmentId, instanceId }) {
 			if (instanceId) {
-				const response = await Axios.delete(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/delete`))
+				const response = await Axios.delete(generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/delete`))
 				commit('deleteInstanceAttachment', { itemId, attachmentId, instanceId })
 				return response
 			} else {
-				const response = await Axios.delete(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/delete`))
+				const response = await Axios.delete(generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/delete`))
 				commit('deleteAttachment', { itemId, attachmentId })
 				return response
 			}
@@ -619,21 +620,21 @@ export default new Vuex.Store({
 
 		async linkAttachment({ commit }, { itemId, attachment, instanceId }) {
 			if (instanceId) {
-				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/link`), { attachment })
+				const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/link`), { attachment })
 				commit('createInstanceAttachment', { itemId, attachment: response.data, instanceId })
 			} else {
-				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/link`), { attachment })
+				const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/attachment/link`), { attachment })
 				commit('createAttachment', { itemId, attachment: response.data })
 			}
 		},
 
 		async unlinkAttachment({ commit }, { itemId, attachmentId, instanceId }) {
 			if (instanceId) {
-				const response = await Axios.delete(OC.generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/unlink`))
+				const response = await Axios.delete(generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/unlink`))
 				commit('deleteInstanceAttachment', { itemId, attachmentId, instanceId })
 				return response
 			} else {
-				const response = await Axios.delete(OC.generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/unlink`))
+				const response = await Axios.delete(generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/unlink`))
 				commit('deleteAttachment', { itemId, attachmentId })
 				return response
 			}
@@ -648,12 +649,12 @@ export default new Vuex.Store({
 		},
 
 		async setAttachmentFolder(context, { path }) {
-			return Axios.post(OC.generateUrl('apps/inventory/settings/attachmentFolder/set'), { path })
+			return Axios.post(generateUrl('apps/inventory/settings/attachmentFolder/set'), { path })
 		},
 
 		async loadSubItems({ commit }, itemID) {
 			try {
-				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}/sub`))
+				const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}/sub`))
 				const subItems = response.data.map(payload => {
 					return new Item(payload)
 				})
@@ -664,7 +665,7 @@ export default new Vuex.Store({
 		},
 		async loadParentItems({ commit }, itemID) {
 			try {
-				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}/parent`))
+				const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}/parent`))
 				const parentItems = response.data.map(payload => {
 					return new Item(payload)
 				})
@@ -675,7 +676,7 @@ export default new Vuex.Store({
 		},
 		async loadRelatedItems({ commit }, itemID) {
 			try {
-				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${itemID}/related`))
+				const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}/related`))
 				const relatedItems = response.data.map(payload => {
 					return new Item(payload)
 				})
@@ -687,7 +688,7 @@ export default new Vuex.Store({
 		async loadItemCandidates({ commit }, parameters) {
 			try {
 				commit('setItemCandidates', { itemCandidates: [] })
-				const response = await Axios.get(OC.generateUrl(`apps/inventory/item/${parameters.itemID}/candidates/${parameters.relationType}`))
+				const response = await Axios.get(generateUrl(`apps/inventory/item/${parameters.itemID}/candidates/${parameters.relationType}`))
 				const itemCandidates = response.data.map(payload => {
 					return new Item(payload)
 				})
@@ -698,7 +699,7 @@ export default new Vuex.Store({
 		},
 		async deleteItem({ commit }, item) {
 			try {
-				await Axios.delete(OC.generateUrl(`apps/inventory/item/${item.id}/delete`))
+				await Axios.delete(generateUrl(`apps/inventory/item/${item.id}/delete`))
 				commit('deleteItem', item)
 			} catch {
 				console.debug('Item deletion failed.')
@@ -713,7 +714,7 @@ export default new Vuex.Store({
 		},
 		async editItem({ commit }, item) {
 			try {
-				const response = await Axios.patch(OC.generateUrl(`apps/inventory/item/${item.id}/edit`), { item: item.response })
+				const response = await Axios.patch(generateUrl(`apps/inventory/item/${item.id}/edit`), { item: item.response })
 				Vue.set(item, 'response', response.data)
 				item.updateItem()
 				commit('editItem', item)
@@ -723,7 +724,7 @@ export default new Vuex.Store({
 		},
 		async moveItem({ commit }, { itemID, newPath }) {
 			try {
-				const response = await Axios.patch(OC.generateUrl(`apps/inventory/item/${itemID}/move`), { path: newPath })
+				const response = await Axios.patch(generateUrl(`apps/inventory/item/${itemID}/move`), { path: newPath })
 				const item = new Item(response.data)
 				commit('deleteItem', item)
 			} catch {
@@ -737,7 +738,7 @@ export default new Vuex.Store({
 			try {
 				// Extract itemIDs from items array
 				const itemIDs = items.map((item) => { return item.id })
-				await Axios.post(OC.generateUrl(`apps/inventory/item/${itemID}/link/${relation}`), { itemIDs })
+				await Axios.post(generateUrl(`apps/inventory/item/${itemID}/link/${relation}`), { itemIDs })
 				if (relation === 'parent') {
 					context.dispatch('loadParentItems', itemID)
 				} else if (relation === 'sub') {
@@ -756,7 +757,7 @@ export default new Vuex.Store({
 			try {
 				// Extract itemIDs from items array
 				const itemIDs = items.map((item) => { return item.id })
-				await Axios.post(OC.generateUrl(`apps/inventory/item/${itemID}/unlink/${relation}`), { itemIDs })
+				await Axios.post(generateUrl(`apps/inventory/item/${itemID}/unlink/${relation}`), { itemIDs })
 				if (relation === 'parent') {
 					commit('unlinkParents', items)
 				} else if (relation === 'sub') {
@@ -770,7 +771,7 @@ export default new Vuex.Store({
 		},
 		async addInstance({ commit }, { item, instance }) {
 			try {
-				const response = await Axios.post(OC.generateUrl(`apps/inventory/item/${item.id}/instance/add`), { instance })
+				const response = await Axios.post(generateUrl(`apps/inventory/item/${item.id}/instance/add`), { instance })
 				commit('addInstance', { item, instance: response.data })
 			} catch {
 				console.debug('Creating item instance failed.')
@@ -778,7 +779,7 @@ export default new Vuex.Store({
 		},
 		async deleteInstance({ commit }, { item, instance }) {
 			try {
-				await Axios.delete(OC.generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/delete`))
+				await Axios.delete(generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/delete`))
 				commit('deleteInstance', { item, instance })
 			} catch {
 				console.debug('Deleting item instance failed.')
@@ -786,7 +787,7 @@ export default new Vuex.Store({
 		},
 		async editInstance({ commit }, { item, instance }) {
 			try {
-				const response = await Axios.patch(OC.generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/edit`), { instance })
+				const response = await Axios.patch(generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/edit`), { instance })
 				commit('editInstance', { item, instance: response.data })
 			} catch {
 				console.debug('Editing item instance failed.')
@@ -794,7 +795,7 @@ export default new Vuex.Store({
 		},
 		async addUuid({ commit }, { item, instance, uuid }) {
 			try {
-				const response = await Axios.put(OC.generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/uuid/${uuid}`))
+				const response = await Axios.put(generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/uuid/${uuid}`))
 				commit('addUuid', { instance, uuid: response.data })
 			} catch {
 				console.debug('Saving uuid failed.')
@@ -802,7 +803,7 @@ export default new Vuex.Store({
 		},
 		async deleteUuid({ commit }, { item, instance, uuid }) {
 			try {
-				await Axios.delete(OC.generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/uuid/${uuid}`))
+				await Axios.delete(generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/uuid/${uuid}`))
 				commit('deleteUuid', { instance, uuid })
 			} catch {
 				console.debug('Uuid deletion failed.')
@@ -819,7 +820,7 @@ export default new Vuex.Store({
 		async setSetting(context, payload) {
 			try {
 				context.commit('setSetting', payload)
-				await Axios.post(OC.generateUrl('apps/inventory/settings/{type}/{value}', payload), {})
+				await Axios.post(generateUrl('apps/inventory/settings/{type}/{value}', payload), {})
 			} catch {
 				console.debug('Could not save settings.')
 			}
@@ -833,7 +834,7 @@ export default new Vuex.Store({
 		 */
 		async loadSettings({ commit }) {
 			try {
-				const response = await Axios.get(OC.generateUrl('apps/inventory/settings'))
+				const response = await Axios.get(generateUrl('apps/inventory/settings'))
 				commit('setSettings', { settings: response.data })
 			} catch {
 				console.debug('Could not load settings.')
@@ -849,7 +850,7 @@ export default new Vuex.Store({
 		 */
 		async getFoldersByPath({ commit }, path) {
 			try {
-				const response = await Axios.post(OC.generateUrl('apps/inventory/folders'), { path })
+				const response = await Axios.post(generateUrl('apps/inventory/folders'), { path })
 				const folders = response.data.map(payload => {
 					return new Folder(payload)
 				})
@@ -861,7 +862,7 @@ export default new Vuex.Store({
 
 		async createFolder(context, { name, path }) {
 			try {
-				const response = await Axios.post(OC.generateUrl('apps/inventory/folders/add'), { name, path })
+				const response = await Axios.post(generateUrl('apps/inventory/folders/add'), { name, path })
 				const folder = new Folder(response.data)
 				context.commit('addFolder', { folder })
 			} catch {
@@ -871,7 +872,7 @@ export default new Vuex.Store({
 
 		async moveFolder({ commit }, { folderID, newPath }) {
 			try {
-				const response = await Axios.patch(OC.generateUrl(`apps/inventory/folders/${folderID}/move`), { path: newPath })
+				const response = await Axios.patch(generateUrl(`apps/inventory/folders/${folderID}/move`), { path: newPath })
 				commit('deleteFolder', { folder: new Folder(response.data) })
 			} catch {
 				console.debug('Could not move the folder.')
@@ -880,7 +881,7 @@ export default new Vuex.Store({
 
 		async deleteFolder(context, folder) {
 			try {
-				const response = await Axios.delete(OC.generateUrl(`apps/inventory/folders/${folder.id}/delete`))
+				const response = await Axios.delete(generateUrl(`apps/inventory/folders/${folder.id}/delete`))
 				context.commit('deleteFolder', { folder: new Folder(response.data) })
 			} catch {
 				console.debug('Could not delete the folder.')
@@ -889,7 +890,7 @@ export default new Vuex.Store({
 
 		async renameFolder(context, { folderID, newName }) {
 			try {
-				const response = await Axios.patch(OC.generateUrl(`apps/inventory/folders/${folderID}/rename`), { newName })
+				const response = await Axios.patch(generateUrl(`apps/inventory/folders/${folderID}/rename`), { newName })
 				context.commit('updateFolder', { newFolder: new Folder(response.data) })
 			} catch {
 				console.debug('Could not rename the folder.')
@@ -900,7 +901,7 @@ export default new Vuex.Store({
 			try {
 				commit('setSearchResults', [])
 				state.searching = true
-				const response = await Axios.post(OC.generateUrl('apps/inventory/search'), { searchString })
+				const response = await Axios.post(generateUrl('apps/inventory/search'), { searchString })
 				const items = response.data.items.map(item => {
 					return new Item(item)
 				})

@@ -121,6 +121,7 @@ import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
 import { Modal } from '@nextcloud/vue/dist/Components/Modal'
 import { showError } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'
+import { generateUrl } from '@nextcloud/router'
 
 export default {
 	components: {
@@ -288,9 +289,9 @@ export default {
 
 		attachmentUrl(attachment) {
 			if (attachment.instanceid) {
-				return OC.generateUrl(`/apps/inventory/item/${attachment.itemid}/instance/${attachment.instanceid}/attachment/${attachment.id}/display`)
+				return generateUrl(`/apps/inventory/item/${attachment.itemid}/instance/${attachment.instanceid}/attachment/${attachment.id}/display`)
 			} else {
-				return OC.generateUrl(`/apps/inventory/item/${attachment.itemid}/attachment/${attachment.id}/display`)
+				return generateUrl(`/apps/inventory/item/${attachment.itemid}/attachment/${attachment.id}/display`)
 			}
 		},
 	},

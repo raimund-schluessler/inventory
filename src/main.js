@@ -28,6 +28,7 @@ import router from './components/TheRouter'
 import store from './store/store'
 import { sync } from 'vuex-router-sync'
 import VTooltip from 'v-tooltip'
+import { linkTo } from '@nextcloud/router'
 
 // CSP config for webpack dynamic chunk loading
 // eslint-disable-next-line
@@ -38,7 +39,7 @@ __webpack_nonce__ = btoa(OC.requestToken)
 // OC.generateUrl ensure the index.php (or not)
 // We do not want the index.php since we're loading files
 // eslint-disable-next-line
-__webpack_public_path__ = OC.linkTo('inventory', 'js/')
+__webpack_public_path__ = linkTo('inventory', 'js/')
 
 sync(store, router)
 
