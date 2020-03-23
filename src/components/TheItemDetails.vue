@@ -307,7 +307,7 @@ export default {
 		imageSrc() {
 			if (this.item.images.length > 0) {
 				const img = this.item.images[0]
-				return generateUrl(`/core/preview?fileId=${img.fileid}&x=${512}&y=${512}&a=false&v=${img.etag}`)
+				return generateUrl(`/core/preview?fileId=${img.fileid}&x=${512}&y=${512}&a=true&v=${img.etag}`)
 			}
 			return ''
 		},
