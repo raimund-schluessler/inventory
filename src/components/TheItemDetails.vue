@@ -269,7 +269,7 @@ export default {
 
 		breadcrumbs() {
 			const path = this.$route.params.path
-			const crumbs = (path === '') ? [] : path.split('/')
+			const crumbs = (!path || path === '') ? [] : path.split('/')
 			return [{ name: t('inventory', 'Items'), path: '/folders/' }].concat(crumbs.map((crumb, i) => {
 				return {
 					name: crumb,
