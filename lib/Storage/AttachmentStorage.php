@@ -170,6 +170,41 @@ class AttachmentStorage {
 	}
 
 	/**
+	 * List all images of an item
+	 *
+	 * @param int $itemID
+	 * @return Array
+	 * @throws \Exception
+	 */
+	public function getImages($itemID) {
+		try {
+			$itemFolder = $this->getItemFolder($itemID);
+			$imageFolder = $itemFolder->get('images');
+			$folderContent = $imageFolder->getDirectoryListing();
+			$images = [];
+			foreach($folderContent as $node) {
+				$nodeInfo = $node->getFileInfo();
+				// We only want to list files, not folders.
+				if ($nodeInfo->getType() !== \OCP\Files\FileInfo::TYPE_FILE) {
+					continue;
+				}
+				// Check whether file is PNG or JPEG
+				if (in_array(strtolower($nodeInfo->getMimetype()), ['image/png', 'image/jpeg'])) {
+					$images[] = [
+						'filename' => $nodeInfo->getName(),
+						'path' => $nodeInfo->getPath(),
+						'fileid' => $nodeInfo->getId(),
+						'etag' => $nodeInfo->getEtag()
+					];
+				}
+			}
+		} catch (NotFoundException $e) {
+			$images = [];
+		}
+		return $images;
+	}
+
+	/**
 	 * List all files in an item or instance folder
 	 *
 	 * @param int $itemID

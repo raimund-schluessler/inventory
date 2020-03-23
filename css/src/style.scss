@@ -451,20 +451,21 @@ table {
 		margin-top: -20px;
 		max-width: 500px;
 		min-width: 200px;
-		background: var(--icon-inventory-inventory-000) no-repeat;
-		background-size: cover;
-		opacity: .3;
 
 		// Make the item_images square
-		&:after {
-			content: '';
-			display: block;
-			padding-bottom: 100%;
+		&.default {
+			opacity: .3;
+			background: var(--icon-inventory-inventory-000) no-repeat;
+			background-size: cover;
+			&:after {
+				content: '';
+				display: block;
+				padding-bottom: 100%;
+			}
 		}
 	
 		img {
 			width: 100%;
-			opacity: .3;
 		}
 	}
 

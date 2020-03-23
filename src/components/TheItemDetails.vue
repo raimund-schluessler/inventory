@@ -38,7 +38,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<div id="itemdetails">
 				<div class="paragraph images">
-					<div class="item_images" />
+					<div class="item_images" :class="{default: !item.images.length}">
+						<div>
+							<img v-if="item.images.length > 0" :src="imageSrc">
+						</div>
+					</div>
 				</div>
 				<div class="paragraph properties">
 					<h3>
@@ -188,6 +192,7 @@ import ClickOutside from 'vue-click-outside'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
 import { Modal } from '@nextcloud/vue/dist/Components/Modal'
+import { generateUrl } from '@nextcloud/router'
 
 export default {
 	components: {
@@ -277,6 +282,14 @@ export default {
 				name: this.item.description,
 				path: `/folders/${(this.item.path) ? this.item.path + '/' : ''}item-${this.item.id}`,
 			}])
+		},
+
+		imageSrc() {
+			if (this.item.images.length > 0) {
+				const img = this.item.images[0]
+				return generateUrl(`/core/preview?fileId=${img.fileid}&x=${512}&y=${512}&a=false&v=${img.etag}`)
+			}
+			return ''
 		},
 	},
 	created: function() {
