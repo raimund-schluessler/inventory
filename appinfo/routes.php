@@ -51,6 +51,8 @@ return [
 
 		['name' => 'attachment#setFolder',		'url' => '/settings/attachmentFolder/set',				'verb' => 'POST'],
 
+		['name' => 'attachment#uploadImage','url' => '/item/{itemID}/image/upload',					'verb' => 'POST'],
+
 		['name' => 'items#getSub',			'url' => '/item/{itemID}/sub',							'verb' => 'GET'],
 		['name' => 'items#getParent',		'url' => '/item/{itemID}/parent',						'verb' => 'GET'],
 		['name' => 'items#getRelated',		'url' => '/item/{itemID}/related',						'verb' => 'GET'],

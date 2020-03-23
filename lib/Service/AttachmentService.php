@@ -339,4 +339,25 @@ class AttachmentService {
 	public function setFolder(string $path) {
 		return $this->settings->setUserValue($this->userId, $this->appName, 'attachmentFolder', $path);
 	}
+
+	/**
+	 * @param $itemID
+	 * @param $data
+	 * @return Image
+	 * @throws NoPermissionException
+	 * @throws StatusException
+	 * @throws BadRequestException
+	 */
+	public function uploadImage($itemID, $data) {
+
+		if (is_numeric($itemID) === false) {
+			throw new BadRequestException('Item id must be a number');
+		}
+
+		if ($data === false || $data === null) {
+			// throw new BadRequestException('data must be provided');
+		}
+
+		return $this->attachmentStorage->uploadImage($itemID);
+	}
 }

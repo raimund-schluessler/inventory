@@ -67,6 +67,7 @@ export default class Item {
 		if (this.response.syncstatus) {
 			this.syncstatus = new Status(this.response.syncstatus.type, this.response.syncstatus.message)
 		}
+		this._images = this.response.images || []
 	}
 
 	/**
@@ -378,6 +379,16 @@ export default class Item {
 	set attachments(attachments) {
 		this.response.attachments = attachments
 		this._attachments = this.response.attachments || []
+	}
+
+	/**
+	 * Return the images
+	 *
+	 * @readonly
+	 * @memberof Item
+	 */
+	get images() {
+		return this._images
 	}
 
 }

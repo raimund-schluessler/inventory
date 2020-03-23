@@ -28,7 +28,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<ActionButton icon="icon-add" :close-after-click="true" @click="openModal">
 						{{ t('inventory', 'Link items') }}
 					</ActionButton>
-					<ActionButton icon="icon-rename" :close-after-click="true" @click="toggleEditItem">
+					<ActionButton
+						icon="icon-upload"
+						:close-after-click="true"
+						@click="upload">
+						{{ t('inventory', 'Upload image') }}
+					</ActionButton>
+					<ActionButton
+						icon="icon-rename"
+						:close-after-click="true"
+						@click="toggleEditItem">
 						{{ t('inventory', 'Edit item') }}
 					</ActionButton>
 					<ActionButton icon="icon-delete" @click="removeItem">
@@ -37,8 +46,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</Actions>
 			</div>
 			<div id="itemdetails">
-				<div class="paragraph images">
-					<div class="item_images" />
+				<div class="paragraph images"
+					@dragover.prevent="!isDraggingOver && (isDraggingOver = true)"
+					@dragleave.prevent="isDraggingOver && (isDraggingOver = false)"
+					@drop.prevent="handleDropImages">
+					<div class="item_images" :class="{default: !item.images.length}">
+						<div>
+							<img v-if="item.images.length > 0" :src="imageSrc">
+						</div>
+					</div>
 				</div>
 				<div class="paragraph properties">
 					<h3>
@@ -172,6 +188,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<canvas ref="canvas" class="qrcode" />
 			</div>
 		</Modal>
+		<input ref="localAttachments"
+			type="file"
+			style="display: none;"
+			@change="handleUploadFile">
 	</div>
 </template>
 
@@ -188,6 +208,9 @@ import ClickOutside from 'vue-click-outside'
 import { Actions } from '@nextcloud/vue/dist/Components/Actions'
 import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
 import { Modal } from '@nextcloud/vue/dist/Components/Modal'
+import { generateUrl } from '@nextcloud/router'
+import { formatFileSize } from '@nextcloud/files'
+import { showError } from '@nextcloud/dialogs'
 
 export default {
 	components: {
@@ -255,6 +278,8 @@ export default {
 					name: this.t('inventory', 'Categories'),
 				},
 			],
+			isDraggingOver: false,
+			maxUploadSize: 16e7,
 		}
 	},
 	computed: {
@@ -278,6 +303,14 @@ export default {
 				path: `/folders/${(this.item.path) ? this.item.path + '/' : ''}item-${this.item.id}`,
 			}])
 		},
+
+		imageSrc() {
+			if (this.item.images.length > 0) {
+				const img = this.item.images[0]
+				return generateUrl(`/core/preview?fileId=${img.fileid}&x=${512}&y=${512}&a=false&v=${img.etag}`)
+			}
+			return ''
+		},
 	},
 	created: function() {
 		this.getItem(this.id)
@@ -293,6 +326,56 @@ export default {
 		next()
 	},
 	methods: {
+
+		upload() {
+			this.$refs.localAttachments.click()
+		},
+
+		handleDropImages(event) {
+			this.isDraggingOver = false
+			this.onLocalAttachmentSelected(event.dataTransfer.files[0])
+			event.dataTransfer.value = ''
+		},
+
+		handleUploadFile(event) {
+			this.onLocalAttachmentSelected(event.target.files[0])
+			event.target.value = ''
+		},
+
+		async onLocalAttachmentSelected(file) {
+			if (!['image/jpeg', 'image/png'].includes(file.type)) {
+				showError(t('inventory', 'Please select an image file (PNG or JPEG).'))
+				event.target.value = ''
+				return
+			}
+			if (this.maxUploadSize > 0 && file.size > this.maxUploadSize) {
+				showError(
+					t('inventory', 'Failed to upload {name}', { name: file.name }) + ' - '
+						+ t('inventory', 'Maximum file size of {size} exceeded', { size: formatFileSize(this.maxUploadSize) })
+				)
+				event.target.value = ''
+				return
+			}
+
+			const bodyFormData = new FormData()
+			bodyFormData.append('itemId', this.itemId)
+			if (this.instanceId) {
+				bodyFormData.append('instanceId', this.instanceId)
+			}
+			bodyFormData.append('file', file)
+			try {
+				await this.$store.dispatch('uploadImage', {
+					itemId: this.item.id,
+					formData: bodyFormData,
+				})
+			} catch (err) {
+				if (err.response.data.status === 409) {
+					showError(t('inventory', 'An image with this name already exists.'))
+				} else {
+					showError(err.response.data.message)
+				}
+			}
+		},
 
 		/**
 		 * Generate a barcode for the given string

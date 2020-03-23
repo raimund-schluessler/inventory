@@ -22,17 +22,18 @@
 
 namespace OCA\Inventory\Service;
 
-use OCP\IConfig;
+use OCA\Inventory\Service\IteminstanceService;
+use OCA\Inventory\Storage\AttachmentStorage;
 use OCA\Inventory\Db\Item;
 use OCA\Inventory\Db\ItemMapper;
 use OCA\Inventory\Db\CategoryMapper;
 use OCA\Inventory\Db\ItemcategoriesMapper;
 use OCA\Inventory\Db\ItemparentMapper;
-use OCA\Inventory\Service\IteminstanceService;
 use OCA\Inventory\Db\ItemrelationMapper;
 use OCA\Inventory\Db\ItemtypeMapper;
 use OCA\Inventory\Db\FolderMapper;
 use OCA\Inventory\BadRequestException;
+use OCP\IConfig;
 use OCP\AppFramework\Db\DoesNotExistException;
 
 class ItemsService {
@@ -47,10 +48,11 @@ class ItemsService {
 	private $itemRelationMapper;
 	private $itemtypeMapper;
 	private $folderMapper;
+	private $attachmentStorage;
 
 	public function __construct($userId, $AppName, ItemMapper $itemMapper, IteminstanceService $iteminstanceService,
 		CategoryMapper $categoryMapper, ItemcategoriesMapper $itemcategoriesMapper, ItemparentMapper $itemParentMapper,
-		ItemRelationMapper $itemRelationMapper, ItemtypeMapper $itemtypeMapper, FolderMapper $folderMapper) {
+		ItemRelationMapper $itemRelationMapper, ItemtypeMapper $itemtypeMapper, FolderMapper $folderMapper, AttachmentStorage $attachmentStorage) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->itemMapper = $itemMapper;
@@ -61,6 +63,7 @@ class ItemsService {
 		$this->itemRelationMapper = $itemRelationMapper;
 		$this->itemtypeMapper = $itemtypeMapper;
 		$this->folderMapper = $folderMapper;
+		$this->attachmentStorage = $attachmentStorage;
 	}
 
 	/**
@@ -394,6 +397,9 @@ class ItemsService {
 		}
 		$item->categories = $categoriesNames;
 		$item->instances = $this->iteminstanceService->getByItemID($item->id);
+
+		$item->images = $this->attachmentStorage->getImages($item->id);
+
 		return $item;
 	}
 

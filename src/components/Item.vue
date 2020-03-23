@@ -39,7 +39,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<td>
 			<a :href="itemRoute" @click.ctrl.prevent>
 				<div class="thumbnail-wrapper">
-					<div :style="{ backgroundImage: `url(${getIconUrl})` }" class="thumbnail default" />
+					<div :style="{ backgroundImage: `url(${getIconUrl})` }" class="thumbnail" :class="{default: !entity.images.length}">
+						<img v-if="entity.images.length > 0" :src="imageSrc">
+					</div>
 				</div>
 				<span>{{ entity.name }}</span>
 			</a>
@@ -114,6 +116,13 @@ export default {
 			return (this.mode === 'selection' || itemStatus === 'unsynced')
 				? null
 				: `#/folders/${(this.entity.path) ? this.entity.path + '/' : ''}item-${this.entity.id}`
+		},
+		imageSrc() {
+			if (this.entity.images.length > 0) {
+				const img = this.entity.images[0]
+				return generateUrl(`/core/preview?fileId=${img.fileid}&x=${128}&y=${128}&a=false&v=${img.etag}`)
+			}
+			return ''
 		},
 	},
 }

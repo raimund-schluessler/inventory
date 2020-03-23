@@ -380,6 +380,10 @@ const mutations = {
 		}
 	},
 
+	addImage(state, { image }) {
+		state.item.images.push(image)
+	},
+
 	setSubItems(state, items) {
 		state.subItems = items.reduce(function(list, item) {
 			if (item instanceof Item) {
@@ -556,6 +560,11 @@ const actions = {
 		} catch (error) {
 			return ''
 		}
+	},
+
+	async uploadImage({ commit }, { itemId, formData }) {
+		const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/image/upload`), formData)
+		commit('addImage', { itemId, image: response.data })
 	},
 
 	async setAttachmentFolder(context, { path }) {

@@ -150,7 +150,26 @@ class AttachmentStorage {
 			}
 			throw $e;
 		}
+	}
 
+	/**
+	 * Get the image folder
+	 *
+	 * @param int $itemID
+	 * @param bool $create
+	 * @return \OCP\Files\Node
+	 * @throws \Exception
+	 */
+	private function getImageFolder(int $itemID, bool $create = false) {
+		$itemFolder = $this->getItemFolder($itemID, $create);
+		try {
+			return $itemFolder->get('images');
+		} catch (NotFoundException $e) {
+			if ($create) {
+				return $itemFolder->newFolder('images');
+			}
+			throw $e;
+		}
 	}
 
 	/**
@@ -167,6 +186,74 @@ class AttachmentStorage {
 			$folder = $this->getFolder($attachment);
 		}
 		return $folder->get(ltrim($attachment->getBasename(), '/'));
+	}
+
+	/**
+	 * List all images of an item
+	 *
+	 * @param int $itemID
+	 * @return Array
+	 * @throws \Exception
+	 */
+	public function getImages($itemID) {
+		try {
+			$imageFolder = $this->getImageFolder($itemID);
+			$folderContent = $imageFolder->getDirectoryListing();
+			$images = [];
+			foreach($folderContent as $node) {
+				$nodeInfo = $node->getFileInfo();
+				// We only want to list files, not folders.
+				if ($nodeInfo->getType() !== \OCP\Files\FileInfo::TYPE_FILE) {
+					continue;
+				}
+				// Check whether file is PNG or JPEG
+				if (in_array(strtolower($nodeInfo->getMimetype()), ['image/png', 'image/jpeg'])) {
+					$images[] = [
+						'filename' => $nodeInfo->getName(),
+						'path' => $nodeInfo->getPath(),
+						'fileid' => $nodeInfo->getId(),
+						'etag' => $nodeInfo->getEtag()
+					];
+				}
+			}
+		} catch (NotFoundException $e) {
+			$images = [];
+		}
+		return $images;
+	}
+
+	/**
+	 * @param int $itemID
+	 * @param $data
+	 * @throws NotPermittedException
+	 * @throws StatusException
+	 * @throws ConflictException
+	 */
+	public function uploadImage($itemID) {
+		$file = $this->getUploadedFile();
+		$folder = $this->getImageFolder($itemID, true);
+		$fileName = $file['name'];
+
+		if ($folder->nodeExists($fileName)) {
+			throw new ConflictException('File already exists.', $image);
+		}
+
+		$target = $folder->newFile($fileName);
+		$content = fopen($file['tmp_name'], 'rb');
+		if ($content === false) {
+			throw new StatusException('Could not read file.');
+		}
+		$target->putContent($content);
+		if (is_resource($content)) {
+			fclose($content);
+		}
+		$nodeInfo = $target->getFileInfo();
+		return [
+			'filename' => $nodeInfo->getName(),
+			'path' => $nodeInfo->getPath(),
+			'fileid' => $nodeInfo->getId(),
+			'etag' => $nodeInfo->getEtag()
+		];
 	}
 
 	/**
