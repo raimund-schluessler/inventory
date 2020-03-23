@@ -1,11 +1,5 @@
-export class OC {
-
-	generateUrl(url) {
-		return ''
+export default {
+	config: {
+		modRewriteWorking: true,
 	}
-
-	imagePath(app, img) {
-		return ''
-	}
-
 }

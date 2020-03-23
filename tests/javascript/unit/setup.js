@@ -1,8 +1,8 @@
 import { config } from '@vue/test-utils'
-import { OC } from './OC.js'
+import OC from './OC.js'
 import OCA from './OCA.js'
 
-global.OC = new OC()
+global.OC = OC
 global.OCA = OCA
 
 // Mock nextcloud translate functions
