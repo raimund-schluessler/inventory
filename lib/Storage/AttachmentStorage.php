@@ -150,7 +150,26 @@ class AttachmentStorage {
 			}
 			throw $e;
 		}
+	}
 
+	/**
+	 * Get the image folder
+	 *
+	 * @param int $itemID
+	 * @param bool $create
+	 * @return \OCP\Files\Node
+	 * @throws \Exception
+	 */
+	private function getImageFolder(int $itemID, bool $create = false) {
+		$itemFolder = $this->getItemFolder($itemID, $create);
+		try {
+			return $itemFolder->get('images');
+		} catch (NotFoundException $e) {
+			if ($create) {
+				return $itemFolder->newFolder('images');
+			}
+			throw $e;
+		}
 	}
 
 	/**
@@ -178,8 +197,7 @@ class AttachmentStorage {
 	 */
 	public function getImages($itemID) {
 		try {
-			$itemFolder = $this->getItemFolder($itemID);
-			$imageFolder = $itemFolder->get('images');
+			$imageFolder = $this->getImageFolder($itemID);
 			$folderContent = $imageFolder->getDirectoryListing();
 			$images = [];
 			foreach($folderContent as $node) {
@@ -202,6 +220,40 @@ class AttachmentStorage {
 			$images = [];
 		}
 		return $images;
+	}
+
+	/**
+	 * @param int $itemID
+	 * @param $data
+	 * @throws NotPermittedException
+	 * @throws StatusException
+	 * @throws ConflictException
+	 */
+	public function uploadImage($itemID) {
+		$file = $this->getUploadedFile();
+		$folder = $this->getImageFolder($itemID, true);
+		$fileName = $file['name'];
+
+		if ($folder->nodeExists($fileName)) {
+			throw new ConflictException('File already exists.', $image);
+		}
+
+		$target = $folder->newFile($fileName);
+		$content = fopen($file['tmp_name'], 'rb');
+		if ($content === false) {
+			throw new StatusException('Could not read file.');
+		}
+		$target->putContent($content);
+		if (is_resource($content)) {
+			fclose($content);
+		}
+		$nodeInfo = $target->getFileInfo();
+		return [
+			'filename' => $nodeInfo->getName(),
+			'path' => $nodeInfo->getPath(),
+			'fileid' => $nodeInfo->getId(),
+			'etag' => $nodeInfo->getEtag()
+		];
 	}
 
 	/**

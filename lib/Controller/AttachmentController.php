@@ -262,4 +262,14 @@ class AttachmentController extends Controller {
 	public function setFolder($path) {
 		return $this->attachmentService->setFolder($path);
 	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function uploadImage($itemID) {
+		return $this->attachmentService->uploadImage(
+			$itemID,
+			$this->request->getParam('data')
+		);
+	}
 }
