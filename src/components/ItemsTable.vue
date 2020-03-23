@@ -462,10 +462,6 @@ export default {
 		isSelected: function(item) {
 			return this.selectedEntities.includes(item)
 		},
-		itemRoute(item) {
-			const itemStatus = item.syncstatus ? item.syncstatus.type : null
-			return (this.mode === 'selection' || itemStatus === 'unsynced') ? null : `#/items/${item.id}`
-		},
 		async removeItems() {
 			await this.deleteItems(this.selectedItems)
 			this.selectedItems = []
