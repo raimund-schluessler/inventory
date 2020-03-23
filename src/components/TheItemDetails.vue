@@ -176,7 +176,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 import Attachments from './Attachments.vue'
 import Breadcrumbs from './Breadcrumbs.vue'
@@ -258,10 +258,8 @@ export default {
 		}
 	},
 	computed: {
-		...mapState({
-			item: state => state.item,
-		}),
 		...mapGetters({
+			item: 'getItem',
 			parentItems: 'getParentItems',
 			subItems: 'getSubItems',
 			relatedItems: 'getRelatedItems',
