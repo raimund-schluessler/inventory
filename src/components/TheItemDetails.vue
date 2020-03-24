@@ -23,7 +23,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div v-if="item" class="app-content-details">
 			<div id="controls" class="itemnavigation">
-				<Breadcrumbs :breadcrumbs="breadcrumbs" :item="item" root-icon="icon-bw icon-items" />
+				<Breadcrumbs root-icon="icon-bw icon-items">
+					<Breadcrumb v-for="crumb in breadcrumbs"
+						:key="crumb.path"
+						:title="crumb.title"
+						:to="crumb.path" />
+				</Breadcrumbs>
 				<Actions>
 					<ActionButton icon="icon-add" :close-after-click="true" @click="openModal">
 						{{ t('inventory', 'Link items') }}
@@ -199,15 +204,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import { mapActions, mapGetters } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 import Attachments from './Attachments.vue'
-import Breadcrumbs from './Breadcrumbs.vue'
 import RelationModal from './RelationModal.vue'
 import ItemInstances from './TheItemInstances.vue'
 import focus from '../directives/focus'
 import bwipjs from 'bwip-js'
 import ClickOutside from 'vue-click-outside'
-import { Actions } from '@nextcloud/vue/dist/Components/Actions'
-import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
-import { Modal } from '@nextcloud/vue/dist/Components/Modal'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import Modal from '@nextcloud/vue/dist/Components/Modal'
+import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
+import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
 import { generateUrl } from '@nextcloud/router'
 import { formatFileSize } from '@nextcloud/files'
 import { showError } from '@nextcloud/dialogs'
@@ -221,6 +227,7 @@ export default {
 		ItemInstances,
 		Attachments,
 		Breadcrumbs,
+		Breadcrumb,
 		Modal,
 	},
 	directives: {
@@ -293,13 +300,13 @@ export default {
 		breadcrumbs() {
 			const path = this.$route.params.path
 			const crumbs = (!path || path === '') ? [] : path.split('/')
-			return [{ name: t('inventory', 'Items'), path: '/folders/' }].concat(crumbs.map((crumb, i) => {
+			return [{ title: t('inventory', 'Items'), path: '/folders/' }].concat(crumbs.map((crumb, i) => {
 				return {
-					name: crumb,
+					title: crumb,
 					path: '/folders/' + crumbs.slice(0, i + 1).join('/'),
 				}
 			})).concat([{
-				name: this.item.description,
+				title: this.item.description,
 				path: `/folders/${(this.item.path) ? this.item.path + '/' : ''}item-${this.item.id}`,
 			}])
 		},

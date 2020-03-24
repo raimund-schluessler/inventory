@@ -52,6 +52,10 @@
 	> div {
 		height: 100%;
 
+		#controls .breadcrumb {
+			width: calc(100% - 44px);
+		}
+
 		.app-content-details {
 			max-width: 100%;
 	
@@ -67,16 +71,23 @@
 	}
 }
 
-#app-navigation > ul > li .app-navigation-entry-icon {
-	background-image: unset;
+#app-navigation {
+	&:not(.hidden) + #app-content {
+		width: calc(100% - 300px);
+		max-width: calc(100% - 300px);
+	}
 
-	&::before {
-		content: '';
-		position: absolute;
-		width: 16px;
-		height: 16px;
-		background: var(--icon-inventory-bw-000) no-repeat;
-		background-position: inherit;
+	> ul > li .app-navigation-entry-icon {
+		background-image: unset;
+
+		&::before {
+			content: '';
+			position: absolute;
+			width: 16px;
+			height: 16px;
+			background: var(--icon-inventory-bw-000) no-repeat;
+			background-position: inherit;
+		}
 	}
 }
 
@@ -544,6 +555,13 @@ table {
 @media only screen and (max-width: 768px) {
 	.itemnavigation {
 		padding-left: 44px;
+	}
+}
+
+@media only screen and (max-width: 1024px) {
+	#app-navigation:not(.hidden) + #app-content {
+		width: 100%;
+		max-width: 100%;
 	}
 }
 
