@@ -39,9 +39,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<td>
 			<a :href="itemRoute" @click.ctrl.prevent>
 				<div class="thumbnail-wrapper">
-					<div :style="{ backgroundImage: `url(${getIconUrl})` }" class="thumbnail" :class="{default: !entity.images.length}">
-						<img v-if="entity.images.length > 0" :src="imageSrc">
-					</div>
+					<div :style="{ backgroundImage: `url(${getIconUrl})` }" class="thumbnail" :class="{default: !entity.images.length}" />
 				</div>
 				<span>{{ entity.name }}</span>
 			</a>
@@ -101,14 +99,17 @@ export default {
 	},
 	computed: {
 		getIconUrl() {
-			if (!this.entity.iconurl) {
+			if (this.entity.images.length > 0) {
+				const img = this.entity.images[0]
+				return generateUrl(`/core/preview?fileId=${img.fileid}&x=${128}&y=${128}&a=false&v=${img.etag}`)
+			} else if (this.entity.iconurl) {
+				return this.entity.iconurl
+			} else {
 				let color = '000'
 				if (OCA.Accessibility) {
 					color = (OCA.Accessibility.theme === 'dark' ? 'fff' : '000')
 				}
 				return generateUrl(`svg/inventory/item_${this.entity.icon}?color=${color}`)
-			} else {
-				return this.entity.iconurl
 			}
 		},
 		itemRoute() {
@@ -116,13 +117,6 @@ export default {
 			return (this.mode === 'selection' || itemStatus === 'unsynced')
 				? null
 				: `#/folders/${(this.entity.path) ? this.entity.path + '/' : ''}item-${this.entity.id}`
-		},
-		imageSrc() {
-			if (this.entity.images.length > 0) {
-				const img = this.entity.images[0]
-				return generateUrl(`/core/preview?fileId=${img.fileid}&x=${128}&y=${128}&a=false&v=${img.etag}`)
-			}
-			return ''
 		},
 	},
 }
