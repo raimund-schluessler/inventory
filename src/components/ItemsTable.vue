@@ -415,6 +415,8 @@ export default {
 			'setDraggedEntities',
 		]),
 
+		generateUrl,
+
 		entityType(entity) {
 			return (entity instanceof Item) ? 'ItemComponent' : 'Folder'
 		},
