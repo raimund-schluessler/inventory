@@ -440,14 +440,17 @@ export default {
 		},
 
 		getIconUrl: function(item) {
-			if (!item.iconurl) {
+			if (item.images.length > 0) {
+				const img = item.images[0]
+				return generateUrl(`/core/preview?fileId=${img.fileid}&x=${128}&y=${128}&a=false&v=${img.etag}`)
+			} else if (item.iconurl) {
+				return item.iconurl
+			} else {
 				let color = '000'
 				if (OCA.Accessibility) {
-					color = (OCA.Accessibility.theme === 'themedark' ? 'fff' : '000')
+					color = (OCA.Accessibility.theme === 'dark' ? 'fff' : '000')
 				}
 				return generateUrl(`svg/inventory/item_${item.icon}?color=${color}`)
-			} else {
-				return item.iconurl
 			}
 		},
 		selectItem: function(item) {
