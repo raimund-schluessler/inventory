@@ -41,17 +41,27 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="thumbnail-wrapper">
 					<div :style="{ backgroundImage: `url(${getIconUrl})` }" class="thumbnail" :class="{default: !entity.images.length}" />
 				</div>
-				<span>{{ entity.name }}</span>
+				<div class="text">
+					<span>{{ entity.name }}</span>
+					<span v-if="showInstance" class="details">{{ entity.instances[0].date }}</span>
+				</div>
 			</a>
 		</td>
 		<td>
 			<a :href="itemRoute" @click.ctrl.prevent>
-				{{ entity.maker }}
+				<div class="text">
+					<span>{{ entity.maker }}</span>
+					<span v-if="showInstance" class="details">{{ entity.instances[0].vendor }}</span>
+				</div>
 			</a>
 		</td>
 		<td>
 			<a :href="itemRoute" @click.ctrl.prevent>
-				{{ entity.description }}
+				<div class="text">
+					<span>{{ entity.description }}</span>
+					<span v-if="showInstance" class="details">{{ t('inventory', '{available} of {count}',
+						{ available: entity.instances[0].available, count: entity.instances[0].count }) }}</span>
+				</div>
 			</a>
 		</td>
 		<td class="hide-if-narrow">
@@ -96,6 +106,10 @@ export default {
 			type: Boolean,
 			default: true,
 		},
+		collection: {
+			type: String,
+			default: 'folders',
+		},
 	},
 	computed: {
 		getIconUrl() {
@@ -112,11 +126,27 @@ export default {
 				return generateUrl(`svg/inventory/item_${this.entity.icon}?color=${color}`)
 			}
 		},
+		/**
+		 * Returns the link to the item or instance
+		 *
+		 * @returns {String} The link to show for the item
+		 */
 		itemRoute() {
 			const itemStatus = this.entity.syncstatus ? this.entity.syncstatus.type : null
-			return (this.mode === 'selection' || itemStatus === 'unsynced')
-				? null
-				: `#/folders/${(this.entity.path) ? this.entity.path + '/' : ''}item-${this.entity.id}`
+			if (this.mode === 'selection' || itemStatus === 'unsynced') {
+				return null
+			}
+			let basePath
+			const instance = (this.entity.isInstance && this.entity.instances.length > 0) ? this.entity.instances[0] : null
+			if (instance) {
+				basePath = `#/places/${(instance.place.path) ? instance.place.path + '/' : ''}`
+			} else {
+				basePath = `#/folders/${(this.entity.path) ? this.entity.path + '/' : ''}`
+			}
+			return `${basePath}item-${this.entity.id + (instance ? '/instance-' + instance.id : '')}`
+		},
+		showInstance() {
+			return this.entity.isInstance && this.entity.instances.length > 0
 		},
 	},
 }

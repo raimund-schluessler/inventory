@@ -23,7 +23,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div v-if="item" class="app-content-details">
 			<div id="controls" class="itemnavigation">
-				<Breadcrumbs root-icon="icon-bw icon-items">
+				<Breadcrumbs :root-icon="`icon-bw ${collection === 'folders' ? 'icon-items' : 'icon-places'}`">
 					<Breadcrumb v-for="crumb in breadcrumbs"
 						:key="crumb.path"
 						:title="crumb.title"
@@ -139,7 +139,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Instances') }}</span>
 					</h3>
-					<ItemInstances :item="item" @openBarcode="(uuid) => openBarcode(uuid)" />
+					<ItemInstances :item="item" :instance-id="instanceId" @openBarcode="(uuid) => openBarcode(uuid)" />
 				</div>
 				<div v-if="parentItems.length" class="paragraph">
 					<h3>
@@ -243,6 +243,14 @@ export default {
 			type: String,
 			default: '',
 		},
+		instanceId: {
+			type: String,
+			default: null,
+		},
+		collection: {
+			type: String,
+			default: 'folders',
+		},
 	},
 	data: function() {
 		return {
@@ -298,16 +306,16 @@ export default {
 		}),
 
 		breadcrumbs() {
-			const path = this.$route.params.path
+			const path = this.path
 			const crumbs = (!path || path === '') ? [] : path.split('/')
-			return [{ title: t('inventory', 'Items'), path: '/folders/' }].concat(crumbs.map((crumb, i) => {
+			return [{ title: t('inventory', 'Items'), path: `/${this.collection}/` }].concat(crumbs.map((crumb, i) => {
 				return {
 					title: crumb,
-					path: '/folders/' + crumbs.slice(0, i + 1).join('/'),
+					path: `/${this.collection}/` + crumbs.slice(0, i + 1).join('/'),
 				}
 			})).concat([{
 				title: this.item.description,
-				path: `/folders/${(this.item.path) ? this.item.path + '/' : ''}item-${this.item.id}`,
+				path: `/${this.collection}/${(this.path) ? this.path + '/' : ''}item-${this.id}${(this.instanceId) ? `/instance-${this.instanceId}` : ''}`,
 			}])
 		},
 

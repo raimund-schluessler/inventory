@@ -155,7 +155,7 @@ const mutations = {
 	addItems(state, items = []) {
 		state.items = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, 'item' + item.id, item)
+				Vue.set(list, item.key, item)
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -172,7 +172,7 @@ const mutations = {
 	setItems(state, items = []) {
 		state.items = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, 'item' + item.id, item)
+				Vue.set(list, item.key, item)
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -187,7 +187,7 @@ const mutations = {
 	 * @param {Item} item The item to add
 	 */
 	addItem(state, item) {
-		Vue.set(state.items, 'item' + item.id, item)
+		Vue.set(state.items, item.key, item)
 	},
 
 	/**
@@ -197,8 +197,8 @@ const mutations = {
 	 * @param {Item} item The item to delete
 	 */
 	deleteItem(state, item) {
-		if (state.items['item' + item.id] && item instanceof Item) {
-			Vue.delete(state.items, 'item' + item.id)
+		if (state.items[item.key] && item instanceof Item) {
+			Vue.delete(state.items, item.key)
 		}
 	},
 
@@ -210,7 +210,7 @@ const mutations = {
 	 */
 	editItem(state, item) {
 		if (state.items[item.id] && item instanceof Item) {
-			Vue.set(state.items, 'item' + item.id, item)
+			Vue.set(state.items, item.key, item)
 		}
 		if (state.item.id === item.id) {
 			state.item = item
@@ -225,7 +225,7 @@ const mutations = {
 	 */
 	unlinkParents(state, items) {
 		items.forEach((item) => {
-			if (state.parentItems['item' + item.id] && item instanceof Item) {
+			if (state.parentItems[item.key] && item instanceof Item) {
 				Vue.delete(state.parentItems, item.id)
 			}
 		})
@@ -239,7 +239,7 @@ const mutations = {
 	 */
 	unlinkRelated(state, items) {
 		items.forEach((item) => {
-			if (state.relatedItems['item' + item.id] && item instanceof Item) {
+			if (state.relatedItems[item.key] && item instanceof Item) {
 				Vue.delete(state.relatedItems, item.id)
 			}
 		})
@@ -253,7 +253,7 @@ const mutations = {
 	 */
 	unlinkSub(state, items) {
 		items.forEach((item) => {
-			if (state.subItems['item' + item.id] && item instanceof Item) {
+			if (state.subItems[item.key] && item instanceof Item) {
 				Vue.delete(state.subItems, item.id)
 			}
 		})
@@ -391,7 +391,7 @@ const mutations = {
 	setSubItems(state, items) {
 		state.subItems = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, 'item' + item.id, item)
+				Vue.set(list, item.key, item)
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -401,7 +401,7 @@ const mutations = {
 	setParentItems(state, items) {
 		state.parentItems = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, 'item' + item.id, item)
+				Vue.set(list, item.key, item)
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -411,7 +411,7 @@ const mutations = {
 	setRelatedItems(state, items) {
 		state.relatedItems = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, 'item' + item.id, item)
+				Vue.set(list, item.key, item)
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -449,9 +449,19 @@ const actions = {
 		state.loadingItems = false
 	},
 
-	async getItemsByPath({ commit, state }, path) {
+	async getItemsByFolder({ commit, state }, path) {
 		state.loadingItems = true
-		const response = await Axios.post(generateUrl('apps/inventory/items'), { path })
+		const response = await Axios.post(generateUrl('apps/inventory/items/folder'), { path })
+		const items = response.data.map(payload => {
+			return new Item(payload)
+		})
+		commit('setItems', items)
+		state.loadingItems = false
+	},
+
+	async getItemsByPlace({ commit, state }, path) {
+		state.loadingItems = true
+		const response = await Axios.post(generateUrl('apps/inventory/items/place'), { path })
 		const items = response.data.map(payload => {
 			return new Item(payload)
 		})
@@ -648,6 +658,15 @@ const actions = {
 	async moveItem({ commit }, { itemID, newPath }) {
 		try {
 			const response = await Axios.patch(generateUrl(`apps/inventory/item/${itemID}/move`), { path: newPath })
+			const item = new Item(response.data)
+			commit('deleteItem', item)
+		} catch {
+			console.debug('Item editing failed.')
+		}
+	},
+	async moveInstance({ commit }, { itemID, instanceID, newPath }) {
+		try {
+			const response = await Axios.patch(generateUrl(`apps/inventory/item/${itemID}/instance/${instanceID}/move`), { path: newPath })
 			const item = new Item(response.data)
 			commit('deleteItem', item)
 		} catch {

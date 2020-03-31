@@ -99,6 +99,18 @@ class IteminstanceMapperTest extends MapperTestUtility  {
 		$this->assertEquals([], $this->iteminstanceMapper->findByItemID(1, 'unit_tester_3'));
 	}
 
+	public function testFindByPlaceId() {
+		$iteminstancesByPlaceId = [
+			[$this->iteminstances[0]],
+			[$this->iteminstances[1]],
+			[$this->iteminstances[2]]
+		];
+		$this->assertEquals($iteminstancesByPlaceId[0], $this->iteminstanceMapper->findByPlaceId('unit_tester_1', 1));
+		$this->assertEquals($iteminstancesByPlaceId[1], $this->iteminstanceMapper->findByPlaceId('unit_tester_1', 2));
+		$this->assertEquals($iteminstancesByPlaceId[2], $this->iteminstanceMapper->findByPlaceId('unit_tester_1', 3));
+		$this->assertEquals([], $this->iteminstanceMapper->findByPlaceId('unit_tester_3', 4));
+	}
+
 	public function testAddAndFind() {
 		$params['uid'] = 'unit_tester_4';
 		$params['itemid'] = 1;

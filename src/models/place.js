@@ -20,13 +20,13 @@
  */
 import Status from './status'
 
-export default class Folder {
+export default class Place {
 
 	/**
-	 * Creates an instance of a Folder
+	 * Creates an instance of a Place
 	 *
-	 * @param {Array} response The folder payload
-	 * @memberof Folder
+	 * @param {Array} response The place payload
+	 * @memberof Place
 	 */
 	constructor(response) {
 		if (typeof response !== 'object') {
@@ -37,10 +37,10 @@ export default class Folder {
 
 		this.syncstatus = null
 
-		this.initFolder()
+		this.initPlace()
 	}
 
-	initFolder() {
+	initPlace() {
 
 		// Define properties, so Vue reacts to changes of them
 		this._id = this.response.id || 0
@@ -54,12 +54,12 @@ export default class Folder {
 	}
 
 	/**
-	 * Update internal data of this folder
+	 * Update internal data of this place
 	 *
-	 * @memberof Folder
+	 * @memberof Place
 	 */
-	updateFolder() {
-		this.initFolder()
+	updatePlace() {
+		this.initPlace()
 	}
 
 	/**
@@ -69,14 +69,14 @@ export default class Folder {
 	 * @memberof Item
 	 */
 	get key() {
-		return `folder_${this._id}`
+		return `place_${this._id}`
 	}
 
 	/**
 	 * Return the id
 	 *
 	 * @readonly
-	 * @memberof Folder
+	 * @memberof Place
 	 */
 	get id() {
 		return this._id
@@ -86,7 +86,7 @@ export default class Folder {
 	 * Set the id
 	 *
 	 * @param {string} id The new id
-	 * @memberof Folder
+	 * @memberof Place
 	 */
 	set id(id) {
 		this.response.id = id
@@ -97,7 +97,7 @@ export default class Folder {
 	 * Return the uid
 	 *
 	 * @readonly
-	 * @memberof Folder
+	 * @memberof Place
 	 */
 	get uid() {
 		return this._uid
@@ -107,7 +107,7 @@ export default class Folder {
 	 * Return the path
 	 *
 	 * @readonly
-	 * @memberof Folder
+	 * @memberof Place
 	 */
 	get path() {
 		return this._path
@@ -117,7 +117,7 @@ export default class Folder {
 	 * Return the parent id
 	 *
 	 * @readonly
-	 * @memberof Folder
+	 * @memberof Place
 	 */
 	get parentid() {
 		return this._parentid
@@ -127,7 +127,7 @@ export default class Folder {
 	 * Return the name
 	 *
 	 * @readonly
-	 * @memberof Folder
+	 * @memberof Place
 	 */
 	get name() {
 		return this._name
@@ -137,7 +137,7 @@ export default class Folder {
 	 * Set the name
 	 *
 	 * @param {string} name The new name
-	 * @memberof Folder
+	 * @memberof Place
 	 */
 	set name(name) {
 		this.response.name = name

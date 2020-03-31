@@ -49,8 +49,16 @@ class ItemsController extends Controller {
 	 * @NoAdminRequired
 	 * @param $path
 	 */
-	public function getByPath($path) {
-		return $this->itemsService->getByPath($path);
+	public function getByFolder($path) {
+		return $this->itemsService->getByFolder($path);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @param $path
+	 */
+	public function getByPlace($path) {
+		return $this->itemsService->getByPlace($path);
 	}
 
 	/**
@@ -130,5 +138,17 @@ class ItemsController extends Controller {
 	 */
 	public function move($itemID, $path){
 		return $this->itemsService->move($itemID, $path);
+	}
+
+	/**
+	 * Moves an instance to a different place
+	 * 
+	 * @NoAdminRequired
+	 * @param $itemID		The item Id
+	 * @param $instanceID	The instance Id
+	 * @param $path			The path of the new place
+	 */
+	public function moveInstance($itemID, $instanceID, $path) {
+		return $this->itemsService->moveInstance($itemID, $instanceID, $path);
 	}
 }

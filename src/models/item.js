@@ -61,6 +61,7 @@ export default class Item {
 		this._icon = this.response.icon || ''
 		this._categories = this.response.categories || []
 		this._instances = this.response.instances || []
+		this._isInstance = this.response.isInstance || false
 		this._attachments = this.response.attachments || []
 		this._path = this.response.path || ''
 		this._folderid = this.response.folderid || ''
@@ -77,6 +78,16 @@ export default class Item {
 	 */
 	updateItem() {
 		this.initItem()
+	}
+
+	/**
+	 * Return the key
+	 *
+	 * @readonly
+	 * @memberof Item
+	 */
+	get key() {
+		return `item_${this._id}_${(this._isInstance && this.instances.length > 0) ? this.instances[0].id : ''}`
 	}
 
 	/**
@@ -337,6 +348,17 @@ export default class Item {
 	set categories(categories) {
 		this.response.categories = categories
 		this._categories = this.response.categories || ''
+	}
+
+	/**
+	 * Should this item be treated as an instance?
+	 * Necessary for items in places view.
+	 *
+	 * @readonly
+	 * @memberof Item
+	 */
+	get isInstance() {
+		return this._isInstance
 	}
 
 	/**

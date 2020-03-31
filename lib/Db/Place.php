@@ -30,6 +30,7 @@ class Place extends Entity {
 	public $uid;
 	public $name;
 	public $parentid;
+	public $path;
 
 	public function __construct() {
 		// add types in constructor

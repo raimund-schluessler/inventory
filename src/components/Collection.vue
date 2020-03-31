@@ -37,7 +37,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</td>
 		<td colspan="5">
 			<div>
-				<RouterLink :to="`/folders/${entity.path}`"
+				<RouterLink :to="`/${collection}/${entity.path}`"
 					tag="a"
 					@click.ctrl.prevent>
 					<div class="thumbnail-wrapper">
@@ -59,14 +59,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						{{ t('inventory', 'Rename') }}
 					</ActionButton>
 					<ActionButton icon="icon-delete" @click="scheduleDelete">
-						{{ t('inventory', 'Delete folder') }}
+						{{ deleteString }}
 					</ActionButton>
 				</Actions>
 				<Actions v-if="!!deleteTimeout">
 					<ActionButton
 						icon="icon-history"
 						@click.prevent.stop="cancelDelete">
-						{{ n('inventory', 'Deleting the folder in {countdown} second', 'Deleting the folder in {countdown} seconds', countdown, { countdown }) }}
+						{{ undoString }}
 					</ActionButton>
 				</Actions>
 			</div>
@@ -97,6 +97,10 @@ export default {
 		entity: {
 			type: Object,
 			required: true,
+		},
+		collection: {
+			type: String,
+			default: 'folders',
 		},
 		isSelected: {
 			type: Boolean,
@@ -129,11 +133,25 @@ export default {
 		getThumbnailUrl() {
 			return `url(${generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})`
 		},
+		deleteString() {
+			if (this.collection === 'places') {
+				return t('inventory', 'Delete place')
+			}
+			return t('inventory', 'Delete folder')
+		},
+		undoString() {
+			if (this.collection === 'places') {
+				return n('inventory', 'Deleting the place in {countdown} second', 'Deleting the place in {countdown} seconds', this.countdown, { countdown: this.countdown })
+			}
+			return n('inventory', 'Deleting the folder in {countdown} second', 'Deleting the folder in {countdown} seconds', this.countdown, { countdown: this.countdown })
+		},
 	},
 	methods: {
 		...mapActions([
 			'renameFolder',
+			'renamePlace',
 			'deleteFolder',
+			'deletePlace',
 		]),
 
 		startRename() {
@@ -151,7 +169,11 @@ export default {
 			if (this.newName === this.entity.name) {
 				return
 			}
-			this.renameFolder({ folderID: this.entity.id, newName: this.newName })
+			if (this.collection === 'folders') {
+				this.renameFolder({ folderID: this.entity.id, newName: this.newName })
+			} else if (this.collection === 'places') {
+				this.renamePlace({ placeID: this.entity.id, newName: this.newName })
+			}
 		},
 
 		checkClickOutside($event) {
@@ -181,9 +203,17 @@ export default {
 			}, 1000)
 			this.deleteTimeout = setTimeout(async() => {
 				try {
-					await this.deleteFolder(this.entity)
+					if (this.collection === 'folders') {
+						await this.deleteFolder(this.entity.id)
+					} else if (this.collection === 'places') {
+						await this.deletePlace(this.entity.id)
+					}
 				} catch (error) {
-					this.$toast.error(this.$t('inventory', 'An error occurred, unable to delete the folder.'))
+					if (this.collection === 'folders') {
+						this.$toast.error(this.$t('inventory', 'An error occurred, unable to delete the folder.'))
+					} else if (this.collection === 'places') {
+						this.$toast.error(this.$t('inventory', 'An error occurred, unable to delete the place.'))
+					}
 					console.error(error)
 				} finally {
 					clearInterval(this.deleteInterval)

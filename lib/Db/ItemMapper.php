@@ -106,6 +106,22 @@ class ItemMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
+	public function findItemsByIds(array $itemIds, string $uid, $limit=null, $offset=null) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_items')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
+			->where(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			)
+			->andWhere('id IN (:itemIds)')
+			->setParameter('itemIds', $itemIds, IQueryBuilder::PARAM_INT_ARRAY);
+
+		return $this->findEntities($qb);
+	}
+
 	public function findCandidates(int $itemID, array $excludeIDs, string $uid, $limit=null, $offset=null) {
 		$qb = $this->db->getQueryBuilder();
 

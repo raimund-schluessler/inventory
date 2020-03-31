@@ -22,72 +22,72 @@
 
 namespace OCA\Inventory\Controller;
 
-use \OCA\Inventory\Service\FoldersService;
+use \OCA\Inventory\Service\PlacesService;
 use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 
-class FoldersController extends Controller {
+class PlacesController extends Controller {
 
-	private $foldersService;
+	private $placesService;
 
 	/**
 	 * @param string $AppName
 	 * @param IRequest $request an instance of the request
-	 * @param FoldersService $foldersService
+	 * @param PlacesService $placesService
 	 */
-	public function __construct(string $AppName, IRequest $request, FoldersService $foldersService){
+	public function __construct(string $AppName, IRequest $request, PlacesService $placesService){
 		parent::__construct($AppName, $request);
-		$this->foldersService = $foldersService;
+		$this->placesService = $placesService;
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	public function getByFolder($path) {
-		return $this->foldersService->getByFolder($path);
+	public function getByPlace($path) {
+		return $this->placesService->getByPlace($path);
 	}
 
 	/**
-	 * Adds a folder
+	 * Adds a place
 	 * 
 	 * @NoAdminRequired
-	 * @param $name	The new folder name
-	 * @param $path	The path to create the folder at
+	 * @param $name	The new place name
+	 * @param $path	The path to create the place at
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
 	public function add($name, $path) {
-		return $this->foldersService->add($name, $path);
+		return $this->placesService->add($name, $path);
 	}
 
 	/**
-	 * Deletes a folder
+	 * Deletes a place
 	 * 
 	 * @NoAdminRequired
-	 * @param $folderID		The id of the folder to delete
+	 * @param $placeID		The id of the place to delete
 	 */
-	public function delete($folderID) {
-		return $this->foldersService->delete($folderID);
+	public function delete($placeID) {
+		return $this->placesService->delete($placeID);
 	}
 
 	/**
-	 * Renames a folder
+	 * Renames a place
 	 * 
 	 * @NoAdminRequired
-	 * @param $folderID		The id of the folder to edit
+	 * @param $placeID		The id of the place to edit
 	 * @param $newName		The newName
 	 */
-	public function rename($folderID, $newName) {
-		return $this->foldersService->rename($folderID, $newName);
+	public function rename($placeID, $newName) {
+		return $this->placesService->rename($placeID, $newName);
 	}
 
 	/**
-	 * Moves a folder
+	 * Moves a place
 	 * 
 	 * @NoAdminRequired
-	 * @param $folderID		The id of the folder to edit
+	 * @param $placeID		The id of the place to edit
 	 * @param $path			The new path
 	 */
-	public function move($folderID, $path) {
-		return $this->foldersService->move($folderID, $path);
+	public function move($placeID, $path) {
+		return $this->placesService->move($placeID, $path);
 	}
 }

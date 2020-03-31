@@ -53,10 +53,10 @@ class PlaceMapperTest extends MapperTestUtility  {
 			$this->dbConnection
 		);
 		$this->places = [
-			$this->createPlaceEntity('Living Room', null),
-			$this->createPlaceEntity('Kitchen', 1),
-			$this->createPlaceEntity('Basement', 1),
-			$this->createPlaceEntity('Bathroom', 1)
+			$this->createPlaceEntity('Living Room', 'Living Room', null),
+			$this->createPlaceEntity('Kitchen', 'Kitchen', 1),
+			$this->createPlaceEntity('Basement', 'Basement', 1),
+			$this->createPlaceEntity('Bathroom', 'Bathromm', 1)
 		];
 		foreach ($this->places as $place) {
 			$entry = $this->placeMapper->insert($place);
@@ -65,50 +65,63 @@ class PlaceMapperTest extends MapperTestUtility  {
 		}
 	}
 
-	private function createPlaceEntity($name, $parentId) {
+	private function createPlaceEntity($name, $path, $parentId) {
 		$place = new Place();
 		$place->setUid('unit_tester_1');
 		$place->setName($name);
+		$place->setPath($path);
 		$place->setParentid($parentId);
 		return $place;
 	}
 
-	public function testFind() {
+	public function testFindPlace() {
 		$uid = 'unit_tester_1';
 		foreach ($this->placesById as $id => $place) {
-			$this->assertEquals($place, $this->placeMapper->findPlace($place->getId(), $uid));
+			$this->assertEquals($place, $this->placeMapper->findPlace($uid, $place->getId()));
 		}
 	}
 	
-	public function testFindNotFound() {
+	public function testFindPlaceNotFound() {
+		$this->expectException(DoesNotExistException::class);
+
 		$placeId = 10;
 		$uid = 'unit_tester_1';
-		$this->assertEquals(false, $this->placeMapper->findPlace($placeId, $uid));
+		$this->placeMapper->findPlace($uid, $placeId);
 	}
 	
-	public function testFindCategoryByName() {
+	public function testFindPlaceByPath() {
 		$name = 'Living Room';
 		$uid = 'unit_tester_1';
-		$this->assertEquals($this->places[0], $this->placeMapper->findPlaceByName($name, $uid));
+		$this->assertEquals($this->places[0], $this->placeMapper->findPlaceByPath($uid, $name));
 	}
 	
-	public function testFindByNameNotFound() {
+	public function testFindPlaceByPathNotFound() {
+		$this->expectException(DoesNotExistException::class);
+
 		$name = 'Bedroom';
 		$uid = 'unit_tester_1';
-		$this->assertEquals(false, $this->placeMapper->findPlaceByName($name, $uid));
+		$this->placeMapper->findPlaceByPath($uid, $name);
+	}
+
+	public function testFindByParentId() {
+		$uid = 'unit_tester_1';
+		$this->assertEquals(array_slice($this->places, 1, 3), $this->placeMapper->findByParentId($uid, 1));
+		$this->assertEquals([], $this->placeMapper->findByParentId($uid, 2));
 	}
 
 	public function testAddAndFind() {
 		$name = 'Python';
+		$path = '';
 		$uid = 'unit_tester_1';
 		$parentId = null;
 
-		$entry = $this->placeMapper->add($name, $uid, $parentId);
+		$entry = $this->placeMapper->add($name, $path, $uid, $parentId);
 		$entry->resetUpdatedFields();
 
 		$place = new Place();
 		$place->setUid($uid);
 		$place->setName($name);
+		$place->setPath($path);
 		$place->setParentid($parentId);
 		$place->setId($entry->getId());
 		$place->resetUpdatedFields();

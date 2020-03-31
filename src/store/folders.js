@@ -39,12 +39,12 @@ const getters = {
 	 * @param {Object} state The store data
 	 * @returns {Array} The folders
 	 */
-	getFoldersByPath: (state) => Object.values(state.folders),
+	getFoldersByFolder: (state) => Object.values(state.folders),
 }
 
 const mutations = {
 	/**
-	 * Adds an item to the store
+	 * Sets the folders
 	 *
 	 * @param {Object} state Default state
 	 * @param {Object} payload The folders object
@@ -98,7 +98,7 @@ const actions = {
 	 * @param {String} path The path to look at
 	 * @returns {Promise}
 	 */
-	async getFoldersByPath({ commit }, path) {
+	async getFoldersByFolder({ commit }, path) {
 		try {
 			const response = await Axios.post(generateUrl('apps/inventory/folders'), { path })
 			const folders = response.data.map(payload => {
@@ -129,9 +129,9 @@ const actions = {
 		}
 	},
 
-	async deleteFolder(context, folder) {
+	async deleteFolder(context, folderID) {
 		try {
-			const response = await Axios.delete(generateUrl(`apps/inventory/folders/${folder.id}/delete`))
+			const response = await Axios.delete(generateUrl(`apps/inventory/folders/${folderID}/delete`))
 			context.commit('deleteFolder', { folder: new Folder(response.data) })
 		} catch {
 			console.debug('Could not delete the folder.')

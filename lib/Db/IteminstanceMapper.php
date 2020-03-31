@@ -68,6 +68,23 @@ class IteminstanceMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
+	public function findByPlaceId(string $uid, int $placeId, $limit=null, $offset=null) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_item_instances')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
+			->where(
+				$qb->expr()->eq('placeid', $qb->createNamedParameter($placeId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntities($qb);
+	}
+
 	public function findByString(string $uid, string $searchString, $limit=null, $offset=null) {
 		$qb = $this->db->getQueryBuilder();
 
