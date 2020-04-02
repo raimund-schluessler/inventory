@@ -26,9 +26,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<tr>
 					<th :id="`headerSelection-${_uid}`" class="column-selection">
 						<input :id="`select_all_items-${_uid}`"
-							v-model="allVisibleEntitiesSelected"
+							:checked="allEntitiesSelected"
+							:indeterminate.prop="someEntitiesSelected"
 							class="select-all checkbox"
-							type="checkbox">
+							type="checkbox"
+							@change="selectEntities">
 						<label :for="`select_all_items-${_uid}`">
 							<span class="hidden-visually">
 								{{ t('inventory', 'Select all') }}
@@ -140,7 +142,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<tr v-for="item in draggedItems" :key="entityType(item) + item.id">
 					<td>
 						<div class="thumbnail-wrapper">
-							<div v-if="entityType(item) === 'Folder'"
+							<div v-if="entityType(item) === 'FolderComponent'"
 								:style="{ backgroundImage: `url(${generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
 								class="thumbnail folder" />
 							<div v-else :style="{ backgroundImage: `url(${getIconUrl(item)})` }" class="thumbnail default" />
@@ -155,8 +157,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import ItemComponent from './Item'
+import FolderComponent from './Folder'
 import Item from '../models/item.js'
-import Folder from './Folder'
+import Folder from '../models/folder.js'
 import { sort } from '../store/storeHelper'
 import searchQueryParser from 'search-query-parser'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
@@ -167,7 +170,7 @@ import { generateUrl } from '@nextcloud/router'
 export default {
 	components: {
 		ItemComponent,
-		Folder,
+		FolderComponent,
 		Actions,
 		ActionButton,
 	},
@@ -216,40 +219,14 @@ export default {
 			'searchResults',
 		]),
 
-		allVisibleEntitiesSelected: {
-			set(select) {
-				if (select) {
-					// add all filteredEntities to selectedEntities
-					for (let i = 0; i < this.filteredEntities.length; i++) {
-						const index = this.selectedEntities.indexOf(this.filteredEntities[i])
-						if (index === -1) {
-							this.selectedEntities.push(this.filteredEntities[i])
-						}
-					}
-				} else {
-					// remove all filteredEntities from selectedEntities
-					for (let i = 0; i < this.filteredEntities.length; i++) {
-						const index = this.selectedEntities.indexOf(this.filteredEntities[i])
-						if (index !== -1) {
-							this.selectedEntities.splice(index, 1)
-						}
-					}
-				}
-				this.$emit('selectedItemsChanged', this.selectedItems)
-			},
-			get() {
-				for (let i = 0; i < this.filteredEntities.length; i++) {
-					const index = this.selectedEntities.indexOf(this.filteredEntities[i])
-					if (index === -1) {
-						return false
-					}
-				}
-				if (!Array.isArray(this.filteredEntities) || !this.filteredEntities.length) {
-					return false
-				}
-				return true
-			},
+		allEntitiesSelected() {
+			return this.selectedEntities.length === (this.items.length + this.folders.length) && this.selectedEntities.length
 		},
+
+		someEntitiesSelected() {
+			return !this.allEntitiesSelected && this.selectedEntities.length
+		},
+
 		selectedItems: {
 			set(items) {
 				for (let i = 0; i < this.selectedEntities.length; i++) {
@@ -396,6 +373,7 @@ export default {
 	},
 	watch: {
 		items: 'checkSelected',
+		folders: 'checkSelected',
 		searchString: function(newVal, oldVal) {
 			if (newVal) {
 				this.$store.dispatch('search', newVal)
@@ -415,10 +393,34 @@ export default {
 			'setDraggedEntities',
 		]),
 
+		selectEntities(state) {
+			/**
+			 * If the checkbox is checked, we select all entities which are visible
+			 * (all filtered entities).
+			 *
+			 * Otherwise we deselect ALL entities.
+			 */
+			if (state.target.checked) {
+				// add all filteredEntities to selectedEntities
+				for (let i = 0; i < this.filteredEntities.length; i++) {
+					const index = this.selectedEntities.indexOf(this.filteredEntities[i])
+					if (index === -1) {
+						this.selectedEntities.push(this.filteredEntities[i])
+					}
+				}
+			} else {
+				this.selectedEntities = []
+			}
+			/**
+			 * Emits that the selected items have changed
+			 */
+			this.$emit('selectedItemsChanged', this.selectedItems)
+		},
+
 		generateUrl,
 
 		entityType(entity) {
-			return (entity instanceof Item) ? 'ItemComponent' : 'Folder'
+			return (entity instanceof Item) ? 'ItemComponent' : 'FolderComponent'
 		},
 
 		/**
@@ -429,10 +431,13 @@ export default {
 		checkSelected: function() {
 			const before = this.selectedEntities.length
 			this.selectedEntities = this.selectedEntities.filter((entity) => {
-				if (!(entity instanceof Item)) {
-					return true
+				if (entity instanceof Item) {
+					return (this.items.indexOf(entity) > -1)
 				}
-				return (this.items.indexOf(entity) > -1)
+				if (entity instanceof Folder) {
+					return (this.folders.indexOf(entity) > -1)
+				}
+				return true
 			})
 			if (before !== this.selectedEntities.length) {
 				this.$emit('selectedItemsChanged', this.selectedItems)
@@ -516,7 +521,7 @@ export default {
 		dropped(targetEntity, e) {
 			e.stopPropagation()
 			e.preventDefault()
-			if (this.entityType(targetEntity) === 'Folder' && !this.isDragged(targetEntity)) {
+			if (this.entityType(targetEntity) === 'FolderComponent' && !this.isDragged(targetEntity)) {
 				this.draggedItems.forEach((entity) => {
 					if (entity instanceof Item) {
 						this.moveItem({ itemID: entity.id, newPath: targetEntity.path })
@@ -536,7 +541,7 @@ export default {
 		dragEnter(entity, e) {
 			// We don't add the hover state if
 			// the entity itself is dragged or is not a folder.
-			if (this.isDragged(entity) || this.entityType(entity) !== 'Folder') {
+			if (this.isDragged(entity) || this.entityType(entity) !== 'FolderComponent') {
 				return
 			}
 			// Get the correct element, in case we hover a child.
