@@ -115,18 +115,19 @@ const getters = {
 	 * Returns the search results from the server
 	 *
 	 * @param {Object} state The store data
+	 * @param {Object} rootState The store root state
 	 * @returns {Array} The results
 	 */
-	searchResults: (state) => {
+	searchResults: (state, getters, rootState) => {
 		return state.searchResults.filter(entity => {
 			if (entity instanceof Item) {
-				return entity.path !== state.route.params.path
+				return entity.path !== rootState.route.params.path
 			}
 			if (entity instanceof Folder) {
 				// Don't show folders in the same folder
 				// or their parent folder (since we are already in the folder)
-				return entity.path !== state.route.params.path
-				&& entity.path !== `${state.route.params.path}/${entity.name}`
+				return entity.path !== rootState.route.params.path
+				&& entity.path !== `${rootState.route.params.path}/${entity.name}`
 			}
 		})
 	},
