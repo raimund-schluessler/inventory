@@ -119,7 +119,7 @@ describe('ItemsTable.vue', () => {
 		wrapper.find('label[for="select-item-2-' + wrapper.vm._uid + '"]').trigger('click')
 		wrapper.find('label[for="select-item-3-' + wrapper.vm._uid + '"]').trigger('click')
 		const itemsFound = wrapper.vm.selectedItems
-		const allSelected = wrapper.vm.allVisibleEntitiesSelected
+		const allSelected = wrapper.vm.allEntitiesSelected
 		expect(itemsFound.length).toBe(3)
 		expect(allSelected).toBe(true)
 	})
@@ -136,12 +136,12 @@ describe('ItemsTable.vue', () => {
 		})
 		wrapper.find('input.select-all.checkbox').trigger('click')
 		let itemsFound = wrapper.vm.selectedItems
-		let allSelected = wrapper.vm.allVisibleEntitiesSelected
+		let allSelected = wrapper.vm.allEntitiesSelected
 		expect(itemsFound.length).toBe(3)
 		expect(allSelected).toBe(true)
 		wrapper.find('input.select-all.checkbox').trigger('click')
 		itemsFound = wrapper.vm.selectedItems
-		allSelected = wrapper.vm.allVisibleEntitiesSelected
+		allSelected = wrapper.vm.allEntitiesSelected
 		expect(itemsFound.length).toBe(0)
 		expect(allSelected).toBe(false)
 	})
@@ -158,11 +158,12 @@ describe('ItemsTable.vue', () => {
 		})
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		let selectedItems = wrapper.vm.selectedItems
-		let allSelected = wrapper.vm.allVisibleEntitiesSelected
+		let allSelected = wrapper.vm.allEntitiesSelected
 		expect(selectedItems.length).toBe(1)
+		expect(allSelected).toBe(false)
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		selectedItems = wrapper.vm.selectedItems
-		allSelected = wrapper.vm.allVisibleEntitiesSelected
+		allSelected = wrapper.vm.allEntitiesSelected
 		expect(selectedItems.length).toBe(0)
 		expect(allSelected).toBe(false)
 	})

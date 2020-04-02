@@ -220,11 +220,11 @@ export default {
 		]),
 
 		allEntitiesSelected() {
-			return this.selectedEntities.length === (this.items.length + this.folders.length) && this.selectedEntities.length
+			return this.selectedEntities.length === (this.items.length + this.folders.length) && this.selectedEntities.length > 0
 		},
 
 		someEntitiesSelected() {
-			return !this.allEntitiesSelected && this.selectedEntities.length
+			return !this.allEntitiesSelected && this.selectedEntities.length > 0
 		},
 
 		selectedItems: {
