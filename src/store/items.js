@@ -97,6 +97,8 @@ const getters = {
 		return Object.values(state.relatedItems)
 	},
 
+	getItemCandidates: (state) => state.itemCandidates,
+
 	/**
 	 * Returns whether we currently load items from the server
 	 *
@@ -115,6 +117,7 @@ const getters = {
 	 * Returns the search results from the server
 	 *
 	 * @param {Object} state The store data
+	 * @param {Object} getters The store getters
 	 * @param {Object} rootState The store root state
 	 * @returns {Array} The results
 	 */
