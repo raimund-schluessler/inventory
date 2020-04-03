@@ -35,7 +35,7 @@
 		"bwip-js": "2.0.6",
 		"debounce": "1.2.0",
 		"p-queue": "6.3.0",
-		"papaparse": "5.1.1",
+		"papaparse": "5.2.0",
 		"search-query-parser": "1.5.5",
 		"v-click-outside": "3.0.1",
 		"v-tooltip": "2.0.3",
