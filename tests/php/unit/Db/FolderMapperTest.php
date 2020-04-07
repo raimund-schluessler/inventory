@@ -131,6 +131,14 @@ class FolderMapperTest extends MapperTestUtility  {
 		$this->folders[] = $folder;
 	}
 
+	public function testFindByString() {
+		$uid = 'unit_tester_1';
+
+		$this->assertEquals(array_slice($this->folders, 0, 1), $this->folderMapper->findByString($uid, 'Living Room'));
+		$this->assertEquals(array_slice($this->folders, 1, 1), $this->folderMapper->findByString($uid, 'tche'));
+		$this->assertEquals([], $this->folderMapper->findByString($uid, 'Hallway'));
+	}
+
 	public function tearDown(): void {
 		parent::tearDown();
 		foreach ($this->folders as $folder) {

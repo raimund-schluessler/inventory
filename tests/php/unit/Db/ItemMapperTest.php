@@ -99,6 +99,14 @@ class ItemMapperTest extends MapperTestUtility  {
 		$this->assertEquals([], $this->itemMapper->findAll('user2'));
 	}
 
+	public function testFindByString() {
+		$uid = 'unit_tester_1';
+
+		$this->assertEquals(array_slice($this->items, 0, 1), $this->itemMapper->findByString($uid, 'Testitem 1'));
+		$this->assertEquals(array_slice($this->items, 1, 1), $this->itemMapper->findByString($uid, 'new blue'));
+		$this->assertEquals([], $this->itemMapper->findByString($uid, 'new gray'));
+	}
+
 	public function testFindByFolderId() {
 		$uid = 'unit_tester_1';
 
