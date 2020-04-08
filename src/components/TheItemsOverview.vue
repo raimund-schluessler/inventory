@@ -22,7 +22,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div>
 		<div id="controls">
-			<Breadcrumbs :breadcrumbs="breadcrumbs" root-icon="icon-bw icon-items" @dropped="moveEntities" />
+			<Breadcrumbs root-icon="icon-bw icon-items" @dropped="moveEntities">
+				<Breadcrumb v-for="(crumb, index) in breadcrumbs"
+					:key="crumb.path"
+					:title="crumb.title"
+					:to="crumb.path"
+					:disable-drop="index === (breadcrumbs.length - 1)" />
+			</Breadcrumbs>
 			<Actions default-icon="icon-add" :open.sync="actionsOpen" @close="addingFolder = false">
 				<ActionRouter :to="`/folders/${($route.params.path) ? $route.params.path + '/' : ''}additems`" icon="icon-add">
 					{{ t('inventory', 'Add items') }}
@@ -58,16 +64,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import Item from '../models/item.js'
 import { mapGetters, mapActions } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
-import Breadcrumbs from './Breadcrumbs.vue'
-import { Actions } from '@nextcloud/vue/dist/Components/Actions'
-import { ActionInput } from '@nextcloud/vue/dist/Components/ActionInput'
-import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
-import { ActionRouter } from '@nextcloud/vue/dist/Components/ActionRouter'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionRouter from '@nextcloud/vue/dist/Components/ActionRouter'
+import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
+import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
 
 export default {
 	components: {
 		ItemsTable: ItemsTable,
 		Breadcrumbs,
+		Breadcrumb,
 		Actions,
 		ActionInput,
 		ActionRouter,
@@ -92,9 +100,9 @@ export default {
 		breadcrumbs() {
 			const path = this.$route.params.path
 			const crumbs = (path === '') ? [] : path.split('/')
-			return [{ name: t('inventory', 'Items'), path: '/folders/' }].concat(crumbs.map((crumb, i) => {
+			return [{ title: t('inventory', 'Items'), path: '/folders/' }].concat(crumbs.map((crumb, i) => {
 				return {
-					name: crumb,
+					title: crumb,
 					path: '/folders/' + crumbs.slice(0, i + 1).join('/'),
 				}
 			}))
@@ -116,7 +124,7 @@ export default {
 			'moveFolder',
 		]),
 
-		moveEntities(newPath) {
+		moveEntities(e, newPath) {
 			newPath = newPath.replace('/folders/', '')
 			this.draggedEntities.forEach((entity) => {
 				if (entity instanceof Item) {

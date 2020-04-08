@@ -76,8 +76,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import { mapActions } from 'vuex'
-import { Actions } from '@nextcloud/vue/dist/Components/Actions'
-import { ActionButton } from '@nextcloud/vue/dist/Components/ActionButton'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ClickOutside from 'v-click-outside'
 import focus from '../directives/focus'
 import { generateUrl } from '@nextcloud/router'
