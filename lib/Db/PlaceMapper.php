@@ -34,7 +34,11 @@ class PlaceMapper extends QBMapper {
 		parent::__construct($db, 'invtry_places');
 	}
 
-	public function findPlace(int $placeId, string $uid) {
+	/**
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
+	 */
+	public function findPlace(string $uid, int $placeId) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -46,37 +50,47 @@ class PlaceMapper extends QBMapper {
 				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			);
 
-		try {
-			return $this->findEntity($qb);
-		} catch (DoesNotExistException $e) {
-			return false;
-		}
+		return $this->findEntity($qb);
 	}
 
-	public function findPlaceByName(string $placeName, string $uid) {
+	public function findPlaceByPath(string $uid, string $path) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
 			->from('*PREFIX*invtry_places')
 			->where(
-				$qb->expr()->eq('name', $qb->createNamedParameter($placeName, IQueryBuilder::PARAM_STR))
+				$qb->expr()->eq('path', $qb->createNamedParameter($path, IQueryBuilder::PARAM_STR))
 			)
 			->andWhere(
 				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			);
 
-		try {
-			return $this->findEntity($qb);
-		} catch (DoesNotExistException $e) {
-			return false;
-		}
+		return $this->findEntity($qb);
 	}
 
-	public function add(string $name, string $uid, int $parentID = null) {
+	/**
+	 */
+	public function findByParentId(string $uid, int $parentId) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_places')
+			->where(
+				$qb->expr()->eq('parentid', $qb->createNamedParameter($parentId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntities($qb);
+	}
+
+	public function add(string $name, string $path, string $uid, int $parentId = null) {
 		$place = new Place();
 		$place->setName($name);
+		$place->setPath($path);
 		$place->setUid($uid);
-		$place->setParentid($parentID);
+		$place->setParentid($parentId);
 		return $this->insert($place);
 	}
 }

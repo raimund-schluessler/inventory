@@ -105,6 +105,14 @@ class IteminstanceUuidMapperTest extends MapperTestUtility  {
 		$this->assertEquals([], $this->iteminstanceUuidMapper->findByInstanceId($instanceId, $uid));
 	}
 
+	public function testFindByString() {
+		$uid = 'unit_tester_1';
+
+		$this->assertEquals(array_slice($this->iteminstanceUuids, 0, 1), $this->iteminstanceUuidMapper->findByString($uid, '550e8400-e29b-41d4-a716-446655440000'));
+		$this->assertEquals(array_slice($this->iteminstanceUuids, 1, 1), $this->iteminstanceUuidMapper->findByString($uid, '446655440001'));
+		$this->assertEquals([], $this->iteminstanceUuidMapper->findByString($uid, '1234865'));
+	}
+
 	public function testAddAndFind() {
 		$params['instanceid'] = 1;
 		$params['uid'] = 'unit_tester_1';

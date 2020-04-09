@@ -53,10 +53,10 @@ class ItemMapperTest extends MapperTestUtility  {
 			$this->dbConnection
 		);
 		$this->items = [
-			$this->createItemEntity('unit_tester_1', 'Testitem 1', 'Maker 1', 'A new red Item', '123', 'www.item1.de', null, 'Red, big, new', '', 0, '', -1),
-			$this->createItemEntity('unit_tester_1', 'Testitem 2', 'Maker 2', 'A new blue Item', '124', 'www.item2.de', null, 'Blue, small, new', '', 0, '', -1),
-			$this->createItemEntity('unit_tester_1', 'Testitem 3', 'Maker 3', 'A new green Item', '125', 'www.item3.de', '3165140777223', 'Green, big, new', 'Borrowed', 0, '', -1),
-			$this->createItemEntity('unit_tester_2', 'Testitem 4', 'Maker 4', 'A new black Item', '126', 'www.item4.de', null, 'Black, big, old', '', 0, '', -1)
+			$this->createItemEntity('unit_tester_1', 'Testitem 1', 'Maker 1', 'A new red Item', '123', 'www.item1.de', null, 'Red, big, new', '', 0, '', 1),
+			$this->createItemEntity('unit_tester_1', 'Testitem 2', 'Maker 2', 'A new blue Item', '124', 'www.item2.de', null, 'Blue, small, new', '', 0, '', 2),
+			$this->createItemEntity('unit_tester_1', 'Testitem 3', 'Maker 3', 'A new green Item', '125', 'www.item3.de', '3165140777223', 'Green, big, new', 'Borrowed', 0, '', 2),
+			$this->createItemEntity('unit_tester_2', 'Testitem 4', 'Maker 4', 'A new black Item', '126', 'www.item4.de', null, 'Black, big, old', '', 0, '', 3)
 		];
 		foreach ($this->items as $item) {
 			$entry = $this->itemMapper->insert($item);
@@ -97,6 +97,31 @@ class ItemMapperTest extends MapperTestUtility  {
 		$this->assertEquals($itemsByUser[0], $this->itemMapper->findAll('unit_tester_1'));
 		$this->assertEquals($itemsByUser[1], $this->itemMapper->findAll('unit_tester_2'));
 		$this->assertEquals([], $this->itemMapper->findAll('user2'));
+	}
+
+	public function testFindByString() {
+		$uid = 'unit_tester_1';
+
+		$this->assertEquals(array_slice($this->items, 0, 1), $this->itemMapper->findByString($uid, 'Testitem 1'));
+		$this->assertEquals(array_slice($this->items, 1, 1), $this->itemMapper->findByString($uid, 'new blue'));
+		$this->assertEquals([], $this->itemMapper->findByString($uid, 'new gray'));
+	}
+
+	public function testFindByFolderId() {
+		$uid = 'unit_tester_1';
+
+		$this->assertEquals(array_slice($this->items, 0, 1), $this->itemMapper->findByFolderId($uid, 1));
+		$this->assertEquals(array_slice($this->items, 1, 2), $this->itemMapper->findByFolderId($uid, 2));
+		$this->assertEquals([], $this->itemMapper->findByFolderId($uid, 4));
+
+	}
+
+	public function testFindItemsByIds() {
+		$uid = 'unit_tester_1';
+
+		$this->assertEquals(array_slice($this->items, 0, 2), $this->itemMapper->findItemsByIds([$this->items[0]->id, $this->items[1]->id], $uid));
+		$this->assertEquals(array_slice($this->items, 2, 1), $this->itemMapper->findItemsByIds([$this->items[2]->id], $uid));
+		$this->assertEquals([], $this->itemMapper->findItemsByIds([], $uid));
 	}
 
 	public function testFindCandidates() {

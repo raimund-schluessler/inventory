@@ -22,38 +22,39 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div>
 		<div id="controls">
-			<Breadcrumbs root-icon="icon-bw icon-items" @dropped="moveEntities">
+			<Breadcrumbs :root-icon="`icon-bw ${collection === 'folders' ? 'icon-items' : 'icon-places'}`" @dropped="moveEntities">
 				<Breadcrumb v-for="(crumb, index) in breadcrumbs"
 					:key="crumb.path"
 					:title="crumb.title"
 					:to="crumb.path"
 					:disable-drop="index === (breadcrumbs.length - 1)" />
 			</Breadcrumbs>
-			<Actions default-icon="icon-add" :open.sync="actionsOpen" @close="addingFolder = false">
-				<ActionRouter :to="`/folders/${($route.params.path) ? $route.params.path + '/' : ''}additems`" icon="icon-add">
+			<Actions default-icon="icon-add" :open.sync="actionsOpen" @close="addingCollection = false">
+				<ActionRouter :to="`/${collection}/${($route.params.path) ? $route.params.path + '/' : ''}additems`" icon="icon-add">
 					{{ t('inventory', 'Add items') }}
 				</ActionRouter>
-				<ActionButton v-if="!addingFolder"
+				<ActionButton v-if="!addingCollection"
 					icon="icon-folder"
-					@click.prevent.stop="openFolderInput()">
-					{{ t('inventory', 'New Folder') }}
+					@click.prevent.stop="openCollectionInput()">
+					{{ addCollectionString }}
 				</ActionButton>
-				<ActionInput v-if="addingFolder"
+				<ActionInput v-if="addingCollection"
 					v-tooltip="{
-						show: folderNameError,
+						show: collectionNameError,
 						content: errorString,
 						trigger: 'manual',
 					}"
-					:class="{ 'error': folderNameError }"
+					:class="{ 'error': collectionNameError }"
 					icon="icon-folder"
-					@submit="addFolder"
-					@input="checkFoldername">
-					{{ t('inventory', 'New Folder') }}
+					@submit="addCollection"
+					@input="checkCollectionName">
+					{{ collection === 'places' ? t('inventory', 'New Place') : t('inventory', 'New Folder') }}
 				</ActionInput>
 			</Actions>
 		</div>
 		<ItemsTable :items="items"
-			:folders="folders"
+			:collections="collections"
+			:collection-type="collection"
 			:loading="loading"
 			:show-dropdown="true"
 			:search-string="$root.searchString" />
@@ -81,18 +82,25 @@ export default {
 		ActionRouter,
 		ActionButton,
 	},
-	data: function() {
+	props: {
+		collection: {
+			type: String,
+			default: 'folders',
+		},
+	},
+	data() {
 		return {
-			addingFolder: false,
+			addingCollection: false,
 			errorString: null,
-			folderNameError: false,
+			collectionNameError: false,
 			actionsOpen: false,
 		}
 	},
 	computed: {
 		...mapGetters({
 			items: 'getAllItems',
-			folders: 'getFoldersByPath',
+			folders: 'getFoldersByFolder',
+			places: 'getPlacesByPlace',
 			loading: 'loadingItems',
 			draggedEntities: 'getDraggedEntities',
 		}),
@@ -100,80 +108,120 @@ export default {
 		breadcrumbs() {
 			const path = this.$route.params.path
 			const crumbs = (path === '') ? [] : path.split('/')
-			return [{ title: t('inventory', 'Items'), path: '/folders/' }].concat(crumbs.map((crumb, i) => {
+			return [{ title: t('inventory', 'Items'), path: `/${this.collection}/` }].concat(crumbs.map((crumb, i) => {
 				return {
 					title: crumb,
-					path: '/folders/' + crumbs.slice(0, i + 1).join('/'),
+					path: `/${this.collection}/${crumbs.slice(0, i + 1).join('/')}`,
 				}
 			}))
 		},
+
+		collections() {
+			if (this.collection === 'places') {
+				return this.places
+			}
+			return this.folders
+		},
+
+		addCollectionString() {
+			if (this.collection === 'places') {
+				return t('inventory', 'New Place')
+			}
+			return t('inventory', 'New Folder')
+		},
 	},
-	created: function() {
-		this.getFolders(this.$route.params.path)
-		this.getItems(this.$route.params.path)
+	watch: {
+		collection(newVal, oldVal) {
+			this.loadCollectionsAndItems(this.$route.params.path)
+		},
+	},
+	created() {
+		this.loadCollectionsAndItems(this.$route.params.path)
 	},
 	beforeRouteUpdate(to, from, next) {
-		this.getFolders(to.params.path)
-		this.getItems(to.params.path)
+		this.loadCollectionsAndItems(to.params.path)
 		next()
 	},
 	methods: {
 		...mapActions([
 			'createFolder',
+			'createPlace',
 			'moveItem',
+			'moveInstance',
 			'moveFolder',
+			'movePlace',
 		]),
 
 		moveEntities(e, newPath) {
-			newPath = newPath.replace('/folders/', '')
+			newPath = newPath.replace(`/${this.collection}/`, '')
 			this.draggedEntities.forEach((entity) => {
 				if (entity instanceof Item) {
-					this.moveItem({ itemID: entity.id, newPath })
+					if (entity.isInstance) {
+						this.moveInstance({ itemID: entity.id, instanceID: entity.instances[0].id, newPath })
+					} else {
+						this.moveItem({ itemID: entity.id, newPath })
+					}
 				} else {
-					this.moveFolder({ folderID: entity.id, newPath })
+					if (this.collection === 'places') {
+						this.movePlace({ placeID: entity.id, newPath })
+					} else {
+						this.moveFolder({ folderID: entity.id, newPath })
+					}
 				}
 			})
 		},
 
-		async getFolders(path) {
-			await this.getFoldersByPath(path)
+		async loadCollectionsAndItems(path) {
+			if (this.collection === 'places') {
+				await this.getPlacesByPlace(path)
+				await this.getItemsByPlace(path)
+			} else {
+				await this.getFoldersByFolder(path)
+				await this.getItemsByFolder(path)
+			}
 		},
 
-		async getItems(path) {
-			await this.getItemsByPath(path)
+		openCollectionInput() {
+			this.addingCollection = !this.addingCollection
 		},
 
-		openFolderInput() {
-			this.addingFolder = !this.addingFolder
-		},
-
-		async addFolder(event) {
-			if (this.folderNameError) {
+		async addCollection(event) {
+			if (this.collectionNameError) {
 				return
 			}
 			const name = event.target.querySelector('input[type=text]').value
-			await this.createFolder({ name, path: this.$route.params.path })
-			this.addingFolder = false
+			if (this.collection === 'places') {
+				await this.createPlace({ name, path: this.$route.params.path })
+			} else {
+				await this.createFolder({ name, path: this.$route.params.path })
+			}
+			this.addingCollection = false
 			this.actionsOpen = false
 		},
 
-		checkFoldername(event) {
+		checkCollectionName(event) {
 			const newName = event.target.value
 			if (newName === '') {
-				this.folderNameError = true
-				this.errorString = t('inventory', 'Folder name cannot be empty.')
+				this.collectionNameError = true
+				this.errorString = this.collection === 'places'
+					? t('inventory', 'Place name cannot be empty.')
+					: t('inventory', 'Folder name cannot be empty.')
 			} else if (newName.includes('/')) {
-				this.folderNameError = true
-				this.errorString = t('inventory', '"/" is not allowed inside a folder name.')
+				this.collectionNameError = true
+				this.errorString = this.collection === 'places'
+					? t('inventory', '"/" is not allowed inside a place name.')
+					: t('inventory', '"/" is not allowed inside a folder name.')
 			} else {
-				this.folderNameError = false
+				this.collectionNameError = false
 				this.errorString = null
 			}
 		},
 
 		...mapActions([
-			'getFoldersByPath',
-			'getItemsByPath',
+			'getFoldersByFolder',
+			'getItemsByFolder',
+			'getPlacesByPlace',
+			'getItemsByPlace',
 		]),
 	},
 }

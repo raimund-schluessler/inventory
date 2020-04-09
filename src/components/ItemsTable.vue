@@ -105,9 +105,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<component :is="entityType(item)"
 					v-for="item in sort(filteredEntities, sortOrder, sortDirection)"
 					v-else
-					:key="entityType(item) + item.id"
+					:key="item.key"
 					:entity="item"
 					:is-selected="isSelected(item)"
+					:collection="collectionType"
 					:class="{ 'dragged': isDragged(item) }"
 					:select-entity="selectItem"
 					:uuid="_uid"
@@ -128,9 +129,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</tr>
 				<component :is="entityType(item)"
 					v-for="item in sort(searchResults, sortOrder, sortDirection)"
-					:key="`${entityType(item) + item.id}_search`"
+					:key="`${item.key}_search`"
 					:entity="item"
 					:is-selected="isSelected(item)"
+					:collection="collectionType"
 					:class="{ 'dragged': isDragged(item) }"
 					:select-entity="selectItem"
 					:uuid="_uid"
@@ -139,15 +141,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</table>
 		<div id="drag-preview">
 			<table>
-				<tr v-for="item in draggedItems" :key="entityType(item) + item.id">
+				<tr v-for="entity in draggedEntities" :key="entity.key">
 					<td>
 						<div class="thumbnail-wrapper">
-							<div v-if="entityType(item) === 'FolderComponent'"
+							<div v-if="entityType(entity) === 'Collection'"
 								:style="{ backgroundImage: `url(${generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
 								class="thumbnail folder" />
-							<div v-else :style="{ backgroundImage: `url(${getIconUrl(item)})` }" class="thumbnail default" />
+							<div v-else :style="{ backgroundImage: `url(${getIconUrl(entity)})` }" class="thumbnail default" />
 						</div>
-						<span>{{ item.name }}</span>
+						<span>{{ entity.name }}</span>
 					</td>
 				</tr>
 			</table>
@@ -157,9 +159,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import ItemComponent from './Item'
-import FolderComponent from './Folder'
+import Collection from './Collection'
 import Item from '../models/item.js'
 import Folder from '../models/folder.js'
+import Place from '../models/place.js'
 import { sort } from '../store/storeHelper'
 import searchQueryParser from 'search-query-parser'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
@@ -170,7 +173,7 @@ import { generateUrl } from '@nextcloud/router'
 export default {
 	components: {
 		ItemComponent,
-		FolderComponent,
+		Collection,
 		Actions,
 		ActionButton,
 	},
@@ -179,10 +182,14 @@ export default {
 			type: String,
 			default: 'navigation',
 		},
-		folders: {
+		collections: {
 			type: Array,
 			default: () => [],
 			required: false,
+		},
+		collectionType: {
+			type: String,
+			default: 'folders',
 		},
 		items: {
 			type: Array,
@@ -210,7 +217,7 @@ export default {
 	data: function() {
 		return {
 			selectedEntities: [],
-			draggedItems: [],
+			draggedEntities: [],
 		}
 	},
 	computed: {
@@ -220,7 +227,7 @@ export default {
 		]),
 
 		allEntitiesSelected() {
-			return this.selectedEntities.length === (this.items.length + this.folders.length) && this.selectedEntities.length > 0
+			return this.selectedEntities.length === (this.items.length + this.collections.length) && this.selectedEntities.length > 0
 		},
 
 		someEntitiesSelected() {
@@ -244,7 +251,7 @@ export default {
 		},
 		filteredEntities() {
 			if (!this.searchString) {
-				return this.items.concat(this.folders)
+				return this.items.concat(this.collections)
 			}
 
 			const options = { keywords: ['maker', 'name', 'description', 'categories', 'itemNumber', 'gtin', 'details', 'comment'] }
@@ -264,9 +271,9 @@ export default {
 				searchQueryObj.searchTerms = searchQueryObj.text.match(/[\wäöüß]+|"(?:\\"|[^"])+"/g)
 			}
 
-			const filteredFolders = this.folders.filter(folder => {
+			const filteredCollections = this.collections.filter(collection => {
 				for (let jj = 0; jj < searchQueryObj.searchTerms.length; jj++) {
-					if (folder.name.toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
+					if (collection.name.toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
 						return true
 					}
 					return false
@@ -334,7 +341,7 @@ export default {
 				return true
 			})
 
-			return filteredItems.concat(filteredFolders)
+			return filteredItems.concat(filteredCollections)
 		},
 		emptyListMessage() {
 			if (this.loading) {
@@ -373,7 +380,7 @@ export default {
 	},
 	watch: {
 		items: 'checkSelected',
-		folders: 'checkSelected',
+		collections: 'checkSelected',
 		searchString: function(newVal, oldVal) {
 			if (newVal) {
 				this.$store.dispatch('search', newVal)
@@ -385,13 +392,23 @@ export default {
 			'deleteItems',
 			'unlinkItems',
 			'moveItem',
+			'moveInstance',
 			'moveFolder',
+			'movePlace',
 			'search',
 		]),
 
 		...mapMutations([
 			'setDraggedEntities',
 		]),
+
+		entityKey(entity) {
+			const key = `${this.entityType(entity)}_${entity.id}`
+			if (entity instanceof Item) {
+				return key + `${(this.collectionType === 'places' && entity.instances.length > 0 ? entity.instances[0].id : '')}`
+			}
+			return key
+		},
 
 		selectEntities(state) {
 			/**
@@ -420,7 +437,7 @@ export default {
 		generateUrl,
 
 		entityType(entity) {
-			return (entity instanceof Item) ? 'ItemComponent' : 'FolderComponent'
+			return (entity instanceof Item) ? 'ItemComponent' : 'Collection'
 		},
 
 		/**
@@ -434,8 +451,8 @@ export default {
 				if (entity instanceof Item) {
 					return (this.items.indexOf(entity) > -1)
 				}
-				if (entity instanceof Folder) {
-					return (this.folders.indexOf(entity) > -1)
+				if (entity instanceof Folder || entity instanceof Place) {
+					return (this.collections.indexOf(entity) > -1)
 				}
 				return true
 			})
@@ -503,30 +520,38 @@ export default {
 		dragStart(entity, e) {
 			if (this.selectedEntities.length > 0) {
 				// We want a copy, not a reference
-				this.draggedItems = sort([...this.selectedEntities], this.sortOrder, this.sortDirection)
+				this.draggedEntities = sort([...this.selectedEntities], this.sortOrder, this.sortDirection)
 			} else {
-				this.draggedItems.push(entity)
+				this.draggedEntities.push(entity)
 			}
-			this.setDraggedEntities(this.draggedItems)
+			this.setDraggedEntities(this.draggedEntities)
 			e.dataTransfer.setData('text/plain', 'dragging')
 			const dragHelper = document.getElementById('drag-preview')
 			e.dataTransfer.setDragImage(dragHelper, 10, 10)
 		},
 		dragEnd(e) {
-			this.draggedItems = []
-			this.setDraggedEntities(this.draggedItems)
-			const folders = document.querySelectorAll('.over')
-			folders.forEach((f) => { f.classList.remove('over') })
+			this.draggedEntities = []
+			this.setDraggedEntities(this.draggedEntities)
+			const collections = document.querySelectorAll('.over')
+			collections.forEach((f) => { f.classList.remove('over') })
 		},
 		dropped(targetEntity, e) {
 			e.stopPropagation()
 			e.preventDefault()
-			if (this.entityType(targetEntity) === 'FolderComponent' && !this.isDragged(targetEntity)) {
-				this.draggedItems.forEach((entity) => {
+			if (this.entityType(targetEntity) === 'Collection' && !this.isDragged(targetEntity)) {
+				this.draggedEntities.forEach((entity) => {
 					if (entity instanceof Item) {
-						this.moveItem({ itemID: entity.id, newPath: targetEntity.path })
+						if (entity.isInstance) {
+							this.moveInstance({ itemID: entity.id, instanceID: entity.instances[0].id, newPath: targetEntity.path })
+						} else {
+							this.moveItem({ itemID: entity.id, newPath: targetEntity.path })
+						}
 					} else {
-						this.moveFolder({ folderID: entity.id, newPath: targetEntity.path })
+						if (this.collectionType === 'places') {
+							this.movePlace({ placeID: entity.id, newPath: targetEntity.path })
+						} else {
+							this.moveFolder({ folderID: entity.id, newPath: targetEntity.path })
+						}
 					}
 				})
 			}
@@ -541,15 +566,15 @@ export default {
 		dragEnter(entity, e) {
 			// We don't add the hover state if
 			// the entity itself is dragged or is not a folder.
-			if (this.isDragged(entity) || this.entityType(entity) !== 'FolderComponent') {
+			if (this.isDragged(entity) || this.entityType(entity) !== 'Collection') {
 				return
 			}
 			// Get the correct element, in case we hover a child.
 			if (e.target.closest) {
 				const target = e.target.closest('tr.entity')
 				if (target.classList && target.classList.contains('entity')) {
-					const folders = document.querySelectorAll('.over')
-					folders.forEach((f) => { f.classList.remove('over') })
+					const collections = document.querySelectorAll('.over')
+					collections.forEach((f) => { f.classList.remove('over') })
 					target.classList.add('over')
 				}
 			}
@@ -571,7 +596,7 @@ export default {
 			}
 		},
 		isDragged: function(item) {
-			return this.draggedItems.includes(item)
+			return this.draggedEntities.includes(item)
 		},
 	},
 }

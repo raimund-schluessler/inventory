@@ -26,7 +26,6 @@ import TheItemsOverview from './TheItemsOverview.vue'
 import ItemsNew from './TheItemsCreator.vue'
 import TheItemDetails from './TheItemDetails.vue'
 
-import Places from './Places.vue'
 import Categories from './Categories.vue'
 
 const routes = [
@@ -34,13 +33,43 @@ const routes = [
 	// { path: '/folders', component: TheItemsOverview, alias: '/' },
 	// instead of
 	{ path: '/', redirect: '/folders/' },
-	{ path: '/folders/:path(.*)?/item-:id(\\d+)', component: TheItemDetails, props: true },
-	{ path: '/folders/:path(.*)?/additems', component: ItemsNew },
-	{ name: 'folders', path: '/folders/:path(.*)', component: TheItemsOverview },
+	{
+		path: '/folders/:path(.*)?/item-:id(\\d+)',
+		component: TheItemDetails,
+		props: (route) => ({ path: route.params.path, id: route.params.id, collection: 'folders' }),
+	},
+	{
+		path: '/folders/:path(.*)?/item-:id(\\d+)/instance-:instanceId(\\d+)',
+		component: TheItemDetails,
+		props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'folders' }),
+	},
+	{
+		path: '/folders/:path(.*)?/additems',
+		component: ItemsNew,
+		props: (route) => ({ path: route.params.path, collection: 'folders' }),
+	},
+	{ name: 'folders', path: '/folders/:path(.*)', component: TheItemsOverview, props: { collection: 'folders' } },
 	// would also be an option, but it currently does not work
 	// reliably with router-link due to
 	// https://github.com/vuejs/vue-router/issues/419
-	{ path: '/places', component: Places },
+
+	{
+		path: '/places/:path(.*)?/item-:id(\\d+)',
+		component: TheItemDetails,
+		props: (route) => ({ path: route.params.path, id: route.params.id, collection: 'places' }),
+	},
+	{
+		path: '/places/:path(.*)?/item-:id(\\d+)/instance-:instanceId(\\d+)',
+		component: TheItemDetails,
+		props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'places' }),
+	},
+	{
+		path: '/places/:path(.*)?/additems',
+		component: ItemsNew,
+		props: (route) => ({ path: route.params.path, collection: 'places' }),
+	},
+	{ name: 'places', path: '/places/:path(.*)', component: TheItemsOverview, props: { collection: 'places' } },
+
 	{ path: '/categories', component: Categories },
 ]
 

@@ -21,6 +21,7 @@
 'use strict'
 
 import Folder from '../models/folder.js'
+import Place from '../models/place.js'
 
 /**
  * Sorts items in specified order type
@@ -50,13 +51,13 @@ function sort(items, sortOrder, sortDirection) {
  * @returns {Integer}
  */
 function sortAlphabetically(itemA, itemB, sortOrder) {
-	if (itemA instanceof Folder && itemB instanceof Folder) {
+	if ((itemA instanceof Folder && itemB instanceof Folder) || (itemA instanceof Place && itemB instanceof Place)) {
 		return itemA.name.toLowerCase().localeCompare(itemB.name.toLowerCase())
 	}
-	if (itemA instanceof Folder) {
+	if (itemA instanceof Folder || itemA instanceof Place) {
 		return -1
 	}
-	if (itemB instanceof Folder) {
+	if (itemB instanceof Folder || itemB instanceof Place) {
 		return 1
 	}
 	return itemA[sortOrder].toLowerCase().localeCompare(itemB[sortOrder].toLowerCase())

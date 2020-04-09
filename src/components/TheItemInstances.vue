@@ -40,9 +40,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</thead>
 			<tbody>
 				<template v-for="instance in item.instances">
-					<tr v-if="editedInstance.id !== instance.id" :key="`instance-${instance.id}`" class="handler">
+					<tr v-if="editedInstance.id !== instance.id"
+						:key="`instance-${instance.id}`"
+						class="handler"
+						:class="{active: instanceActive(instance)}">
 						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.class">
-							{{ getInstanceProperty(instance, instanceProperty) }}
+							<router-link v-if="instanceProperty.key === 'place' && instance.place" :to="`/places/${instance.place.path}`">
+								{{ getInstanceProperty(instance, instanceProperty) }}
+							</router-link>
+							<span v-else>
+								{{ getInstanceProperty(instance, instanceProperty) }}
+							</span>
 						</td>
 						<td class="actions">
 							<div>
@@ -185,6 +193,10 @@ export default {
 			type: Object,
 			required: true,
 		},
+		instanceId: {
+			type: String,
+			default: null,
+		},
 	},
 	data: function() {
 		return {
@@ -225,6 +237,9 @@ export default {
 		}
 	},
 	methods: {
+		instanceActive(instance) {
+			return +instance.id === +this.instanceId
+		},
 		/**
 		 * Checks that the new UUID is valid and not already used for this instance.
 		 * @param {Array} uuids The already used UUIDs

@@ -58,7 +58,7 @@ class FoldersService {
 	 *
 	 * @return array
 	 */
-	public function getByPath($path):array {
+	public function getByFolder($path):array {
 		$parentId = $this->getIdByPath($path);
 		return $this->folderMapper->findByParentId($this->userId, $parentId);
 	}
@@ -257,7 +257,7 @@ class FoldersService {
 		}
 
 		// Move all subfolders
-		$subFolders = $this->getByPath($oldFullPath);
+		$subFolders = $this->getByFolder($oldFullPath);
 		foreach ($subFolders as $subFolder) {
 			$this->moveFolder($subFolder, $folder);
 		}

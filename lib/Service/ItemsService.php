@@ -23,46 +23,62 @@
 namespace OCA\Inventory\Service;
 
 use OCA\Inventory\Service\IteminstanceService;
-use OCA\Inventory\Storage\AttachmentStorage;
-use OCA\Inventory\Db\Item;
-use OCA\Inventory\Db\ItemMapper;
 use OCA\Inventory\Db\CategoryMapper;
+use OCA\Inventory\Db\FolderMapper;
+use OCA\Inventory\Db\Item;
 use OCA\Inventory\Db\ItemcategoriesMapper;
+use OCA\Inventory\Db\IteminstanceMapper;
 use OCA\Inventory\Db\ItemparentMapper;
+use OCA\Inventory\Db\ItemMapper;
 use OCA\Inventory\Db\ItemrelationMapper;
 use OCA\Inventory\Db\ItemtypeMapper;
-use OCA\Inventory\Db\FolderMapper;
+use OCA\Inventory\Db\PlaceMapper;
+use OCA\Inventory\Storage\AttachmentStorage;
 use OCA\Inventory\BadRequestException;
 use OCP\IConfig;
+use OCP\IL10N;
 use OCP\AppFramework\Db\DoesNotExistException;
 
 class ItemsService {
 
 	private $userId;
 	private $AppName;
+
+	/**
+	 * @var IL10N
+	 */
+	private $l10n;
+	private $iteminstanceService;
+
 	private $itemMapper;
 	private $categoryMapper;
 	private $itemCategoriesMapper;
-	private $iteminstanceService;
+	private $iteminstanceMapper;
 	private $itemParentMapper;
 	private $itemRelationMapper;
 	private $itemtypeMapper;
 	private $folderMapper;
+	private $placeMapper;
+
 	private $attachmentStorage;
 
-	public function __construct($userId, $AppName, ItemMapper $itemMapper, IteminstanceService $iteminstanceService,
-		CategoryMapper $categoryMapper, ItemcategoriesMapper $itemcategoriesMapper, ItemparentMapper $itemParentMapper,
-		ItemRelationMapper $itemRelationMapper, ItemtypeMapper $itemtypeMapper, FolderMapper $folderMapper, AttachmentStorage $attachmentStorage) {
+	public function __construct($userId, $AppName, IL10N $l10n, ItemMapper $itemMapper, IteminstanceService $iteminstanceService,
+		IteminstanceMapper $iteminstanceMapper, CategoryMapper $categoryMapper, ItemcategoriesMapper $itemcategoriesMapper,
+		ItemparentMapper $itemParentMapper, ItemRelationMapper $itemRelationMapper, ItemtypeMapper $itemtypeMapper,
+		FolderMapper $folderMapper,PlaceMapper $placeMapper, AttachmentStorage $attachmentStorage) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
+		$this->l10n = $l10n;
+		$this->iteminstanceService = $iteminstanceService;
+		$this->iteminstanceMapper = $iteminstanceMapper;
 		$this->itemMapper = $itemMapper;
 		$this->categoryMapper = $categoryMapper;
 		$this->itemCategoriesMapper = $itemcategoriesMapper;
-		$this->iteminstanceService = $iteminstanceService;
 		$this->itemParentMapper = $itemParentMapper;
 		$this->itemRelationMapper = $itemRelationMapper;
 		$this->itemtypeMapper = $itemtypeMapper;
 		$this->folderMapper = $folderMapper;
+		$this->placeMapper = $placeMapper;
 		$this->attachmentStorage = $attachmentStorage;
 	}
 
@@ -80,11 +96,11 @@ class ItemsService {
 	}
 
 	/**
-	 * get items by path
+	 * get items by folder
 	 *
 	 * @return array
 	 */
-	public function getByPath($path) {
+	public function getByFolder($path) {
 		if ($path === '') {
 			$folderId = -1;
 		} else {
@@ -94,6 +110,47 @@ class ItemsService {
 		$items = $this->itemMapper->findByFolderId($this->userId, $folderId);
 		foreach ($items as $item) {
 			$item = $this->getItemDetails($item);
+		}
+		return $items;
+	}
+
+	/**
+	 * get items by place
+	 *
+	 * @return array
+	 */
+	public function getByPlace($path) {
+		if ($path === '') {
+			$placeId = -1;
+		} else {
+			$place = $this->placeMapper->findPlaceByPath($this->userId, $path);
+			$placeId = $place->id;
+		}
+		// Find all item instances at this place
+		$instances = $this->iteminstanceMapper->findByPlaceId($this->userId, $placeId);
+		// Find all items to these instances
+		$items = [];
+		foreach ($instances as $instance) {
+			if ($place) {
+				$instance->place = array(
+					'id'	=> $place->id,
+					'name'	=> $place->name,
+					'parent'=> $place->parentid,
+					'path'	=> $place->path
+				);
+			} else {
+				$instance->place = array(
+					'id'	=> -1,
+					'name'	=> $this->l10n->t('No place assigned'),
+					'parent'=> null,
+					'path'	=> ''
+				);
+			}
+			$item = $this->itemMapper->find($instance->itemid, $this->userId);
+			$item = $this->getItemDetails($item, false);
+			$item->instances[] = $instance;
+			$item->isInstance = true;
+			$items[] = $item;
 		}
 		return $items;
 	}
@@ -217,6 +274,10 @@ class ItemsService {
 	 */
 	public function enlist($item) {
 		$item['uid'] = $this->userId;
+
+		if ($item['path'] === null) {
+			$item['path'] = '';
+		}
 
 		if ($item['path'] === '') {
 			$item['folderid'] = -1;
@@ -377,7 +438,7 @@ class ItemsService {
 	 * @param $item	The item
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
-	function getItemDetails($item) {
+	function getItemDetails($item, $getInstances = true) {
 		$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
 		$categoriesNames = array();
 		foreach ($categories as $category) {
@@ -396,7 +457,11 @@ class ItemsService {
 			$item->type = 'default';
 		}
 		$item->categories = $categoriesNames;
-		$item->instances = $this->iteminstanceService->getByItemID($item->id);
+		if ($getInstances) {
+			$item->instances = $this->iteminstanceService->getByItemID($item->id);
+		} else {
+			$instances = [];
+		}
 
 		$item->images = $this->attachmentStorage->getImages($item->id);
 
@@ -559,6 +624,42 @@ class ItemsService {
 		$item->setPath($folder->path);
 		$editedItem = $this->itemMapper->update($item);
 		return $this->getItemDetails($editedItem);
+	}
+
+	/**
+	 * Moves an instance to a new place
+	 * 
+	 * @NoAdminRequired
+	 * @param $itemId		The item Id
+	 * @param $instanceId	The instance Id
+	 * @param $newPath		The path of the new place
+	 * @return \OCP\AppFramework\Db\Entity
+	 */
+	public function moveInstance($itemId, $instanceId, $newPath) {
+
+		if ( is_numeric($itemId) === false ) {
+			throw new BadRequestException('Item id must be a number.');
+		}
+
+		if ( is_numeric($instanceId) === false ) {
+			throw new BadRequestException('Instance id must be a number.');
+		}
+
+		if ($newPath === '') {
+			$place->id = -1;
+		} else {
+			$place = $this->placeMapper->findPlaceByPath($this->userId, $newPath);
+		}
+		$instance = $this->iteminstanceMapper->find($instanceId, $this->userId);
+		
+		$instance->setPlaceid($place->id);
+		$instance = $this->iteminstanceMapper->update($instance);
+
+		$item = $this->itemMapper->find($itemId, $this->userId);
+		$item = $this->getItemDetails($item, false);
+		$item->instances[] = $instance;
+		$item->isInstance = true;
+		return $item;
 	}
 
 	/**

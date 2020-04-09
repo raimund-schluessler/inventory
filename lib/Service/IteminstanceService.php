@@ -22,26 +22,37 @@
 
 namespace OCA\Inventory\Service;
 
-use OCP\IConfig;
+use OCA\Inventory\Service\PlacesService;
 use OCA\Inventory\Db\Iteminstance;
 use OCA\Inventory\Db\IteminstanceMapper;
 use OCA\Inventory\Db\PlaceMapper;
 use OCA\Inventory\Db\IteminstanceUuidMapper;
 use OCA\Inventory\BadRequestException;
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\IConfig;
+use OCP\IL10N;
 
 class IteminstanceService {
 
 	private $userId;
 	private $AppName;
+
+	private $placesService;
+
+	/**
+	 * @var IL10N
+	 */
+	private $l10n;
 	private $iteminstanceMapper;
 	private $placeMapper;
 	private $iteminstanceUuidMapper;
 
-	public function __construct($userId, $AppName, IteminstanceMapper $iteminstanceMapper, PlaceMapper $placeMapper,
-		IteminstanceUuidMapper $iteminstanceUuidMapper) {
-		
+	public function __construct($userId, $AppName, PlacesService $placesService, IL10N $l10n, IteminstanceMapper $iteminstanceMapper,
+	PlaceMapper $placeMapper, IteminstanceUuidMapper $iteminstanceUuidMapper) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
+		$this->placesService = $placesService;
+		$this->l10n = $l10n;
 		$this->iteminstanceMapper = $iteminstanceMapper;
 		$this->placeMapper = $placeMapper;
 		$this->iteminstanceUuidMapper = $iteminstanceUuidMapper;
@@ -88,12 +99,15 @@ class IteminstanceService {
 
 		$instance['uid'] = $this->userId;
 		if ($instance['place']) {
-			$place = $this->placeMapper->findPlaceByName($instance['place'], $this->userId);
-			if (!$place) {
-				$place = $this->placeMapper->add($instance['place'], $this->userId);
+			try {
+				$place = $this->placeMapper->findPlaceByPath($this->userId, $instance['place']);
+			} catch (DoesNotExistException $e) {
+				$place = $this->placesService->create($instance['place']);
 			}
+			$instance['placeid'] = $place->id;
+		} else {
+			$instance['placeid'] = -1;
 		}
-		$instance['placeid'] = $place->id;
 		$added = $this->iteminstanceMapper->add($instance);
 		return $this->getInstanceDetails($added);
 	}
@@ -157,19 +171,27 @@ class IteminstanceService {
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
 	function getInstanceDetails($instance) {
-		if ($instance->placeid) {
-			$place = $this->placeMapper->findPlace($instance->placeid, $this->userId);
-			if ($place) {
+		if (!$instance->placeid) {
+			$instance->place = null;
+		} elseif ($instance->placeid === -1) {
+			$instance->place = array(
+				'id'	=> -1,
+				'name'	=> $this->l10n->t('No place assigned'),
+				'parent'=> null,
+				'path'	=> ''
+			);
+		} else {
+			try {
+				$place = $this->placeMapper->findPlace($this->userId, $instance->placeid);
 				$instance->place = array(
 					'id'	=> $place->id,
 					'name'	=> $place->name,
-					'parent'=> $place->parentid
+					'parent'=> $place->parentid,
+					'path'	=> $place->path
 				);
-			} else{
+			} catch (DoesNotExistException $e) {
 				$instance->place = null;
 			}
-		} else {
-			$instance->place = null;
 		}
 		$instance->uuids = $this->iteminstanceUuidMapper->findByInstanceId($instance->id, $this->userId);
 		return $instance;
