@@ -26,7 +26,7 @@ import TheItemsOverview from './TheItemsOverview.vue'
 import ItemsNew from './TheItemsCreator.vue'
 import TheItemDetails from './TheItemDetails.vue'
 
-import Categories from './Categories.vue'
+import Tags from './Tags.vue'
 
 const routes = [
 	// using
@@ -70,7 +70,7 @@ const routes = [
 	},
 	{ name: 'places', path: '/places/:path(.*)', component: TheItemsOverview, props: { collection: 'places' } },
 
-	{ path: '/categories', component: Categories },
+	{ path: '/tags', component: Tags },
 ]
 
 Vue.use(VueRouter)

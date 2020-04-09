@@ -62,9 +62,9 @@ export default {
 			active: 'folders',
 			views: [
 				{
-					name: this.t('inventory', 'Items'),
+					name: this.t('inventory', 'Folders'),
 					id: 'folders',
-					icon: 'items',
+					icon: 'folders',
 				},
 				{
 					name: this.t('inventory', 'Places'),
@@ -72,9 +72,9 @@ export default {
 					icon: 'places',
 				},
 				{
-					name: this.t('inventory', 'Categories'),
-					id: 'categories',
-					icon: 'categories',
+					name: this.t('inventory', 'Tags'),
+					id: 'tags',
+					icon: 'tags',
 				},
 			],
 		}

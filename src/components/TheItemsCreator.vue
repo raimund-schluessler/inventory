@@ -69,7 +69,7 @@ export default {
 			rawInput: '',
 			enlisted: false,
 			items: [],
-			fields: ['name', 'maker', 'description', 'item_number', 'link', 'GTIN', 'details', 'comment', 'type', 'place', 'price', 'count', 'available', 'vendor', 'date', 'categories', 'related'],
+			fields: ['name', 'maker', 'description', 'item_number', 'link', 'GTIN', 'details', 'comment', 'type', 'place', 'price', 'count', 'available', 'vendor', 'date', 'tags', 'related'],
 		}
 	},
 	computed: {
@@ -109,19 +109,19 @@ export default {
 					}],
 				}
 				const c = it[15].split(',')
-				const categories = []
+				const tags = []
 				let name
 				for (let j = 0; j < c.length; j++) {
 					name = String.prototype.trim.apply(c[j])
 					if (name.length) {
-						categories.push({ name })
+						tags.push({ name })
 					}
 				}
 				item.syncstatus = {
 					type: 'unsynced',
 					message: this.t('inventory', 'The item has not been saved to the server yet.'),
 				}
-				item.categories = categories
+				item.tags = tags
 				if (this.collection === 'folders') {
 					item.path = this.path
 				} else if (this.collection === 'places' && this.path !== '') {

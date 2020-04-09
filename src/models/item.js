@@ -59,7 +59,7 @@ export default class Item {
 		this._comment = this.response.comment || ''
 		this._type = this.response.type || ''
 		this._icon = this.response.icon || ''
-		this._categories = this.response.categories || []
+		this._tags = this.response.categories || []
 		this._instances = this.response.instances || []
 		this._isInstance = this.response.isInstance || false
 		this._attachments = this.response.attachments || []
@@ -330,24 +330,24 @@ export default class Item {
 	}
 
 	/**
-	 * Return the categories
+	 * Return the tags
 	 *
 	 * @readonly
 	 * @memberof Item
 	 */
-	get categories() {
-		return this._categories
+	get tags() {
+		return this._tags
 	}
 
 	/**
-	 * Set the categories
+	 * Set the tags
 	 *
-	 * @param {string} categories The new categories
+	 * @param {string} tags The new tags
 	 * @memberof Item
 	 */
-	set categories(categories) {
-		this.response.categories = categories
-		this._categories = this.response.categories || ''
+	set tags(tags) {
+		this.response.tags = tags
+		this._tags = this.response.categories || ''
 	}
 
 	/**

@@ -22,7 +22,7 @@ describe('ItemsTable.vue', () => {
 		expect(itemsFound.length).toBe(3)
 	})
 
-	it('finds items when searching with text in categories "Cat1"', () => {
+	it('finds items when searching with text in tags "Cat1"', () => {
 		const wrapper = shallowMount(ItemsTable, {
 			localVue,
 			store,
@@ -50,14 +50,14 @@ describe('ItemsTable.vue', () => {
 		expect(itemsFound.length).toBe(2)
 	})
 
-	it('searches in categories "categories:Cat1"', () => {
+	it('searches in tags "tags:Cat1"', () => {
 		const wrapper = shallowMount(ItemsTable, {
 			localVue,
 			store,
 			propsData: {
 				items: items,
 				showDropdown: false,
-				searchString: 'categories:Cat1',
+				searchString: 'tags:Cat1',
 			},
 		})
 		const itemsFound = wrapper.vm.filteredEntities
