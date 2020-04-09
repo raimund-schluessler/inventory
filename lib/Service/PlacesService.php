@@ -23,8 +23,7 @@
 namespace OCA\Inventory\Service;
 
 use OCP\IConfig;
-use OCA\Inventory\Service\ItemsService;
-use OCA\Inventory\Service\IteminstanceService;
+use OCA\Inventory\Db\IteminstanceUuidMapper;
 use OCA\Inventory\Db\Place;
 use OCA\Inventory\Db\PlaceMapper;
 use OCA\Inventory\Db\ItemMapper;
@@ -38,24 +37,22 @@ class PlacesService {
 	private $settings;
 	private $AppName;
 	private $placeMapper;
-	private $itemsService;
 	private $itemMapper;
 	private $iteminstanceMapper;
-	private $iteminstanceService;
+	private $iteminstanceUuidMapper;
 
 	/**
 	 * @param string $userId
 	 * @param IConfig $settings
 	 * @param string $AppName
 	 */
-	public function __construct(string $userId, IConfig $settings, string $AppName, PlaceMapper $placeMapper, ItemsService $itemsService,
-		ItemMapper $itemMapper, IteminstanceMapper $iteminstanceMapper, IteminstanceService $iteminstanceService) {
+	public function __construct(string $userId, IConfig $settings, string $AppName, PlaceMapper $placeMapper,
+		ItemMapper $itemMapper, IteminstanceMapper $iteminstanceMapper, IteminstanceUuidMapper $iteminstanceUuidMapper) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->settings = $settings;
 		$this->placeMapper = $placeMapper;
-		$this->itemsService = $itemsService;
-		$this->iteminstanceService = $iteminstanceService;
+		$this->iteminstanceUuidMapper = $iteminstanceUuidMapper;
 		$this->itemMapper = $itemMapper;
 		$this->iteminstanceMapper = $iteminstanceMapper;
 	}
@@ -75,18 +72,39 @@ class PlacesService {
 	*
 	*/
 	public function add($name, $path) {
-		$name = trim($name);
-
 		if ($path !== "") {
 			$fullPath = $path . "/" . $name;
 		} else {
 			$fullPath = $name;
 		}
 
-		$this->isNameAllowed($name, $fullPath);
+		return $this->create($fullPath);
+	}
 
-		$parentId = $this->getIdByPath($path);
-		return $this->placeMapper->add($name, $fullPath, $this->userId, $parentId);
+	public function create($path) {
+		// Split the path at the last slash
+		$pos = strrpos($path, '/');
+		// Get the name of the place and trim whitespaces
+		$name = ($pos === false) ? $path : substr($path, $pos + 1);
+		$name = trim($name);
+		// Get the path of the parent place
+		$parentPath = ($pos === false) ? '' : substr($path, 0, $pos);
+
+		// Check if the name is allowed
+		$this->isNameAllowed($name, $path);
+
+		// Get the id of the parent place
+		if ($parentPath === '') {
+			$parentId = -1;
+		} else {
+			try {
+				$parent = $this->placeMapper->findPlaceByPath($this->userId, $parentPath);
+			} catch (DoesNotExistException $e) {
+				$parent = $this->create($parentPath);
+			}
+			$parentId = $parent->id;
+		}
+		return $this->placeMapper->add($name, $path, $this->userId, $parentId);
 	}
 
 	/**
@@ -185,7 +203,13 @@ class PlacesService {
 		// Delete all instances in this place
 		$instances = $this->iteminstanceMapper->findByPlaceId($this->userId, $place->id);
 		foreach ($instances as $instance) {
-			$this->iteminstanceService->delete($instance->itemid, $instance->id);
+			$instance = $this->iteminstanceMapper->find($instance->id, $this->userId);
+			// Delete all UUIDs belonging to this instance
+			$uuids = $this->iteminstanceUuidMapper->findByInstanceId($instance->id, $this->userId);
+			foreach ($uuids as $uuid) {
+				$this->iteminstanceUuidMapper->delete($uuid);
+			}
+			$this->iteminstanceMapper->delete($instance);
 		}
 
 		// Delete all subplaces

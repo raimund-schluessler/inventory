@@ -43,7 +43,11 @@ const routes = [
 		component: TheItemDetails,
 		props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'folders' }),
 	},
-	{ path: '/folders/:path(.*)?/additems', component: ItemsNew },
+	{
+		path: '/folders/:path(.*)?/additems',
+		component: ItemsNew,
+		props: (route) => ({ path: route.params.path, collection: 'folders' }),
+	},
 	{ name: 'folders', path: '/folders/:path(.*)', component: TheItemsOverview, props: { collection: 'folders' } },
 	// would also be an option, but it currently does not work
 	// reliably with router-link due to
@@ -58,6 +62,11 @@ const routes = [
 		path: '/places/:path(.*)?/item-:id(\\d+)/instance-:instanceId(\\d+)',
 		component: TheItemDetails,
 		props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'places' }),
+	},
+	{
+		path: '/places/:path(.*)?/additems',
+		component: ItemsNew,
+		props: (route) => ({ path: route.params.path, collection: 'places' }),
 	},
 	{ name: 'places', path: '/places/:path(.*)', component: TheItemsOverview, props: { collection: 'places' } },
 

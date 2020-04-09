@@ -275,6 +275,10 @@ class ItemsService {
 	public function enlist($item) {
 		$item['uid'] = $this->userId;
 
+		if ($item['path'] === null) {
+			$item['path'] = '';
+		}
+
 		if ($item['path'] === '') {
 			$item['folderid'] = -1;
 		} else {

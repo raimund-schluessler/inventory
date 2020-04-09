@@ -54,6 +54,16 @@ export default {
 	components: {
 		ItemsTable: ItemsTable,
 	},
+	props: {
+		path: {
+			type: String,
+			default: '',
+		},
+		collection: {
+			type: String,
+			default: 'folders',
+		},
+	},
 	data: function() {
 		return {
 			rawInput: '',
@@ -112,8 +122,14 @@ export default {
 					message: this.t('inventory', 'The item has not been saved to the server yet.'),
 				}
 				item.categories = categories
-				const path = this.$route.params.path
-				item.path = path || ''
+				if (this.collection === 'folders') {
+					item.path = this.path
+				} else if (this.collection === 'places' && this.path !== '') {
+					item.path = ''
+					for (let j = 0; j < item.instances.length; j++) {
+						item.instances[j].place = this.path + (item.instances[j].place ? '/' + item.instances[j].place : '')
+					}
+				}
 				item = new Item(item)
 				this.items.push(item)
 			}

@@ -22,19 +22,22 @@
 
 namespace OCA\Inventory\Service;
 
-use OCP\IConfig;
-use OCP\IL10N;
+use OCA\Inventory\Service\PlacesService;
 use OCA\Inventory\Db\Iteminstance;
 use OCA\Inventory\Db\IteminstanceMapper;
 use OCA\Inventory\Db\PlaceMapper;
 use OCA\Inventory\Db\IteminstanceUuidMapper;
 use OCA\Inventory\BadRequestException;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\IConfig;
+use OCP\IL10N;
 
 class IteminstanceService {
 
 	private $userId;
 	private $AppName;
+
+	private $placesService;
 
 	/**
 	 * @var IL10N
@@ -44,12 +47,12 @@ class IteminstanceService {
 	private $placeMapper;
 	private $iteminstanceUuidMapper;
 
-	public function __construct($userId, $AppName, IL10N $l10n, IteminstanceMapper $iteminstanceMapper, PlaceMapper $placeMapper,
-		IteminstanceUuidMapper $iteminstanceUuidMapper) {
-		
+	public function __construct($userId, $AppName, PlacesService $placesService, IL10N $l10n, IteminstanceMapper $iteminstanceMapper,
+	PlaceMapper $placeMapper, IteminstanceUuidMapper $iteminstanceUuidMapper) {
 		$this->userId = $userId;
-		$this->l10n = $l10n;
 		$this->appName = $AppName;
+		$this->placesService = $placesService;
+		$this->l10n = $l10n;
 		$this->iteminstanceMapper = $iteminstanceMapper;
 		$this->placeMapper = $placeMapper;
 		$this->iteminstanceUuidMapper = $iteminstanceUuidMapper;
@@ -99,7 +102,7 @@ class IteminstanceService {
 			try {
 				$place = $this->placeMapper->findPlaceByPath($this->userId, $instance['place']);
 			} catch (DoesNotExistException $e) {
-				$place = $this->placeMapper->add($instance['place'], $instance['place'], $this->userId, -1);
+				$place = $this->placesService->create($instance['place']);
 			}
 			$instance['placeid'] = $place->id;
 		} else {
