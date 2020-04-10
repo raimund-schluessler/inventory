@@ -28,24 +28,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
+import { getFilePickerBuilder } from '@nextcloud/dialogs'
+
 export default {
 	methods: {
 		async selectFolder() {
 			const folder = await this.$store.dispatch('getAttachmentFolder')
 
-			OC.dialogs.filepicker(
-				t('inventory', 'Select attachment folder'),
-				this.setFolder,
-				false,
-				'[\'httpd/unix-directory\']',
-				true,
-				undefined,
-				folder,
-				{ allowDirectoryChooser: true }
-			)
-		},
+			const path = await getFilePickerBuilder(t('inventory', 'Select attachment folder'))
+				.addMimeTypeFilter('httpd/unix-directory')
+				.startAt(folder)
+				.allowDirectories(true)
+				.build()
+				.pick()
 
-		setFolder(path) {
 			this.$store.dispatch('setAttachmentFolder', { path })
 		},
 	},
