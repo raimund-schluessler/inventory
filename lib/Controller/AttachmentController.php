@@ -4,7 +4,7 @@
  *
  * @author Raimund Schlüßler
  * @copyright 2019 Raimund Schlüßler raimund.schluessler@mailbox.org
- * 
+ *
  * @author Julius Härtl
  * @copyright 2018 Julius Härtl <jus@bitgrid.net>
  *
@@ -144,7 +144,7 @@ class AttachmentController extends Controller {
 
 	/**
 	 * Link a file as attachment
-	 * 
+	 *
 	 * @param int $itemID
 	 * @param string $attachment
 	 * @param int $instanceID
@@ -162,7 +162,7 @@ class AttachmentController extends Controller {
 
 	/**
 	 * Link a file as attachment
-	 * 
+	 *
 	 * @param int $itemID
 	 * @param string $attachment
 	 * @param int $instanceID
@@ -180,7 +180,7 @@ class AttachmentController extends Controller {
 
 	/**
 	 * Delete an attachment
-	 * 
+	 *
 	 * @param int $itemID
 	 * @param int $attachmentID
 	 * @NoCSRFRequired
@@ -198,7 +198,7 @@ class AttachmentController extends Controller {
 
 	/**
 	 * Delete an attachment
-	 * 
+	 *
 	 * @param int $itemID
 	 * @param int $attachmentID
 	 * @param int $instanceID
@@ -217,7 +217,7 @@ class AttachmentController extends Controller {
 
 	/**
 	 * Unlink an attachment
-	 * 
+	 *
 	 * @param int $itemID
 	 * @param int $attachmentID
 	 * @param int $instanceID
@@ -235,7 +235,7 @@ class AttachmentController extends Controller {
 
 	/**
 	 * Unlink an attachment
-	 * 
+	 *
 	 * @param int $itemID
 	 * @param int $attachmentID
 	 * @param int $instanceID
@@ -253,7 +253,7 @@ class AttachmentController extends Controller {
 
 	/**
 	 * Sets the attachment folder
-	 * 
+	 *
 	 * @param string $path
 	 * @NoCSRFRequired
 	 * @NoAdminRequired

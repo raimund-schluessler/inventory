@@ -26,7 +26,6 @@ use OCP\AppFramework\Controller;
 use OCP\IRequest;
 use OCA\Inventory\Service\ItemsService;
 
-
 class ItemsController extends Controller {
 
 	private $itemsService;
@@ -122,27 +121,27 @@ class ItemsController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	public function delete($itemID){
+	public function delete($itemID) {
 		return $this->itemsService->delete($itemID);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	public function edit($itemID, $item){
+	public function edit($itemID, $item) {
 		return $this->itemsService->edit($itemID, $item);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	public function move($itemID, $path){
+	public function move($itemID, $path) {
 		return $this->itemsService->move($itemID, $path);
 	}
 
 	/**
 	 * Moves an instance to a different place
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $itemID		The item Id
 	 * @param $instanceID	The instance Id

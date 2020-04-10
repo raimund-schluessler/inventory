@@ -25,7 +25,6 @@ namespace OCA\Inventory\Db;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
-use \OCA\Inventory\Db\Iteminstance;
 
 class IteminstanceMapper extends QBMapper {
 
@@ -115,7 +114,7 @@ class IteminstanceMapper extends QBMapper {
 		return $this->insert($itemInstance);
 	}
 
-	public function deleteInstances(Array $instances) {
+	public function deleteInstances(array $instances) {
 		foreach ($instances as $instance) {
 			$this->delete($instance);
 		}

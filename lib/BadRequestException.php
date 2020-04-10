@@ -24,6 +24,7 @@
 namespace OCA\Inventory;
 
 use OCP\AppFramework\Http;
+
 class BadRequestException extends StatusException {
 
 	public function __construct($message) {

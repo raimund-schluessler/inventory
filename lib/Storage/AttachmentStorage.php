@@ -4,7 +4,7 @@
  *
  * @author Raimund Schlüßler
  * @copyright 2019 Raimund Schlüßler raimund.schluessler@mailbox.org
- * 
+ *
  * @author Julius Härtl
  * @copyright 2018 Julius Härtl <jus@bitgrid.net>
  *
@@ -25,13 +25,11 @@
 
 namespace OCA\Inventory\Storage;
 
-use OC\Security\CSP\ContentSecurityPolicyManager;
 use OCA\Inventory\Db\Attachment;
 use OCA\Inventory\Db\AttachmentMapper;
 use OCA\Inventory\Exceptions\ConflictException;
 use OCA\Inventory\StatusException;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
-use OCP\AppFramework\Http\EmptyContentSecurityPolicy;
 use OCP\AppFramework\Http\FileDisplayResponse;
 use OCP\AppFramework\Http\StreamResponse;
 use OCP\Files\Folder;
@@ -334,18 +332,18 @@ class AttachmentStorage {
 	 * @return array
 	 * @throws StatusException
 	 */
-	private function getUploadedFile () {
+	private function getUploadedFile() {
 		$file = $this->request->getUploadedFile('file');
 		$error = null;
 		$phpFileUploadErrors = [
-		UPLOAD_ERR_OK => $this->l10n->t('The file was uploaded'),
-		UPLOAD_ERR_INI_SIZE => $this->l10n->t('The uploaded file exceeds the upload_max_filesize directive in php.ini'),
-		UPLOAD_ERR_FORM_SIZE => $this->l10n->t('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form'),
-		UPLOAD_ERR_PARTIAL => $this->l10n->t('The file was only partially uploaded'),
-		UPLOAD_ERR_NO_FILE => $this->l10n->t('No file was uploaded'),
-		UPLOAD_ERR_NO_TMP_DIR => $this->l10n->t('Missing a temporary folder'),
-		UPLOAD_ERR_CANT_WRITE => $this->l10n->t('Could not write file to disk'),
-		UPLOAD_ERR_EXTENSION => $this->l10n->t('A PHP extension stopped the file upload'),
+			UPLOAD_ERR_OK => $this->l10n->t('The file was uploaded'),
+			UPLOAD_ERR_INI_SIZE => $this->l10n->t('The uploaded file exceeds the upload_max_filesize directive in php.ini'),
+			UPLOAD_ERR_FORM_SIZE => $this->l10n->t('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form'),
+			UPLOAD_ERR_PARTIAL => $this->l10n->t('The file was only partially uploaded'),
+			UPLOAD_ERR_NO_FILE => $this->l10n->t('No file was uploaded'),
+			UPLOAD_ERR_NO_TMP_DIR => $this->l10n->t('Missing a temporary folder'),
+			UPLOAD_ERR_CANT_WRITE => $this->l10n->t('Could not write file to disk'),
+			UPLOAD_ERR_EXTENSION => $this->l10n->t('A PHP extension stopped the file upload'),
 		];
 
 		if (empty($file)) {

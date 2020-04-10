@@ -25,7 +25,6 @@ namespace OCA\Inventory\Db;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
-use \OCA\Inventory\Db\Itemrelation;
 
 class ItemrelationMapper extends QBMapper {
 
@@ -100,7 +99,7 @@ class ItemrelationMapper extends QBMapper {
 				$qb->expr()->eq('uid', $qb->createNamedParameter($userID, IQueryBuilder::PARAM_STR))
 			);
 		$cursor = $qb->execute();
-		$relatedIDs = array();
+		$relatedIDs = [];
 		while ($row = $cursor->fetch()) {
 			$relatedID = ((int)$row['itemid1'] === $itemID) ? $row['itemid2'] : $row['itemid1'];
 			$relatedIDs[] = (int)$relatedID;

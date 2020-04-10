@@ -19,7 +19,7 @@ class Version000004Date20200401210000 extends SimpleMigrationStep {
 
 	public function __construct(IDBConnection $db) {
 		$this->db = $db;
-	} 
+	}
 
 	/**
 	 * @param IOutput $output
@@ -101,7 +101,7 @@ class Version000004Date20200401210000 extends SimpleMigrationStep {
 
 	/**
 	 * Finds a place by id
-	 * 
+	 *
 	 * @param Integer $placeId
 	 * @return Array The place
 	 */

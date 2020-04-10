@@ -26,7 +26,6 @@ use OCP\AppFramework\Controller;
 use OCP\IRequest;
 use OCA\Inventory\Service\IteminstanceService;
 
-
 class InstanceController extends Controller {
 
 	private $iteminstanceService;
@@ -40,7 +39,7 @@ class InstanceController extends Controller {
 
 	/**
 	 * Adds an instance of an item
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $itemID	The item Id
 	 * @param $instance	The instance properties
@@ -53,7 +52,7 @@ class InstanceController extends Controller {
 
 	/**
 	 * Removes an instance of an item
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $itemID		The item Id
 	 * @param $instanceID	The instance Id
@@ -64,7 +63,7 @@ class InstanceController extends Controller {
 
 	/**
 	 * Edits an instance of an item
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $itemID		The item Id
 	 * @param $instanceID	The instance Id

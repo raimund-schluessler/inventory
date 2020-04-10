@@ -25,7 +25,6 @@ namespace OCA\Inventory\Db;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
-use \OCA\Inventory\Db\Folder;
 
 class FolderMapper extends QBMapper {
 

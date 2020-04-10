@@ -35,7 +35,7 @@ class FoldersController extends Controller {
 	 * @param IRequest $request an instance of the request
 	 * @param FoldersService $foldersService
 	 */
-	public function __construct(string $AppName, IRequest $request, FoldersService $foldersService){
+	public function __construct(string $AppName, IRequest $request, FoldersService $foldersService) {
 		parent::__construct($AppName, $request);
 		$this->foldersService = $foldersService;
 	}
@@ -49,7 +49,7 @@ class FoldersController extends Controller {
 
 	/**
 	 * Adds a folder
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $name	The new folder name
 	 * @param $path	The path to create the folder at
@@ -61,7 +61,7 @@ class FoldersController extends Controller {
 
 	/**
 	 * Deletes a folder
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $folderID		The id of the folder to delete
 	 */
@@ -71,7 +71,7 @@ class FoldersController extends Controller {
 
 	/**
 	 * Renames a folder
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $folderID		The id of the folder to edit
 	 * @param $newName		The newName
@@ -82,7 +82,7 @@ class FoldersController extends Controller {
 
 	/**
 	 * Moves a folder
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $folderID		The id of the folder to edit
 	 * @param $path			The new path

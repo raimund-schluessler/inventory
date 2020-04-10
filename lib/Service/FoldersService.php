@@ -25,7 +25,6 @@ namespace OCA\Inventory\Service;
 use OCP\IConfig;
 use OCA\Inventory\Db\Folder;
 use OCA\Inventory\Db\FolderMapper;
-use OCA\Inventory\Service\ItemsService;
 use OCA\Inventory\Db\ItemMapper;
 use OCA\Inventory\BadRequestException;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -64,9 +63,9 @@ class FoldersService {
 	}
 	
 	/**
-	* Add a folder
-	*
-	*/
+	 * Add a folder
+	 *
+	 */
 	public function add($name, $path) {
 		$name = trim($name);
 
@@ -128,24 +127,24 @@ class FoldersService {
 
 	/**
 	 * Check that the folder name is valid.
-	 * 
+	 *
 	 * The names
 	 * "item-(\\d+)"
 	 * "additem"
 	 * "additems"
 	 * are not allowed as they interfere with the routing.
-	 * 
+	 *
 	 * Also the name must not be empty, already exist or contain "/".
 	 */
 	private function isNameAllowed($name, $fullPath) {
-		if ( strpos($name, "/") ) {
+		if (strpos($name, "/")) {
 			throw new BadRequestException('"/" is not allowed inside a folder name.');
 		}
-		if ( $name === "" ) {
+		if ($name === "") {
 			throw new BadRequestException('Folder name cannot be empty.');
 		}
 
-		if (preg_match('/item-\d+/', $name) || in_array($name, array('additem', 'additems'))) {
+		if (preg_match('/item-\d+/', $name) || in_array($name, ['additem', 'additems'])) {
 			throw new BadRequestException('This name is not allowed');
 		}
 
@@ -157,7 +156,7 @@ class FoldersService {
 	
 	/**
 	 * Delete a folder
-	 * 
+	 *
 	 * @param int $folderId		The id of the folder to delete
 	 * @throws DoesNotExistException
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
@@ -165,7 +164,7 @@ class FoldersService {
 	 */
 	public function delete($folderId) {
 
-		if ( is_numeric($folderId) === false ) {
+		if (is_numeric($folderId) === false) {
 			throw new BadRequestException('Folder id must be a number.');
 		}
 
@@ -193,7 +192,7 @@ class FoldersService {
 
 	/**
 	 * Move a folder to a new parent
-	 * 
+	 *
 	 * @param $folderId
 	 * @param $newPath
 	 * @return Folder
@@ -203,7 +202,7 @@ class FoldersService {
 	 */
 	public function move($folderId, $newPath) {
 
-		if ( is_numeric($folderId) === false ) {
+		if (is_numeric($folderId) === false) {
 			throw new BadRequestException('Folder id must be a number.');
 		}
 
@@ -221,7 +220,7 @@ class FoldersService {
 		} else {
 			$newFullPath = $newParent->path . '/' . $folder->name;
 		}
-		if ( $this->doesFolderExist($newFullPath) ) {
+		if ($this->doesFolderExist($newFullPath)) {
 			throw new BadRequestException('Could not move "' . $folder->name . '", target exists.');
 		}
 

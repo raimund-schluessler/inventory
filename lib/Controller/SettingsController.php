@@ -35,7 +35,7 @@ class SettingsController extends Controller {
 	 * @param IRequest $request an instance of the request
 	 * @param SettingsService $settingsService
 	 */
-	public function __construct(string $AppName, IRequest $request, SettingsService $settingsService){
+	public function __construct(string $AppName, IRequest $request, SettingsService $settingsService) {
 		parent::__construct($AppName, $request);
 		$this->settingsService = $settingsService;
 	}
