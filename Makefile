@@ -120,6 +120,8 @@ appstore: clean build
 	--exclude=/.gitignore \
 	--exclude=/.gitlab-ci.yml \
 	--exclude=/.phpunit.result.cache \
+	--exclude=/.php_cs.cache \
+	--exclude=/.php_cs.dist \
 	--exclude=/.prettierrc.js \
 	--exclude=/.scrutinizer.yml \
 	--exclude=/.stylelintrc \
@@ -128,6 +130,9 @@ appstore: clean build
 	--exclude=/.v8flags*.json \
 	--exclude=/build.xml \
 	--exclude=/CONTRIBUTING.md \
+	--exclude=/composer.json \
+	--exclude=/composer.lock \
+	--exclude=/composer.phar \
 	--exclude=/issue_template.md \
 	--exclude=/gulpfile.js \
 	--exclude=/Makefile \
@@ -153,7 +158,8 @@ appstore: clean build
 	--exclude=/node_modules \
 	--exclude=/screenshots/ \
 	--exclude=/test \
-	--exclude=/tests
+	--exclude=/tests \
+	--exclude=/vendor
 ifdef CAN_SIGN
 	mv $(configdir)/config.php $(configdir)/config-2.php
 	$(sign) --path="$(appstore_build_directory)"
