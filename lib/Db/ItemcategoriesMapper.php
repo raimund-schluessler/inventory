@@ -23,7 +23,6 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
-use \OCA\Inventory\Db\Itemcategories;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 

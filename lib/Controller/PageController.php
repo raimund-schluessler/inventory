@@ -24,8 +24,6 @@ namespace OCA\Inventory\Controller;
 
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Controller;
 use OCP\IConfig;
 use OCP\IInitialStateService;
@@ -46,7 +44,7 @@ class PageController extends Controller {
 	 * @param IConfig $Config
 	 * @param IInitialStateService $initialStateService
 	 */
-	public function __construct($AppName, IRequest $request, $UserId, IConfig $Config, IInitialStateService $initialStateService){
+	public function __construct($AppName, IRequest $request, $UserId, IConfig $Config, IInitialStateService $initialStateService) {
 		parent::__construct($AppName, $request);
 		$this->userId = $UserId;
 		$this->config = $Config;

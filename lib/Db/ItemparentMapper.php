@@ -25,7 +25,6 @@ namespace OCA\Inventory\Db;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
-use \OCA\Inventory\Db\Itemparent;
 
 class ItemparentMapper extends QBMapper {
 
@@ -87,7 +86,7 @@ class ItemparentMapper extends QBMapper {
 				$qb->expr()->eq('parentid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
 			);
 		$cursor = $qb->execute();
-		$subIDs = array();
+		$subIDs = [];
 		while ($row = $cursor->fetch()) {
 			array_push($subIDs, $row['itemid']);
 		};
@@ -116,7 +115,7 @@ class ItemparentMapper extends QBMapper {
 				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
 			);
 		$cursor = $qb->execute();
-		$subIDs = array();
+		$subIDs = [];
 		while ($row = $cursor->fetch()) {
 			array_push($subIDs, $row['parentid']);
 		};

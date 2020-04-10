@@ -22,14 +22,11 @@
 
 namespace OCA\Inventory\Service;
 
-use OCA\Inventory\Service\PlacesService;
-use OCA\Inventory\Db\Iteminstance;
 use OCA\Inventory\Db\IteminstanceMapper;
 use OCA\Inventory\Db\PlaceMapper;
 use OCA\Inventory\Db\IteminstanceUuidMapper;
 use OCA\Inventory\BadRequestException;
 use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\IConfig;
 use OCP\IL10N;
 
 class IteminstanceService {
@@ -73,7 +70,7 @@ class IteminstanceService {
 
 	/**
 	 * Adds an instance to an item
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $itemID	The item Id
 	 * @param $params	The instance parameters
@@ -81,11 +78,11 @@ class IteminstanceService {
 	 */
 	public function add($instance) {
 
-		if ( $instance['count'] && is_numeric($instance['count']) === false ) {
+		if ($instance['count'] && is_numeric($instance['count']) === false) {
 			throw new BadRequestException('Count must be a number.');
 		}
 
-		if ( $instance['available'] && is_numeric($instance['available']) === false ) {
+		if ($instance['available'] && is_numeric($instance['available']) === false) {
 			throw new BadRequestException('Available must be a number.');
 		}
 
@@ -114,7 +111,7 @@ class IteminstanceService {
 
 	/**
 	 * Removes an instance of an item
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $itemID		The item Id
 	 * @param $instanceId	The instance Id
@@ -132,7 +129,7 @@ class IteminstanceService {
 
 	/**
 	 * Edits an instance of an item
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $itemID	The item Id
 	 * @param $params	The instance parameters
@@ -165,7 +162,7 @@ class IteminstanceService {
 
 	/**
 	 * Gets the place details and the UUIDs of an instance
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $instance	The instance
 	 * @return \OCP\AppFramework\Db\Entity
@@ -174,21 +171,21 @@ class IteminstanceService {
 		if (!$instance->placeid) {
 			$instance->place = null;
 		} elseif ($instance->placeid === -1) {
-			$instance->place = array(
+			$instance->place = [
 				'id'	=> -1,
 				'name'	=> $this->l10n->t('No place assigned'),
 				'parent'=> null,
 				'path'	=> ''
-			);
+			];
 		} else {
 			try {
 				$place = $this->placeMapper->findPlace($this->userId, $instance->placeid);
-				$instance->place = array(
+				$instance->place = [
 					'id'	=> $place->id,
 					'name'	=> $place->name,
 					'parent'=> $place->parentid,
 					'path'	=> $place->path
-				);
+				];
 			} catch (DoesNotExistException $e) {
 				$instance->place = null;
 			}
@@ -217,12 +214,12 @@ class IteminstanceService {
 	 */
 	public function addUuid($itemID, $instanceID, $uuid) {
 
-		if ( $this->isValidUuid($uuid) === false ) {
+		if ($this->isValidUuid($uuid) === false) {
 			throw new BadRequestException('The given UUID is invalid.');
 		}
 
 		
-		if( $this->iteminstanceUuidMapper->find($instanceID, $uuid, $this->userId) ) {
+		if($this->iteminstanceUuidMapper->find($instanceID, $uuid, $this->userId)) {
 			throw new BadRequestException('The given UUID is already set for this instance.');
 		}
 
@@ -251,7 +248,7 @@ class IteminstanceService {
 	 * @param	string	$uuid	The string to check
 	 * @return	boolean
 	 */
-	function isValidUuid( $uuid ) {
+	function isValidUuid($uuid) {
 		if (!is_string($uuid) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $uuid) !== 1)) {
 			return false;
 		}

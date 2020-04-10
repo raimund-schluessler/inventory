@@ -35,7 +35,7 @@ class PlacesController extends Controller {
 	 * @param IRequest $request an instance of the request
 	 * @param PlacesService $placesService
 	 */
-	public function __construct(string $AppName, IRequest $request, PlacesService $placesService){
+	public function __construct(string $AppName, IRequest $request, PlacesService $placesService) {
 		parent::__construct($AppName, $request);
 		$this->placesService = $placesService;
 	}
@@ -49,7 +49,7 @@ class PlacesController extends Controller {
 
 	/**
 	 * Adds a place
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $name	The new place name
 	 * @param $path	The path to create the place at
@@ -61,7 +61,7 @@ class PlacesController extends Controller {
 
 	/**
 	 * Deletes a place
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $placeID		The id of the place to delete
 	 */
@@ -71,7 +71,7 @@ class PlacesController extends Controller {
 
 	/**
 	 * Renames a place
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $placeID		The id of the place to edit
 	 * @param $newName		The newName
@@ -82,7 +82,7 @@ class PlacesController extends Controller {
 
 	/**
 	 * Moves a place
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $placeID		The id of the place to edit
 	 * @param $path			The new path

@@ -34,7 +34,6 @@ use OCA\Inventory\NoPermissionException;
 use OCA\Inventory\NotFoundException;
 use OCA\Inventory\StatusException;
 use OCP\AppFramework\Http\Response;
-use OCP\IL10N;
 use OCP\IConfig;
 
 class AttachmentService {
@@ -98,7 +97,7 @@ class AttachmentService {
 
 	/**
 	 * Scans the item or instance folder for files
-	 * 
+	 *
 	 * @param int $itemID
 	 * @param int $instanceID
 	 */

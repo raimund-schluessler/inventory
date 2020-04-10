@@ -75,6 +75,16 @@ development:
 	$(npm) update
 	$(npm) run dev
 
+composer.phar:
+	curl -sS https://getcomposer.org/installer | php
+
+install-composer-deps-dev: composer.phar
+	php composer.phar install -o
+
+update-composer: composer.phar
+	rm -f composer.lock
+	php composer.phar install --prefer-dist
+
 # Removes the build directory and the compiled files
 .PHONY: clean
 clean:
@@ -177,3 +187,6 @@ test-php-coverage:
 test-php-coverage-html:
 	phpunit -c phpunit.xml --coverage-html=coverage_php/unit
 	phpunit -c phpunit.integration.xml --coverage-html=coverage_php/integration
+
+lint-php:
+	php composer.phar run-script cs:check

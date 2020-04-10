@@ -68,9 +68,9 @@ class PlacesService {
 	}
 	
 	/**
-	* Add a place
-	*
-	*/
+	 * Add a place
+	 *
+	 */
 	public function add($name, $path) {
 		if ($path !== "") {
 			$fullPath = $path . "/" . $name;
@@ -150,24 +150,24 @@ class PlacesService {
 
 	/**
 	 * Check that the place name is valid.
-	 * 
+	 *
 	 * The names
 	 * "item-(\\d+)"
 	 * "additem"
 	 * "additems"
 	 * are not allowed as they interfere with the routing.
-	 * 
+	 *
 	 * Also the name must not be empty, already exist or contain "/".
 	 */
 	private function isNameAllowed($name, $fullPath) {
-		if ( strpos($name, "/") ) {
+		if (strpos($name, "/")) {
 			throw new BadRequestException('"/" is not allowed inside a place name.');
 		}
-		if ( $name === "" ) {
+		if ($name === "") {
 			throw new BadRequestException('Place name cannot be empty.');
 		}
 
-		if (preg_match('/item-\d+/', $name) || in_array($name, array('additem', 'additems'))) {
+		if (preg_match('/item-\d+/', $name) || in_array($name, ['additem', 'additems'])) {
 			throw new BadRequestException('This name is not allowed');
 		}
 
@@ -179,7 +179,7 @@ class PlacesService {
 	
 	/**
 	 * Delete a place
-	 * 
+	 *
 	 * @param int $placeId		The id of the place to delete
 	 * @throws DoesNotExistException
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
@@ -187,7 +187,7 @@ class PlacesService {
 	 */
 	public function delete($placeId) {
 
-		if ( is_numeric($placeId) === false ) {
+		if (is_numeric($placeId) === false) {
 			throw new BadRequestException('Place id must be a number.');
 		}
 		try {
@@ -224,7 +224,7 @@ class PlacesService {
 
 	/**
 	 * Move a place to a new parent
-	 * 
+	 *
 	 * @param $placeId
 	 * @param $newPath
 	 * @return Place
@@ -234,7 +234,7 @@ class PlacesService {
 	 */
 	public function move($placeId, $newPath) {
 
-		if ( is_numeric($placeId) === false ) {
+		if (is_numeric($placeId) === false) {
 			throw new BadRequestException('Place id must be a number.');
 		}
 
@@ -256,7 +256,7 @@ class PlacesService {
 		} else {
 			$newFullPath = $newParent->path . '/' . $place->name;
 		}
-		if ( $this->doesPlaceExist($newFullPath) ) {
+		if ($this->doesPlaceExist($newFullPath)) {
 			throw new BadRequestException('Could not move "' . $place->name . '", target exists.');
 		}
 

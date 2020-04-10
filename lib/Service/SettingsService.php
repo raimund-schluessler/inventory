@@ -47,10 +47,10 @@ class SettingsService {
 	 * @return array
 	 */
 	public function get():array {
-		$settings = array(
+		$settings = [
 			'sortOrder' => (string)$this->settings->getUserValue($this->userId, $this->appName, 'sortOrder'),
 			'sortDirection' => (bool)$this->settings->getUserValue($this->userId, $this->appName, 'sortDirection')
-		);
+		];
 		return $settings;
 	}
 

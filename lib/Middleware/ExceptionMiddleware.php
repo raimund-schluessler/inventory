@@ -4,7 +4,7 @@
  *
  * @author Raimund Schlüßler
  * @copyright 2019 Raimund Schlüßler raimund.schluessler@mailbox.org
- * 
+ *
  * @author Julius Härtl <jus@bitgrid.net>
  * @copyright 2016 Julius Härtl jus@bitgrid.net
  *
@@ -30,7 +30,6 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http\JSONResponse;
 use OCA\Inventory\StatusException;
 use OCA\Inventory\Exceptions\ConflictException;
-
 
 class ExceptionMiddleware extends Middleware {
 

@@ -28,7 +28,7 @@ use OCA\Inventory\Middleware\ExceptionMiddleware;
 class Application extends App {
 
 
-	public function __construct (array $urlParams=array()) {
+	public function __construct(array $urlParams=[]) {
 		parent::__construct('inventory', $urlParams);
 
 		$container = $this->getContainer();
@@ -37,7 +37,7 @@ class Application extends App {
 		 * Middleware
 		 */
 
-		$container->registerService('ExceptionMiddleware', function($c){
+		$container->registerService('ExceptionMiddleware', function ($c) {
 			return new ExceptionMiddleware();
 		});
 

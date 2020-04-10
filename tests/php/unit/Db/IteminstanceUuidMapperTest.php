@@ -4,7 +4,7 @@
  *
  * @author Raimund Schlüßler
  * @copyright 2019 Raimund Schlüßler raimund.schluessler@mailbox.org
- * 
+ *
  * @author Julius Härtl
  * @copyright 2018 Julius Härtl <jus@bitgrid.net>
  *
@@ -25,10 +25,7 @@
 
 namespace OCA\Inventory\Db;
 
-use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IDBConnection;
-use OCP\IGroupManager;
-use OCP\IUserManager;
 use Test\AppFramework\Db\MapperTestUtility;
 
 /**

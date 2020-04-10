@@ -22,12 +22,6 @@
 
 namespace OCA\Inventory\Service;
 
-use OCP\IConfig;
-use OCA\Inventory\Service\ItemsService;
-use OCA\Inventory\Service\FolderService;
-use OCA\Inventory\BadRequestException;
-use OCP\AppFramework\Db\DoesNotExistException;
-
 class SearchService {
 
 	private $userId;
@@ -44,17 +38,17 @@ class SearchService {
 
 	/**
 	 * Find items by searchString
-	 * 
+	 *
 	 * @param $searchString
 	 * @return array<Item, Folder>
 	 */
 	public function findByString($searchString) {
 		// We don't need to search for an empty string
-		$results = array(
+		$results = [
 			'folders' => [],
 			'items' => []
-		);
-		if ( $searchString === '' ) {
+		];
+		if ($searchString === '') {
 			return $results;
 		}
 

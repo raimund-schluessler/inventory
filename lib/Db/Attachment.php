@@ -4,7 +4,7 @@
  *
  * @author Raimund Schlüßler
  * @copyright 2019 Raimund Schlüßler raimund.schluessler@mailbox.org
- * 
+ *
  * @author Julius Härtl
  * @copyright 2018 Julius Härtl <jus@bitgrid.net>
  *

@@ -22,7 +22,6 @@
 
 namespace OCA\Inventory\Service;
 
-use OCA\Inventory\Service\IteminstanceService;
 use OCA\Inventory\Db\CategoryMapper;
 use OCA\Inventory\Db\FolderMapper;
 use OCA\Inventory\Db\Item;
@@ -35,7 +34,6 @@ use OCA\Inventory\Db\ItemtypeMapper;
 use OCA\Inventory\Db\PlaceMapper;
 use OCA\Inventory\Storage\AttachmentStorage;
 use OCA\Inventory\BadRequestException;
-use OCP\IConfig;
 use OCP\IL10N;
 use OCP\AppFramework\Db\DoesNotExistException;
 
@@ -132,19 +130,19 @@ class ItemsService {
 		$items = [];
 		foreach ($instances as $instance) {
 			if ($place) {
-				$instance->place = array(
+				$instance->place = [
 					'id'	=> $place->id,
 					'name'	=> $place->name,
 					'parent'=> $place->parentid,
 					'path'	=> $place->path
-				);
+				];
 			} else {
-				$instance->place = array(
+				$instance->place = [
 					'id'	=> -1,
 					'name'	=> $this->l10n->t('No place assigned'),
 					'parent'=> null,
 					'path'	=> ''
-				);
+				];
 			}
 			$item = $this->itemMapper->find($instance->itemid, $this->userId);
 			$item = $this->getItemDetails($item, false);
@@ -162,11 +160,11 @@ class ItemsService {
 	 */
 	public function getCandidates($itemID, $relationType) {
 
-		if ( is_numeric($itemID) === false ) {
+		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
-		$excludeIDs = array();
+		$excludeIDs = [];
 		if ($relationType === 'sub') {
 			$excludeIDs = $this->itemParentMapper->findSubIDs($itemID);
 		} elseif ($relationType === 'parent') {
@@ -187,7 +185,7 @@ class ItemsService {
 
 	/**
 	 * Get an item by its ID
-	 * 
+	 *
 	 * @param $itemID
 	 * @return Item
 	 * @throws DoesNotExistException
@@ -196,7 +194,7 @@ class ItemsService {
 	 */
 	public function get($itemID) {
 
-		if ( is_numeric($itemID) === false ) {
+		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
@@ -211,7 +209,7 @@ class ItemsService {
 	 */
 	public function getSub($itemID) {
 
-		if ( is_numeric($itemID) === false ) {
+		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
@@ -232,7 +230,7 @@ class ItemsService {
 	 */
 	public function getParent($itemID) {
 
-		if ( is_numeric($itemID) === false ) {
+		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
@@ -253,7 +251,7 @@ class ItemsService {
 	 */
 	public function getRelated($itemID) {
 
-		if ( is_numeric($itemID) === false ) {
+		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
@@ -293,11 +291,11 @@ class ItemsService {
 			if (!$categoryEntity) {
 				$categoryEntity = $this->categoryMapper->add($category['name'], $this->userId);
 			}
-			$mapping = $this->itemCategoriesMapper->add(array(
+			$mapping = $this->itemCategoriesMapper->add([
 				'itemid' => $added->id,
 				'uid' => $this->userId,
 				'categoryid' => $categoryEntity->id
-			));
+			]);
 		}
 
 		foreach ($item['instances'] as $instance) {
@@ -315,7 +313,7 @@ class ItemsService {
 	 */
 	public function delete($itemId) {
 
-		if ( is_numeric($itemId) === false ) {
+		if (is_numeric($itemId) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
@@ -352,7 +350,7 @@ class ItemsService {
 
 	/**
 	 * Edits an instance of an item
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $itemID	The item Id
 	 * @param $item	The item parameters
@@ -360,40 +358,40 @@ class ItemsService {
 	 */
 	public function edit($itemId, $item) {
 
-		if ( is_numeric($itemId) === false ) {
+		if (is_numeric($itemId) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
-		if ( $item['name'] === null || $item['name'] === false ) {
+		if ($item['name'] === null || $item['name'] === false) {
 			throw new BadRequestException('Item name must not be empty.');
 		}
 
 		// Check that string length does not exceed database column length
-		if ( strlen($item['name']) > 100 ) {
+		if (strlen($item['name']) > 100) {
 			throw new BadRequestException('Item name must not exceed 100 characters.');
 		}
 
-		if ( strlen($item['maker']) > 100 ) {
+		if (strlen($item['maker']) > 100) {
 			throw new BadRequestException('Item maker must not exceed 100 characters.');
 		}
 
-		if ( strlen($item['link']) > 255 ) {
+		if (strlen($item['link']) > 255) {
 			throw new BadRequestException('Item link must not exceed 255 characters.');
 		}
 
-		if ( strlen($item['comment']) > 65000 ) {
+		if (strlen($item['comment']) > 65000) {
 			throw new BadRequestException('Item comment must not exceed 65000 characters.');
 		}
 
-		if ( strlen($item['details']) > 65000 ) {
+		if (strlen($item['details']) > 65000) {
 			throw new BadRequestException('Item details must not exceed 65000 characters.');
 		}
 
-		if ( strlen($item['description']) > 65000 ) {
+		if (strlen($item['description']) > 65000) {
 			throw new BadRequestException('Item description must not exceed 65000 characters.');
 		}
 
-		if ( $item['gtin'] !== null && $item['gtin'] !== '' && strlen($item['gtin']) !== 13 ) {
+		if ($item['gtin'] !== null && $item['gtin'] !== '' && strlen($item['gtin']) !== 13) {
 			throw new BadRequestException('The provided GTIN is invalid.');
 		}
 
@@ -415,7 +413,7 @@ class ItemsService {
 		// Find items which contain this string directly
 		$items = $this->itemMapper->findByString($this->userId, $searchString);
 
-		$itemIds = array_map(function($item) {return $item->id;}, $items);
+		$itemIds = array_map(function ($item) {return $item->id;}, $items);
 		// Find instances and corresponding items
 		$instances = $this->iteminstanceService->findByString($searchString);
 		foreach ($instances as $instance) {
@@ -433,20 +431,20 @@ class ItemsService {
 
 	/**
 	 * Gets the of an item
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $item	The item
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
 	function getItemDetails($item, $getInstances = true) {
 		$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
-		$categoriesNames = array();
+		$categoriesNames = [];
 		foreach ($categories as $category) {
 			$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
-			$categoriesNames[] = array(
+			$categoriesNames[] = [
 				'id'	=> $category->categoryid,
 				'name'	=> $name->name
-			);
+			];
 		}
 		try {
 			$type = $this->itemtypeMapper->find($item->type, $this->userId);
@@ -475,7 +473,7 @@ class ItemsService {
 	 */
 	public function link($mainItemID, $itemIDs, $relationType) {
 
-		if ( is_numeric($mainItemID) === false ) {
+		if (is_numeric($mainItemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
@@ -484,11 +482,11 @@ class ItemsService {
 				if ($itemID === $mainItemID) {
 					continue;
 				}
-				$map = array(
+				$map = [
 					'parentid' => $itemID,
 					'itemid' => $mainItemID,
 					'uid' => $this->userId
-				);
+				];
 				try {
 					$this->itemParentMapper->add($map);
 				} catch (\Exception $e) {
@@ -500,11 +498,11 @@ class ItemsService {
 				if ($itemID === $mainItemID) {
 					continue;
 				}
-				$map = array(
+				$map = [
 					'parentid' => $mainItemID,
 					'itemid' => $itemID,
 					'uid' => $this->userId
-				);
+				];
 				try {
 					$this->itemParentMapper->add($map);
 				} catch (\Exception $e) {
@@ -524,11 +522,11 @@ class ItemsService {
 					$itemID1 = $itemID;
 					$itemID2 = $mainItemID;
 				}
-				$map = array(
+				$map = [
 					'itemid1' => $itemID1,
 					'itemid2' => $itemID2,
 					'uid' => $this->userId
-				);
+				];
 				try {
 					$this->itemRelationMapper->add($map);
 				} catch (\Exception $e) {
@@ -545,7 +543,7 @@ class ItemsService {
 	 */
 	public function unlink($mainItemID, $itemIDs, $relationType) {
 
-		if ( is_numeric($mainItemID) === false ) {
+		if (is_numeric($mainItemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
@@ -598,7 +596,7 @@ class ItemsService {
 
 	/**
 	 * Move an item to other folder
-	 * 
+	 *
 	 * @param $itemId
 	 * @param $newPath
 	 * @return Item
@@ -608,7 +606,7 @@ class ItemsService {
 	 */
 	public function move($itemId, $newPath) {
 
-		if ( is_numeric($itemId) === false ) {
+		if (is_numeric($itemId) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
@@ -628,7 +626,7 @@ class ItemsService {
 
 	/**
 	 * Moves an instance to a new place
-	 * 
+	 *
 	 * @NoAdminRequired
 	 * @param $itemId		The item Id
 	 * @param $instanceId	The instance Id
@@ -637,11 +635,11 @@ class ItemsService {
 	 */
 	public function moveInstance($itemId, $instanceId, $newPath) {
 
-		if ( is_numeric($itemId) === false ) {
+		if (is_numeric($itemId) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
-		if ( is_numeric($instanceId) === false ) {
+		if (is_numeric($instanceId) === false) {
 			throw new BadRequestException('Instance id must be a number.');
 		}
 
