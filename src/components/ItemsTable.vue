@@ -69,8 +69,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</th>
 					<th class="hide-if-narrow">
 						<div>
-							<a class="categories sort columntitle" data-sort="categories">
-								<span>{{ t('inventory', 'Categories') }}</span>
+							<a class="tags sort columntitle" data-sort="tags">
+								<span>{{ t('inventory', 'Tags') }}</span>
 							</a>
 						</div>
 					</th>
@@ -254,7 +254,7 @@ export default {
 				return this.items.concat(this.collections)
 			}
 
-			const options = { keywords: ['maker', 'name', 'description', 'categories', 'itemNumber', 'gtin', 'details', 'comment'] }
+			const options = { keywords: ['maker', 'name', 'description', 'tags', 'itemNumber', 'gtin', 'details', 'comment'] }
 
 			let searchQueryObj = searchQueryParser.parse(this.searchString, options)
 			// bring into same structure if no keywords were matched
@@ -290,10 +290,10 @@ export default {
 						if (!item[keyword]) {
 							return false
 						}
-						if (keyword === 'categories') {
+						if (keyword === 'tags') {
 							found = false
-							for (let jj = 0; jj < item.categories.length; jj++) {
-								if (item.categories[jj].name.toLowerCase().indexOf(searchQueryObj[keyword].toLowerCase()) > -1) {
+							for (let jj = 0; jj < item.tags.length; jj++) {
+								if (item.tags[jj].name.toLowerCase().indexOf(searchQueryObj[keyword].toLowerCase()) > -1) {
 									found = true
 									break
 								}
@@ -319,9 +319,9 @@ export default {
 							if (!item[keyword]) {
 								continue
 							}
-							if (keyword === 'categories') {
-								for (let kk = 0; kk < item.categories.length; kk++) {
-									if (item.categories[kk].name.toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
+							if (keyword === 'tags') {
+								for (let kk = 0; kk < item.tags.length; kk++) {
+									if (item.tags[kk].name.toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
 										found = true
 										break
 									}

@@ -23,7 +23,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div v-if="item" class="app-content-details">
 			<div id="controls" class="itemnavigation">
-				<Breadcrumbs :root-icon="`icon-bw ${collection === 'folders' ? 'icon-items' : 'icon-places'}`">
+				<Breadcrumbs :root-icon="`icon-bw icon-${collection}`">
 					<Breadcrumb v-for="crumb in breadcrumbs"
 						:key="crumb.path"
 						:title="crumb.title"
@@ -88,11 +88,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 											</span>
 										</div>
 									</td>
-									<td v-else-if="itemProperty.key === 'categories'">
+									<td v-else-if="itemProperty.key === 'tags'">
 										<div class="wrapper">
-											<ul class="categories">
-												<li v-for="category in item.categories" :key="category.id">
-													<span>{{ category.name }}</span>
+											<ul class="tags">
+												<li v-for="tag in item.tags" :key="tag.id">
+													<span>{{ tag.name }}</span>
 												</li>
 											</ul>
 										</div>
@@ -289,8 +289,8 @@ export default {
 					key: 'comment',
 					name: this.t('inventory', 'Comment'),
 				}, {
-					key: 'categories',
-					name: this.t('inventory', 'Categories'),
+					key: 'tags',
+					name: this.t('inventory', 'Tags'),
 				},
 			],
 			isDraggingOver: false,

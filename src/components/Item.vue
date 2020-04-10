@@ -65,9 +65,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</a>
 		</td>
 		<td class="hide-if-narrow">
-			<ul class="categories">
-				<li v-for="category in entity.categories" :key="category.id">
-					<span>{{ category.name }}</span>
+			<ul class="tags">
+				<li v-for="tag in entity.tags" :key="tag.id">
+					<span>{{ tag.name }}</span>
 				</li>
 			</ul>
 		</td>
