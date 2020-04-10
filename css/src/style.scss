@@ -54,6 +54,10 @@
 
 		#controls .breadcrumb {
 			width: calc(100% - 44px);
+
+			.crumb span.icon {
+				opacity: 1;
+			}
 		}
 
 		.app-content-details {
