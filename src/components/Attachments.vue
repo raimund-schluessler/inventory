@@ -119,7 +119,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
-import { showError } from '@nextcloud/dialogs'
+import { showError, getFilePickerBuilder } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'
 import { generateUrl } from '@nextcloud/router'
 
@@ -206,11 +206,8 @@ export default {
 			this.$refs.localAttachments.click()
 		},
 
-		select() {
-			OC.dialogs.filepicker(t('inventory', 'Select a file to link as attachment'), this.linkAttachment)
-		},
-
-		async linkAttachment(attachment) {
+		async select() {
+			const attachment = await getFilePickerBuilder(t('inventory', 'Select a file to link as attachment')).build().pick()
 			try {
 				await this.$store.dispatch('linkAttachment', {
 					itemId: this.itemId,
