@@ -543,7 +543,7 @@ export default {
 			halfTableHeight = (halfTableHeight > 150) ? 150 : halfTableHeight
 			const speed = 15
 			if (posY < halfTableHeight + 94) {
-				window.scrollBy(0, -1*speed)
+				window.scrollBy(0, -1 * speed)
 			} else if (pageHeight - posY < halfTableHeight) {
 				window.scrollBy(0, speed)
 			}
