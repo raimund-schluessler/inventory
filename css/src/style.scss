@@ -380,6 +380,7 @@ table {
 					input {
 						&[type='text'] {
 							margin-left: 6px;
+							width: 100%;
 
 							&:focus + input,
 							&:focus + input + input {
