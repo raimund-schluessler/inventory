@@ -21,7 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<table class="itemstable">
+		<table class="itemstable" @dragover="dragOverTable">
 			<thead>
 				<tr>
 					<th :id="`headerSelection-${_uid}`" class="column-selection">
@@ -535,6 +535,18 @@ export default {
 			this.setDraggedEntities(this.draggedEntities)
 			const collections = document.querySelectorAll('.over')
 			collections.forEach((f) => { f.classList.remove('over') })
+		},
+		dragOverTable(e) {
+			const posY = e.clientY
+			const pageHeight = document.body.clientHeight
+			let halfTableHeight = (pageHeight - 94) / 2
+			halfTableHeight = (halfTableHeight > 150) ? 150 : halfTableHeight
+			const speed = 15
+			if (posY < halfTableHeight + 94) {
+				window.scrollBy(0, -1*speed)
+			} else if (pageHeight - posY < halfTableHeight) {
+				window.scrollBy(0, speed)
+			}
 		},
 		dropped(targetEntity, e) {
 			e.stopPropagation()
