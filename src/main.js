@@ -21,14 +21,13 @@
 'use strict'
 
 import App from './App'
-
-import Vue from 'vue'
-
 import router from './components/TheRouter'
 import store from './store/store'
+
+import { linkTo } from '@nextcloud/router'
+import Vue from 'vue'
 import { sync } from 'vuex-router-sync'
 import VTooltip from 'v-tooltip'
-import { linkTo } from '@nextcloud/router'
 
 // CSP config for webpack dynamic chunk loading
 // eslint-disable-next-line

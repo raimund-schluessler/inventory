@@ -20,15 +20,16 @@
  */
 'use strict'
 
-import Vue from 'vue'
-import Vuex from 'vuex'
 import Item from '../models/item.js'
 import Folder from '../models/folder.js'
 import Status from '../models/status'
-import PQueue from 'p-queue'
+
 import Axios from '@nextcloud/axios'
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
+import PQueue from 'p-queue'
+import Vue from 'vue'
+import Vuex from 'vuex'
 
 Vue.use(Vuex)
 

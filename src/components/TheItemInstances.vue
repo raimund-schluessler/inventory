@@ -169,13 +169,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import focus from '../directives/focus'
 import Attachments from './Attachments.vue'
-import ClickOutside from 'vue-click-outside'
 import QrScanModal from './QrScanModal.vue'
+
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ClickOutside from 'vue-click-outside'
+import { mapActions } from 'vuex'
 
 export default {
 	components: {

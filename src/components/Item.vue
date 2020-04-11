@@ -79,6 +79,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import ItemStatusDisplay from './ItemStatusDisplay'
+
 import { generateUrl } from '@nextcloud/router'
 
 export default {

@@ -201,22 +201,23 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
 import Attachments from './Attachments.vue'
 import RelationModal from './RelationModal.vue'
 import ItemInstances from './TheItemInstances.vue'
 import focus from '../directives/focus'
-import bwipjs from 'bwip-js'
-import ClickOutside from 'vue-click-outside'
+
+import { showError } from '@nextcloud/dialogs'
+import { formatFileSize } from '@nextcloud/files'
+import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import Modal from '@nextcloud/vue/dist/Components/Modal'
 import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
 import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
-import { generateUrl } from '@nextcloud/router'
-import { formatFileSize } from '@nextcloud/files'
-import { showError } from '@nextcloud/dialogs'
+import Modal from '@nextcloud/vue/dist/Components/Modal'
+import bwipjs from 'bwip-js'
+import ClickOutside from 'vue-click-outside'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
 	components: {

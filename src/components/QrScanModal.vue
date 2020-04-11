@@ -29,7 +29,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { Modal } from '@nextcloud/vue/dist/Components/Modal'
+import Modal from '@nextcloud/vue/dist/Components/Modal'
 import { QrcodeStream } from 'vue-qrcode-reader'
 
 export default {

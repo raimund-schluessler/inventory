@@ -20,11 +20,12 @@
  */
 'use strict'
 
-import Vue from 'vue'
-import Vuex from 'vuex'
 import Place from '../models/place.js'
+
 import Axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
+import Vue from 'vue'
+import Vuex from 'vuex'
 
 Vue.use(Vuex)
 

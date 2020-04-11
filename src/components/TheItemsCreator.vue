@@ -45,9 +45,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import Papa from 'papaparse'
 import ItemsTable from './ItemsTable.vue'
 import Item from '../models/item'
+
+import Papa from 'papaparse'
 import { mapActions } from 'vuex'
 
 export default {

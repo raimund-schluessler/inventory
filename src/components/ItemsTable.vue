@@ -164,11 +164,12 @@ import Item from '../models/item.js'
 import Folder from '../models/folder.js'
 import Place from '../models/place.js'
 import { sort } from '../store/storeHelper'
-import searchQueryParser from 'search-query-parser'
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+
+import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import { generateUrl } from '@nextcloud/router'
+import searchQueryParser from 'search-query-parser'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
 	components: {

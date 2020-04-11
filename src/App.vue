@@ -42,11 +42,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
+import TheSettings from './components/AppNavigation/TheSettings'
+
+import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
 import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
 import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
-import AppContent from '@nextcloud/vue/dist/Components/AppContent'
-import TheSettings from './components/AppNavigation/TheSettings'
 
 export default {
 	name: 'App',

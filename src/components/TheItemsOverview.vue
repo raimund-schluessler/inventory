@@ -63,14 +63,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import Item from '../models/item.js'
-import { mapGetters, mapActions } from 'vuex'
 import ItemsTable from './ItemsTable.vue'
+
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionRouter from '@nextcloud/vue/dist/Components/ActionRouter'
 import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
 import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	components: {

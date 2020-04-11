@@ -20,12 +20,13 @@
  */
 'use strict'
 
-import Vue from 'vue'
-import Vuex from 'vuex'
 import items from './items'
 import folders from './folders'
 import places from './places'
 import settings from './settings'
+
+import Vue from 'vue'
+import Vuex from 'vuex'
 
 Vue.use(Vuex)
 

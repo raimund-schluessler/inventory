@@ -75,12 +75,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import focus from '../directives/focus'
+
+import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import { mapActions } from 'vuex'
 import ClickOutside from 'v-click-outside'
-import focus from '../directives/focus'
-import { generateUrl } from '@nextcloud/router'
 
 const CD_DURATION = 7
 

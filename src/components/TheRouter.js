@@ -19,14 +19,13 @@
  *
  */
 
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-
 import TheItemsOverview from './TheItemsOverview.vue'
 import ItemsNew from './TheItemsCreator.vue'
 import TheItemDetails from './TheItemDetails.vue'
-
 import Tags from './Tags.vue'
+
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
 const routes = [
 	// using
