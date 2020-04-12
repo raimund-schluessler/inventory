@@ -21,7 +21,7 @@
 'use strict'
 
 import App from './App'
-import router from './components/TheRouter'
+import router from './router'
 import store from './store/store'
 
 import { linkTo } from '@nextcloud/router'

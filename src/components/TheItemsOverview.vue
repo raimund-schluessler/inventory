@@ -52,7 +52,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</ActionInput>
 			</Actions>
 		</div>
-		<ItemsTable :items="items"
+		<EntityTable :items="items"
 			:collections="collections"
 			:collection-type="collection"
 			:loading="loading"
@@ -63,7 +63,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import Item from '../models/item.js'
-import ItemsTable from './ItemsTable.vue'
+import EntityTable from './EntityTable/EntityTable.vue'
 
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
@@ -75,7 +75,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	components: {
-		ItemsTable: ItemsTable,
+		EntityTable,
 		Breadcrumbs,
 		Breadcrumb,
 		Actions,

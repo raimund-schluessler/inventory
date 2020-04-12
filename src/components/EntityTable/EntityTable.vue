@@ -160,10 +160,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import ItemComponent from './Item'
 import Collection from './Collection'
-import Item from '../models/item.js'
-import Folder from '../models/folder.js'
-import Place from '../models/place.js'
-import { sort } from '../store/storeHelper'
+import Item from '../../models/item.js'
+import Folder from '../../models/folder.js'
+import Place from '../../models/place.js'
+import { sort } from '../../store/storeHelper'
 
 import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'

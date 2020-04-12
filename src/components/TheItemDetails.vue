@@ -146,7 +146,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Parent items') }}</span>
 					</h3>
 					<div>
-						<ItemsTable :items="parentItems"
+						<EntityTable :items="parentItems"
 							:unlink="true"
 							:search-string="$root.searchString"
 							@selectedItemsChanged="selectedParentsChanged"
@@ -158,7 +158,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Sub items') }}</span>
 					</h3>
 					<div>
-						<ItemsTable :items="subItems"
+						<EntityTable :items="subItems"
 							:unlink="true"
 							:search-string="$root.searchString"
 							@selectedItemsChanged="selectedSubChanged"
@@ -170,7 +170,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<span>{{ t('inventory', 'Related items') }}</span>
 					</h3>
 					<div>
-						<ItemsTable :items="relatedItems"
+						<EntityTable :items="relatedItems"
 							:unlink="true"
 							:search-string="$root.searchString"
 							@selectedItemsChanged="selectedRelatedChanged"
@@ -201,7 +201,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import ItemsTable from './ItemsTable.vue'
+import EntityTable from './EntityTable/EntityTable.vue'
 import Attachments from './Attachments.vue'
 import RelationModal from './RelationModal.vue'
 import ItemInstances from './TheItemInstances.vue'
@@ -221,9 +221,9 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
 	components: {
-		ItemsTable: ItemsTable,
 		Actions,
 		ActionButton,
+		EntityTable,
 		RelationModal,
 		ItemInstances,
 		Attachments,

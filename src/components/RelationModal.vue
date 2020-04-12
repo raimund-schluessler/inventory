@@ -66,7 +66,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 
 			<div class="body">
-				<ItemsTable :items="items"
+				<EntityTable :items="items"
 					:show-dropdown="false"
 					:search-string="searchString"
 					mode="selection"
@@ -90,7 +90,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import ItemsTable from './ItemsTable.vue'
+import EntityTable from './EntityTable/EntityTable.vue'
 
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
@@ -98,7 +98,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	components: {
-		ItemsTable: ItemsTable,
+		EntityTable,
 		Modal,
 		Multiselect,
 	},

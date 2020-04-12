@@ -35,7 +35,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<textarea v-model="rawInput" />
 					{{ t('inventory', 'Items:') }}
 					<div>
-						<ItemsTable :items="items" :show-dropdown="false" :search-string="$root.searchString" />
+						<EntityTable :items="items" :show-dropdown="false" :search-string="$root.searchString" />
 					</div>
 					<input :value="t('inventory', 'Enlist')" type="submit" :disabled="!canEnlist">
 				</form>
@@ -45,7 +45,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import ItemsTable from './ItemsTable.vue'
+import EntityTable from './EntityTable/EntityTable.vue'
 import Item from '../models/item'
 
 import Papa from 'papaparse'
@@ -53,7 +53,7 @@ import { mapActions } from 'vuex'
 
 export default {
 	components: {
-		ItemsTable: ItemsTable,
+		EntityTable,
 	},
 	props: {
 		path: {
