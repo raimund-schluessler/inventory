@@ -103,56 +103,131 @@
 	opacity: 0.4;
 }
 
-#drag-preview {
-	position: absolute;
-	left: -9999px;
-	top: -9999px;
-
-	tr {
-		height: 44px;
-		background-color: var(--color-border-dark);
-
-		&:first-child td {
-			border-top: 1px solid var(--color-border-dark);
-		}
-
-		td {
-			display: flex;
-			align-items: center;
-			width: 100px;
-
-			.thumbnail {
-				height: 32px;
-				width: 32px;
-				margin: 6px;
-				background-size: 32px;
-				background-repeat: no-repeat;
-			}
-		}
-	}
-}
-
 .itemstable {
 	position: relative;
 	white-space: unset;
 	width: 100%;
 	min-width: 300px;
 
-	thead {
-		position: sticky;
-		top: 50px;
-		background-color: var(--color-main-background-translucent);
-		z-index: 55;
+	&--drag-preview {
+		max-width: 150px;
+		position: absolute;
+		left: -9999px;
+		top: -9999px;
+
+		&.itemstable .row {
+			max-width: 150px;
+			grid-template-columns: 150px;
+			background-color: var(--color-border-dark);
+			
+			&:first-child {
+				border-top: 1px solid var(--color-border-dark);
+			}
+
+			.column > a {
+				.thumbnail {
+					margin-left: 0;
+				}
+
+				.text span {
+					height: 22px;
+					white-space: nowrap;
+				}
+			}
+		}
 	}
 
-	tr {
+	.row {
+		display: grid;
+		grid-template-columns: 44px 2fr 1fr 3fr 1fr 44px;
+		height: 44px;
 		transition: background-color .3s ease;
+		border-bottom: 1px solid var(--color-border-dark);
+		@media only screen and (max-width: 500px) {
+			grid-template-columns: 44px 2fr 1fr 3fr 44px;
 
-		&.selected {
+			.column.column--hide {
+				display: none;
+			}
+		}
+
+		&:hover {
+			background-color: var(--color-background-dark);
+		}
+
+		&--header {
+			position: sticky;
+			top: 94px;
+			height: 50px;
+			background-color: var(--color-main-background-translucent);
+			z-index: 55;
+
+			&:hover {
+				background-color: var(--color-main-background-translucent);
+			}
+
+			.column {
+				display: flex;
+				align-items: center;
+
+				&--name > div {
+					padding-left: 40px;
+				}
+
+				& > div {
+					display: inline-flex;
+					margin-right: auto;
+					overflow: hidden;
+
+					span:not(.sort-indicator) {
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+
+					.sort-indicator {
+						display: inline-block;
+					}
+				}
+			}
+		}
+
+		&--collection {
+			grid-template-columns: 44px 1fr 44px;
+		}
+
+		&--empty,
+		&--search {
+			grid-template-columns: 1fr;
+
+			.column {
+				justify-content: center;
+
+				&__left {
+					justify-content: left;
+					padding: 0 14px;
+				}
+
+				.icon-loading {
+					display: inline-block;
+					width: 44px;
+				}
+			}
+		}
+
+		&--search {
+			height: 50px;
+			font-weight: bold;
+
+			&:hover {
+				background-color: unset;
+			}
+		}
+
+		&--selected {
 			background-color: var(--color-background-darker) !important;
 		}
 
-		&.deleted {
+		&--deleted {
 			text-decoration: line-through;
 
 			.thumbnail {
@@ -160,169 +235,79 @@
 			}
 		}
 
-		&.no_items_header {
-			td span {
-				vertical-align: middle;
+		.column {
+			display: flex;
+			align-items: center;
+			overflow: hidden;
+			text-overflow: ellipsis;
 
-				&.icon-loading {
-					display: inline-block;
-					width: 44px;
+			&--actions {
+				overflow: unset;
+			}
+			
+			&--selection {
+				display: inline-flex;
+				justify-content: center;
+
+				input[type='checkbox'].checkbox + label::before {
+					margin: 0;
+					margin-top: 5px;
+					vertical-align: unset;
 				}
 			}
-		}
 
-		&.search_header {
-			&:hover {
-				background-color: unset;
-			}
-
-			td {
-				padding: 0 14px;
-				line-height: 60px !important;
-				font-weight: bold;
-				color: var(--color-text-light);
-
-				&.done {
-					text-align: left !important;
-
-					span.icon-loading {
-						display: none;
-					}
-				}
-
-				span {
-					vertical-align: middle;
-
-					&.icon-loading {
-						display: inline-block;
-						width: 44px;
-					}
-				}
-			}
-		}
-
-		th,
-		td {
-			border-bottom: 1px solid var(--color-border-dark);
-			text-align: left;
-			font-weight: normal;
-			line-height: 30px;
-		}
-
-		th {
-			height: 50px;
-
-			> div {
+			& > a {
 				display: flex;
 				align-items: center;
+				height: 44px;
+				max-width: 100%;
 
-				a {
-					margin-right: auto;
-					display: inline-flex;
-
-					&:hover {
-						span.sort-indicator {
-							display: inline-block !important;
+				.thumbnail {
+					height: 44px;
+					width: 44px;
+					margin-left: -4px;
+	
+					&__image {
+						height: 36px;
+						width: 36px;
+						margin: 4px;
+						background-size: 36px;
+						background-repeat:  no-repeat;
+	
+						&--default {
+							opacity: .57;
 						}
 					}
+				}
 
-					span.sort-indicator {
-						display: inline-block;
+				.text {
+					display: flex;
+					height: 44px;
+					flex-direction: column;
+					align-items: normal;
+					justify-content: center;
+					overflow: hidden;
+
+					&--singleline span {
+						height: 22px;
+						white-space: nowrap;
 					}
-				}
-			}
 
-			a.name {
-				padding-left: 40px;
-			}
+					span {
+						overflow: hidden;
+						text-overflow: ellipsis;
 
-			.unlink {
-				margin-left: -32px;
-				padding: 0 8px;
-
-				&:hover .icon {
-					opacity: 0.8;
-				}
-			}
-
-			&.column-selection label {
-				padding: 16px 11px;
-			}
-		}
-
-		td {
-			min-height: 40px;
-			line-height: 20px;
-
-			&.center {
-				text-align: center;
-				line-height: 40px;
-			}
-
-			&.selection {
-				min-width: 40px;
-				max-width: 40px;
-				width: 0;
-
-				label {
-					padding: 11px;
+						&.details {
+							font-size: 12px;
+							color: var(--color-text-lighter);
+						}
+					}
 				}
 			}
 
 			form,
 			input {
 				width: 100%;
-			}
-
-			a,
-			> div {
-				display: flex;
-				align-items: center;
-				line-height: 20px;
-				word-wrap: anywhere;
-				height: 44px;
-
-				div.text {
-					display: flex;
-					line-height: 20px;
-					word-wrap: anywhere;
-					height: 44px;
-					flex-direction: column;
-					align-items: normal;
-					justify-content: center;
-				}
-
-				span {
-					display: inline-flex;
-					align-items: center;
-					word-wrap: anywhere;
-
-					&.details {
-						font-size: 12px;
-						color: var(--color-text-lighter);
-					}
-				}
-
-				.thumbnail-wrapper {
-					height: 40px;
-					width: 40px;
-
-					.thumbnail {
-						height: 32px;
-						width: 32px;
-						margin: 4px;
-						background-size: 32px;
-						background-repeat:  no-repeat;
-
-						&.default {
-							opacity: .57;
-						}
-					}
-				}
-
-				.nametext {
-					flex-grow: 1;
-				}
 			}
 		}
 	}

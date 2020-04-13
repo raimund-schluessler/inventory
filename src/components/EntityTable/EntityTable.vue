@@ -21,138 +21,128 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<table class="itemstable" @dragover="dragOverTable">
-			<thead>
-				<tr>
-					<th :id="`headerSelection-${_uid}`" class="column-selection">
-						<input :id="`select_all_items-${_uid}`"
-							:checked="allEntitiesSelected"
-							:indeterminate.prop="someEntitiesSelected"
-							class="select-all checkbox"
-							type="checkbox"
-							@change="selectEntities">
-						<label :for="`select_all_items-${_uid}`">
-							<span class="hidden-visually">
-								{{ t('inventory', 'Select all') }}
-							</span>
-						</label>
-					</th>
-					<th>
-						<div>
-							<a class="name sort columntitle" data-sort="name" @click="setSortOrder('name')">
-								<span>{{ t('inventory', 'Name') }}</span>
-								<span v-show="sortOrder === 'name'"
-									:class="sortOrderIcon('name')"
-									class="sort-indicator" />
-							</a>
-						</div>
-					</th>
-					<th>
-						<div>
-							<a class="maker sort columntitle" data-sort="maker" @click="setSortOrder('maker')">
-								<span>{{ t('inventory', 'Maker') }}</span>
-								<span v-show="sortOrder === 'maker'"
-									:class="sortOrderIcon('maker')"
-									class="sort-indicator" />
-							</a>
-						</div>
-					</th>
-					<th>
-						<div>
-							<a class="description sort columntitle" data-sort="description" @click="setSortOrder('description')">
-								<span>{{ t('inventory', 'Description') }}</span>
-								<span v-show="sortOrder === 'description'"
-									:class="sortOrderIcon('description')"
-									class="sort-indicator" />
-							</a>
-						</div>
-					</th>
-					<th class="hide-if-narrow">
-						<div>
-							<a class="tags sort columntitle" data-sort="tags">
-								<span>{{ t('inventory', 'Tags') }}</span>
-							</a>
-						</div>
-					</th>
-					<th>
-						<div>
-							<Actions v-if="showDropdown">
-								<ActionButton v-if="selectedItems.length"
-									icon="icon-delete"
-									:close-after-click="true"
-									@click="removeItems">
-									{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
-								</ActionButton>
-							</Actions>
-							<Actions v-show="unlink && selectedItems.length">
-								<ActionButton icon="icon-delete"
-									:close-after-click="true"
-									@click="$emit('unlink')">
-									{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
-								</ActionButton>
-							</Actions>
-						</div>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-if="!filteredEntities.length" class="no_items_header">
-					<td class="center" colspan="6">
-						<span v-if="loading" class="icon-loading" />
-						<span>{{ emptyListMessage }}</span>
-					</td>
-				</tr>
-				<component :is="entityType(item)"
-					v-for="item in sort(filteredEntities, sortOrder, sortDirection)"
-					v-else
-					:key="item.key"
-					:entity="item"
-					:is-selected="isSelected(item)"
-					:collection="collectionType"
-					:class="{ 'dragged': isDragged(item) }"
-					:select-entity="selectItem"
-					:uuid="_uid"
-					draggable="true"
-					class="entity"
-					@selectItem="selectItem"
-					@dragstart.native="dragStart(item, $event)"
-					@dragend.native="dragEnd"
-					@drop.native="dropped(item, $event)"
-					@dragover.native="dragOver"
-					@dragenter.native="($event) => dragEnter(item, $event)"
-					@dragleave.native="dragLeave" />
-				<tr v-if="searchString" class="search_header">
-					<td class="center" colspan="6" :class="{done: !searching}">
-						<span class="icon-loading" />
-						<span>{{ searchMessage }}</span>
-					</td>
-				</tr>
-				<component :is="entityType(item)"
-					v-for="item in sort(searchResults, sortOrder, sortDirection)"
-					:key="`${item.key}_search`"
-					:entity="item"
-					:is-selected="isSelected(item)"
-					:collection="collectionType"
-					:class="{ 'dragged': isDragged(item) }"
-					:select-entity="selectItem"
-					:uuid="_uid"
-					:show-actions="false" />
-			</tbody>
-		</table>
-		<div id="drag-preview">
-			<table>
-				<tr v-for="entity in draggedEntities" :key="entity.key">
-					<td>
-						<div class="thumbnail-wrapper">
+		<div class="itemstable" @dragover="dragOverTable">
+			<div class="row row--header">
+				<div :id="`headerSelection-${_uid}`" class="column column--selection">
+					<input :id="`select_all_items-${_uid}`"
+						:checked="allEntitiesSelected"
+						:indeterminate.prop="someEntitiesSelected"
+						class="select-all checkbox"
+						type="checkbox"
+						@change="selectEntities">
+					<label :for="`select_all_items-${_uid}`">
+						<span class="hidden-visually">
+							{{ t('inventory', 'Select all') }}
+						</span>
+					</label>
+				</div>
+				<div class="column column--name">
+					<div class="sort" data-sort="name" @click="setSortOrder('name')">
+						<span>{{ t('inventory', 'Name') }}</span>
+						<span v-show="sortOrder === 'name'"
+							:class="sortOrderIcon"
+							class="sort-indicator" />
+					</div>
+				</div>
+				<div class="column">
+					<div class="sort" data-sort="maker" @click="setSortOrder('maker')">
+						<span>{{ t('inventory', 'Maker') }}</span>
+						<span v-show="sortOrder === 'maker'"
+							:class="sortOrderIcon"
+							class="sort-indicator" />
+					</div>
+				</div>
+				<div class="column">
+					<div class="sort" data-sort="description" @click="setSortOrder('description')">
+						<span>{{ t('inventory', 'Description') }}</span>
+						<span v-show="sortOrder === 'description'"
+							:class="sortOrderIcon"
+							class="sort-indicator" />
+					</div>
+				</div>
+				<div class="column column--hide">
+					<div>
+						<span>{{ t('inventory', 'Tags') }}</span>
+					</div>
+				</div>
+				<div class="column column--actions">
+					<Actions v-if="showDropdown">
+						<ActionButton v-if="selectedItems.length"
+							icon="icon-delete"
+							:close-after-click="true"
+							@click="removeItems">
+							{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
+						</ActionButton>
+					</Actions>
+					<Actions v-show="unlink && selectedItems.length">
+						<ActionButton icon="icon-delete"
+							:close-after-click="true"
+							@click="$emit('unlink')">
+							{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
+						</ActionButton>
+					</Actions>
+				</div>
+			</div>
+			<div v-if="!filteredEntities.length" class="row row--empty">
+				<div class="column">
+					<span v-if="loading" class="icon-loading" />
+					<span>{{ emptyListMessage }}</span>
+				</div>
+			</div>
+			<component :is="entityType(item)"
+				v-for="item in sort(filteredEntities, sortOrder, sortDirection)"
+				:key="item.key"
+				:entity="item"
+				:is-selected="isSelected(item)"
+				:collection="collectionType"
+				:class="{ 'dragged': isDragged(item) }"
+				:select-entity="selectItem"
+				:uuid="_uid"
+				draggable="true"
+				class="entity"
+				@selectItem="selectItem"
+				@dragstart.native="dragStart(item, $event)"
+				@dragend.native="dragEnd"
+				@drop.native="dropped(item, $event)"
+				@dragover.native="dragOver"
+				@dragenter.native="($event) => dragEnter(item, $event)"
+				@dragleave.native="dragLeave" />
+			<div v-if="searchString" class="row row--search">
+				<div class="column" :class="{'column__left': !searching}">
+					<span v-if="searching" class="icon-loading" />
+					<span>{{ searchMessage }}</span>
+				</div>
+			</div>
+			<component :is="entityType(item)"
+				v-for="item in sort(searchResults, sortOrder, sortDirection)"
+				:key="`${item.key}_search`"
+				:entity="item"
+				:is-selected="isSelected(item)"
+				:collection="collectionType"
+				:class="{ 'dragged': isDragged(item) }"
+				:select-entity="selectItem"
+				:uuid="_uid"
+				:show-actions="false" />
+		</div>
+		<div id="drag-preview" class="itemstable itemstable--drag-preview">
+			<div v-for="entity in draggedEntities" :key="entity.key" class="row">
+				<div class="column">
+					<a href="" @click.ctrl.prevent>
+						<div class="thumbnail">
 							<div v-if="entityType(entity) === 'Collection'"
 								:style="{ backgroundImage: `url(${generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})` }"
-								class="thumbnail folder" />
-							<div v-else :style="{ backgroundImage: `url(${getIconUrl(entity)})` }" class="thumbnail default" />
+								class="thumbnail__image folder" />
+							<div v-else
+								:style="{ backgroundImage: `url(${getIconUrl(entity)})` }"
+								class="thumbnail__image"
+								:class="{'thumbnail__image--default': !entity.images.length}" />
 						</div>
-						<span>{{ entity.name }}</span>
-					</td>
-				</tr>
-			</table>
+						<div class="text">
+							<span>{{ entity.name }}</span>
+						</div>
+					</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -186,7 +176,6 @@ export default {
 		collections: {
 			type: Array,
 			default: () => [],
-			required: false,
 		},
 		collectionType: {
 			type: String,
@@ -200,7 +189,6 @@ export default {
 		loading: {
 			type: Boolean,
 			default: false,
-			required: false,
 		},
 		showDropdown: {
 			type: Boolean,
@@ -378,6 +366,9 @@ export default {
 				this.$store.dispatch('setSetting', { type: 'sortDirection', value: +direction })
 			},
 		},
+		sortOrderIcon() {
+			return `icon-triangle-${this.sortDirection ? 's' : 'n'}`
+		},
 	},
 	watch: {
 		items: 'checkSelected',
@@ -500,13 +491,6 @@ export default {
 			this.sortDirection = (this.sortOrder === order) ? !this.sortDirection : false
 			this.sortOrder = order
 		},
-		sortOrderIcon(order) {
-			if (order === this.sortOrder) {
-				return this.sortDirection ? 'icon-triangle-s' : 'icon-triangle-n'
-			} else {
-				return 'icon-triangle-n'
-			}
-		},
 
 		/**
 		 * Drag and drop handlers
@@ -584,7 +568,7 @@ export default {
 			}
 			// Get the correct element, in case we hover a child.
 			if (e.target.closest) {
-				const target = e.target.closest('tr.entity')
+				const target = e.target.closest('.entity')
 				if (target.classList && target.classList.contains('entity')) {
 					const collections = document.querySelectorAll('.over')
 					collections.forEach((f) => { f.classList.remove('over') })
@@ -599,7 +583,7 @@ export default {
 			}
 			// Get the correct element, in case we leave directly from a child.
 			if (e.target.closest) {
-				const target = e.target.closest('tr.entity')
+				const target = e.target.closest('.entity')
 				if (target.contains(e.relatedTarget)) {
 					return
 				}

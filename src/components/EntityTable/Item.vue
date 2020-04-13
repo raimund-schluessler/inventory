@@ -20,10 +20,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<tr :class="{ selected: isSelected }"
-		class="handler"
+	<div :class="{ 'row--selected': isSelected }"
+		class="row handler"
 		@click.ctrl="selectEntity(entity)">
-		<td class="selection">
+		<div class="column column--selection">
 			<input v-if="showActions"
 				:id="`select-item-${entity.id}-${uuid}`"
 				:value="entity.id"
@@ -35,46 +35,52 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ t('inventory', 'Select') }}
 				</span>
 			</label>
-		</td>
-		<td>
-			<a :href="itemRoute" @click.ctrl.prevent>
-				<div class="thumbnail-wrapper">
-					<div :style="{ backgroundImage: `url(${getIconUrl})` }" class="thumbnail" :class="{default: !entity.images.length}" />
+		</div>
+		<div class="column">
+			<RouterLink :to="itemRoute"
+				tag="a"
+				@click.ctrl.prevent>
+				<div class="thumbnail">
+					<div :style="{ backgroundImage: `url(${getIconUrl})` }" class="thumbnail__image" :class="{'thumbnail__image--default': !entity.images.length}" />
 				</div>
-				<div class="text">
+				<div class="text" :class="{'text--singleline': showInstance}">
 					<span>{{ entity.name }}</span>
 					<span v-if="showInstance" class="details">{{ entity.instances[0].date }}</span>
 				</div>
-			</a>
-		</td>
-		<td>
-			<a :href="itemRoute" @click.ctrl.prevent>
-				<div class="text">
+			</RouterLink>
+		</div>
+		<div class="column">
+			<RouterLink :to="itemRoute"
+				tag="a"
+				@click.ctrl.prevent>
+				<div class="text" :class="{'text--singleline': showInstance}">
 					<span>{{ entity.maker }}</span>
 					<span v-if="showInstance" class="details">{{ entity.instances[0].vendor }}</span>
 				</div>
-			</a>
-		</td>
-		<td>
-			<a :href="itemRoute" @click.ctrl.prevent>
-				<div class="text">
+			</RouterLink>
+		</div>
+		<div class="column">
+			<RouterLink :to="itemRoute"
+				tag="a"
+				@click.ctrl.prevent>
+				<div class="text" :class="{'text--singleline': showInstance}">
 					<span>{{ entity.description }}</span>
 					<span v-if="showInstance" class="details">{{ t('inventory', '{available} of {count}',
 						{ available: entity.instances[0].available, count: entity.instances[0].count }) }}</span>
 				</div>
-			</a>
-		</td>
-		<td class="hide-if-narrow">
+			</RouterLink>
+		</div>
+		<div class="column column--hide">
 			<ul class="tags">
 				<li v-for="tag in entity.tags" :key="tag.id">
 					<span>{{ tag.name }}</span>
 				</li>
 			</ul>
-		</td>
-		<td>
+		</div>
+		<div class="column">
 			<ItemStatusDisplay :item="entity" />
-		</td>
-	</tr>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -140,9 +146,9 @@ export default {
 			let basePath
 			const instance = (this.entity.isInstance && this.entity.instances.length > 0) ? this.entity.instances[0] : null
 			if (instance) {
-				basePath = `#/places/${(instance.place.path) ? instance.place.path + '/' : ''}`
+				basePath = `/places/${(instance.place.path) ? instance.place.path + '/' : ''}`
 			} else {
-				basePath = `#/folders/${(this.entity.path) ? this.entity.path + '/' : ''}`
+				basePath = `/folders/${(this.entity.path) ? this.entity.path + '/' : ''}`
 			}
 			return `${basePath}item-${this.entity.id + (instance ? '/instance-' + instance.id : '')}`
 		},
