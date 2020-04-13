@@ -1,15 +1,15 @@
 import { mount, shallowMount } from '@vue/test-utils'
-import ItemsTable from 'Components/ItemsTable.vue'
+import EntityTable from 'Components/EntityTable/EntityTable.vue'
 
-import { store, localVue } from '../setupStore'
+import { store, localVue } from '../../setupStore'
 
 const items = store.getters.getAllItems
 
-describe('ItemsTable.vue', () => {
+describe('EntityTable.vue', () => {
 	'use strict'
 
 	it('returns all items when search is empty', () => {
-		const wrapper = shallowMount(ItemsTable, {
+		const wrapper = shallowMount(EntityTable, {
 			localVue,
 			store,
 			propsData: {
@@ -23,7 +23,7 @@ describe('ItemsTable.vue', () => {
 	})
 
 	it('finds items when searching with text in tags "Cat1"', () => {
-		const wrapper = shallowMount(ItemsTable, {
+		const wrapper = shallowMount(EntityTable, {
 			localVue,
 			store,
 			propsData: {
@@ -37,7 +37,7 @@ describe('ItemsTable.vue', () => {
 	})
 
 	it('returns filtered items when search is "Maker1"', () => {
-		const wrapper = shallowMount(ItemsTable, {
+		const wrapper = shallowMount(EntityTable, {
 			localVue,
 			store,
 			propsData: {
@@ -51,7 +51,7 @@ describe('ItemsTable.vue', () => {
 	})
 
 	it('searches in tags "tags:Cat1"', () => {
-		const wrapper = shallowMount(ItemsTable, {
+		const wrapper = shallowMount(EntityTable, {
 			localVue,
 			store,
 			propsData: {
@@ -65,7 +65,7 @@ describe('ItemsTable.vue', () => {
 	})
 
 	it('searches only in given keywords "comment:Maker1"', () => {
-		const wrapper = shallowMount(ItemsTable, {
+		const wrapper = shallowMount(EntityTable, {
 			localVue,
 			store,
 			propsData: {
@@ -79,7 +79,7 @@ describe('ItemsTable.vue', () => {
 	})
 
 	it('handles if item has no entry with given keyword "itemNumber:42"', () => {
-		const wrapper = shallowMount(ItemsTable, {
+		const wrapper = shallowMount(EntityTable, {
 			localVue,
 			store,
 			propsData: {
@@ -93,7 +93,7 @@ describe('ItemsTable.vue', () => {
 	})
 
 	it('does not fail when no items are passed', () => {
-		const wrapper = shallowMount(ItemsTable, {
+		const wrapper = shallowMount(EntityTable, {
 			localVue,
 			store,
 			propsData: {
@@ -106,7 +106,7 @@ describe('ItemsTable.vue', () => {
 	})
 
 	it('selects item when clicked', () => {
-		const wrapper = mount(ItemsTable, {
+		const wrapper = mount(EntityTable, {
 			localVue,
 			store,
 			propsData: {
@@ -125,7 +125,7 @@ describe('ItemsTable.vue', () => {
 	})
 
 	it('selects all items on checkbox click and unselects on second click', () => {
-		const wrapper = shallowMount(ItemsTable, {
+		const wrapper = shallowMount(EntityTable, {
 			localVue,
 			store,
 			propsData: {
@@ -147,7 +147,7 @@ describe('ItemsTable.vue', () => {
 	})
 
 	it('selects item when clicked on label', () => {
-		const wrapper = mount(ItemsTable, {
+		const wrapper = mount(EntityTable, {
 			localVue,
 			store,
 			propsData: {
