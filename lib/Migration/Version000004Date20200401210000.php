@@ -42,7 +42,7 @@ class Version000004Date20200401210000 extends SimpleMigrationStep {
 		if ($schema->hasTable('invtry_places')) {
 			$table = $schema->getTable('invtry_places');
 			
-			if(!$table->hasColumn('path')) {
+			if (!$table->hasColumn('path')) {
 				$table->addColumn('path', Type::STRING, [
 					'notnull' => false,
 					'length' => 4000,
@@ -77,7 +77,7 @@ class Version000004Date20200401210000 extends SimpleMigrationStep {
 			// Construct the full path
 			$path = $place['name'];
 			$parent = $place;
-			while($parent = $this->getPlaceById($parent['parentid'])) {
+			while ($parent = $this->getPlaceById($parent['parentid'])) {
 				$path = $parent['name'].'/'.$path;
 			}
 			// Update the place with the full path

@@ -24,7 +24,6 @@
 namespace OCA\Inventory;
 
 class NotFoundException extends StatusException {
-
 	public function __construct($message = '') {
 		parent::__construct($message);
 	}

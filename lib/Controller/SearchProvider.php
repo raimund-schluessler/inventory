@@ -28,7 +28,6 @@ use OCA\Inventory\AppInfo\Application;
  * Inventory search provider
  */
 class SearchProvider extends \OCP\Search\Provider {
-
 	private $itemsService;
 
 	public function __construct() {

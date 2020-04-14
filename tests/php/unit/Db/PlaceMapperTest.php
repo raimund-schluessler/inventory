@@ -32,7 +32,7 @@ use Test\AppFramework\Db\MapperTestUtility;
 /**
  * @group DB
  */
-class PlaceMapperTest extends MapperTestUtility  {
+class PlaceMapperTest extends MapperTestUtility {
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -135,5 +135,4 @@ class PlaceMapperTest extends MapperTestUtility  {
 			$this->placeMapper->delete($place);
 		}
 	}
-
 }

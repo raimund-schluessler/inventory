@@ -31,7 +31,7 @@ use Test\AppFramework\Db\MapperTestUtility;
 /**
  * @group DB
  */
-class AttachmentMapperTest extends MapperTestUtility  {
+class AttachmentMapperTest extends MapperTestUtility {
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -129,5 +129,4 @@ class AttachmentMapperTest extends MapperTestUtility  {
 			$this->attachmentMapper->delete($attachment);
 		}
 	}
-
 }

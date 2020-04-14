@@ -28,7 +28,6 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\AppFramework\Db\DoesNotExistException;
 
 class CategoryMapper extends QBMapper {
-
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_categories');
 	}

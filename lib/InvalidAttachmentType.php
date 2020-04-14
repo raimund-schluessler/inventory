@@ -29,8 +29,6 @@ class InvalidAttachmentType extends \Exception {
 	 * InvalidAttachmentType constructor.
 	 */
 	public function __construct($type) {
-
 		parent::__construct('No matching AttachmentService implementation found for type ' . $type);
-
 	}
 }

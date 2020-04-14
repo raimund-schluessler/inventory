@@ -27,7 +27,6 @@ use OCP\IRequest;
 use OCA\Inventory\Service\ItemsService;
 
 class ItemsController extends Controller {
-
 	private $itemsService;
 	public $appName;
 

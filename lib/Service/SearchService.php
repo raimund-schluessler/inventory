@@ -23,7 +23,6 @@
 namespace OCA\Inventory\Service;
 
 class SearchService {
-
 	private $userId;
 	private $AppName;
 	private $itemsService;

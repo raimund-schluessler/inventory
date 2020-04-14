@@ -30,7 +30,6 @@ use OCP\AppFramework\Controller;
 use OCP\IRequest;
 
 class AttachmentController extends Controller {
-
 	private $attachmentService;
 
 	/**

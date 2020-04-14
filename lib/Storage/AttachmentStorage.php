@@ -42,7 +42,6 @@ use OCP\IL10N;
 use OCP\IConfig;
 
 class AttachmentStorage {
-
 	private $userId;
 	private $appData;
 	private $rootFolder;
@@ -198,7 +197,7 @@ class AttachmentStorage {
 			$imageFolder = $this->getImageFolder($itemID);
 			$folderContent = $imageFolder->getDirectoryListing();
 			$images = [];
-			foreach($folderContent as $node) {
+			foreach ($folderContent as $node) {
 				$nodeInfo = $node->getFileInfo();
 				// We only want to list files, not folders.
 				if ($nodeInfo->getType() !== \OCP\Files\FileInfo::TYPE_FILE) {
@@ -274,7 +273,7 @@ class AttachmentStorage {
 			return $files;
 		}
 		$folderContent = $folder->getDirectoryListing();
-		foreach($folderContent as $node) {
+		foreach ($folderContent as $node) {
 			// We only want to list files, not folders.
 			if ($node->getFileInfo()->getType() !== \OCP\Files\FileInfo::TYPE_FILE) {
 				continue;

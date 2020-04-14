@@ -28,7 +28,6 @@ namespace OCA\Inventory\Db;
 use OCP\AppFramework\Db\Entity;
 
 class Attachment extends Entity {
-
 	public $itemid;
 	public $instanceid = null;
 	public $basename;
@@ -42,5 +41,4 @@ class Attachment extends Entity {
 		$this->addType('itemid', 'integer');
 		$this->addType('instanceid', 'integer');
 	}
-
 }

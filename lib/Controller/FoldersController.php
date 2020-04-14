@@ -27,7 +27,6 @@ use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 
 class FoldersController extends Controller {
-
 	private $foldersService;
 
 	/**

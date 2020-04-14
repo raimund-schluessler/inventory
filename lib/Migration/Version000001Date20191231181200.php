@@ -58,14 +58,14 @@ class Version000001Date20191231181200 extends SimpleMigrationStep {
 		if ($schema->hasTable('invtry_items')) {
 			$table = $schema->getTable('invtry_items');
 			
-			if(!$table->hasColumn('folderid')) {
+			if (!$table->hasColumn('folderid')) {
 				$table->addColumn('folderid', Type::BIGINT, [
 					'notnull' => true,
 					'length' => 8,
 					'default' => '-1',
 				]);
 			}
-			if(!$table->hasColumn('path')) {
+			if (!$table->hasColumn('path')) {
 				$table->addColumn('path', Type::STRING, [
 					'notnull' => true,
 					'length' => 4000,

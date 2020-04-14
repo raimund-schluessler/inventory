@@ -31,7 +31,7 @@ use Test\AppFramework\Db\MapperTestUtility;
 /**
  * @group DB
  */
-class CategoryMapperTest extends MapperTestUtility  {
+class CategoryMapperTest extends MapperTestUtility {
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -121,5 +121,4 @@ class CategoryMapperTest extends MapperTestUtility  {
 			$this->categoryMapper->delete($category);
 		}
 	}
-
 }

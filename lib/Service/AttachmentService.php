@@ -37,7 +37,6 @@ use OCP\AppFramework\Http\Response;
 use OCP\IConfig;
 
 class AttachmentService {
-
 	private $userId;
 	private $attachmentMapper;
 	private $attachmentStorage;
@@ -70,7 +69,6 @@ class AttachmentService {
 	 * @return Attachment[]
 	 */
 	public function getAll($itemID, $instanceID = null) {
-
 		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
@@ -83,7 +81,7 @@ class AttachmentService {
 		$this->scanItemFolder($itemID, $instanceID);
 		// Get attachments from the database
 		$attachments = $this->attachmentMapper->findAll($this->userId, $itemID, $instanceID);
-		foreach($attachments as $key => &$attachment) {
+		foreach ($attachments as $key => &$attachment) {
 			try {
 				$this->attachmentStorage->extendAttachment($attachment);
 			} catch (\OCP\Files\NotFoundException $e) {
@@ -134,7 +132,6 @@ class AttachmentService {
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
 	 */
 	public function display($itemID, $attachmentID, $instanceID = null) {
-
 		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
@@ -167,7 +164,6 @@ class AttachmentService {
 	 * @throws BadRequestException
 	 */
 	public function create($itemID, $data, int $instanceID = null) {
-
 		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number');
 		}
@@ -215,7 +211,6 @@ class AttachmentService {
 	 * @throws BadRequestException
 	 */
 	public function update($itemID, $attachmentID, $data, int $instanceID = null) {
-
 		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number');
 		}
@@ -255,7 +250,6 @@ class AttachmentService {
 	 * @throws BadRequestException
 	 */
 	public function link(int $itemID, string $attachmentPath, int $instanceID = null) {
-
 		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number');
 		}
@@ -304,7 +298,6 @@ class AttachmentService {
 	 * @throws BadRequestException
 	 */
 	public function unlink(int $itemID, int $attachmentID, int $instanceID = null, bool $delete = false) {
-
 		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number');
 		}
@@ -348,7 +341,6 @@ class AttachmentService {
 	 * @throws BadRequestException
 	 */
 	public function uploadImage($itemID, $data) {
-
 		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number');
 		}

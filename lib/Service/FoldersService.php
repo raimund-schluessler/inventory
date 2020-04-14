@@ -30,7 +30,6 @@ use OCA\Inventory\BadRequestException;
 use OCP\AppFramework\Db\DoesNotExistException;
 
 class FoldersService {
-
 	private $userId;
 	private $settings;
 	private $AppName;
@@ -163,7 +162,6 @@ class FoldersService {
 	 * @throws BadRequestException
 	 */
 	public function delete($folderId) {
-
 		if (is_numeric($folderId) === false) {
 			throw new BadRequestException('Folder id must be a number.');
 		}
@@ -201,7 +199,6 @@ class FoldersService {
 	 * @throws BadRequestException
 	 */
 	public function move($folderId, $newPath) {
-
 		if (is_numeric($folderId) === false) {
 			throw new BadRequestException('Folder id must be a number.');
 		}

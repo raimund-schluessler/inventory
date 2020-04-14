@@ -32,7 +32,6 @@ use OCA\Inventory\BadRequestException;
 use OCP\AppFramework\Db\DoesNotExistException;
 
 class PlacesService {
-
 	private $userId;
 	private $settings;
 	private $AppName;
@@ -186,7 +185,6 @@ class PlacesService {
 	 * @throws BadRequestException
 	 */
 	public function delete($placeId) {
-
 		if (is_numeric($placeId) === false) {
 			throw new BadRequestException('Place id must be a number.');
 		}
@@ -233,7 +231,6 @@ class PlacesService {
 	 * @throws BadRequestException
 	 */
 	public function move($placeId, $newPath) {
-
 		if (is_numeric($placeId) === false) {
 			throw new BadRequestException('Place id must be a number.');
 		}
