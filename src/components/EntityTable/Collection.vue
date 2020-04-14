@@ -77,6 +77,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import focus from '../../directives/focus'
 
+import { showError } from '@nextcloud/dialogs'
 import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
@@ -211,9 +212,9 @@ export default {
 					}
 				} catch (error) {
 					if (this.collection === 'folders') {
-						this.$toast.error(this.$t('inventory', 'An error occurred, unable to delete the folder.'))
+						showError(this.$t('inventory', 'An error occurred, unable to delete the folder.'))
 					} else if (this.collection === 'places') {
-						this.$toast.error(this.$t('inventory', 'An error occurred, unable to delete the place.'))
+						showError(this.$t('inventory', 'An error occurred, unable to delete the place.'))
 					}
 					console.error(error)
 				} finally {

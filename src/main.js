@@ -55,7 +55,6 @@ Vue.prototype.t = t
 Vue.prototype.n = n
 Vue.prototype.OC = OC
 Vue.prototype.OCA = OCA
-Vue.prototype.$toast = OCP.Toast // eslint-disable-line no-undef
 
 OCA.Inventory.App = new Vue({
 	el: '.app-inventory',
