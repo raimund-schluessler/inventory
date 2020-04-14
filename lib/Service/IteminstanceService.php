@@ -30,7 +30,6 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IL10N;
 
 class IteminstanceService {
-
 	private $userId;
 	private $AppName;
 
@@ -77,7 +76,6 @@ class IteminstanceService {
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
 	public function add($instance) {
-
 		if ($instance['count'] && is_numeric($instance['count']) === false) {
 			throw new BadRequestException('Count must be a number.');
 		}
@@ -87,11 +85,11 @@ class IteminstanceService {
 		}
 
 		if ($instance['available'] === '') {
-			$instance['available'] = NULL;
+			$instance['available'] = null;
 		}
 
 		if ($instance['count'] === '') {
-			$instance['count'] = NULL;
+			$instance['count'] = null;
 		}
 
 		$instance['uid'] = $this->userId;
@@ -167,7 +165,7 @@ class IteminstanceService {
 	 * @param $instance	The instance
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
-	function getInstanceDetails($instance) {
+	private function getInstanceDetails($instance) {
 		if (!$instance->placeid) {
 			$instance->place = null;
 		} elseif ($instance->placeid === -1) {
@@ -200,7 +198,7 @@ class IteminstanceService {
 	public function deleteAllInstancesOfItem($itemId) {
 		$instances = $this->iteminstanceMapper->findByItemID($itemId, $this->userId);
 		// Delete all UUIDs belonging to the instances
-		foreach($instances as $instance) {
+		foreach ($instances as $instance) {
 			$uuids = $this->iteminstanceUuidMapper->findByInstanceId($instance->id, $this->userId);
 			foreach ($uuids as $uuid) {
 				$this->iteminstanceUuidMapper->delete($uuid);
@@ -213,13 +211,12 @@ class IteminstanceService {
 	 * Adds an UUID to an item instance
 	 */
 	public function addUuid($itemID, $instanceID, $uuid) {
-
 		if ($this->isValidUuid($uuid) === false) {
 			throw new BadRequestException('The given UUID is invalid.');
 		}
 
 		
-		if($this->iteminstanceUuidMapper->find($instanceID, $uuid, $this->userId)) {
+		if ($this->iteminstanceUuidMapper->find($instanceID, $uuid, $this->userId)) {
 			throw new BadRequestException('The given UUID is already set for this instance.');
 		}
 
@@ -248,7 +245,7 @@ class IteminstanceService {
 	 * @param	string	$uuid	The string to check
 	 * @return	boolean
 	 */
-	function isValidUuid($uuid) {
+	private function isValidUuid($uuid) {
 		if (!is_string($uuid) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $uuid) !== 1)) {
 			return false;
 		}

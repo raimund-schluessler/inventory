@@ -25,7 +25,6 @@ namespace OCA\Inventory\Db;
 use OCP\AppFramework\Db\Entity;
 
 class ItemRelation extends Entity {
-
 	public $id;
 	public $itemid1;
 	public $itemid2;

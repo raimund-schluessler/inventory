@@ -26,8 +26,6 @@ use \OCP\AppFramework\App;
 use OCA\Inventory\Middleware\ExceptionMiddleware;
 
 class Application extends App {
-
-
 	public function __construct(array $urlParams=[]) {
 		parent::__construct('inventory', $urlParams);
 
@@ -47,7 +45,7 @@ class Application extends App {
 		 * Add worker-src blob to content security policy, so that
 		 * https://github.com/gruhn/vue-qrcode-reader works correctly.
 		 */
-		if(class_exists('\\OCP\\AppFramework\\Http\\EmptyContentSecurityPolicy')) {
+		if (class_exists('\\OCP\\AppFramework\\Http\\EmptyContentSecurityPolicy')) {
 			$manager = \OC::$server->getContentSecurityPolicyManager();
 
 			$policy = new \OCP\AppFramework\Http\EmptyContentSecurityPolicy();

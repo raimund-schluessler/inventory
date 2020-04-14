@@ -32,7 +32,7 @@ use Test\AppFramework\Db\MapperTestUtility;
 /**
  * @group DB
  */
-class ItemtypeMapperTest extends MapperTestUtility  {
+class ItemtypeMapperTest extends MapperTestUtility {
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -122,5 +122,4 @@ class ItemtypeMapperTest extends MapperTestUtility  {
 			$this->itemtypeMapper->delete($itemtype);
 		}
 	}
-
 }

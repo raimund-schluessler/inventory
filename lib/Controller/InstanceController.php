@@ -27,7 +27,6 @@ use OCP\IRequest;
 use OCA\Inventory\Service\IteminstanceService;
 
 class InstanceController extends Controller {
-
 	private $iteminstanceService;
 	public $appName;
 

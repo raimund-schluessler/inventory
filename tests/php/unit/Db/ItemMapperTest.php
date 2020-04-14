@@ -31,7 +31,7 @@ use Test\AppFramework\Db\MapperTestUtility;
 /**
  * @group DB
  */
-class ItemMapperTest extends MapperTestUtility  {
+class ItemMapperTest extends MapperTestUtility {
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -110,7 +110,6 @@ class ItemMapperTest extends MapperTestUtility  {
 		$this->assertEquals(array_slice($this->items, 0, 1), $this->itemMapper->findByFolderId($uid, 1));
 		$this->assertEquals(array_slice($this->items, 1, 2), $this->itemMapper->findByFolderId($uid, 2));
 		$this->assertEquals([], $this->itemMapper->findByFolderId($uid, 4));
-
 	}
 
 	public function testFindItemsByIds() {
@@ -182,5 +181,4 @@ class ItemMapperTest extends MapperTestUtility  {
 			$this->itemMapper->delete($item);
 		}
 	}
-
 }

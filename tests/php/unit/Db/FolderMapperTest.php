@@ -32,7 +32,7 @@ use Test\AppFramework\Db\MapperTestUtility;
 /**
  * @group DB
  */
-class FolderMapperTest extends MapperTestUtility  {
+class FolderMapperTest extends MapperTestUtility {
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -143,5 +143,4 @@ class FolderMapperTest extends MapperTestUtility  {
 			$this->folderMapper->delete($folder);
 		}
 	}
-
 }

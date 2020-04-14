@@ -76,5 +76,4 @@ class ExceptionMiddleware extends Middleware {
 
 		throw $exception;
 	}
-
 }

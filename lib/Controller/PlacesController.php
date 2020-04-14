@@ -27,7 +27,6 @@ use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 
 class PlacesController extends Controller {
-
 	private $placesService;
 
 	/**

@@ -25,7 +25,6 @@ namespace OCA\Inventory\Db;
 use OCP\AppFramework\Db\Entity;
 
 class Itemparent extends Entity {
-
 	public $id;
 	public $itemid;
 	public $parentid;

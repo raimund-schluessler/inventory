@@ -32,7 +32,7 @@ use Test\AppFramework\Db\MapperTestUtility;
 /**
  * @group DB
  */
-class ItemparentMapperTest extends MapperTestUtility  {
+class ItemparentMapperTest extends MapperTestUtility {
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -139,5 +139,4 @@ class ItemparentMapperTest extends MapperTestUtility  {
 		parent::tearDown();
 		$this->itemparentMapper->deleteRelations($this->itemparents);
 	}
-
 }

@@ -27,7 +27,6 @@ use OCP\IRequest;
 use OCA\Inventory\Service\SearchService;
 
 class SearchController extends Controller {
-
 	private $searchService;
 	public $appName;
 

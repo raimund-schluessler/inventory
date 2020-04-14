@@ -26,7 +26,6 @@ namespace OCA\Inventory\Exceptions;
 use OCA\Inventory\StatusException;
 
 class ConflictException extends StatusException {
-
 	private $data;
 
 	public function __construct($message, $data = null) {

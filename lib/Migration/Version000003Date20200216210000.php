@@ -33,19 +33,19 @@ class Version000003Date20200216210000 extends SimpleMigrationStep {
 		if ($schema->hasTable('invtry_items')) {
 			$table = $schema->getTable('invtry_items');
 			
-			if($table->hasColumn('description')) {
+			if ($table->hasColumn('description')) {
 				$table->changeColumn('description', [
 					'type' => Type::getType(Type::TEXT),
 					'length' => 65000
 				]);
 			}
-			if($table->hasColumn('details')) {
+			if ($table->hasColumn('details')) {
 				$table->changeColumn('details', [
 					'type' => Type::getType(Type::TEXT),
 					'length' => 65000
 				]);
 			}
-			if($table->hasColumn('comment')) {
+			if ($table->hasColumn('comment')) {
 				$table->changeColumn('comment', [
 					'type' => Type::getType(Type::TEXT),
 					'length' => 65000
@@ -56,7 +56,7 @@ class Version000003Date20200216210000 extends SimpleMigrationStep {
 		if ($schema->hasTable('invtry_item_instances')) {
 			$table = $schema->getTable('invtry_item_instances');
 			
-			if($table->hasColumn('comment')) {
+			if ($table->hasColumn('comment')) {
 				$table->changeColumn('comment', [
 					'type' => Type::getType(Type::TEXT),
 					'length' => 65000

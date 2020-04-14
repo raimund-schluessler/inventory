@@ -32,7 +32,7 @@ use Test\AppFramework\Db\MapperTestUtility;
 /**
  * @group DB
  */
-class ItemrelationMapperTest extends MapperTestUtility  {
+class ItemrelationMapperTest extends MapperTestUtility {
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -107,7 +107,7 @@ class ItemrelationMapperTest extends MapperTestUtility  {
 		$uid = 'unit_tester_1';
 		$relations = array_slice($this->itemrelations, 0, 3);
 		$relatedIDs  = [];
-		foreach($relations as $relation) {
+		foreach ($relations as $relation) {
 			$relatedIDs[] = ($relation->getItemid1() === $itemId) ? $relation->getItemid2() : $relation->getItemid1();
 		}
 		$this->assertEquals($relatedIDs, $this->itemrelationMapper->findRelatedIDs($itemId, $uid));
@@ -138,5 +138,4 @@ class ItemrelationMapperTest extends MapperTestUtility  {
 		parent::tearDown();
 		$this->itemrelationMapper->deleteRelations($this->itemrelations);
 	}
-
 }

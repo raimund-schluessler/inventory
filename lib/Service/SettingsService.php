@@ -25,7 +25,6 @@ namespace OCA\Inventory\Service;
 use OCP\IConfig;
 
 class SettingsService {
-
 	private $userId;
 	private $settings;
 	private $AppName;

@@ -38,7 +38,6 @@ use OCP\IL10N;
 use OCP\AppFramework\Db\DoesNotExistException;
 
 class ItemsService {
-
 	private $userId;
 	private $AppName;
 
@@ -159,7 +158,6 @@ class ItemsService {
 	 * @return array
 	 */
 	public function getCandidates($itemID, $relationType) {
-
 		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
@@ -193,7 +191,6 @@ class ItemsService {
 	 * @throws BadRequestException
 	 */
 	public function get($itemID) {
-
 		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
@@ -208,7 +205,6 @@ class ItemsService {
 	 * @return array
 	 */
 	public function getSub($itemID) {
-
 		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
@@ -229,7 +225,6 @@ class ItemsService {
 	 * @return array
 	 */
 	public function getParent($itemID) {
-
 		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
@@ -250,7 +245,6 @@ class ItemsService {
 	 * @return array
 	 */
 	public function getRelated($itemID) {
-
 		if (is_numeric($itemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
@@ -312,7 +306,6 @@ class ItemsService {
 	 * @return array
 	 */
 	public function delete($itemId) {
-
 		if (is_numeric($itemId) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
@@ -357,7 +350,6 @@ class ItemsService {
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
 	public function edit($itemId, $item) {
-
 		if (is_numeric($itemId) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
@@ -413,7 +405,9 @@ class ItemsService {
 		// Find items which contain this string directly
 		$items = $this->itemMapper->findByString($this->userId, $searchString);
 
-		$itemIds = array_map(function ($item) {return $item->id;}, $items);
+		$itemIds = array_map(function ($item) {
+			return $item->id;
+		}, $items);
 		// Find instances and corresponding items
 		$instances = $this->iteminstanceService->findByString($searchString);
 		foreach ($instances as $instance) {
@@ -436,7 +430,7 @@ class ItemsService {
 	 * @param $item	The item
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
-	function getItemDetails($item, $getInstances = true) {
+	private function getItemDetails($item, $getInstances = true) {
 		$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
 		$categoriesNames = [];
 		foreach ($categories as $category) {
@@ -472,7 +466,6 @@ class ItemsService {
 	 * @return array
 	 */
 	public function link($mainItemID, $itemIDs, $relationType) {
-
 		if (is_numeric($mainItemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
@@ -490,7 +483,6 @@ class ItemsService {
 				try {
 					$this->itemParentMapper->add($map);
 				} catch (\Exception $e) {
-
 				}
 			}
 		} elseif ($relationType === 'sub') {
@@ -506,7 +498,6 @@ class ItemsService {
 				try {
 					$this->itemParentMapper->add($map);
 				} catch (\Exception $e) {
-
 				}
 			}
 		} elseif ($relationType === 'related') {
@@ -530,7 +521,6 @@ class ItemsService {
 				try {
 					$this->itemRelationMapper->add($map);
 				} catch (\Exception $e) {
-
 				}
 			}
 		}
@@ -542,7 +532,6 @@ class ItemsService {
 	 * @return array
 	 */
 	public function unlink($mainItemID, $itemIDs, $relationType) {
-
 		if (is_numeric($mainItemID) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
@@ -556,7 +545,6 @@ class ItemsService {
 					$relation = $this->itemParentMapper->findRelation($mainItemID, $itemID, $this->userId);
 					$this->itemParentMapper->delete($relation);
 				} catch (\Exception $e) {
-
 				}
 			}
 		} elseif ($relationType === 'sub') {
@@ -568,7 +556,6 @@ class ItemsService {
 					$relation = $this->itemParentMapper->findRelation($itemID, $mainItemID, $this->userId);
 					$this->itemParentMapper->delete($relation);
 				} catch (\Exception $e) {
-
 				}
 			}
 		} elseif ($relationType === 'related') {
@@ -588,7 +575,6 @@ class ItemsService {
 					$relation = $this->itemRelationMapper->findExactRelation($itemID1, $itemID2, $this->userId);
 					$this->itemRelationMapper->delete($relation);
 				} catch (\Exception $e) {
-
 				}
 			}
 		}
@@ -605,7 +591,6 @@ class ItemsService {
 	 * @throws BadRequestException
 	 */
 	public function move($itemId, $newPath) {
-
 		if (is_numeric($itemId) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}
@@ -634,7 +619,6 @@ class ItemsService {
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
 	public function moveInstance($itemId, $instanceId, $newPath) {
-
 		if (is_numeric($itemId) === false) {
 			throw new BadRequestException('Item id must be a number.');
 		}

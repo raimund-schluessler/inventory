@@ -28,7 +28,6 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\AppFramework\Db\DoesNotExistException;
 
 class AttachmentMapper extends QBMapper {
-
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_attachments');
 	}
@@ -46,15 +45,15 @@ class AttachmentMapper extends QBMapper {
 			->andWhere(
 				$qb->expr()->eq('created_by', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			);
-			if ($instanceID === null) {
-				$qb->andWhere(
-					$qb->expr()->isNull('instanceid')
-				);
-			} else {
-				$qb->andWhere(
-					$qb->expr()->eq('instanceid', $qb->createNamedParameter($instanceID, IQueryBuilder::PARAM_INT))
-				);
-			}
+		if ($instanceID === null) {
+			$qb->andWhere(
+				$qb->expr()->isNull('instanceid')
+			);
+		} else {
+			$qb->andWhere(
+				$qb->expr()->eq('instanceid', $qb->createNamedParameter($instanceID, IQueryBuilder::PARAM_INT))
+			);
+		}
 		return $this->findEntities($qb);
 	}
 
@@ -73,15 +72,15 @@ class AttachmentMapper extends QBMapper {
 			->andWhere(
 				$qb->expr()->eq('created_by', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			);
-			if ($instanceID === null) {
-				$qb->andWhere(
-					$qb->expr()->isNull('instanceid')
-				);
-			} else {
-				$qb->andWhere(
-					$qb->expr()->eq('instanceid', $qb->createNamedParameter($instanceID, IQueryBuilder::PARAM_INT))
-				);
-			}
+		if ($instanceID === null) {
+			$qb->andWhere(
+				$qb->expr()->isNull('instanceid')
+			);
+		} else {
+			$qb->andWhere(
+				$qb->expr()->eq('instanceid', $qb->createNamedParameter($instanceID, IQueryBuilder::PARAM_INT))
+			);
+		}
 
 		try {
 			return $this->findEntity($qb);
@@ -104,15 +103,15 @@ class AttachmentMapper extends QBMapper {
 			->andWhere(
 				$qb->expr()->eq('created_by', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			);
-			if ($instanceID === null) {
-				$qb->andWhere(
-					$qb->expr()->isNull('instanceid')
-				);
-			} else {
-				$qb->andWhere(
-					$qb->expr()->eq('instanceid', $qb->createNamedParameter($instanceID, IQueryBuilder::PARAM_INT))
-				);
-			}
+		if ($instanceID === null) {
+			$qb->andWhere(
+				$qb->expr()->isNull('instanceid')
+			);
+		} else {
+			$qb->andWhere(
+				$qb->expr()->eq('instanceid', $qb->createNamedParameter($instanceID, IQueryBuilder::PARAM_INT))
+			);
+		}
 
 		try {
 			return $this->findEntity($qb);

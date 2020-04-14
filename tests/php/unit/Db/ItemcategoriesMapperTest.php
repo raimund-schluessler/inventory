@@ -31,7 +31,7 @@ use Test\AppFramework\Db\MapperTestUtility;
 /**
  * @group DB
  */
-class ItemcategoriesMapperTest extends MapperTestUtility  {
+class ItemcategoriesMapperTest extends MapperTestUtility {
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -104,5 +104,4 @@ class ItemcategoriesMapperTest extends MapperTestUtility  {
 		parent::tearDown();
 		$this->itemcategoriesMapper->deleteItemCategories($this->itemcategories);
 	}
-
 }

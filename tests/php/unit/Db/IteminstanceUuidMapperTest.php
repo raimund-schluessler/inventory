@@ -31,7 +31,7 @@ use Test\AppFramework\Db\MapperTestUtility;
 /**
  * @group DB
  */
-class IteminstanceUuidMapperTest extends MapperTestUtility  {
+class IteminstanceUuidMapperTest extends MapperTestUtility {
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -136,5 +136,4 @@ class IteminstanceUuidMapperTest extends MapperTestUtility  {
 			$this->iteminstanceUuidMapper->delete($iteminstanceUuid);
 		}
 	}
-
 }

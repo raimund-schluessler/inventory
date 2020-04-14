@@ -25,7 +25,6 @@ namespace OCA\Inventory\Db;
 use OCP\AppFramework\Db\Entity;
 
 class IteminstanceUuid extends Entity {
-
 	public $id;
 	public $instanceid;
 	public $uuid;

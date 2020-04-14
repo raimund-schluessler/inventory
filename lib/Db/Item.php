@@ -25,7 +25,6 @@ namespace OCA\Inventory\Db;
 use OCP\AppFramework\Db\Entity;
 
 class Item extends Entity {
-
 	public $id;
 	public $uid;
 	public $name;
