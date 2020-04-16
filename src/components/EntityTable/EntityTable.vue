@@ -21,7 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<div class="itemstable" @dragover="dragOverTable">
+		<div class="entitytable" @dragover="dragOverTable">
 			<div class="row row--header">
 				<div :id="`headerSelection-${_uid}`" class="column column--selection">
 					<input :id="`select_all_items-${_uid}`"
@@ -124,7 +124,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:uuid="_uid"
 				:show-actions="false" />
 		</div>
-		<div id="drag-preview" class="itemstable itemstable--drag-preview">
+		<div id="drag-preview" class="entitytable entitytable--drag-preview">
 			<div v-for="entity in draggedEntities" :key="entity.key" class="row">
 				<div class="column">
 					<a href="" @click.ctrl.prevent>

@@ -103,7 +103,7 @@
 	opacity: 0.4;
 }
 
-.itemstable {
+.entitytable {
 	position: relative;
 	white-space: unset;
 	width: 100%;
@@ -115,7 +115,7 @@
 		left: -9999px;
 		top: -9999px;
 
-		&.itemstable .row {
+		&.entitytable .row {
 			max-width: 150px;
 			grid-template-columns: 150px;
 			background-color: var(--color-border-dark);
@@ -487,12 +487,6 @@ table {
 	
 		img {
 			width: 100%;
-		}
-	}
-
-	.itemstable {
-		thead {
-			top: 94px;
 		}
 	}
 
