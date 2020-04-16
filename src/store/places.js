@@ -31,6 +31,7 @@ Vue.use(Vuex)
 
 const state = {
 	places: {},
+	loading: false,
 }
 
 const getters = {
@@ -41,6 +42,16 @@ const getters = {
 	 * @returns {Array} The places
 	 */
 	getPlacesByPlace: (state) => Object.values(state.places),
+
+	/**
+	 * Returns whether we currently load places from the server
+	 *
+	 * @param {Object} state The store data
+	 * @returns {Boolean} Are we loading places
+	 */
+	loadingPlaces: (state) => {
+		return state.loading
+	},
 }
 
 const mutations = {
@@ -99,7 +110,8 @@ const actions = {
 	 * @param {String} path The path to look at
 	 * @returns {Promise}
 	 */
-	async getPlacesByPlace({ commit }, path) {
+	async getPlacesByPlace({ commit, state }, path) {
+		state.loading = true
 		try {
 			const response = await Axios.post(generateUrl('apps/inventory/places'), { path })
 			const places = response.data.map(payload => {
@@ -109,6 +121,7 @@ const actions = {
 		} catch {
 			console.debug('Could not load the places.')
 		}
+		state.loading = false
 	},
 
 	async createPlace(context, { name, path }) {

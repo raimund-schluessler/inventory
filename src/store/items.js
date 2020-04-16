@@ -36,7 +36,7 @@ Vue.use(Vuex)
 const state = {
 	items: {},
 	item: null,
-	loadingItems: false,
+	loading: false,
 	subItems: {},
 	parentItems: {},
 	relatedItems: {},
@@ -104,12 +104,10 @@ const getters = {
 	 * Returns whether we currently load items from the server
 	 *
 	 * @param {Object} state The store data
-	 * @param {Object} getters The store getters
-	 * @param {Object} rootState The store root state
 	 * @returns {Boolean} Are we loading items
 	 */
-	loadingItems: (state, getters, rootState) => {
-		return state.loadingItems
+	loadingItems: (state) => {
+		return state.loading
 	},
 
 	getDraggedEntities: (state) => state.draggedEntities,
@@ -441,33 +439,33 @@ const mutations = {
 const actions = {
 
 	async loadItems({ commit, state }) {
-		state.loadingItems = true
+		state.loading = true
 		const response = await Axios.get(generateUrl('apps/inventory/items'))
 		const items = response.data.map(payload => {
 			return new Item(payload)
 		})
 		commit('addItems', items)
-		state.loadingItems = false
+		state.loading = false
 	},
 
 	async getItemsByFolder({ commit, state }, path) {
-		state.loadingItems = true
+		state.loading = true
 		const response = await Axios.post(generateUrl('apps/inventory/items/folder'), { path })
 		const items = response.data.map(payload => {
 			return new Item(payload)
 		})
 		commit('setItems', items)
-		state.loadingItems = false
+		state.loading = false
 	},
 
 	async getItemsByPlace({ commit, state }, path) {
-		state.loadingItems = true
+		state.loading = true
 		const response = await Axios.post(generateUrl('apps/inventory/items/place'), { path })
 		const items = response.data.map(payload => {
 			return new Item(payload)
 		})
 		commit('setItems', items)
-		state.loadingItems = false
+		state.loading = false
 	},
 
 	async createItems(context, items) {
@@ -620,6 +618,7 @@ const actions = {
 		}
 	},
 	async loadItemCandidates({ commit }, parameters) {
+		state.loading = true
 		try {
 			commit('setItemCandidates', { itemCandidates: [] })
 			const response = await Axios.get(generateUrl(`apps/inventory/item/${parameters.itemID}/candidates/${parameters.relationType}`))
@@ -630,6 +629,7 @@ const actions = {
 		} catch {
 			commit('setItemCandidates', { itemCandidates: [] })
 		}
+		state.loading = false
 	},
 	async deleteItem({ commit }, item) {
 		try {

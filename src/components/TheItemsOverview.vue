@@ -55,7 +55,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<EntityTable :items="items"
 			:collections="collections"
 			:collection-type="collection"
-			:loading="loading"
 			:show-dropdown="true"
 			:search-string="$root.searchString" />
 	</div>
@@ -102,7 +101,6 @@ export default {
 			items: 'getAllItems',
 			folders: 'getFoldersByFolder',
 			places: 'getPlacesByPlace',
-			loading: 'loadingItems',
 			draggedEntities: 'getDraggedEntities',
 		}),
 
