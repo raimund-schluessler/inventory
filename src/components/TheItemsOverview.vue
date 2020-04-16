@@ -170,13 +170,13 @@ export default {
 			})
 		},
 
-		async loadCollectionsAndItems(path) {
+		loadCollectionsAndItems(path) {
 			if (this.collection === 'places') {
-				await this.getPlacesByPlace(path)
-				await this.getItemsByPlace(path)
+				this.getPlacesByPlace(path)
+				this.getItemsByPlace(path)
 			} else {
-				await this.getFoldersByFolder(path)
-				await this.getItemsByFolder(path)
+				this.getFoldersByFolder(path)
+				this.getItemsByFolder(path)
 			}
 		},
 
