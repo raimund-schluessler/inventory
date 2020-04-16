@@ -14,6 +14,8 @@ RUN	set -xe; \
 		php7.3-zip \
 		php7.3-gd \
 		php7.3-intl \
+		php7.3-pgsql \
+		postgresql-client \
 		unzip \
 		curl \
 		wget \
