@@ -83,7 +83,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</Actions>
 				</div>
 			</div>
-			<div v-if="!filteredEntities.length" class="row row--empty">
+			<div v-if="!filteredEntities.length || loading" class="row row--empty">
 				<div class="column">
 					<span v-if="loading" class="icon-loading" />
 					<span>{{ emptyListMessage }}</span>
@@ -186,10 +186,6 @@ export default {
 			default: () => [],
 			required: true,
 		},
-		loading: {
-			type: Boolean,
-			default: false,
-		},
 		showDropdown: {
 			type: Boolean,
 			default: false,
@@ -213,7 +209,14 @@ export default {
 		...mapGetters([
 			'searching',
 			'searchResults',
+			'loadingItems',
+			'loadingFolders',
+			'loadingPlaces',
 		]),
+
+		loading() {
+			return this.loadingItems || this.loadingFolders || this.loadingPlaces
+		},
 
 		allEntitiesSelected() {
 			return this.selectedEntities.length === (this.items.length + this.collections.length) && this.selectedEntities.length > 0
@@ -333,7 +336,15 @@ export default {
 			return filteredItems.concat(filteredCollections)
 		},
 		emptyListMessage() {
-			if (this.loading) {
+			if (this.loadingItems && this.loadingFolders) {
+				return this.t('inventory', 'Loading folders and items from server.')
+			} else if (this.loadingItems && this.loadingPlaces) {
+				return this.t('inventory', 'Loading places and items from server.')
+			} else if (this.loadingFolders) {
+				return this.t('inventory', 'Loading folders from server.')
+			} else if (this.loadingPlaces) {
+				return this.t('inventory', 'Loading places from server.')
+			} else if (this.loadingItems) {
 				return this.t('inventory', 'Loading items from server.')
 			} else if (this.searchString && this.items.length) {
 				return this.t('inventory', 'No item found.')

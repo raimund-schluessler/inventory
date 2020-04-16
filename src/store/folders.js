@@ -31,6 +31,7 @@ Vue.use(Vuex)
 
 const state = {
 	folders: {},
+	loading: false,
 }
 
 const getters = {
@@ -41,6 +42,16 @@ const getters = {
 	 * @returns {Array} The folders
 	 */
 	getFoldersByFolder: (state) => Object.values(state.folders),
+
+	/**
+	 * Returns whether we currently load folders from the server
+	 *
+	 * @param {Object} state The store data
+	 * @returns {Boolean} Are we loading folders
+	 */
+	loadingFolders: (state) => {
+		return state.loading
+	},
 }
 
 const mutations = {
@@ -99,7 +110,8 @@ const actions = {
 	 * @param {String} path The path to look at
 	 * @returns {Promise}
 	 */
-	async getFoldersByFolder({ commit }, path) {
+	async getFoldersByFolder({ commit, state }, path) {
+		state.loading = true
 		try {
 			const response = await Axios.post(generateUrl('apps/inventory/folders'), { path })
 			const folders = response.data.map(payload => {
@@ -109,6 +121,7 @@ const actions = {
 		} catch {
 			console.debug('Could not load the folders.')
 		}
+		state.loading = false
 	},
 
 	async createFolder(context, { name, path }) {

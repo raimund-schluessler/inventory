@@ -131,7 +131,6 @@ export default {
 				name: this.t('inventory', 'related items'),
 			}],
 			relationType: 'parent',
-			loading: false,
 		}
 	},
 	computed: {
@@ -190,9 +189,7 @@ export default {
 				return
 			}
 			this.selectedItems = []
-			this.loading = true
 			await this.loadItemCandidates({ itemID: this.itemId, relationType: this.relationType })
-			this.loading = false
 		},
 
 		...mapActions([
