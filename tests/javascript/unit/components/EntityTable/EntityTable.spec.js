@@ -1,4 +1,4 @@
-import { mount, shallowMount } from '@vue/test-utils'
+import { mount, shallowMount, RouterLinkStub } from '@vue/test-utils'
 import EntityTable from 'Components/EntityTable/EntityTable.vue'
 
 import { store, localVue } from '../../setupStore'
@@ -114,6 +114,9 @@ describe('EntityTable.vue', () => {
 				showDropdown: false,
 				searchString: '',
 			},
+			stubs: {
+				RouterLink: RouterLinkStub
+			}
 		})
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		wrapper.find('label[for="select-item-2-' + wrapper.vm._uid + '"]').trigger('click')
@@ -155,6 +158,9 @@ describe('EntityTable.vue', () => {
 				showDropdown: false,
 				searchString: '',
 			},
+			stubs: {
+				RouterLink: RouterLinkStub
+			}
 		})
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		let selectedItems = wrapper.vm.selectedItems
