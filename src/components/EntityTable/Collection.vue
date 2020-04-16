@@ -20,10 +20,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<tr :class="{ selected: isSelected, deleted: !!deleteTimeout }"
-		class="handler"
+	<div :class="{ 'row--selected': isSelected, 'row--deleted': !!deleteTimeout }"
+		class="row row--collection handler"
 		@click.ctrl="selectEntity(entity)">
-		<td class="selection">
+		<div class="column column--selection">
 			<input :id="`select-folder-${entity.id}-${uuid}`"
 				:value="entity.id"
 				:checked="isSelected"
@@ -34,44 +34,46 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ t('inventory', 'Select') }}
 				</span>
 			</label>
-		</td>
-		<td colspan="5">
-			<div>
-				<RouterLink :to="`/${collection}/${entity.path}`"
-					tag="a"
-					@click.ctrl.prevent>
-					<div class="thumbnail-wrapper">
-						<div :style="{ backgroundImage: getThumbnailUrl }"
-							class="thumbnail folder" />
-					</div>
-					<span v-show="!renaming">{{ entity.name }}</span>
-				</RouterLink>
-				<form v-if="renaming" v-click-outside="{ handler: finishRenaming, middleware: checkClickOutside }" @submit.prevent="rename">
-					<input v-model="newName"
-						v-focus
-						@keyup="checkName">
-				</form>
-				<Actions v-if="!deleteTimeout && showActions">
-					<ActionButton class="startRename"
-						icon="icon-rename"
-						:close-after-click="true"
-						@click="startRename">
-						{{ t('inventory', 'Rename') }}
-					</ActionButton>
-					<ActionButton icon="icon-delete" @click="scheduleDelete">
-						{{ deleteString }}
-					</ActionButton>
-				</Actions>
-				<Actions v-if="!!deleteTimeout">
-					<ActionButton
-						icon="icon-history"
-						@click.prevent.stop="cancelDelete">
-						{{ undoString }}
-					</ActionButton>
-				</Actions>
-			</div>
-		</td>
-	</tr>
+		</div>
+		<div class="column">
+			<RouterLink :to="`/${collection}/${entity.path}`"
+				tag="a"
+				@click.ctrl.prevent>
+				<div class="thumbnail">
+					<div :style="{ backgroundImage: getThumbnailUrl }"
+						class="thumbnail__image folder" />
+				</div>
+				<div class="text">
+					<span v-if="!renaming">{{ entity.name }}</span>
+				</div>
+			</RouterLink>
+			<form v-if="renaming" v-click-outside="{ handler: finishRenaming, middleware: checkClickOutside }" @submit.prevent="rename">
+				<input v-model="newName"
+					v-focus
+					@keyup="checkName">
+			</form>
+		</div>
+		<div class="column column--actions">
+			<Actions v-if="!deleteTimeout && showActions">
+				<ActionButton class="startRename"
+					icon="icon-rename"
+					:close-after-click="true"
+					@click="startRename">
+					{{ t('inventory', 'Rename') }}
+				</ActionButton>
+				<ActionButton icon="icon-delete" @click="scheduleDelete">
+					{{ deleteString }}
+				</ActionButton>
+			</Actions>
+			<Actions v-if="!!deleteTimeout">
+				<ActionButton
+					icon="icon-history"
+					@click.prevent.stop="cancelDelete">
+					{{ undoString }}
+				</ActionButton>
+			</Actions>
+		</div>
+	</div>
 </template>
 
 <script>
