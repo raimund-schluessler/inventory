@@ -37,7 +37,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</label>
 		</div>
 		<div class="column">
-			<RouterLink :to="itemRoute"
+			<component :is="itemRoute ? 'RouterLink': 'a'"
+				:to="itemRoute"
 				tag="a"
 				@click.ctrl.prevent>
 				<div class="thumbnail">
@@ -47,20 +48,22 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<span>{{ entity.name }}</span>
 					<span v-if="showInstance" class="details">{{ entity.instances[0].date }}</span>
 				</div>
-			</RouterLink>
+			</component>
 		</div>
 		<div class="column">
-			<RouterLink :to="itemRoute"
+			<component :is="itemRoute ? 'RouterLink': 'a'"
+				:to="itemRoute"
 				tag="a"
 				@click.ctrl.prevent>
 				<div class="text" :class="{'text--singleline': showInstance}">
 					<span>{{ entity.maker }}</span>
 					<span v-if="showInstance" class="details">{{ entity.instances[0].vendor }}</span>
 				</div>
-			</RouterLink>
+			</component>
 		</div>
 		<div class="column">
-			<RouterLink :to="itemRoute"
+			<component :is="itemRoute ? 'RouterLink': 'a'"
+				:to="itemRoute"
 				tag="a"
 				@click.ctrl.prevent>
 				<div class="text" :class="{'text--singleline': showInstance}">
@@ -68,7 +71,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<span v-if="showInstance" class="details">{{ t('inventory', '{available} of {count}',
 						{ available: entity.instances[0].available, count: entity.instances[0].count }) }}</span>
 				</div>
-			</RouterLink>
+			</component>
 		</div>
 		<div class="column column--hide">
 			<ul class="tags">
