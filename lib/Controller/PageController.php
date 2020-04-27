@@ -57,9 +57,11 @@ class PageController extends Controller {
 	 */
 	public function index() {
 		$attachmentFolder = $this->config->getUserValue($this->userId, $this->appName, 'attachmentFolder', '/inventory');
-		$this->initialStateService->provideInitialState($this->appName, 'attachmentFolder', $attachmentFolder);
+		$this->initialStateService->provideInitialState(
+			$this->appName,
+			'attachmentFolder', $attachmentFolder
+		);
 
-		$response = new TemplateResponse('inventory', 'main');
-		return $response;
+		return new TemplateResponse('inventory', 'main');
 	}
 }
