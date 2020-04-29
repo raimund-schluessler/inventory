@@ -130,7 +130,7 @@ export default {
 		Modal,
 	},
 	filters: {
-		bytes: function(bytes) {
+		bytes(bytes) {
 			if (isNaN(parseFloat(bytes, 10)) || !isFinite(bytes)) {
 				return '-'
 			}
@@ -139,7 +139,7 @@ export default {
 			const number = Math.floor(Math.log(bytes) / Math.log(1024))
 			return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number]
 		},
-		relativeDateFilter: function(timestamp) {
+		relativeDateFilter(timestamp) {
 			return OC.Util.relativeModifiedDate(timestamp * 1000)
 		},
 	},

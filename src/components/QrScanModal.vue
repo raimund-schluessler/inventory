@@ -49,7 +49,7 @@ export default {
 		}
 	},
 	methods: {
-		closeModal: function(event) {
+		closeModal(event) {
 			this.$emit('update:qrModalOpen', false)
 		},
 		onDecode(result) {

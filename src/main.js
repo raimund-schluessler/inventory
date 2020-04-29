@@ -60,12 +60,12 @@ OCA.Inventory.App = new Vue({
 	el: '.app-inventory',
 	router,
 	store,
-	data: function() {
+	data() {
 		return {
 			searchString: '',
 		}
 	},
-	mounted: function() {
+	mounted() {
 		OC.Search = new OCA.Search(this.filter, this.cleanSearch)
 	},
 	beforeMount() {

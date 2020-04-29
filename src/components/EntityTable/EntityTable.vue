@@ -199,7 +199,7 @@ export default {
 			default: '',
 		},
 	},
-	data: function() {
+	data() {
 		return {
 			selectedEntities: [],
 			draggedEntities: [],
@@ -384,7 +384,7 @@ export default {
 	watch: {
 		items: 'checkSelected',
 		collections: 'checkSelected',
-		searchString: function(newVal, oldVal) {
+		searchString(newVal, oldVal) {
 			if (newVal) {
 				this.$store.dispatch('search', newVal)
 			}
@@ -448,7 +448,7 @@ export default {
 		 * whether it is still in the items array.
 		 * If not, remove from selected.
 		 */
-		checkSelected: function() {
+		checkSelected() {
 			const before = this.selectedEntities.length
 			this.selectedEntities = this.selectedEntities.filter((entity) => {
 				if (entity instanceof Item) {
@@ -464,7 +464,7 @@ export default {
 			}
 		},
 
-		getIconUrl: function(item) {
+		getIconUrl(item) {
 			if (item.images.length > 0) {
 				const img = item.images[0]
 				return generateUrl(`/core/preview?fileId=${img.fileid}&x=${128}&y=${128}&a=false&v=${img.etag}`)
@@ -478,7 +478,7 @@ export default {
 				return generateUrl(`svg/inventory/item_${item.icon}?color=${color}`)
 			}
 		},
-		selectItem: function(item) {
+		selectItem(item) {
 			if (this.isSelected(item)) {
 				const index = this.selectedEntities.indexOf(item)
 				if (index !== -1) {
@@ -489,7 +489,7 @@ export default {
 			}
 			this.$emit('selectedItemsChanged', this.selectedItems)
 		},
-		isSelected: function(item) {
+		isSelected(item) {
 			return this.selectedEntities.includes(item)
 		},
 		async removeItems() {
@@ -603,7 +603,7 @@ export default {
 				}
 			}
 		},
-		isDragged: function(item) {
+		isDragged(item) {
 			return this.draggedEntities.includes(item)
 		},
 	},

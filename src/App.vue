@@ -58,7 +58,7 @@ export default {
 		AppContent,
 		TheSettings,
 	},
-	data: function() {
+	data() {
 		return {
 			active: 'folders',
 			views: [

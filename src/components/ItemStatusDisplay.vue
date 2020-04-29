@@ -46,16 +46,16 @@ export default {
 		}
 	},
 	computed: {
-		status: function() {
+		status() {
 			return this.item.syncstatus
 		},
 	},
 	watch: {
-		status: function(newStatus) {
+		status(newStatus) {
 			this.checkTimeout(newStatus)
 		},
 	},
-	mounted: function() {
+	mounted() {
 		this.checkTimeout(this.status)
 	},
 	methods: {
@@ -63,7 +63,7 @@ export default {
 			await this.$store.dispatch(this.status.action, { item: this.item })
 			this.item.conflict = false
 		},
-		checkTimeout: function(newStatus) {
+		checkTimeout(newStatus) {
 			if (newStatus) {
 				if (this.resetStatusTimeout) {
 					clearTimeout(this.resetStatusTimeout)

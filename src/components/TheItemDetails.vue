@@ -253,7 +253,7 @@ export default {
 			default: 'folders',
 		},
 	},
-	data: function() {
+	data() {
 		return {
 			modalOpen: false,
 			loading: false,
@@ -328,7 +328,7 @@ export default {
 			return ''
 		},
 	},
-	created: function() {
+	created() {
 		this.getItem(this.id)
 		this.loadSubItems(this.id)
 		this.loadParentItems(this.id)
@@ -429,13 +429,13 @@ export default {
 			})
 		},
 
-		hideEditItem: function() {
+		hideEditItem() {
 			if (this.closing) {
 				this.editingItem = false
 			}
 			this.closing = true
 		},
-		toggleEditItem: function() {
+		toggleEditItem() {
 			this.editingItem = !this.editingItem
 			if (this.editingItem) {
 				this.editedItem = this.item.response
@@ -451,16 +451,16 @@ export default {
 			await this.getItemById(itemID)
 			this.loading = false
 		},
-		openModal: function() {
+		openModal() {
 			this.modalOpen = true
 		},
-		selectedParentsChanged: function(items) {
+		selectedParentsChanged(items) {
 			this.selectedParents = items
 		},
-		selectedSubChanged: function(items) {
+		selectedSubChanged(items) {
 			this.selectedSub = items
 		},
-		selectedRelatedChanged: function(items) {
+		selectedRelatedChanged(items) {
 			this.selectedRelated = items
 		},
 		async link(relation, items) {
@@ -482,12 +482,12 @@ export default {
 			this.unlinkItems({ itemID: this.item.id, relation, items })
 		},
 
-		removeItem: function() {
+		removeItem() {
 			this.deleteItem(this.item)
 			this.closeDetails()
 		},
 
-		closeDetails: function() {
+		closeDetails() {
 			this.$router.push('/items')
 		},
 

@@ -199,7 +199,7 @@ export default {
 			default: null,
 		},
 	},
-	data: function() {
+	data() {
 		return {
 			instanceProperties: [
 				{
@@ -253,7 +253,7 @@ export default {
 			return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(this.newUuid) && !uuidArray.includes(this.newUuid)
 		},
 
-		openQrModal: function() {
+		openQrModal() {
 			this.qrModalOpen = true
 		},
 
@@ -262,7 +262,7 @@ export default {
 			this.qrModalOpen = false
 		},
 
-		toggleEditInstance: function(instance) {
+		toggleEditInstance(instance) {
 			if (this.editedInstance.id === instance.id) {
 				this.editedInstance = {}
 			} else {
@@ -271,14 +271,14 @@ export default {
 			}
 		},
 
-		hideEditInstance: function(instance) {
+		hideEditInstance(instance) {
 			if (this.closing && this.editedInstance.id === instance.id) {
 				this.editedInstance = {}
 			}
 			this.closing = true
 		},
 
-		toggleInstanceInput: function() {
+		toggleInstanceInput() {
 			this.addingInstance = !this.addingInstance
 			// Temporarily disable the click-outside-directive
 			if (this.addingInstance) {
@@ -286,14 +286,14 @@ export default {
 			}
 		},
 
-		hideInstanceInput: function(e) {
+		hideInstanceInput(e) {
 			if (this.closing) {
 				this.addingInstance = false
 			}
 			this.closing = true
 		},
 
-		toggleUuidInput: function(instance) {
+		toggleUuidInput(instance) {
 			if (this.addUuidTo === instance.id) {
 				this.addUuidTo = null
 			} else {
@@ -303,7 +303,7 @@ export default {
 			}
 		},
 
-		hideUuidInput: function(instance) {
+		hideUuidInput(instance) {
 			if (this.closing && instance.id === this.addUuidTo) {
 				this.addUuidTo = null
 			}
@@ -331,7 +331,7 @@ export default {
 			this.newInstance = {}
 		},
 
-		removeInstance: function(instance) {
+		removeInstance(instance) {
 			this.deleteInstance({ item: this.item, instance })
 		},
 
@@ -347,7 +347,7 @@ export default {
 			}
 		},
 
-		removeUuid: function(instance, uuid) {
+		removeUuid(instance, uuid) {
 			this.deleteUuid({ item: this.item, instance, uuid })
 		},
 

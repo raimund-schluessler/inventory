@@ -21,7 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 export default {
-	inserted: function(el, binding) {
+	inserted(el, binding) {
 		if (binding.expression === undefined || binding.value) {
 			el.focus()
 		}

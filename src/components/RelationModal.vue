@@ -116,7 +116,7 @@ export default {
 			required: true,
 		},
 	},
-	data: function() {
+	data() {
 		return {
 			selectedItems: [],
 			searchString: '',
@@ -138,10 +138,10 @@ export default {
 			items: 'getItemCandidates',
 		}),
 
-		headerString: function() {
+		headerString() {
 			return this.t('inventory', 'Please select the relation of the items:')
 		},
-		statusString: function() {
+		statusString() {
 			let singular, plural
 			switch (this.relationType) {
 			case 'parent':
@@ -166,22 +166,22 @@ export default {
 	watch: {
 		modalOpen: 'loadItems',
 	},
-	created: function() {
+	created() {
 		this.loadItems()
 	},
 	methods: {
-		changeRelationType: function(relation) {
+		changeRelationType(relation) {
 			this.relationType = relation.type
 			this.loadItems()
 		},
-		closeModal: function(event) {
+		closeModal(event) {
 			this.$emit('update:modalOpen', false)
 		},
-		selectItems: function(event) {
+		selectItems(event) {
 			this.link(this.relationType, this.selectedItems)
 			this.closeModal()
 		},
-		selectedItemsChanged: function(selectedItems) {
+		selectedItemsChanged(selectedItems) {
 			this.selectedItems = selectedItems
 		},
 		async loadItems() {

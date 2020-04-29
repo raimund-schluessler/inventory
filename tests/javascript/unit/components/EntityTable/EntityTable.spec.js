@@ -13,7 +13,7 @@ describe('EntityTable.vue', () => {
 			localVue,
 			store,
 			propsData: {
-				items: items,
+				items,
 				showDropdown: false,
 				searchString: '',
 			},
@@ -27,7 +27,7 @@ describe('EntityTable.vue', () => {
 			localVue,
 			store,
 			propsData: {
-				items: items,
+				items,
 				showDropdown: false,
 				searchString: 'Cat1',
 			},
@@ -41,7 +41,7 @@ describe('EntityTable.vue', () => {
 			localVue,
 			store,
 			propsData: {
-				items: items,
+				items,
 				showDropdown: false,
 				searchString: 'Maker1',
 			},
@@ -55,7 +55,7 @@ describe('EntityTable.vue', () => {
 			localVue,
 			store,
 			propsData: {
-				items: items,
+				items,
 				showDropdown: false,
 				searchString: 'tags:Cat1',
 			},
@@ -69,7 +69,7 @@ describe('EntityTable.vue', () => {
 			localVue,
 			store,
 			propsData: {
-				items: items,
+				items,
 				showDropdown: false,
 				searchString: 'comment:Maker1',
 			},
@@ -83,7 +83,7 @@ describe('EntityTable.vue', () => {
 			localVue,
 			store,
 			propsData: {
-				items: items,
+				items,
 				showDropdown: false,
 				searchString: 'itemNumber:42',
 			},
@@ -110,7 +110,7 @@ describe('EntityTable.vue', () => {
 			localVue,
 			store,
 			propsData: {
-				items: items,
+				items,
 				showDropdown: false,
 				searchString: '',
 			},
@@ -132,7 +132,7 @@ describe('EntityTable.vue', () => {
 			localVue,
 			store,
 			propsData: {
-				items: items,
+				items,
 				showDropdown: false,
 				searchString: '',
 			},
@@ -154,7 +154,7 @@ describe('EntityTable.vue', () => {
 			localVue,
 			store,
 			propsData: {
-				items: items,
+				items,
 				showDropdown: false,
 				searchString: '',
 			},

@@ -65,7 +65,7 @@ export default {
 			default: 'folders',
 		},
 	},
-	data: function() {
+	data() {
 		return {
 			rawInput: '',
 			enlisted: false,
@@ -79,7 +79,7 @@ export default {
 		},
 	},
 	watch: {
-		rawInput: function(val, oldVal) {
+		rawInput(val, oldVal) {
 			this.enlisted = false
 			const results = Papa.parse(val, { delimiter: ';', newline: '\n' })
 			this.items = []
