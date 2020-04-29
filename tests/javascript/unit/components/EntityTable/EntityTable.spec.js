@@ -115,8 +115,8 @@ describe('EntityTable.vue', () => {
 				searchString: '',
 			},
 			stubs: {
-				RouterLink: RouterLinkStub
-			}
+				RouterLink: RouterLinkStub,
+			},
 		})
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		wrapper.find('label[for="select-item-2-' + wrapper.vm._uid + '"]').trigger('click')
@@ -159,8 +159,8 @@ describe('EntityTable.vue', () => {
 				searchString: '',
 			},
 			stubs: {
-				RouterLink: RouterLinkStub
-			}
+				RouterLink: RouterLinkStub,
+			},
 		})
 		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
 		let selectedItems = wrapper.vm.selectedItems

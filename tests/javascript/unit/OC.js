@@ -5,5 +5,5 @@ export default {
 
 	getLanguage() {
 		return 'en-GB'
-	}
+	},
 }
