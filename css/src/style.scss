@@ -46,37 +46,31 @@
 	border: 1px solid red !important;
 }
 
-#app-content {
-	max-width: 100%;
+.app-content {
+	#controls {
+		padding-left: 44px;
 
-	> div {
-		height: 100%;
-
-		#controls .breadcrumb {
+		.breadcrumb {
 			width: calc(100% - 44px);
 
 			.crumb span.icon {
 				opacity: 1;
 			}
 		}
+	}
 
-		.app-content-details {
-			max-width: 100%;
-	
-			&.notice {
-				color: $gray;
-				font-size: 16px;
-				position: absolute;
-				text-align: center;
-				top: 50%;
-				width: 100%;
-			}
-		}
+	.app-content-details.notice {
+		color: $gray;
+		font-size: 16px;
+		position: absolute;
+		text-align: center;
+		top: 50%;
+		width: 100%;
 	}
 }
 
-#app-navigation {
-	&:not(.hidden) + #app-content {
+.app-navigation {
+	&:not(&--close) + #app-content {
 		width: calc(100% - 300px);
 		max-width: calc(100% - 300px);
 	}
@@ -559,13 +553,6 @@ table {
 @media only screen and (max-width: 768px) {
 	.itemnavigation {
 		padding-left: 44px;
-	}
-}
-
-@media only screen and (max-width: 1024px) {
-	#app-navigation:not(.hidden) + #app-content {
-		width: 100%;
-		max-width: 100%;
 	}
 }
 
