@@ -21,8 +21,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<div id="newItemsView" class="app-content-details">
-			<div>
+		<div id="newItemsView">
+			<div class="header">
 				{{ t('inventory', 'Add multiple new items (as comma separated list).') }}
 				<br>
 				{{ t('inventory', 'Expects csv with the fields:') }}
