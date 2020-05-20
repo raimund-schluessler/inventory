@@ -110,19 +110,19 @@ export default {
 					}],
 				}
 				const c = it[15].split(',')
-				const tags = []
+				const categories = []
 				let name
 				for (let j = 0; j < c.length; j++) {
 					name = String.prototype.trim.apply(c[j])
 					if (name.length) {
-						tags.push({ name })
+						categories.push({ name })
 					}
 				}
 				item.syncstatus = {
 					type: 'unsynced',
 					message: this.t('inventory', 'The item has not been saved to the server yet.'),
 				}
-				item.tags = tags
+				item.categories = categories
 				if (this.collection === 'folders') {
 					item.path = this.path
 				} else if (this.collection === 'places' && this.path !== '') {
