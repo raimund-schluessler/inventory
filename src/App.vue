@@ -20,7 +20,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div id="content" class="app-inventory">
+	<Content app-name="inventory">
 		<AppNavigation>
 			<ul>
 				<AppNavigationItem
@@ -38,7 +38,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<AppContent>
 			<RouterView />
 		</AppContent>
-	</div>
+	</Content>
 </template>
 
 <script>
@@ -48,6 +48,7 @@ import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
 import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
 import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
+import Content from '@nextcloud/vue/dist/Components/Content'
 
 export default {
 	name: 'App',
@@ -56,6 +57,7 @@ export default {
 		AppNavigationItem,
 		AppNavigationSettings,
 		AppContent,
+		Content,
 		TheSettings,
 	},
 	data() {
