@@ -102,8 +102,8 @@ distclean: clean
 	rm -rf node_modules
 
 # Watches the js and scss files
-.PHONY: watch
-watch:
+.PHONY: watch-js
+watch-js:
 	$(npm) run watch
 
 # Builds the source package for the app store
