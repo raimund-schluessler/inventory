@@ -22,17 +22,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<Content app-name="inventory">
 		<AppNavigation>
-			<ul>
+			<template #list>
 				<AppNavigationItem
 					v-for="view in views"
 					:key="view.id"
 					:to="`/${view.id}/`"
 					:icon="`icon-${view.icon}`"
 					:title="view.name" />
-			</ul>
-			<AppNavigationSettings>
-				<TheSettings />
-			</AppNavigationSettings>
+			</template>
+			<template #footer>
+				<AppNavigationSettings>
+					<TheSettings />
+				</AppNavigationSettings>
+			</template>
 		</AppNavigation>
 
 		<AppContent>
