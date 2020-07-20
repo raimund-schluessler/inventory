@@ -33,7 +33,7 @@
 		"@nextcloud/vue": "2.2.1",
 		"@vue/test-utils": "1.0.3",
 		"bwip-js": "2.0.9",
-		"p-queue": "6.5.0",
+		"p-queue": "6.6.0",
 		"papaparse": "5.2.0",
 		"search-query-parser": "1.5.5",
 		"v-click-outside": "3.0.1",
