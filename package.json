@@ -40,7 +40,7 @@
 		"v-tooltip": "2.0.3",
 		"vue": "2.6.11",
 		"vue-click-outside": "1.1.0",
-		"vue-qrcode-reader": "2.3.10",
+		"vue-qrcode-reader": "2.3.11",
 		"vue-router": "3.3.4",
 		"vuex": "3.5.1",
 		"vuex-router-sync": "5.0.0"
