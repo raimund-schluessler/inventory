@@ -31,7 +31,7 @@
 		"@nextcloud/files": "1.1.0",
 		"@nextcloud/router": "1.1.0",
 		"@nextcloud/vue": "2.4.1",
-		"@vue/test-utils": "1.0.3",
+		"@vue/test-utils": "1.0.4",
 		"bwip-js": "2.0.10",
 		"p-queue": "6.6.1",
 		"papaparse": "5.2.0",
