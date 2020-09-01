@@ -30,7 +30,7 @@
 		"@nextcloud/initial-state": "1.1.2",
 		"@nextcloud/files": "1.1.0",
 		"@nextcloud/router": "1.1.0",
-		"@nextcloud/vue": "2.6.0",
+		"@nextcloud/vue": "2.6.1",
 		"@vue/test-utils": "1.0.5",
 		"bwip-js": "2.0.10",
 		"p-queue": "6.6.1",
