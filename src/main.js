@@ -25,6 +25,7 @@ import router from './router'
 import store from './store/store'
 
 import { linkTo } from '@nextcloud/router'
+import { subscribe, unsubscribe } from '@nextcloud/event-bus'
 import Vue from 'vue'
 import { sync } from 'vuex-router-sync'
 import VTooltip from 'v-tooltip'
@@ -53,8 +54,8 @@ if (!OCA.Inventory) {
 
 Vue.prototype.t = t
 Vue.prototype.n = n
-Vue.prototype.OC = OC
-Vue.prototype.OCA = OCA
+Vue.prototype.$OC = OC
+Vue.prototype.$OCA = OCA
 
 OCA.Inventory.App = new Vue({
 	el: '.app-inventory',
@@ -66,12 +67,27 @@ OCA.Inventory.App = new Vue({
 		}
 	},
 	mounted() {
-		OC.Search = new OCA.Search(this.filter, this.cleanSearch)
+		const version = this.$OC.config.version.split('.')
+
+		if (version[0] >= 20) {
+			// Hook to new global event for unified search
+			subscribe('nextcloud:unified-search:search', this.filterProxy)
+			subscribe('nextcloud:unified-search:close', this.cleanSearch)
+		} else {
+			this.$OC.Search = new OCA.Search(this.filter, this.cleanSearch)
+		}
 	},
 	beforeMount() {
 		this.$store.dispatch('loadSettings')
 	},
+	beforeDestroy() {
+		unsubscribe('nextcloud:unified-search:search', this.filterProxy)
+		unsubscribe('nextcloud:unified-search:close', this.cleanSearch)
+	},
 	methods: {
+		filterProxy({ query }) {
+			this.filter(query)
+		},
 		filter(query) {
 			this.searchString = query
 			if (!query) {
