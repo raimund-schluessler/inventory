@@ -67,7 +67,7 @@ class Version000001Date20191231181200 extends SimpleMigrationStep {
 			}
 			if (!$table->hasColumn('path')) {
 				$table->addColumn('path', Type::STRING, [
-					'notnull' => true,
+					'notnull' => false,
 					'length' => 4000,
 					'default' => '',
 				]);
