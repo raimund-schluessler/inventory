@@ -46,6 +46,7 @@ class Version000004Date20200401210000 extends SimpleMigrationStep {
 				$table->addColumn('path', Type::STRING, [
 					'notnull' => false,
 					'length' => 4000,
+					'default' => '',
 				]);
 			}
 		}
