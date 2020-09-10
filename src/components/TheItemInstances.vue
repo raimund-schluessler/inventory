@@ -29,7 +29,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</th>
 					<th class="actions">
 						<div>
-							<Actions>
+							<Actions :boundaries-element="boundaries">
 								<ActionButton icon="icon-add" @click="toggleInstanceInput">
 									{{ t('inventory', 'Add instance') }}
 								</ActionButton>
@@ -54,7 +54,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</td>
 						<td class="actions">
 							<div>
-								<Actions>
+								<Actions :boundaries-element="boundaries">
 									<ActionButton icon="icon-add" :close-after-click="true" @click="toggleUuidInput(instance)">
 										{{ t('inventory', 'Add UUID') }}
 									</ActionButton>
@@ -117,7 +117,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								<li v-for="uuid in instance.uuids" :key="`uuids${instance.id}${uuid.id}`">
 									<span>{{ uuid.uuid }}</span>
 									<div class="actions">
-										<Actions>
+										<Actions :boundaries-element="boundaries">
 											<ActionButton icon="icon-qrcode" :close-after-click="true" @click="$emit('openBarcode', uuid.uuid)">
 												{{ t('inventory', 'Show QR Code') }}
 											</ActionButton>
@@ -235,6 +235,8 @@ export default {
 			editedInstance: {},
 			closing: true,
 			qrModalOpen: false,
+			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
+			boundaries: document.querySelector('#content-vue'),
 		}
 	},
 	methods: {

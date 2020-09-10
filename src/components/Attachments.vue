@@ -42,7 +42,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<span class="filedate">{{ t('inventory', 'by') + ' ' + attachment.createdBy }}</span>
 						</a>
 					</div>
-					<Actions>
+					<Actions :boundaries-element="boundaries">
 						<ActionButton
 							icon="icon-delete"
 							:close-after-click="true"
@@ -62,7 +62,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 			</ul>
 		</div>
-		<Actions>
+		<Actions :boundaries-element="boundaries">
 			<ActionButton
 				icon="icon-upload"
 				:close-after-click="true"
@@ -164,6 +164,8 @@ export default {
 			overwriteAttachment: null,
 			isDraggingOver: false,
 			maxUploadSize: 16e7,
+			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
+			boundaries: document.querySelector('#content-vue'),
 		}
 	},
 	methods: {

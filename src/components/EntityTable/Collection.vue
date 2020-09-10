@@ -54,7 +54,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</form>
 		</div>
 		<div class="column column--actions">
-			<Actions v-if="!deleteTimeout && showActions">
+			<Actions
+				v-if="!deleteTimeout && showActions"
+				:boundaries-element="boundaries">
 				<ActionButton class="startRename"
 					icon="icon-rename"
 					:close-after-click="true"
@@ -65,7 +67,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ deleteString }}
 				</ActionButton>
 			</Actions>
-			<Actions v-if="!!deleteTimeout">
+			<Actions
+				v-if="!!deleteTimeout"
+				:boundaries-element="boundaries">
 				<ActionButton
 					icon="icon-history"
 					@click.prevent.stop="cancelDelete">
@@ -131,6 +135,8 @@ export default {
 			countdown: CD_DURATION,
 			newName: '',
 			renaming: false,
+			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
+			boundaries: document.querySelector('#content-vue'),
 		}
 	},
 	computed: {

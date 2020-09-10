@@ -66,7 +66,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 				<div class="column column--actions">
-					<Actions v-if="showDropdown">
+					<Actions
+						v-if="showDropdown"
+						:boundaries-element="boundaries">
 						<ActionButton v-if="selectedItems.length"
 							icon="icon-delete"
 							:close-after-click="true"
@@ -74,7 +76,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
 						</ActionButton>
 					</Actions>
-					<Actions v-show="unlink && selectedItems.length">
+					<Actions
+						v-show="unlink && selectedItems.length"
+						:boundaries-element="boundaries">
 						<ActionButton icon="icon-delete"
 							:close-after-click="true"
 							@click="$emit('unlink')">
@@ -203,6 +207,8 @@ export default {
 		return {
 			selectedEntities: [],
 			draggedEntities: [],
+			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
+			boundaries: document.querySelector('#content-vue'),
 		}
 	},
 	computed: {

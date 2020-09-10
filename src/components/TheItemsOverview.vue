@@ -29,7 +29,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:to="crumb.path"
 					:disable-drop="index === (breadcrumbs.length - 1)" />
 			</Breadcrumbs>
-			<Actions default-icon="icon-add" :open.sync="actionsOpen" @close="addingCollection = false">
+			<Actions
+				container="#controls"
+				default-icon="icon-add"
+				:boundaries-element="boundaries"
+				:open.sync="actionsOpen"
+				@close="addingCollection = false">
 				<ActionRouter :to="`/${collection}/${($route.params.path) ? $route.params.path + '/' : ''}additems`" icon="icon-add">
 					{{ t('inventory', 'Add items') }}
 				</ActionRouter>
@@ -94,6 +99,8 @@ export default {
 			errorString: null,
 			collectionNameError: false,
 			actionsOpen: false,
+			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
+			boundaries: document.querySelector('#content-vue'),
 		}
 	},
 	computed: {
