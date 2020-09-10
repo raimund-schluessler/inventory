@@ -95,7 +95,7 @@ class FolderMapper extends QBMapper {
 		return $this->insert($folder);
 	}
 
-	public function findByString(string $uid, string $searchString) {
+	public function findByString(string $uid, string $searchString, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -104,7 +104,9 @@ class FolderMapper extends QBMapper {
 				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			)
 			->andWhere('LOWER(name) LIKE LOWER(:searchString)')
-			->setParameter('searchString', '%' . $searchString . '%');
+			->setParameter('searchString', '%' . $searchString . '%')
+			->setMaxResults($limit)
+			->setFirstResult($offset);
 
 		return $this->findEntities($qb);
 	}

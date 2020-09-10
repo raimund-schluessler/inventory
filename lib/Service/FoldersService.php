@@ -230,8 +230,8 @@ class FoldersService {
 	 * @param $searchString
 	 * @return array
 	 */
-	public function findByString($searchString) {
-		return $this->folderMapper->findByString($this->userId, $searchString);
+	public function findByString($searchString, $limit = null, $offset = null) {
+		return $this->folderMapper->findByString($this->userId, $searchString, $limit, $offset);
 	}
 
 	private function moveFolder($folder, $newParent) {

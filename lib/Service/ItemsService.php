@@ -401,9 +401,9 @@ class ItemsService {
 		return $this->getItemDetails($editedItem);
 	}
 
-	public function findByString($searchString) {
+	public function findByString($searchString, $limit = null, $offset = null) {
 		// Find items which contain this string directly
-		$items = $this->itemMapper->findByString($this->userId, $searchString);
+		$items = $this->itemMapper->findByString($this->userId, $searchString, $limit = null, $offset = null);
 
 		$itemIds = array_map(function ($item) {
 			return $item->id;
