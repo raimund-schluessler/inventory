@@ -29,7 +29,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						:title="crumb.title"
 						:to="crumb.path" />
 				</Breadcrumbs>
-				<Actions>
+				<Actions
+					container="#controls"
+					:boundaries-element="boundaries">
 					<ActionButton icon="icon-add" :close-after-click="true" @click="openModal">
 						{{ t('inventory', 'Link items') }}
 					</ActionButton>
@@ -100,7 +102,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 									<td v-else>
 										<div class="wrapper">
 											<span :class="{ 'visibility-hidden': editingItem }">{{ item[itemProperty.key] }}</span>
-											<Actions v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem ">
+											<Actions
+												v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem "
+												:boundaries-element="boundaries">
 												<ActionButton icon="icon-gtin" :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
 													{{ t('inventory', 'Show GTIN') }}
 												</ActionButton>
@@ -296,6 +300,8 @@ export default {
 			],
 			isDraggingOver: false,
 			maxUploadSize: 16e7,
+			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
+			boundaries: document.querySelector('#content-vue'),
 		}
 	},
 	computed: {
