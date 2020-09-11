@@ -32,7 +32,7 @@ PHP7.3 + SQLite:
     - cp -r . /tmp/inventory
     - mkdir -p /var/www/html ; pushd /var/www/html
     #- wget -q https://download.nextcloud.com/server/releases/nextcloud-16.0.1.zip ; unzip -q nextcloud-16.0.1.zip ; rm nextcloud-16.0.1.zip
-    - git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b stable18 nextcloud
+    - git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b master nextcloud
     # temporary fix of autoloader.php
     - sed -i $'s|if (substr($fullPath, 0, strlen($root) + 1) === $root . \'/\')|if (is_string($root) and substr($fullPath, 0, strlen($root) + 1) === $root . \'/\')|g' nextcloud/lib/autoloader.php
     - chown -R www-data:www-data nextcloud && pushd nextcloud/apps && mv /tmp/inventory ./
@@ -60,7 +60,7 @@ PHP7.3 + PostgreSQL:
     - cp -r . /tmp/inventory
     - mkdir -p /var/www/html ; pushd /var/www/html
     #- wget -q https://download.nextcloud.com/server/releases/nextcloud-16.0.1.zip ; unzip -q nextcloud-16.0.1.zip ; rm nextcloud-16.0.1.zip
-    - git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b stable18 nextcloud
+    - git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b master nextcloud
     # temporary fix of autoloader.php
     - sed -i $'s|if (substr($fullPath, 0, strlen($root) + 1) === $root . \'/\')|if (is_string($root) and substr($fullPath, 0, strlen($root) + 1) === $root . \'/\')|g' nextcloud/lib/autoloader.php
     - chown -R www-data:www-data nextcloud && pushd nextcloud/apps && mv /tmp/inventory ./
@@ -90,7 +90,7 @@ PHP7.3 + PostgreSQL:
 #     - cp -r . /tmp/inventory
 #     - mkdir -p /var/www/html ; pushd /var/www/html
 #     #- wget -q https://download.nextcloud.com/server/releases/nextcloud-16.0.1.zip ; unzip -q nextcloud-16.0.1.zip ; rm nextcloud-16.0.1.zip
-#     - git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b stable18 nextcloud
+#     - git clone https://github.com/nextcloud/server.git --recursive --depth 1 -b master nextcloud
 #     # temporary fix of autoloader.php
 #     - sed -i $'s|if (substr($fullPath, 0, strlen($root) + 1) === $root . \'/\')|if (is_string($root) and substr($fullPath, 0, strlen($root) + 1) === $root . \'/\')|g' nextcloud/lib/autoloader.php
 #     - chown -R www-data:www-data nextcloud && pushd nextcloud/apps && mv /tmp/inventory ./
