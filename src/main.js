@@ -72,7 +72,7 @@ OCA.Inventory.App = new Vue({
 		if (version[0] >= 20) {
 			// Hook to new global event for unified search
 			subscribe('nextcloud:unified-search:search', this.filterProxy)
-			subscribe('nextcloud:unified-search:close', this.cleanSearch)
+			subscribe('nextcloud:unified-search:reset', this.cleanSearch)
 		} else {
 			this.$OC.Search = new OCA.Search(this.filter, this.cleanSearch)
 		}
@@ -82,7 +82,7 @@ OCA.Inventory.App = new Vue({
 	},
 	beforeDestroy() {
 		unsubscribe('nextcloud:unified-search:search', this.filterProxy)
-		unsubscribe('nextcloud:unified-search:close', this.cleanSearch)
+		unsubscribe('nextcloud:unified-search:reset', this.cleanSearch)
 	},
 	methods: {
 		filterProxy({ query }) {

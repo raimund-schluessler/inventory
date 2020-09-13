@@ -1,9 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2019 Raimund Schlüßler raimund.schluessler@mailbox.org
+ * @copyright 2020 Raimund Schlüßler raimund.schluessler@mailbox.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -22,24 +25,29 @@
 
 namespace OCA\Inventory\AppInfo;
 
-use \OCP\AppFramework\App;
+use OCP\AppFramework\App;
+use OCP\AppFramework\Bootstrap\IRegistrationContext;
+use OCP\AppFramework\Bootstrap\IBootContext;
+use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCA\Inventory\Middleware\ExceptionMiddleware;
+use OCA\Inventory\Search\Provider;
 
-class Application extends App {
+class Application extends App implements IBootstrap  {
+	public const APP_ID = 'inventory';
+
 	public function __construct(array $urlParams=[]) {
-		parent::__construct('inventory', $urlParams);
+		parent::__construct(self::APP_ID, $urlParams);
+	}
 
-		$container = $this->getContainer();
-
+	public function register(IRegistrationContext $context): void {
 		/**
 		 * Middleware
 		 */
-
-		$container->registerService('ExceptionMiddleware', function ($c) {
+		$context->registerService('ExceptionMiddleware', function ($c) {
 			return new ExceptionMiddleware();
 		});
 
-		$container->registerMiddleware('ExceptionMiddleware');
+		$context->registerMiddleware(ExceptionMiddleware::class);
 
 		/**
 		 * Add worker-src blob to content security policy, so that
@@ -55,5 +63,10 @@ class Application extends App {
 
 			$manager->addDefaultPolicy($policy);
 		}
+
+		$context->registerSearchProvider(Provider::class);
+	}
+
+	public function boot(IBootContext $context): void {
 	}
 }

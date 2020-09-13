@@ -50,7 +50,7 @@ class ItemMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
-	public function findAll(string $uid, $limit=null, $offset=null) {
+	public function findAll(string $uid, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -64,7 +64,7 @@ class ItemMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function findByString(string $uid, string $searchString, $limit=null, $offset=null) {
+	public function findByString(string $uid, string $searchString, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -87,7 +87,7 @@ class ItemMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function findByFolderId(string $uid, int $folderid, $limit=null, $offset=null) {
+	public function findByFolderId(string $uid, int $folderid, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -104,7 +104,7 @@ class ItemMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function findItemsByIds(array $itemIds, string $uid, $limit=null, $offset=null) {
+	public function findItemsByIds(array $itemIds, string $uid, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -120,7 +120,7 @@ class ItemMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function findCandidates(int $itemID, array $excludeIDs, string $uid, $limit=null, $offset=null) {
+	public function findCandidates(int $itemID, array $excludeIDs, string $uid, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
