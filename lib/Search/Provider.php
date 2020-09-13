@@ -92,7 +92,7 @@ class Provider implements IProvider {
 	 * @inheritDoc
 	 */
 	public function getOrder(string $route, array $routeParameters): int {
-		if ($route === 'inventory.Page.index') {
+		if ($route === 'inventory.page.index') {
 			return -1;
 		}
 		return 50;
@@ -141,7 +141,7 @@ class Provider implements IProvider {
 	 */
 	protected function getDeepLinkToInventoryFolder(string $folderPath): string {
 		return $this->urlGenerator->getAbsoluteURL(
-			$this->urlGenerator->linkToRoute('inventory.Page.index')
+			$this->urlGenerator->linkToRoute('inventory.page.index')
 			. '#/folders/'
 			. $folderPath
 		);
@@ -154,7 +154,7 @@ class Provider implements IProvider {
 	 */
 	protected function getDeepLinkToInventoryItem(string $folderPath, int $itemNr): string {
 		return $this->urlGenerator->getAbsoluteURL(
-			$this->urlGenerator->linkToRoute('inventory.Page.index')
+			$this->urlGenerator->linkToRoute('inventory.page.index')
 			. '#/folders/'
 			. $folderPath
 			. ($folderPath ? '/' : '')
