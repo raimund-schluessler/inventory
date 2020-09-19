@@ -3,6 +3,12 @@
 	right: 0;
 }
 
+// Hack for https://github.com/nextcloud/nextcloud-vue/issues/1384
+body {
+	min-height: 100%;
+	height: auto;
+}
+
 * {
 	margin: 0;
 	padding: 0;
