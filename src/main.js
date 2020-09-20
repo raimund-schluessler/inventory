@@ -67,34 +67,25 @@ OCA.Inventory.App = new Vue({
 		}
 	},
 	mounted() {
-		const version = this.$OC.config.version.split('.')
-
-		if (version[0] >= 20) {
-			// Hook to new global event for unified search
-			subscribe('nextcloud:unified-search.search', this.filterProxy)
-			subscribe('nextcloud:unified-search.reset', this.cleanSearch)
-		} else {
-			this.$OC.Search = new OCA.Search(this.filter, this.cleanSearch)
-		}
+		// Hook to new global event for unified search
+		subscribe('nextcloud:unified-search.search', this.filter)
+		subscribe('nextcloud:unified-search.reset', this.cleanFilter)
 	},
 	beforeMount() {
 		this.$store.dispatch('loadSettings')
 	},
 	beforeDestroy() {
-		unsubscribe('nextcloud:unified-search.search', this.filterProxy)
-		unsubscribe('nextcloud:unified-search.reset', this.cleanSearch)
+		unsubscribe('nextcloud:unified-search.search', this.filter)
+		unsubscribe('nextcloud:unified-search.reset', this.cleanFilter)
 	},
 	methods: {
-		filterProxy({ query }) {
-			this.filter(query)
-		},
-		filter(query) {
+		filter({ query }) {
 			this.searchString = query
 			if (!query) {
 				this.$store.commit('setSearchResults', [])
 			}
 		},
-		cleanSearch() {
+		cleanFilter() {
 			this.searchString = ''
 			this.$store.commit('setSearchResults', [])
 		},
