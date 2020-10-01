@@ -53,7 +53,7 @@ export default {
 			this.$emit('update:qrModalOpen', false)
 		},
 		onDecode(result) {
-			this.$emit('recognizedQrCode', result)
+			this.$emit('recognized-qr-code', result)
 		},
 
 		async onInit(promise) {

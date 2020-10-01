@@ -118,7 +118,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 									<span>{{ uuid.uuid }}</span>
 									<div class="actions">
 										<Actions :boundaries-element="boundaries">
-											<ActionButton icon="icon-qrcode" :close-after-click="true" @click="$emit('openBarcode', uuid.uuid)">
+											<ActionButton icon="icon-qrcode" :close-after-click="true" @click="$emit('open-barcode', uuid.uuid)">
 												{{ t('inventory', 'Show QR Code') }}
 											</ActionButton>
 											<ActionButton icon="icon-delete" @click="removeUuid(instance, uuid.uuid)">
@@ -164,7 +164,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="new_instance" method="POST" @submit.prevent="putInstance" />
 		<form id="edit_instance" method="POST" @submit.prevent="saveInstance" />
 		<!-- qrcode -->
-		<QrScanModal :qr-modal-open.sync="qrModalOpen" @recognizedQrCode="foundUuid" />
+		<QrScanModal :qr-modal-open.sync="qrModalOpen" @recognized-qr-code="foundUuid" />
 	</div>
 </template>
 

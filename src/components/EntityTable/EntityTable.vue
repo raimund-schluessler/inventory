@@ -440,7 +440,7 @@ export default {
 			/**
 			 * Emits that the selected items have changed
 			 */
-			this.$emit('selectedItemsChanged', this.selectedItems)
+			this.$emit('selected-items-changed', this.selectedItems)
 		},
 
 		generateUrl,
@@ -466,7 +466,7 @@ export default {
 				return true
 			})
 			if (before !== this.selectedEntities.length) {
-				this.$emit('selectedItemsChanged', this.selectedItems)
+				this.$emit('selected-items-changed', this.selectedItems)
 			}
 		},
 
@@ -493,7 +493,7 @@ export default {
 			} else {
 				this.selectedEntities.push(item)
 			}
-			this.$emit('selectedItemsChanged', this.selectedItems)
+			this.$emit('selected-items-changed', this.selectedItems)
 		},
 		isSelected(item) {
 			return this.selectedEntities.includes(item)

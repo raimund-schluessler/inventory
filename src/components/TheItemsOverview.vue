@@ -87,6 +87,10 @@ export default {
 		ActionRouter,
 		ActionButton,
 	},
+	beforeRouteUpdate(to, from, next) {
+		this.loadCollectionsAndItems(to.params.path)
+		next()
+	},
 	props: {
 		collection: {
 			type: String,
@@ -143,10 +147,6 @@ export default {
 	},
 	created() {
 		this.loadCollectionsAndItems(this.$route.params.path)
-	},
-	beforeRouteUpdate(to, from, next) {
-		this.loadCollectionsAndItems(to.params.path)
-		next()
 	},
 	methods: {
 		...mapActions([
