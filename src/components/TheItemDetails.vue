@@ -143,7 +143,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Instances') }}</span>
 					</h3>
-					<ItemInstances :item="item" :instance-id="instanceId" @openBarcode="(uuid) => openBarcode(uuid)" />
+					<ItemInstances :item="item" :instance-id="instanceId" @open-barcode="(uuid) => openBarcode(uuid)" />
 				</div>
 				<div v-if="parentItems.length" class="paragraph">
 					<h3>
@@ -153,7 +153,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<EntityTable :items="parentItems"
 							:unlink="true"
 							:search-string="$root.searchString"
-							@selectedItemsChanged="selectedParentsChanged"
+							@selected-items-changed="selectedParentsChanged"
 							@unlink="unlink('parent')" />
 					</div>
 				</div>
@@ -165,7 +165,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<EntityTable :items="subItems"
 							:unlink="true"
 							:search-string="$root.searchString"
-							@selectedItemsChanged="selectedSubChanged"
+							@selected-items-changed="selectedSubChanged"
 							@unlink="unlink('sub')" />
 					</div>
 				</div>
@@ -177,7 +177,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<EntityTable :items="relatedItems"
 							:unlink="true"
 							:search-string="$root.searchString"
-							@selectedItemsChanged="selectedRelatedChanged"
+							@selected-items-changed="selectedRelatedChanged"
 							@unlink="unlink('related')" />
 					</div>
 				</div>
@@ -238,6 +238,13 @@ export default {
 	directives: {
 		ClickOutside,
 		focus,
+	},
+	beforeRouteUpdate(to, from, next) {
+		this.getItem(to.params.id)
+		this.loadSubItems(to.params.id)
+		this.loadParentItems(to.params.id)
+		this.loadRelatedItems(to.params.id)
+		next()
 	},
 	props: {
 		id: {
@@ -339,13 +346,6 @@ export default {
 		this.loadSubItems(this.id)
 		this.loadParentItems(this.id)
 		this.loadRelatedItems(this.id)
-	},
-	beforeRouteUpdate(to, from, next) {
-		this.getItem(to.params.id)
-		this.loadSubItems(to.params.id)
-		this.loadParentItems(to.params.id)
-		this.loadRelatedItems(to.params.id)
-		next()
 	},
 	methods: {
 

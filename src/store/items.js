@@ -434,6 +434,17 @@ const mutations = {
 	setSearchResults(state, entities) {
 		state.searchResults = entities
 	},
+
+	/**
+	 * Sets the sync status of an item
+	 *
+	 * @param {Object} state Default state
+	 * @param {Object} item The item
+	 * @param {String} status The sync status
+	 */
+	setSyncStatus(state, { item, status }) {
+		Vue.set(item, 'syncstatus', status)
+	},
 }
 
 const actions = {

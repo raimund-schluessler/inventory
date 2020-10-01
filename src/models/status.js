@@ -26,10 +26,9 @@ export default class Status {
 	 *
 	 * @param {String} type The type of the status
 	 * @param {String} message The type of the status
-	 * @param {String} action The type of the status
 	 * @memberof Status
 	 */
-	constructor(type, message, action = null) {
+	constructor(type, message) {
 
 		this.duration = -1
 		this.type = type
@@ -56,7 +55,6 @@ export default class Status {
 			break
 		}
 
-		this.action = action
 		this.message = message
 	}
 

@@ -26,11 +26,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			html: true
 		}"
 		class="status-display"
-		:class="status.cssClass"
-		@click="react" />
+		:class="status.cssClass" />
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 
 export default {
 	name: 'ItemStatusDisplay',
@@ -59,17 +59,21 @@ export default {
 		this.checkTimeout(this.status)
 	},
 	methods: {
-		async react() {
-			await this.$store.dispatch(this.status.action, { item: this.item })
-			this.item.conflict = false
-		},
+		...mapMutations([
+			'clearSyncStatus',
+		]),
 		checkTimeout(newStatus) {
 			if (newStatus) {
 				if (this.resetStatusTimeout) {
 					clearTimeout(this.resetStatusTimeout)
 				}
 				if (newStatus.duration > 0) {
-					this.resetStatusTimeout = setTimeout(() => { this.item.syncstatus = null }, this.status.duration)
+					this.resetStatusTimeout = setTimeout(
+						() => {
+							this.setSyncStatus({ item: this.item, status: null })
+						},
+						this.status.duration
+					)
 				}
 			}
 		},

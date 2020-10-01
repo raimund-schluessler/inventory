@@ -71,7 +71,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:search-string="searchString"
 					mode="selection"
 					:loading="loading"
-					@selectedItemsChanged="selectedItemsChanged" />
+					@selected-items-changed="selectedItemsChanged" />
 			</div>
 
 			<div class="footer">
