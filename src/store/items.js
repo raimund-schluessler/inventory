@@ -131,6 +131,7 @@ const getters = {
 				return entity.path !== rootState.route.params.path
 				&& entity.path !== `${rootState.route.params.path}/${entity.name}`
 			}
+			return false
 		})
 	},
 
