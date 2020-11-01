@@ -6,7 +6,7 @@ build site:
   image: node:10
   stage: build
   script:
-    - npm install --progress=false
+    - npm ci
     - npm run build
   artifacts:
     expire_in: 1 week
@@ -17,7 +17,7 @@ javascript:
   image: node:10
   stage: test
   script:
-    - npm install --progress=false
+    - npm ci
     - npm run test
 
 PHP7.3 + SQLite:

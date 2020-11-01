@@ -274,8 +274,8 @@ export default {
 					if (collection.name.toLowerCase().indexOf(searchQueryObj.searchTerms[jj].toLowerCase()) > -1) {
 						return true
 					}
-					return false
 				}
+				return false
 			})
 
 			const filteredItems = this.items.filter(item => {
