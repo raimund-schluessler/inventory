@@ -124,6 +124,7 @@ appstore: clean build
 	--exclude=/.php_cs.dist \
 	--exclude=/.prettierrc.js \
 	--exclude=/.scrutinizer.yml \
+	--exclude=/.stylelintignore \
 	--exclude=/.stylelintrc \
 	--exclude=/.travis.yml \
 	--exclude=/.tx \
