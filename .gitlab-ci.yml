@@ -13,6 +13,9 @@ build site:
     paths:
       - dist
 
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
 javascript:
   image: node:10
   stage: test
