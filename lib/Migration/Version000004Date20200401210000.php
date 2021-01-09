@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace OCA\Inventory\Migration;
 
 use Closure;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\DB\ISchemaWrapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
@@ -43,7 +43,7 @@ class Version000004Date20200401210000 extends SimpleMigrationStep {
 			$table = $schema->getTable('invtry_places');
 			
 			if (!$table->hasColumn('path')) {
-				$table->addColumn('path', Type::STRING, [
+				$table->addColumn('path', Types::STRING, [
 					'notnull' => false,
 					'length' => 4000,
 					'default' => '',

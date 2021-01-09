@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OCA\Inventory\Migration;
 
 use Closure;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\DBAL\Types\Type;
 use OCP\DB\ISchemaWrapper;
 use OCP\Migration\SimpleMigrationStep;
@@ -35,19 +36,19 @@ class Version000003Date20200216210000 extends SimpleMigrationStep {
 			
 			if ($table->hasColumn('description')) {
 				$table->changeColumn('description', [
-					'type' => Type::getType(Type::TEXT),
+					'type' => Type::getType(Types::TEXT),
 					'length' => 65000
 				]);
 			}
 			if ($table->hasColumn('details')) {
 				$table->changeColumn('details', [
-					'type' => Type::getType(Type::TEXT),
+					'type' => Type::getType(Types::TEXT),
 					'length' => 65000
 				]);
 			}
 			if ($table->hasColumn('comment')) {
 				$table->changeColumn('comment', [
-					'type' => Type::getType(Type::TEXT),
+					'type' => Type::getType(Types::TEXT),
 					'length' => 65000
 				]);
 			}
@@ -58,7 +59,7 @@ class Version000003Date20200216210000 extends SimpleMigrationStep {
 			
 			if ($table->hasColumn('comment')) {
 				$table->changeColumn('comment', [
-					'type' => Type::getType(Type::TEXT),
+					'type' => Type::getType(Types::TEXT),
 					'length' => 65000
 				]);
 			}

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace OCA\Inventory\Migration;
 
 use Closure;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\DB\ISchemaWrapper;
 use OCP\Migration\SimpleMigrationStep;
 use OCP\Migration\IOutput;
@@ -32,23 +32,23 @@ class Version000001Date20191231181200 extends SimpleMigrationStep {
 
 		if (!$schema->hasTable('invtry_folders')) {
 			$table = $schema->createTable('invtry_folders');
-			$table->addColumn('id', Type::BIGINT, [
+			$table->addColumn('id', Types::BIGINT, [
 				'autoincrement' => true,
 				'notnull' => true,
 				'length' => 8,
 			]);
-			$table->addColumn('uid', Type::STRING, [
+			$table->addColumn('uid', Types::STRING, [
 				'notnull' => true,
 				'length' => 64,
 			]);
-			$table->addColumn('name', Type::STRING, [
+			$table->addColumn('name', Types::STRING, [
 				'notnull' => true,
 			]);
-			$table->addColumn('path', Type::STRING, [
+			$table->addColumn('path', Types::STRING, [
 				'notnull' => false,
 				'length' => 4000,
 			]);
-			$table->addColumn('parentid', Type::BIGINT, [
+			$table->addColumn('parentid', Types::BIGINT, [
 				'notnull' => false,
 				'length' => 8,
 			]);
@@ -59,14 +59,14 @@ class Version000001Date20191231181200 extends SimpleMigrationStep {
 			$table = $schema->getTable('invtry_items');
 			
 			if (!$table->hasColumn('folderid')) {
-				$table->addColumn('folderid', Type::BIGINT, [
+				$table->addColumn('folderid', Types::BIGINT, [
 					'notnull' => true,
 					'length' => 8,
 					'default' => '-1',
 				]);
 			}
 			if (!$table->hasColumn('path')) {
-				$table->addColumn('path', Type::STRING, [
+				$table->addColumn('path', Types::STRING, [
 					'notnull' => false,
 					'length' => 4000,
 					'default' => '',
