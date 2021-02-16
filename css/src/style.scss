@@ -64,15 +64,6 @@ body {
 			}
 		}
 	}
-
-	.app-content-details.notice {
-		color: $gray;
-		font-size: 16px;
-		position: absolute;
-		text-align: center;
-		top: 50%;
-		width: 100%;
-	}
 }
 
 .app-navigation {
@@ -587,7 +578,7 @@ table {
 				align-items: center;
 				flex-wrap: nowrap;
 				flex-direction: row;
-				background-color: $color-primary;
+				background-color: var(--color-primary);
 				padding: 8px;
 			
 				.title {
@@ -732,7 +723,7 @@ table {
 				.filesize,
 				.filedate {
 					font-size: 90%;
-					color: $color-darkgrey;
+					color: var(--color-text-lighter);
 				}
 			}
 		}
