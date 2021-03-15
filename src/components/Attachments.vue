@@ -95,7 +95,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</transition>
 
-		<Modal v-if="modalShow" :title="t('inventory', 'File already exists')" @close="modalShow=false">
+		<Modal v-if="modalShow"
+			class="modal-attachments"
+			:title="t('inventory', 'File already exists')"
+			@close="modalShow=false">
 			<div class="modal__content">
 				<h2>{{ t('inventory', 'File already exists') }}</h2>
 				<p>
@@ -104,10 +107,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<p>
 					{{ t('inventory', 'Do you want to overwrite it?') }}
 				</p>
-				<button class="primary" @click="overrideAttachment">
+				<button @click="overrideAttachment">
 					{{ t('inventory', 'Overwrite file') }}
 				</button>
-				<button @click="modalShow=false">
+				<button class="primary" @click="modalShow=false">
 					{{ t('inventory', 'Keep existing file') }}
 				</button>
 			</div>
@@ -296,23 +299,3 @@ export default {
 	},
 }
 </script>
-
-<style scoped lang="scss">
-
-	.modal__content {
-		width: 25vw;
-		min-width: 250px;
-		height: 120px;
-		text-align: center;
-		margin: 20px 20px 60px 20px;
-
-		button {
-			float: right;
-			margin: 40px 3px 3px 0;
-		}
-	}
-
-	.drop-hint__text {
-		text-align: center;
-	}
-</style>

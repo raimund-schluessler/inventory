@@ -636,6 +636,18 @@ table {
 	}
 }
 
+.modal-attachments {
+	.modal__content {
+		width: 25vw;
+		min-width: 250px;
+		text-align: center;
+		margin: 20px;
+	
+		button {
+			margin: 40px 3px 3px 3px;
+		}
+	}
+}
 
 .status-display {
 	display: inline-block;
@@ -673,58 +685,71 @@ table {
 .attachment-list {
 	padding: 0 !important;
 
-	.attachments__wrapper {
-		width: calc(100% - 48px);
-		display: inline-block;
+	.attachments {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
 
-		>ul {
-			display: grid;
-			grid-gap: 5px;
-			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-			grid-auto-flow: dense;
+		.attachments__wrapper {
+			display: inline-block;
+			flex: 1 1 auto;
 
-			li.attachment {
-				display: flex;
-				padding: 3px;
+			>ul {
+				display: grid;
+				grid-gap: 5px;
+				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+				grid-auto-flow: dense;
 
-				&.deleted {
-					opacity: .5;
-				}
-
-				.fileicon {
-					display: inline-block;
-					min-width: 32px;
-					width: 32px;
-					height: 32px;
-					background-size: contain;
-				}
-				.details {
-					flex-grow: 1;
-					flex-shrink: 1;
-					min-width: 0;
-					flex-basis: 50%;
-					line-height: 110%;
-					padding: 2px;
-				}
-				.filename {
-					width: 70%;
+				li.attachment {
 					display: flex;
-					white-space: nowrap;
-					.basename {
+					padding: 3px;
+
+					&.deleted {
+						opacity: .5;
+					}
+
+					.fileicon {
+						display: inline-block;
+						min-width: 32px;
+						width: 32px;
+						height: 32px;
+						background-size: contain;
+					}
+					.details {
+						flex-grow: 1;
+						flex-shrink: 1;
+						min-width: 0;
+						flex-basis: 50%;
+						line-height: 110%;
+						padding: 2px;
+					}
+					.filename {
+						width: 70%;
+						display: flex;
 						white-space: nowrap;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						padding-bottom: 2px;
+						.basename {
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							padding-bottom: 2px;
+						}
+						.extension {
+							opacity: 0.7;
+						}
 					}
-					.extension {
-						opacity: 0.7;
+					.filesize,
+					.filedate {
+						font-size: 90%;
+						color: var(--color-text-lighter);
 					}
 				}
-				.filesize,
-				.filedate {
-					font-size: 90%;
-					color: var(--color-text-lighter);
-				}
+			}
+		}
+		.dragover {
+			width: 100%;
+
+			.drop-hint__text {
+				text-align: center;
 			}
 		}
 	}
