@@ -21,7 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<div v-if="item" class="app-content-details">
+		<div v-if="item">
 			<div id="controls" class="itemnavigation">
 				<Breadcrumbs :root-icon="`icon-bw icon-${collection}`">
 					<Breadcrumb v-for="crumb in breadcrumbs"
@@ -184,10 +184,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<RelationModal :modal-open.sync="modalOpen" :link="link" :item-id="id" />
 		</div>
-		<div v-else class="app-content-details notice">
+		<EmptyContent v-else icon="icon-search">
 			<span v-if="loading">{{ t('inventory', 'Loading item from server.') }}</span>
 			<span v-else>{{ t('inventory', 'Item not found!') }}</span>
-		</div>
+		</EmptyContent>
 		<form id="edit_item" method="POST" @submit.prevent="saveItem" />
 		<Modal v-if="showBarcode"
 			id="qrcode-modal"
@@ -219,6 +219,7 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
 import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
+import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
 import bwipjs from 'bwip-js'
 import ClickOutside from 'vue-click-outside'
 import { mapActions, mapGetters } from 'vuex'
@@ -234,6 +235,7 @@ export default {
 		Breadcrumbs,
 		Breadcrumb,
 		Modal,
+		EmptyContent,
 	},
 	directives: {
 		ClickOutside,
