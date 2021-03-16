@@ -43,6 +43,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</a>
 					</div>
 					<Actions :boundaries-element="boundaries">
+						<ActionLink
+							:href="fileLink(attachment)"
+							icon="icon-external"
+							target="_blank"
+							:close-after-click="true">
+							{{ t('inventory', 'Show in files') }}
+						</ActionLink>
 						<ActionButton v-if="canUnlink(attachment)"
 							icon="icon-close"
 							:close-after-click="true"
@@ -124,12 +131,14 @@ import { formatFileSize } from '@nextcloud/files'
 import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionLink from '@nextcloud/vue/dist/Components/ActionLink'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 
 export default {
 	components: {
 		Actions,
 		ActionButton,
+		ActionLink,
 		Modal,
 	},
 	filters: {
@@ -295,6 +304,10 @@ export default {
 			} else {
 				return generateUrl(`/apps/inventory/item/${attachment.itemid}/attachment/${attachment.id}/display`)
 			}
+		},
+
+		fileLink(attachment) {
+			return generateUrl(attachment.link)
 		},
 	},
 }
