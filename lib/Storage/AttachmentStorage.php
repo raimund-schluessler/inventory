@@ -292,6 +292,16 @@ class AttachmentStorage {
 	 */
 	public function extendAttachment(Attachment $attachment) {
 		$file = $this->getFileFromRootFolder($attachment);
+		$path = $file->getParent()->getPath();
+		$rootPath = $this->getRootFolder()->getPath();
+		if (substr($path, 0, strlen($rootPath)) == $rootPath) {
+			$path = substr($path, strlen($rootPath));
+		}
+		if ($path == '') {
+			$path = '/';
+		}
+
+		$attachment->link = '/apps/files?dir=' . $path;
 		$attachment->extendedData = [
 			'filesize' => $file->getSize(),
 			'mimetype' => $file->getMimeType(),
