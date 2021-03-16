@@ -43,17 +43,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</a>
 					</div>
 					<Actions :boundaries-element="boundaries">
-						<ActionButton
-							icon="icon-delete"
-							:close-after-click="true"
-							@click="deleteAttachment(attachment)">
-							{{ t('inventory', 'Delete attachment') }}
-						</ActionButton>
 						<ActionButton v-if="canUnlink(attachment)"
 							icon="icon-close"
 							:close-after-click="true"
 							@click="unlinkAttachment(attachment)">
 							{{ t('inventory', 'Unlink attachment') }}
+						</ActionButton>
+						<ActionButton
+							icon="icon-delete"
+							:close-after-click="true"
+							@click="deleteAttachment(attachment)">
+							{{ t('inventory', 'Delete attachment') }}
 						</ActionButton>
 					</Actions>
 				</li>
