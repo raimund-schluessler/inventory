@@ -703,6 +703,7 @@ table {
 				li.attachment {
 					display: flex;
 					padding: 3px;
+					align-items: center;
 
 					&.deleted {
 						opacity: .5;
@@ -714,6 +715,7 @@ table {
 						width: 32px;
 						height: 32px;
 						background-size: contain;
+						margin-bottom: auto;
 					}
 					.details {
 						flex-grow: 1;
