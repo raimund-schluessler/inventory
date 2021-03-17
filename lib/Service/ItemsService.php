@@ -128,6 +128,9 @@ class ItemsService {
 		// Find all items to these instances
 		$items = [];
 		foreach ($instances as $instance) {
+			if ((int)$instance->available == 0) {
+				continue;
+			}
 			if ($place) {
 				$instance->place = [
 					'id'	=> $place->id,
