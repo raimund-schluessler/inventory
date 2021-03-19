@@ -600,6 +600,35 @@ table {
 			
 				.searchbox {
 					margin-left: auto;
+
+					.searchbox-input input[type="search"] {
+						padding-left: 35px;
+						z-index: 99;
+						font-size: 14px;
+
+						&:not(:valid) ~ .close {
+							display: none;
+						}
+
+						&~ .close {
+							position: absolute;
+							right: 0;top: 0;
+							background-color: unset;
+							border: none;
+							display: inline;
+							z-index: 999;
+						}
+
+						&~ .search {
+							position: absolute;
+							left: 0;
+							width: 44px;
+							height: 44px;
+							display: inline-block;
+							padding: 10px;
+							box-sizing: border-box;
+						}
+					}
 				}
 			}
 

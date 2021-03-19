@@ -49,19 +49,22 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<label for="modalSearchbox" class="hidden-visually">
 						{{ t('inventory', 'Search') }}
 					</label>
-					<input id="modalSearchbox"
-						v-model="searchString"
-						class="icon-search-white"
-						name="query"
-						value=""
-						required=""
-						autocomplete="off"
-						type="search">
-					<button class="icon-close-white" type="reset" @click="searchString=''">
-						<span class="hidden-visually">
-							{{ t('inventory', 'Reset search') }}
-						</span>
-					</button>
+					<div class="searchbox-input">
+						<input id="modalSearchbox"
+							v-model="searchString"
+							name="query"
+							value=""
+							required=""
+							autocomplete="off"
+							type="search">
+						<Magnify class="search" :size="20" fill-color="var(--color-primary-text)" />
+						<button class="close" type="reset" @click="searchString=''">
+							<Close :size="20" fill-color="var(--color-primary-text)" />
+							<span class="hidden-visually">
+								{{ t('inventory', 'Reset search') }}
+							</span>
+						</button>
+					</div>
 				</form>
 			</div>
 
@@ -96,10 +99,14 @@ import EntityTable from './EntityTable/EntityTable.vue'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import { mapGetters, mapActions } from 'vuex'
+import Magnify from 'vue-material-design-icons/Magnify'
+import Close from 'vue-material-design-icons/Close'
 
 export default {
 	components: {
+		Close,
 		EntityTable,
+		Magnify,
 		Modal,
 		Multiselect,
 	},
