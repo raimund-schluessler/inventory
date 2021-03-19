@@ -111,7 +111,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				@dragover.native="dragOver"
 				@dragenter.native="($event) => dragEnter(item, $event)"
 				@dragleave.native="dragLeave" />
-			<div v-if="searchString" class="row row--search">
+			<div v-if="searchString && !filterOnly" class="row row--search">
 				<div class="column" :class="{'column__left': !searching}">
 					<span v-if="searching" class="icon-loading" />
 					<span>{{ searchMessage }}</span>
@@ -201,6 +201,13 @@ export default {
 		searchString: {
 			type: String,
 			default: '',
+		},
+		/*
+			Don't initialize a server side serach if true.
+		*/
+		filterOnly: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	data() {
@@ -391,7 +398,7 @@ export default {
 		items: 'checkSelected',
 		collections: 'checkSelected',
 		searchString(newVal, oldVal) {
-			if (newVal) {
+			if (newVal && !this.filterOnly) {
 				this.$store.dispatch('search', newVal)
 			}
 		},
