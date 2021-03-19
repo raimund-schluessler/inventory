@@ -176,6 +176,7 @@ export default {
 			this.loadItems()
 		},
 		closeModal(event) {
+			this.searchString = ''
 			this.$emit('update:modalOpen', false)
 		},
 		selectItems(event) {
