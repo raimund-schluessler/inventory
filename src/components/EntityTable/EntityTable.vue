@@ -359,8 +359,10 @@ export default {
 				return this.t('inventory', 'Loading places from server.')
 			} else if (this.loadingItems) {
 				return this.t('inventory', 'Loading items from server.')
-			} else if (this.searchString && this.items.length) {
+			} else if (this.searchString && this.items.length && !this.filterOnly) {
 				return this.t('inventory', 'No item found.')
+			} else if (this.searchString && this.items.length) {
+				return this.t('inventory', 'No item matches the filter.')
 			} else {
 				return this.t('inventory', 'The item list is empty.')
 			}
