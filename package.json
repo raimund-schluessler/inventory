@@ -48,6 +48,7 @@
 	},
 	"devDependencies": {
 		"@babel/core": "7.13.10",
+		"@babel/eslint-parser": "7.13.10",
 		"@babel/plugin-proposal-object-rest-spread": "7.13.8",
 		"@babel/plugin-syntax-dynamic-import": "7.8.3",
 		"@babel/preset-env": "7.13.10",
@@ -55,7 +56,6 @@
 		"@nextcloud/eslint-config": "4.0.0",
 		"@nextcloud/eslint-plugin": "2.0.0",
 		"babel-core": "7.0.0-bridge.0",
-		"babel-eslint": "10.1.0",
 		"babel-jest": "26.6.3",
 		"babel-loader": "8.2.2",
 		"css-loader": "5.1.1",
