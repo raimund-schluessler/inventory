@@ -74,7 +74,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:search-string="searchString"
 					:filter-only="true"
 					mode="selection"
-					:loading="loading"
 					@selected-items-changed="selectedItemsChanged" />
 			</div>
 
