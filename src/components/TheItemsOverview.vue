@@ -31,10 +31,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</Breadcrumbs>
 			<Actions
 				container="#controls"
-				default-icon="icon-add"
 				:boundaries-element="boundaries"
 				:open.sync="actionsOpen"
 				@close="addingCollection = false">
+				<ActionButton icon="icon-qrcode" :close-after-click="true" @click="openQrModal()">
+					{{ t('inventory', 'Scan QR code') }}
+				</ActionButton>
 				<ActionRouter :to="`/${collection}/${($route.params.path) ? $route.params.path + '/' : ''}additems`" icon="icon-add">
 					{{ t('inventory', 'Add items') }}
 				</ActionRouter>
@@ -62,12 +64,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			:collection-type="collection"
 			:show-dropdown="true"
 			:search-string="$root.searchString" />
+		<!-- qrcode -->
+		<QrScanModal :qr-modal-open.sync="qrModalOpen" @recognized-qr-code="foundUuid" />
 	</div>
 </template>
 
 <script>
 import Item from '../models/item.js'
 import EntityTable from './EntityTable/EntityTable.vue'
+import QrScanModal from './QrScanModal.vue'
 
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
@@ -79,13 +84,14 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	components: {
-		EntityTable,
-		Breadcrumbs,
-		Breadcrumb,
 		Actions,
 		ActionInput,
 		ActionRouter,
 		ActionButton,
+		Breadcrumb,
+		Breadcrumbs,
+		EntityTable,
+		QrScanModal,
 	},
 	beforeRouteUpdate(to, from, next) {
 		this.loadCollectionsAndItems(to.params.path)
@@ -99,12 +105,13 @@ export default {
 	},
 	data() {
 		return {
-			addingCollection: false,
-			errorString: null,
-			collectionNameError: false,
 			actionsOpen: false,
+			addingCollection: false,
 			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
 			boundaries: document.querySelector('#content-vue'),
+			collectionNameError: false,
+			errorString: null,
+			qrModalOpen: false,
 		}
 	},
 	computed: {
@@ -156,7 +163,21 @@ export default {
 			'moveInstance',
 			'moveFolder',
 			'movePlace',
+			'searchByUUID',
 		]),
+
+		openQrModal() {
+			this.qrModalOpen = true
+		},
+
+		async foundUuid(uuid) {
+			const response = await this.searchByUUID(uuid)
+			if (response.length) {
+				this.qrModalOpen = false
+				const item = response[0]
+				this.$router.push(`/folders/${item.path}/item-${item.id}`)
+			}
+		},
 
 		moveEntities(e, newPath) {
 			newPath = newPath.replace(`/${this.collection}/`, '')
