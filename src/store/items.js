@@ -782,6 +782,17 @@ const actions = {
 			console.debug('Searching on the server failed.')
 		}
 	},
+
+	async searchByUUID({ commit }, searchString) {
+		try {
+			const response = await Axios.post(generateUrl('apps/inventory/search'), { searchString })
+			return response.data.items.map(item => {
+				return new Item(item)
+			})
+		} catch {
+			return []
+		}
+	},
 }
 
 export default { state, getters, mutations, actions }

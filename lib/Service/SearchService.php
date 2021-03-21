@@ -47,7 +47,7 @@ class SearchService {
 			'folders' => [],
 			'items' => []
 		];
-		if ($searchString === '') {
+		if ($searchString === '' || $searchString === null) {
 			return $results;
 		}
 
