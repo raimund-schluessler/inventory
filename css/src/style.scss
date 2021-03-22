@@ -304,6 +304,65 @@ body {
 	}
 }
 
+.propertytable {
+	white-space: unset;
+	width: 100%;
+
+	.row {
+		display: grid;
+		grid-template-columns: 110px 1fr;
+		min-height: 44px;
+		border-bottom: 1px solid var(--color-border-dark);
+	}
+
+	.column {
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+		padding: 0 10px;
+
+		&.width-2 {
+			grid-column-start: 1;
+			grid-column-end: 3;
+		}
+
+		.wrapper {
+			width: 100%;
+			display: inline-flex;
+			align-items: center;
+			flex-wrap: wrap;
+
+			span {
+				max-width: 100%;
+
+				a {
+					word-wrap: break-word;
+				}
+			}
+
+			.action-item {
+				margin-right: -10px;
+			}
+		}
+
+		.attachments {
+			width: 100%;
+		}
+
+		.button--save {
+			margin-left: auto;
+		}
+
+		.input {
+			width: 100%;
+
+			input {
+				width: 100%;
+			}
+		}
+	}
+}
+
 table {
 	&.instances,
 	&.properties {
@@ -464,8 +523,6 @@ table {
 
 	.item_images {
 		width: 100%;
-		margin-top: -20px;
-		max-width: 500px;
 		min-width: 200px;
 
 		// Make the item_images square
@@ -531,11 +588,15 @@ table {
 	color: var(--color-text-light);
 	float: left;
 	font-weight: bold;
-	margin: 0 4px;
+	margin-right: 8px;
 	padding: 2px 5px;
 	min-height: 22px;
 	line-height: 15px;
 	height: 15px;
+
+	&:last-child {
+		margin-right: 0;
+	}
 }
 
 .itemnavigation {
@@ -722,6 +783,7 @@ table {
 		.attachments__wrapper {
 			display: inline-block;
 			flex: 1 1 auto;
+			padding: 0 10px;
 
 			>ul {
 				display: grid;
@@ -790,7 +852,7 @@ table {
 	#itemdetails {
 		.paragraph {
 			> div {
-				margin: 0 10px;
+				padding: 0 10px;
 			}
 
 			&.properties {
