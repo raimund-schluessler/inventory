@@ -67,7 +67,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Properties') }}</span>
 					</h3>
-					<div v-click-outside="hideEditItem" class="propertytable">
+					<div v-click-outside="hideEditItem" class="table table--properties">
 						<div v-for="itemProperty in itemProperties" :key="itemProperty.key" class="row">
 							<div class="column">
 								<span>{{ itemProperty.name }}</span>
@@ -118,12 +118,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="column">
 								{{ t('inventory', 'Attachments') }}
 							</div>
-							<div class="column attachment-list">
-								<Attachments :attachments="item.attachments" :item-id="String(item.id)" />
-							</div>
+							<Attachments :attachments="item.attachments" :item-id="String(item.id)" class="column column--attachments" />
 						</div>
 						<div v-if="editingItem" class="row">
-							<div class="column width-2">
+							<div class="column column--width-2">
 								<button type="submit" form="edit_item" class="button--save">
 									{{ t('inventory', 'Save') }}
 								</button>
