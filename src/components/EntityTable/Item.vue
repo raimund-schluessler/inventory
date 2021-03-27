@@ -20,7 +20,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div :class="{ 'row--selected': isSelected }"
+	<div :class="{ 'row--selected': isSelected, 'row--has-status': entity.syncstatus }"
 		class="row handler"
 		@click.ctrl="selectEntity(entity)">
 		<div class="column column--selection">
@@ -80,7 +80,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 			</ul>
 		</div>
-		<div class="column">
+		<div v-if="entity.syncstatus" class="column">
 			<ItemStatusDisplay :item="entity" />
 		</div>
 	</div>

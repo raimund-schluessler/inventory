@@ -22,7 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div>
 		<div class="entitytable" @dragover="dragOverTable">
-			<div class="row row--header">
+			<div :class="{ 'row--has-status': oneEntityHasStatus }" class="row row--header">
 				<div :id="`headerSelection-${_uid}`" class="column column--selection">
 					<input :id="`select_all_items-${_uid}`"
 						:checked="allEntitiesSelected"
@@ -237,6 +237,10 @@ export default {
 
 		someEntitiesSelected() {
 			return !this.allEntitiesSelected && this.selectedEntities.length > 0
+		},
+
+		oneEntityHasStatus() {
+			return this.filteredEntities.some(item => item.syncstatus)
 		},
 
 		selectedItems: {
