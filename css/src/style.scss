@@ -767,6 +767,7 @@ body {
 			li.attachment {
 				display: flex;
 				padding: 3px;
+				padding-right: 0;
 				align-items: center;
 
 				&.deleted {
