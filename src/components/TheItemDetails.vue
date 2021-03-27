@@ -121,10 +121,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<Attachments :attachments="item.attachments" :item-id="String(item.id)" class="column column--attachments" />
 						</div>
 						<div v-if="editingItem" class="row">
-							<div class="column column--width-2">
-								<button type="submit" form="edit_item" class="button--save">
-									{{ t('inventory', 'Save') }}
-								</button>
+							<div class="column column--width-2 column--actions">
+								<Actions>
+									<ActionButton icon="icon-checkmark" @click="saveItem">
+										{{ t('inventory', 'Save changes') }}
+									</ActionButton>
+								</Actions>
 							</div>
 						</div>
 					</div>
@@ -181,7 +183,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<span v-if="loading">{{ t('inventory', 'Loading item from server.') }}</span>
 			<span v-else>{{ t('inventory', 'Item not found!') }}</span>
 		</EmptyContent>
-		<form id="edit_item" method="POST" @submit.prevent="saveItem" />
+		<form id="edit_item" method="POST" />
 		<Modal v-if="showBarcode"
 			id="qrcode-modal"
 			size="full"
