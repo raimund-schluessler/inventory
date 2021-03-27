@@ -67,76 +67,66 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Properties') }}</span>
 					</h3>
-					<div>
-						<table class="properties">
-							<tbody v-click-outside="hideEditItem">
-								<tr v-for="itemProperty in itemProperties" :key="itemProperty.key">
-									<th>
-										<span>{{ itemProperty.name }}</span>
-									</th>
-									<td v-if="itemProperty.key === 'link'">
-										<div class="wrapper">
-											<span :class="{ 'visibility-hidden': editingItem }">
-												<a :href="item.link" target="_blank">
-													{{ item.link }}
-												</a>
-											</span>
-											<span v-if="editingItem" class="input">
-												<input v-model="editedItem.link"
-													type="text"
-													:placeholder="itemProperty.name"
-													:name="itemProperty.key"
-													form="edit_item">
-											</span>
-										</div>
-									</td>
-									<td v-else-if="itemProperty.key === 'tags'">
-										<div class="wrapper">
-											<ul class="tags">
-												<li v-for="tag in item.tags" :key="tag.id">
-													<span>{{ tag.name }}</span>
-												</li>
-											</ul>
-										</div>
-									</td>
-									<td v-else>
-										<div class="wrapper">
-											<span :class="{ 'visibility-hidden': editingItem }">{{ item[itemProperty.key] }}</span>
-											<Actions
-												v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem "
-												:boundaries-element="boundaries">
-												<ActionButton icon="icon-gtin" :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
-													{{ t('inventory', 'Show GTIN') }}
-												</ActionButton>
-											</Actions>
-											<span v-if="editingItem" class="input">
-												<input v-model="editedItem[itemProperty.key]"
-													v-focus="itemProperty.key === 'name'"
-													type="text"
-													:placeholder="itemProperty.name"
-													:name="itemProperty.key"
-													form="edit_item">
-											</span>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th>
-										{{ t('inventory', 'Attachments') }}
-									</th>
-									<td class="attachment-list">
-										<Attachments :attachments="item.attachments" :item-id="String(item.id)" />
-									</td>
-								</tr>
-								<tr v-if="editingItem">
-									<td colspan="2">
-										<button type="submit" form="edit_item" class="right">
-											{{ t('inventory', 'Save') }}
-										</button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+					<div v-click-outside="hideEditItem" class="table table--properties">
+						<div v-for="itemProperty in itemProperties" :key="itemProperty.key" class="row">
+							<div class="column">
+								<span>{{ itemProperty.name }}</span>
+							</div>
+							<div class="column">
+								<div v-if="itemProperty.key === 'link'" class="wrapper">
+									<span :class="{ 'visibility-hidden': editingItem }">
+										<a :href="item.link" target="_blank">
+											{{ item.link }}
+										</a>
+									</span>
+									<span v-if="editingItem" class="input">
+										<input v-model="editedItem.link"
+											type="text"
+											:placeholder="itemProperty.name"
+											:name="itemProperty.key"
+											form="edit_item">
+									</span>
+								</div>
+								<div v-else-if="itemProperty.key === 'tags'" class="wrapper">
+									<ul class="tags">
+										<li v-for="tag in item.tags" :key="tag.id">
+											<span>{{ tag.name }}</span>
+										</li>
+									</ul>
+								</div>
+								<div v-else class="wrapper">
+									<span :class="{ 'visibility-hidden': editingItem }">{{ item[itemProperty.key] }}</span>
+									<Actions
+										v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem "
+										:boundaries-element="boundaries">
+										<ActionButton icon="icon-gtin" :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
+											{{ t('inventory', 'Show GTIN') }}
+										</ActionButton>
+									</Actions>
+									<span v-if="editingItem" class="input">
+										<input v-model="editedItem[itemProperty.key]"
+											v-focus="itemProperty.key === 'name'"
+											type="text"
+											:placeholder="itemProperty.name"
+											:name="itemProperty.key"
+											form="edit_item">
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="column">
+								{{ t('inventory', 'Attachments') }}
+							</div>
+							<Attachments :attachments="item.attachments" :item-id="String(item.id)" class="column column--attachments" />
+						</div>
+						<div v-if="editingItem" class="row">
+							<div class="column column--width-2">
+								<button type="submit" form="edit_item" class="button--save">
+									{{ t('inventory', 'Save') }}
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="paragraph">

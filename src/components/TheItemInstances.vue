@@ -21,55 +21,64 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<table class="instances">
-			<thead>
-				<tr>
-					<th v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.class">
-						<span>{{ instanceProperty.name }}</span>
-					</th>
-					<th class="actions">
-						<div>
-							<Actions :boundaries-element="boundaries">
-								<ActionButton icon="icon-add" @click="toggleInstanceInput">
-									{{ t('inventory', 'Add instance') }}
-								</ActionButton>
-							</Actions>
+		<div class="table table--instances">
+			<div class="row row--wide-header">
+				<div v-for="instanceProperty in instanceProperties"
+					:key="instanceProperty.key"
+					class="column column--wide-header">
+					<span>{{ instanceProperty.name }}</span>
+				</div>
+				<div class="column column--actions">
+					<Actions :boundaries-element="boundaries">
+						<ActionButton icon="icon-add" @click="toggleInstanceInput">
+							{{ t('inventory', 'Add instance') }}
+						</ActionButton>
+					</Actions>
+				</div>
+			</div>
+			<template v-for="instance in item.instances">
+				<div v-if="editedInstance.id !== instance.id"
+					:key="`instance-${instance.id}`"
+					class="row row--properties"
+					:class="{active: instanceActive(instance)}">
+					<div class="column column--narrow-header column--narrow-spacer" />
+					<template v-for="instanceProperty in instanceProperties">
+						<div :key="instanceProperty.key" class="column column--narrow-header">
+							<span>{{ instanceProperty.name }}</span>
 						</div>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<template v-for="instance in item.instances">
-					<tr v-if="editedInstance.id !== instance.id"
-						:key="`instance-${instance.id}`"
-						class="handler"
-						:class="{active: instanceActive(instance)}">
-						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.class">
+						<div :key="instanceProperty.key" class="column">
 							<router-link v-if="instanceProperty.key === 'place' && instance.place" :to="`/places/${instance.place.path}`">
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</router-link>
 							<span v-else>
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</span>
-						</td>
-						<td class="actions">
-							<div>
-								<Actions :boundaries-element="boundaries">
-									<ActionButton icon="icon-add" :close-after-click="true" @click="toggleUuidInput(instance)">
-										{{ t('inventory', 'Add UUID') }}
-									</ActionButton>
-									<ActionButton icon="icon-rename" @click="toggleEditInstance(instance)">
-										{{ t('inventory', 'Edit instance') }}
-									</ActionButton>
-									<ActionButton icon="icon-delete" @click="removeInstance(instance)">
-										{{ t('inventory', 'Delete instance') }}
-									</ActionButton>
-								</Actions>
-							</div>
-						</td>
-					</tr>
-					<tr v-else :key="`editinstance-${instance.id}`" v-click-outside="() => { hideEditInstance(instance) }">
-						<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.class">
+						</div>
+					</template>
+					<div class="column column--actions">
+						<Actions :boundaries-element="boundaries">
+							<ActionButton icon="icon-add" :close-after-click="true" @click="toggleUuidInput(instance)">
+								{{ t('inventory', 'Add UUID') }}
+							</ActionButton>
+							<ActionButton icon="icon-rename" @click="toggleEditInstance(instance)">
+								{{ t('inventory', 'Edit instance') }}
+							</ActionButton>
+							<ActionButton icon="icon-delete" @click="removeInstance(instance)">
+								{{ t('inventory', 'Delete instance') }}
+							</ActionButton>
+						</Actions>
+					</div>
+				</div>
+				<div v-else
+					:key="`editinstance-${instance.id}`"
+					v-click-outside="() => { hideEditInstance(instance) }"
+					class="row row--properties">
+					<div class="column column--narrow-header column--narrow-spacer" />
+					<template v-for="instanceProperty in instanceProperties">
+						<div :key="instanceProperty.key" class="column column--narrow-header">
+							<span>{{ instanceProperty.name }}</span>
+						</div>
+						<div :key="instanceProperty.key" class="column column--input">
 							<div v-if="instanceProperty.key === 'place'">
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</div>
@@ -79,90 +88,103 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								:placeholder="getInstanceProperty(instance, instanceProperty)"
 								:name="instanceProperty.key"
 								form="edit_instance">
-						</td>
-						<td class="actions">
-							<!-- Submit button -->
-							<button type="submit" form="edit_instance">
-								{{ t('inventory', 'Save') }}
-							</button>
-						</td>
-					</tr>
-					<tr v-if="addUuidTo === instance.id"
-						:key="`uuidInput-${instance.id}`"
-						v-click-outside="() => hideUuidInput(instance)">
-						<td :colspan="instanceProperties.length + 1" class="add-uuid">
-							<form name="addUuid" @submit.prevent="setUuid(instance)">
-								<input v-model="newUuid"
-									v-focus
-									:placeholder="t('inventory', 'Add UUID')"
-									type="text"
-									@keyup.27="addUuidTo = null">
-								<input type="button"
-									:class="{valid: newUuidValid(instance.uuids)}"
-									class="icon-qrcode"
-									@click="openQrModal">
-								<input v-if="newUuidValid(instance.uuids)"
-									type="submit"
-									class="icon-confirm"
-									value="">
-							</form>
-						</td>
-					</tr>
-					<tr v-if="instance.uuids.length" :key="`uuids${instance.id}`">
-						<td class="center">
-							{{ t('inventory', 'UUIDs') }}
-						</td>
-						<td class="uuids" :colspan="instanceProperties.length">
-							<ul>
-								<li v-for="uuid in instance.uuids" :key="`uuids${instance.id}${uuid.id}`">
-									<span>{{ uuid.uuid }}</span>
-									<div class="actions">
-										<Actions :boundaries-element="boundaries">
-											<ActionButton icon="icon-qrcode" :close-after-click="true" @click="$emit('open-barcode', uuid.uuid)">
-												{{ t('inventory', 'Show QR Code') }}
-											</ActionButton>
-											<ActionButton icon="icon-delete" @click="removeUuid(instance, uuid.uuid)">
-												{{ t('inventory', 'Delete UUID') }}
-											</ActionButton>
-										</Actions>
-									</div>
-								</li>
-							</ul>
-						</td>
-					</tr>
-					<tr :key="`attachments${instance.id}`">
-						<td class="center">
-							{{ t('inventory', 'Attachments') }}
-						</td>
-						<td :colspan="instanceProperties.length" class="attachment-list">
-							<Attachments :attachments="instance.attachments" :item-id="String(item.id)" :instance-id="String(instance.id)" />
-						</td>
-					</tr>
-				</template>
-				<tr v-if="!item.instances.length">
-					<td class="center" :colspan="instanceProperties.length + 1">
-						{{ t('inventory', 'This item has no instances.') }}
-					</td>
-				</tr>
-				<tr v-if="addingInstance" v-click-outside="hideInstanceInput">
-					<td v-for="instanceProperty in instanceProperties" :key="instanceProperty.key" :class="instanceProperty.class">
+						</div>
+					</template>
+					<div class="column column--actions">
+						<Actions :boundaries-element="boundaries">
+							<ActionButton icon="icon-checkmark" :close-after-click="true" @click="saveInstance">
+								{{ t('inventory', 'Save instance') }}
+							</ActionButton>
+						</Actions>
+					</div>
+				</div>
+				<div v-if="addUuidTo === instance.id"
+					:key="`uuidInput-${instance.id}`"
+					v-click-outside="() => hideUuidInput(instance)"
+					class="row row--add-uuid">
+					<div class="column column--add-uuid">
+						<form name="add-uuid">
+							<input v-model="newUuid"
+								v-focus
+								:placeholder="t('inventory', 'Add UUID')"
+								type="text"
+								@keyup.27="addUuidTo = null">
+						</form>
+					</div>
+					<div>
+						<Actions :boundaries-element="boundaries">
+							<ActionButton v-if="newUuidValid(instance.uuids)" icon="icon-checkmark" @click="setUuid(instance)">
+								{{ t('inventory', 'Add UUID') }}
+							</ActionButton>
+							<ActionButton v-else
+								icon="icon-qrcode"
+								:close-after-click="true"
+								@click="openQrModal">
+								{{ t('inventory', 'Scan QR code') }}
+							</ActionButton>
+						</Actions>
+					</div>
+				</div>
+				<div v-if="instance.uuids.length" :key="`uuids${instance.id}`" class="row row--column-2">
+					<div class="column column--center">
+						{{ t('inventory', 'UUIDs') }}
+					</div>
+					<div class="column column--uuids">
+						<ul>
+							<li v-for="uuid in instance.uuids" :key="`uuids${instance.id}${uuid.id}`">
+								<span>{{ uuid.uuid }}</span>
+								<Actions :boundaries-element="boundaries">
+									<ActionButton icon="icon-qrcode" :close-after-click="true" @click="$emit('open-barcode', uuid.uuid)">
+										{{ t('inventory', 'Show QR Code') }}
+									</ActionButton>
+									<ActionButton icon="icon-delete" @click="removeUuid(instance, uuid.uuid)">
+										{{ t('inventory', 'Delete UUID') }}
+									</ActionButton>
+								</Actions>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div :key="`attachments${instance.id}`" class="row row--column-2">
+					<div class="column column--center">
+						{{ t('inventory', 'Attachments') }}
+					</div>
+					<Attachments :attachments="instance.attachments"
+						:item-id="String(item.id)"
+						:instance-id="String(instance.id)"
+						class="column column--attachments" />
+				</div>
+			</template>
+			<div v-if="!item.instances.length" class="row">
+				<div class="column column--center">
+					{{ t('inventory', 'This item has no instances.') }}
+				</div>
+			</div>
+			<div v-if="addingInstance" v-click-outside="hideInstanceInput" class="row row--properties">
+				<div class="column column--narrow-header column--narrow-spacer" />
+				<template v-for="instanceProperty in instanceProperties">
+					<div :key="instanceProperty.key" class="column column--narrow-header">
+						<span>{{ instanceProperty.name }}</span>
+					</div>
+					<div :key="instanceProperty.key" class="column column--input">
 						<input v-model="newInstance[instanceProperty.key]"
 							type="text"
 							:placeholder="instanceProperty.name"
 							:name="instanceProperty.key"
 							form="new_instance">
-					</td>
-					<td class="actions">
-						<!-- Submit button -->
-						<button type="submit" form="new_instance">
-							{{ t('inventory', 'Save') }}
-						</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<form id="new_instance" method="POST" @submit.prevent="putInstance" />
-		<form id="edit_instance" method="POST" @submit.prevent="saveInstance" />
+					</div>
+				</template>
+				<div class="column column--actions">
+					<Actions :boundaries-element="boundaries">
+						<ActionButton icon="icon-checkmark" :close-after-click="true" @click="putInstance">
+							{{ t('inventory', 'Add instance') }}
+						</ActionButton>
+					</Actions>
+				</div>
+			</div>
+		</div>
+		<form id="new_instance" method="POST" />
+		<form id="edit_instance" method="POST" />
 		<!-- qrcode -->
 		<QrScanModal :qr-modal-open.sync="qrModalOpen" @recognized-qr-code="foundUuid" />
 	</div>
@@ -214,7 +236,6 @@ export default {
 				}, {
 					key: 'date',
 					name: this.t('inventory', 'Date'),
-					class: 'hide-if-narrow',
 				}, {
 					key: 'vendor',
 					name: this.t('inventory', 'Vendor'),
@@ -225,7 +246,6 @@ export default {
 				}, {
 					key: 'comment',
 					name: this.t('inventory', 'Comment'),
-					class: 'hide-if-narrow',
 				},
 			],
 			newUuid: '',
