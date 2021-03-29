@@ -83,10 +83,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</Actions>
 				</div>
 			</div>
-			<div v-if="!filteredEntities.length || loading" class="row row--empty">
+			<div v-if="!(filteredEntities.length || loadingItems) || loadingCollections" class="row row--empty">
 				<div class="column">
-					<span v-if="loading" class="icon-loading" />
-					<span>{{ emptyListMessage }}</span>
+					<span v-if="loadingCollections" class="icon-loading" />
+					<span>{{ upperPlaceholderMessage }}</span>
 				</div>
 			</div>
 			<component :is="entityType(item)"
@@ -107,6 +107,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				@dragover.native="dragOver"
 				@dragenter.native="($event) => dragEnter(item, $event)"
 				@dragleave.native="dragLeave" />
+			<div v-if="!loadingCollections && loadingItems" class="row row--empty">
+				<div class="column">
+					<span class="icon-loading" />
+					<span>{{ t('inventory', 'Loading items from server.') }}</span>
+				</div>
+			</div>
 			<div v-if="searchString && !filterOnly" class="row row--search">
 				<div class="column" :class="{'column__left': !searching}">
 					<span v-if="searching" class="icon-loading" />
@@ -223,8 +229,8 @@ export default {
 			'loadingPlaces',
 		]),
 
-		loading() {
-			return this.loadingItems || this.loadingFolders || this.loadingPlaces
+		loadingCollections() {
+			return this.loadingFolders || this.loadingPlaces
 		},
 
 		allEntitiesSelected() {
@@ -348,17 +354,15 @@ export default {
 
 			return filteredItems.concat(filteredCollections)
 		},
-		emptyListMessage() {
-			if (this.loadingItems && this.loadingFolders) {
+		upperPlaceholderMessage() {
+			if (this.loadingFolders && this.loadingItems) {
 				return this.t('inventory', 'Loading folders and items from server.')
-			} else if (this.loadingItems && this.loadingPlaces) {
+			} else if (this.loadingPlaces && this.loadingItems) {
 				return this.t('inventory', 'Loading places and items from server.')
 			} else if (this.loadingFolders) {
 				return this.t('inventory', 'Loading folders from server.')
 			} else if (this.loadingPlaces) {
 				return this.t('inventory', 'Loading places from server.')
-			} else if (this.loadingItems) {
-				return this.t('inventory', 'Loading items from server.')
 			} else if (this.searchString && this.items.length && !this.filterOnly) {
 				return this.t('inventory', 'No item found.')
 			} else if (this.searchString && this.items.length) {
