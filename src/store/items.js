@@ -462,6 +462,7 @@ const actions = {
 
 	async getItemsByFolder({ commit, state }, path) {
 		state.loading = true
+		commit('setItems', [])
 		const response = await Axios.post(generateUrl('apps/inventory/items/folder'), { path })
 		const items = response.data.map(payload => {
 			return new Item(payload)
@@ -472,6 +473,7 @@ const actions = {
 
 	async getItemsByPlace({ commit, state }, path) {
 		state.loading = true
+		commit('setItems', [])
 		const response = await Axios.post(generateUrl('apps/inventory/items/place'), { path })
 		const items = response.data.map(payload => {
 			return new Item(payload)

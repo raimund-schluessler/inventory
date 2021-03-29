@@ -113,6 +113,7 @@ const actions = {
 	async getPlacesByPlace({ commit, state }, path) {
 		state.loading = true
 		try {
+			commit('setPlaces', { places: [] })
 			const response = await Axios.post(generateUrl('apps/inventory/places'), { path })
 			const places = response.data.map(payload => {
 				return new Place(payload)

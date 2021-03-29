@@ -113,6 +113,7 @@ const actions = {
 	async getFoldersByFolder({ commit, state }, path) {
 		state.loading = true
 		try {
+			commit('setFolders', { folders: [] })
 			const response = await Axios.post(generateUrl('apps/inventory/folders'), { path })
 			const folders = response.data.map(payload => {
 				return new Folder(payload)
