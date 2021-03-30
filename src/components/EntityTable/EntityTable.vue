@@ -83,12 +83,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</Actions>
 				</div>
 			</div>
-			<div v-if="!(filteredEntities.length || loadingItems) || loadingCollections" class="row row--empty">
-				<div class="column">
-					<span v-if="loadingCollections" class="icon-loading" />
-					<span>{{ upperPlaceholderMessage }}</span>
-				</div>
-			</div>
+			<EntityTableRowPlaceholder :placeholder="placeholder('upper')" />
 			<component :is="entityType(item)"
 				v-for="item in sort(filteredEntities, sortOrder, sortDirection)"
 				:key="item.key"
@@ -107,12 +102,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				@dragover.native="dragOver"
 				@dragenter.native="($event) => dragEnter(item, $event)"
 				@dragleave.native="dragLeave" />
-			<div v-if="!loadingCollections && loadingItems" class="row row--empty">
-				<div class="column">
-					<span class="icon-loading" />
-					<span>{{ t('inventory', 'Loading items from server.') }}</span>
-				</div>
-			</div>
+			<EntityTableRowPlaceholder :placeholder="placeholder('lower')" />
 			<div v-if="searchString && !filterOnly" class="row row--search">
 				<div class="column" :class="{'column__left': !searching}">
 					<span v-if="searching" class="icon-loading" />
@@ -156,6 +146,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import ItemComponent from './Item'
 import Collection from './Collection'
+import EntityTableRowPlaceholder from './EntityTableRowPlaceholder.vue'
 import Item from '../../models/item.js'
 import Folder from '../../models/folder.js'
 import Place from '../../models/place.js'
@@ -173,6 +164,7 @@ export default {
 		Collection,
 		Actions,
 		ActionButton,
+		EntityTableRowPlaceholder,
 	},
 	props: {
 		mode: {
@@ -454,6 +446,26 @@ export default {
 			 * Emits that the selected items have changed
 			 */
 			this.$emit('selected-items-changed', this.selectedItems)
+		},
+
+		placeholder(position) {
+			/**
+			 * Upper row placeholder message (lower if sortDirection is true)
+			 */
+			if ((position === 'upper' && !this.sortDirection) || (position === 'lower' && this.sortDirection)) {
+				return {
+					show: !(this.filteredEntities.length || this.loadingItems) || this.loadingCollections,
+					loading: this.loadingCollections,
+					message: this.upperPlaceholderMessage,
+				}
+			} else {
+				return {
+					show: !this.loadingCollections && this.loadingItems,
+					loading: true,
+					message: this.t('inventory', 'Loading items from server.'),
+				}
+			}
+
 		},
 
 		generateUrl,
