@@ -152,6 +152,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<Attachments :attachments="instance.attachments"
 						:item-id="String(item.id)"
 						:instance-id="String(instance.id)"
+						:loading-attachments="loadingInstanceAttachments({ itemID: item.id, instanceID: instance.id })"
 						class="column column--attachments" />
 				</div>
 			</template>
@@ -198,7 +199,7 @@ import QrScanModal from './QrScanModal.vue'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ClickOutside from 'vue-click-outside'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
 	components: {
@@ -258,6 +259,11 @@ export default {
 			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
 			boundaries: document.querySelector('#content-vue'),
 		}
+	},
+	computed: {
+		...mapGetters({
+			loadingInstanceAttachments: 'loadingInstanceAttachments',
+		}),
 	},
 	methods: {
 		instanceActive(instance) {

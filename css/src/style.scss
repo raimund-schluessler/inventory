@@ -784,6 +784,16 @@ body {
 				padding-right: 0;
 				align-items: center;
 
+				&--placeholder {
+					.icon {
+						height: 38px;
+						width: 38px;
+					}
+					.message {
+						padding-left: 10px;
+					}
+				}
+
 				&.deleted {
 					opacity: .5;
 				}

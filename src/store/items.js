@@ -38,6 +38,8 @@ const state = {
 	item: null,
 	loadingItems: false,
 	loadingItem: false,
+	loadingAttachments: [],
+	loadingInstanceAttachments: [],
 	subItems: {},
 	parentItems: {},
 	relatedItems: {},
@@ -119,6 +121,26 @@ const getters = {
 	 */
 	loadingItem: (state) => {
 		return state.loadingItem
+	},
+
+	/**
+	 * Returns whether we currently load attachments of an item
+	 *
+	 * @param {Object} state The store data
+	 * @returns {Boolean} Are we loading an item
+	 */
+	loadingAttachments: (state) => (itemID) => {
+		return state.loadingAttachments.includes(`item-${itemID}`)
+	},
+
+	/**
+	 * Returns whether we currently load a single item from the server
+	 *
+	 * @param {Object} state The store data
+	 * @returns {Boolean} Are we loading an item
+	 */
+	loadingInstanceAttachments: (state) => ({ itemID, instanceID }) => {
+		return state.loadingInstanceAttachments.includes(`item-${itemID}_instance-${instanceID}`)
 	},
 
 	getDraggedEntities: (state) => state.draggedEntities,
@@ -523,21 +545,25 @@ const actions = {
 	},
 
 	async getAttachments({ commit }, itemID) {
+		state.loadingAttachments.push(`item-${itemID}`)
 		try {
 			const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}/attachments`))
 			commit('setAttachments', { attachments: response.data })
 		} catch {
 			commit('setAttachments', { attachments: [] })
 		}
+		state.loadingAttachments = state.loadingAttachments.filter(entry => entry !== `item-${itemID}`)
 	},
 
 	async getInstanceAttachments({ commit }, { itemID, instanceID }) {
+		state.loadingInstanceAttachments.push(`item-${itemID}_instance-${instanceID}`)
 		try {
 			const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}/instance/${instanceID}/attachments`))
 			commit('setInstanceAttachments', { instanceID, attachments: response.data })
 		} catch {
 			commit('setInstanceAttachments', { instanceID, attachments: [] })
 		}
+		state.loadingInstanceAttachments = state.loadingInstanceAttachments.filter(entry => entry !== `item-${itemID}_instance-${instanceID}`)
 	},
 
 	async createAttachment({ commit }, { itemId, formData, instanceId }) {

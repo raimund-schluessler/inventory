@@ -123,7 +123,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="column">
 								{{ t('inventory', 'Attachments') }}
 							</div>
-							<Attachments :attachments="item.attachments" :item-id="String(item.id)" class="column column--attachments" />
+							<Attachments
+								:attachments="item.attachments"
+								:item-id="String(item.id)"
+								:loading-attachments="loadingAttachments(item.id)"
+								class="column column--attachments" />
 						</div>
 						<div v-if="editingItem" class="row">
 							<div class="column column--width-2 column--actions">
@@ -315,6 +319,7 @@ export default {
 			subItems: 'getSubItems',
 			relatedItems: 'getRelatedItems',
 			loadingItem: 'loadingItem',
+			loadingAttachments: 'loadingAttachments',
 		}),
 
 		breadcrumbs() {
