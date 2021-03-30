@@ -64,8 +64,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</ActionButton>
 					</Actions>
 				</li>
-				<li v-if="!attachments.length">
-					{{ t('inventory', 'No files attached.') }}
+				<li v-if="loadingAttachments" class="attachment attachment--placeholder">
+					<span class="icon icon-loading" />
+					<span class="message">{{ t('inventory', 'Load attachments from server.') }}</span>
+				</li>
+				<li v-else-if="!attachments.length" class="attachment attachment--placeholder">
+					<span>{{ t('inventory', 'No files attached.') }}</span>
 				</li>
 			</ul>
 		</div>
@@ -167,6 +171,10 @@ export default {
 		instanceId: {
 			type: String,
 			default: null,
+		},
+		loadingAttachments: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	data() {
