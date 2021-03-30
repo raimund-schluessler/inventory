@@ -67,19 +67,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="column column--actions">
 					<Actions
-						v-if="showDropdown"
 						:boundaries-element="boundaries">
-						<ActionButton v-if="selectedItems.length"
+						<ActionButton v-if="allowDeletion && !unlink && selectedItems.length"
 							icon="icon-delete"
 							:close-after-click="true"
 							@click="removeItems">
 							{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
 						</ActionButton>
-					</Actions>
-					<Actions
-						v-show="unlink && selectedItems.length"
-						:boundaries-element="boundaries">
-						<ActionButton icon="icon-delete"
+						<ActionButton v-if="unlink && selectedItems.length"
+							icon="icon-close"
 							:close-after-click="true"
 							@click="$emit('unlink')">
 							{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
@@ -190,9 +186,9 @@ export default {
 			default: () => [],
 			required: true,
 		},
-		showDropdown: {
+		allowDeletion: {
 			type: Boolean,
-			default: false,
+			default: true,
 		},
 		unlink: {
 			type: Boolean,

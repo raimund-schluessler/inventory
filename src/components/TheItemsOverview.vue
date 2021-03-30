@@ -62,7 +62,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<EntityTable :items="items"
 			:collections="collections"
 			:collection-type="collection"
-			:show-dropdown="true"
 			:search-string="$root.searchString" />
 		<!-- qrcode -->
 		<QrScanModal :qr-modal-open.sync="qrModalOpen" @recognized-qr-code="foundUuid" />
