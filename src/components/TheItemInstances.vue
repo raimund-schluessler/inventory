@@ -24,7 +24,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="table table--instances">
 			<div class="row row--wide-header">
 				<div v-for="instanceProperty in instanceProperties"
-					:key="instanceProperty.key"
+					:key="`wide-header-${instanceProperty.key}`"
 					class="column column--wide-header">
 					<span>{{ instanceProperty.name }}</span>
 				</div>
@@ -43,10 +43,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:class="{active: instanceActive(instance)}">
 					<div class="column column--narrow-header column--narrow-spacer" />
 					<template v-for="instanceProperty in instanceProperties">
-						<div :key="instanceProperty.key" class="column column--narrow-header">
+						<div :key="`narrow-header-${instanceProperty.key}`" class="column column--narrow-header">
 							<span>{{ instanceProperty.name }}</span>
 						</div>
-						<div :key="instanceProperty.key" class="column">
+						<div :key="`body-${instanceProperty.key}`" class="column">
 							<router-link v-if="instanceProperty.key === 'place' && instance.place" :to="`/places/${instance.place.path}`">
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</router-link>
@@ -75,10 +75,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					class="row row--properties">
 					<div class="column column--narrow-header column--narrow-spacer" />
 					<template v-for="instanceProperty in instanceProperties">
-						<div :key="instanceProperty.key" class="column column--narrow-header">
+						<div :key="`narrow-edit-header-${instanceProperty.key}`" class="column column--narrow-header">
 							<span>{{ instanceProperty.name }}</span>
 						</div>
-						<div :key="instanceProperty.key" class="column column--input">
+						<div :key="`edit-body-${instanceProperty.key}`" class="column column--input">
 							<div v-if="instanceProperty.key === 'place'">
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</div>
