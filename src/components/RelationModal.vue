@@ -70,7 +70,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 			<div class="body">
 				<EntityTable :items="items"
-					:show-dropdown="false"
+					:allow-deletion="false"
 					:search-string="searchString"
 					:filter-only="true"
 					mode="selection"

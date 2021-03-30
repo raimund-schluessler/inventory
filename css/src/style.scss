@@ -176,6 +176,12 @@ body {
 					padding-left: 40px;
 				}
 
+				&--actions {
+					position: absolute;
+					right: 0;
+					top: 3px;
+				}
+
 				& > div {
 					display: inline-flex;
 					margin-right: auto;
