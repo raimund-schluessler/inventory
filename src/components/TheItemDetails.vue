@@ -21,7 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div>
-		<div v-if="item">
+		<div>
 			<div id="controls" class="itemnavigation">
 				<Breadcrumbs :root-icon="`icon-bw icon-${collection}`">
 					<Breadcrumb v-for="crumb in breadcrumbs"
@@ -30,6 +30,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						:to="crumb.path" />
 				</Breadcrumbs>
 				<Actions
+					v-if="item && !loadingItem"
 					container="#controls"
 					:boundaries-element="boundaries">
 					<ActionButton icon="icon-add" :close-after-click="true" @click="openModal">
@@ -52,7 +53,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</ActionButton>
 				</Actions>
 			</div>
-			<div id="itemdetails">
+			<EmptyContent v-if="loadingItem || !item" :icon="loadingItem ? 'icon-loading' : 'icon-search'">
+				<span v-if="loadingItem">{{ t('inventory', 'Loading item from server.') }}</span>
+				<span v-else>{{ t('inventory', 'Item not found!') }}</span>
+			</EmptyContent>
+			<div v-else id="itemdetails">
 				<div class="paragraph images"
 					@dragover.prevent="!isDraggingOver && (isDraggingOver = true)"
 					@dragleave.prevent="isDraggingOver && (isDraggingOver = false)"
@@ -179,10 +184,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<RelationModal :modal-open.sync="modalOpen" :link="link" :item-id="id" />
 		</div>
-		<EmptyContent v-else icon="icon-search">
-			<span v-if="loading">{{ t('inventory', 'Loading item from server.') }}</span>
-			<span v-else>{{ t('inventory', 'Item not found!') }}</span>
-		</EmptyContent>
 		<form id="edit_item" method="POST" />
 		<Modal v-if="showBarcode"
 			id="qrcode-modal"
@@ -264,7 +265,6 @@ export default {
 	data() {
 		return {
 			modalOpen: false,
-			loading: false,
 			selectedParents: [],
 			selectedSub: [],
 			selectedRelated: [],
@@ -314,20 +314,25 @@ export default {
 			parentItems: 'getParentItems',
 			subItems: 'getSubItems',
 			relatedItems: 'getRelatedItems',
+			loadingItem: 'loadingItem',
 		}),
 
 		breadcrumbs() {
 			const path = this.path
 			const crumbs = (!path || path === '') ? [] : path.split('/')
-			return [{ title: t('inventory', 'Items'), path: `/${this.collection}/` }].concat(crumbs.map((crumb, i) => {
+			const breadcrumbs = [{ title: t('inventory', 'Items'), path: `/${this.collection}/` }].concat(crumbs.map((crumb, i) => {
 				return {
 					title: crumb,
 					path: `/${this.collection}/` + crumbs.slice(0, i + 1).join('/'),
 				}
-			})).concat([{
-				title: this.item.description,
-				path: `/${this.collection}/${(this.path) ? this.path + '/' : ''}item-${this.id}${(this.instanceId) ? `/instance-${this.instanceId}` : ''}`,
-			}])
+			}))
+			if (this.item && !this.loadingItem) {
+				return breadcrumbs.concat([{
+					title: this.item.description,
+					path: `/${this.collection}/${(this.path) ? this.path + '/' : ''}item-${this.id}${(this.instanceId) ? `/instance-${this.instanceId}` : ''}`,
+				}])
+			}
+			return breadcrumbs
 		},
 
 		imageSrc() {
@@ -425,7 +430,7 @@ export default {
 		},
 
 		async getItem(itemID) {
-			await this.loadItem(itemID)
+			await this.getItemById(itemID)
 			this.getAttachments(itemID)
 			this.item.instances.forEach(instance => {
 				this.getInstanceAttachments({ itemID, instanceID: instance.id })
@@ -448,11 +453,6 @@ export default {
 		async saveItem() {
 			await this.editItem(this.item)
 			this.editingItem = false
-		},
-		async loadItem(itemID) {
-			this.loading = true
-			await this.getItemById(itemID)
-			this.loading = false
 		},
 		openModal() {
 			this.modalOpen = true
