@@ -496,7 +496,8 @@ export default {
 		},
 
 		closeDetails() {
-			this.$router.push('/items')
+			const path = this.$router.currentRoute.path
+			this.$router.push(path.substring(0, path.lastIndexOf('/item')))
 		},
 
 		...mapActions([
