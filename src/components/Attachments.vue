@@ -133,6 +133,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import { showError, getFilePickerBuilder } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'
+import moment from '@nextcloud/moment'
 import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
@@ -157,7 +158,7 @@ export default {
 			return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number]
 		},
 		relativeDateFilter(timestamp) {
-			return OC.Util.relativeModifiedDate(timestamp * 1000)
+			return moment.unix(timestamp).fromNow()
 		},
 	},
 	props: {
