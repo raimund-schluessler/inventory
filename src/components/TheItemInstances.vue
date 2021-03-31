@@ -156,7 +156,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						class="column column--attachments" />
 				</div>
 			</template>
-			<div v-if="!item.instances.length" class="row">
+			<div v-if="!item.instances.length" class="row row--empty">
 				<div class="column column--center">
 					{{ t('inventory', 'This item has no instances.') }}
 				</div>

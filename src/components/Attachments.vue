@@ -24,6 +24,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div class="attachments"
+		:class="{ 'attachments--empty': !attachments.length }"
 		@dragover.prevent="!isDraggingOver && (isDraggingOver = true)"
 		@dragleave.prevent="isDraggingOver && (isDraggingOver = false)"
 		@drop.prevent="handleDropFiles">

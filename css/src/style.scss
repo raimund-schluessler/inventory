@@ -403,6 +403,10 @@ body {
 				grid-template-columns: 1fr 44px;
 			}
 
+			&--empty {
+				grid-template-columns: 1fr;
+			}
+
 			.column {
 				&--uuids,
 				&--attachments {
@@ -767,6 +771,10 @@ body {
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
+
+	&--empty {
+		flex-wrap: nowrap;
+	}
 
 	.attachments__wrapper {
 		display: inline-block;
