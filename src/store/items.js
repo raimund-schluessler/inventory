@@ -259,7 +259,7 @@ const mutations = {
 	unlinkParents(state, items) {
 		items.forEach((item) => {
 			if (state.parentItems[item.key] && item instanceof Item) {
-				Vue.delete(state.parentItems, item.id)
+				Vue.delete(state.parentItems, item.key)
 			}
 		})
 	},
@@ -273,7 +273,7 @@ const mutations = {
 	unlinkRelated(state, items) {
 		items.forEach((item) => {
 			if (state.relatedItems[item.key] && item instanceof Item) {
-				Vue.delete(state.relatedItems, item.id)
+				Vue.delete(state.relatedItems, item.key)
 			}
 		})
 	},
@@ -287,7 +287,7 @@ const mutations = {
 	unlinkSub(state, items) {
 		items.forEach((item) => {
 			if (state.subItems[item.key] && item instanceof Item) {
-				Vue.delete(state.subItems, item.id)
+				Vue.delete(state.subItems, item.key)
 			}
 		})
 	},
