@@ -22,6 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div :class="{ 'row--selected': isSelected, 'row--has-status': entity.syncstatus }"
 		class="row handler"
+		@click.exact="() => {mode == 'selection' ? selectEntity(entity) : ''}"
 		@click.ctrl="selectEntity(entity)">
 		<div class="column column--selection">
 			<input v-if="showActions"
@@ -119,6 +120,10 @@ export default {
 		collection: {
 			type: String,
 			default: 'folders',
+		},
+		mode: {
+			type: String,
+			default: 'navigation',
 		},
 	},
 	computed: {

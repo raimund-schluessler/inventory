@@ -93,6 +93,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:class="{ 'dragged': isDragged(item) }"
 				:select-entity="selectItem"
 				:uuid="_uid"
+				:mode="mode"
 				draggable="true"
 				class="entity"
 				@selectItem="selectItem"
@@ -118,6 +119,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:class="{ 'dragged': isDragged(item) }"
 				:select-entity="selectItem"
 				:uuid="_uid"
+				:mode="mode"
 				:show-actions="false" />
 		</div>
 		<div id="drag-preview" class="entitytable entitytable--drag-preview">
