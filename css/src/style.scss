@@ -632,7 +632,7 @@ body {
 			.header {
 				display: flex;
 				align-items: center;
-				flex-wrap: nowrap;
+				flex-wrap: wrap;
 				flex-direction: row;
 				background-color: var(--color-primary);
 				padding: 8px;
@@ -640,6 +640,7 @@ body {
 				.title {
 					line-height: 38px;
 					padding: 0 20px;
+					padding-left: 6px;
 					font-size: 14px;
 					color: white;
 				}
@@ -649,8 +650,16 @@ body {
 					background-color: unset;
 					font-size: 14px;
 
+					@media only screen and (max-width: 400px) {
+						width: 100%;
+					}
+
 					.multiselect__tags {
 						align-items: center;
+
+						.multiselect__input {
+							padding: 0 !important;
+						}
 					}
 				}
 			
