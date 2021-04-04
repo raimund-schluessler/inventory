@@ -22,7 +22,7 @@
 
 import Item from '../models/item.js'
 import Folder from '../models/folder.js'
-import Status from '../models/status'
+import Status from '../models/status.js'
 
 import Axios from '@nextcloud/axios'
 import { loadState } from '@nextcloud/initial-state'

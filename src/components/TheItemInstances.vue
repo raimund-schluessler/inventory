@@ -192,7 +192,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import focus from '../directives/focus'
+import focus from '../directives/focus.vue'
 import Attachments from './Attachments.vue'
 import QrScanModal from './QrScanModal.vue'
 

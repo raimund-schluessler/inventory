@@ -146,13 +146,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import ItemComponent from './Item'
-import Collection from './Collection'
+import ItemComponent from './Item.vue'
+import Collection from './Collection.vue'
 import EntityTableRowPlaceholder from './EntityTableRowPlaceholder.vue'
 import Item from '../../models/item.js'
 import Folder from '../../models/folder.js'
 import Place from '../../models/place.js'
-import { sort } from '../../store/storeHelper'
+import { sort } from '../../store/storeHelper.js'
 
 import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
