@@ -97,6 +97,7 @@ import EntityTable from './EntityTable/EntityTable.vue'
 
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+
 import { mapGetters, mapActions } from 'vuex'
 import Magnify from 'vue-material-design-icons/Magnify'
 import Close from 'vue-material-design-icons/Close'

@@ -79,6 +79,7 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionRouter from '@nextcloud/vue/dist/Components/ActionRouter'
 import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
 import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
+
 import { mapGetters, mapActions } from 'vuex'
 
 export default {

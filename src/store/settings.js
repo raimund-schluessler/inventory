@@ -22,6 +22,7 @@
 
 import Axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
+
 import Vue from 'vue'
 import Vuex from 'vuex'
 

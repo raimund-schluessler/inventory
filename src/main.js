@@ -24,8 +24,9 @@ import App from './App'
 import router from './router'
 import store from './store/store'
 
-import { linkTo } from '@nextcloud/router'
 import { subscribe, unsubscribe } from '@nextcloud/event-bus'
+import { linkTo } from '@nextcloud/router'
+
 import Vue from 'vue'
 import { sync } from 'vuex-router-sync'
 import VTooltip from 'v-tooltip'

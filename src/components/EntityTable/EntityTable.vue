@@ -157,6 +157,7 @@ import { sort } from '../../store/storeHelper'
 import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+
 import searchQueryParser from 'search-query-parser'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 
