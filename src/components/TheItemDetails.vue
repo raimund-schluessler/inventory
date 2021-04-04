@@ -220,6 +220,7 @@ import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
 import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
+
 import bwipjs from 'bwip-js'
 import ClickOutside from 'vue-click-outside'
 import { mapActions, mapGetters } from 'vuex'

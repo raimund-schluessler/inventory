@@ -198,6 +198,7 @@ import QrScanModal from './QrScanModal.vue'
 
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+
 import ClickOutside from 'vue-click-outside'
 import { mapActions, mapGetters } from 'vuex'
 
