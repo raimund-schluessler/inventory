@@ -31,14 +31,6 @@ build_directory=$(CURDIR)/build
 appstore_build_directory=$(CURDIR)/build/appstore/$(app_name)
 appstore_artifact_directory=$(CURDIR)/build/artifacts/appstore
 appstore_package_name=$(appstore_artifact_directory)/$(app_name)
-npm=$(shell which npm 2> /dev/null)
-gcp=$(shell which gcp 2> /dev/null)
-
-ifeq (, $(gcp))
-	copy_command=cp
-else
-	copy_command=gcp
-endif
 
 # code signing
 # assumes the following:
@@ -59,21 +51,33 @@ ifneq ("$(wildcard $(private_key))","") #(,$(wildcard $(private_key)))
 	endif
 endif
 
-all: build
+.PHONY: all
+all: dev-setup build-svg-sprite build-js-production
 
-# Fetches the PHP and JS dependencies and compiles the JS. If no composer.json
-# is present, the composer step is skipped, if no package.json or js/package.json
-# is present, the npm step is skipped
-.PHONY: build
-build:
-	$(npm) run build
+# cleanup and generate a clean developement setup
+dev-setup: clean clean-dev npm-init
 
-# Sets up the development environment
-.PHONY: development
-development:
-	$(npm) install
-	$(npm) update
-	$(npm) run dev
+npm-init:
+	npm install
+
+npm-update:
+	npm update
+
+# Runs the development build
+build-js:
+	npm run dev
+
+# Runs the production build
+build-js-production:
+	npm run build
+
+# Runs the development build and keep watching
+watch-js:
+	npm run watch
+
+# Build the svg sprite
+build-svg-sprite:
+	npm run svg_sprite
 
 composer.phar:
 	curl -sS https://getcomposer.org/installer | php
@@ -97,18 +101,13 @@ clean:
 	rm -rf $(build_directory)
 
 # Same as clean but also removes dependencies installed by npm
-.PHONY: distclean
-distclean: clean
+.PHONY: clean-dev
+clean-dev:
 	rm -rf node_modules
-
-# Watches the js and scss files
-.PHONY: watch-js
-watch-js:
-	$(npm) run watch
 
 # Builds the source package for the app store
 .PHONY: appstore
-appstore: clean build
+appstore: clean build-svg-sprite build-js-production
 	mkdir -p $(appstore_build_directory) $(appstore_artifact_directory)
 	rsync -av .	$(appstore_build_directory) \
 	--exclude=/.git \
@@ -130,10 +129,10 @@ appstore: clean build
 	--exclude=/.tx \
 	--exclude=/.v8flags*.json \
 	--exclude=/build.xml \
-	--exclude=/CONTRIBUTING.md \
 	--exclude=/composer.json \
 	--exclude=/composer.lock \
 	--exclude=/composer.phar \
+	--exclude=/CONTRIBUTING.md \
 	--exclude=/issue_template.md \
 	--exclude=/gulpfile.js \
 	--exclude=/Makefile \
@@ -181,7 +180,7 @@ endif
 # Command for running VUE tests
 .PHONY: test
 test:
-	$(npm) run test
+	npm run test
 
 test-php:
 	phpunit -c phpunit.xml
