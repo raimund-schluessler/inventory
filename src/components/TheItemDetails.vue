@@ -209,7 +209,7 @@ import EntityTable from './EntityTable/EntityTable.vue'
 import Attachments from './Attachments.vue'
 import RelationModal from './RelationModal.vue'
 import ItemInstances from './TheItemInstances.vue'
-import focus from '../directives/focus'
+import focus from '../directives/focus.vue'
 
 import { showError } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'

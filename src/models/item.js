@@ -18,7 +18,7 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-import Status from './status'
+import Status from './status.js'
 
 export default class Item {
 

@@ -49,7 +49,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import EntityTable from './EntityTable/EntityTable.vue'
-import Item from '../models/item'
+import Item from '../models/item.js'
 
 import Papa from 'papaparse'
 import { mapActions } from 'vuex'
