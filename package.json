@@ -10,13 +10,15 @@
 	"private": true,
 	"homepage": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory",
 	"scripts": {
-		"dev": "npm run sprites && webpack --config webpack.dev.js",
-		"watch": "webpack --progress --watch --config webpack.dev.js",
-		"build": "npm run sprites && webpack --progress --config webpack.prod.js",
+		"build": "NODE_ENV=production webpack --progress --config webpack.prod.js",
+		"dev": "NODE_ENV=development webpack --config webpack.dev.js",
+		"watch": "NODE_ENV=development webpack --progress --watch --config webpack.dev.js",
 		"lint": "eslint --ext .js,.vue src tests",
 		"lint:fix": "eslint --ext .js,.vue src tests --fix",
+		"stylelint": "stylelint 'css/src/**/*.scss'",
+		"stylelint:fix": "stylelint 'css/src/**/*.scss' --fix",
 		"test": "jest --verbose",
-		"sprites": "svg-sprite --config svg-sprite-color.json img/src/color/*.svg && svg-sprite --config svg-sprite-bw.json img/src/bw/*.svg"
+		"svg_sprite": "svg-sprite --config svg-sprite-color.json img/src/color/*.svg && svg-sprite --config svg-sprite-bw.json img/src/bw/*.svg"
 	},
 	"repository": {
 		"type": "git",
@@ -120,16 +122,18 @@
 		"setupFilesAfterEnv": [
 			"./tests/javascript/unit/setup.js"
 		],
+		"coverageDirectory": "./coverage/",
 		"collectCoverage": true,
 		"collectCoverageFrom": [
 			"<rootDir>/src/**/*.{js,vue}",
-			"!**/node_modules/**",
-			"!**/vendor/**"
+			"!**/node_modules/**"
 		],
 		"coverageReporters": [
 			"json",
 			"text",
-			"html"
+			"html",
+			"lcov",
+			"clover"
 		]
 	},
 	"browserslist": [
