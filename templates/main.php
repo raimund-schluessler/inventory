@@ -1,4 +1,4 @@
 <?php
 
-	script('inventory', 'inventory');
+	script('inventory', 'inventory-main');
 	style('inventory', 'inventory');
