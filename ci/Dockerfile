@@ -1,4 +1,4 @@
-FROM ubuntu:19.10
+FROM ubuntu:20.04
 RUN	set -xe; \
 	export DEBIAN_FRONTEND=noninteractive; \
 	apt-get update -yqq; \
