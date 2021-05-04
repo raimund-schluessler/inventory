@@ -69,15 +69,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<Actions
 						:boundaries-element="boundaries">
 						<ActionButton v-if="allowDeletion && !unlink && selectedItems.length"
-							icon="icon-delete"
 							:close-after-click="true"
 							@click="removeItems">
+							<Delete slot="icon" :size="24" decorative />
 							{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
 						</ActionButton>
 						<ActionButton v-if="unlink && selectedItems.length"
 							icon="icon-close"
 							:close-after-click="true"
 							@click="$emit('unlink')">
+							<Close slot="icon" :size="24" decorative />
 							{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
 						</ActionButton>
 					</Actions>
@@ -158,6 +159,9 @@ import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 
+import Close from 'vue-material-design-icons/Close.vue'
+import Delete from 'vue-material-design-icons/Delete.vue'
+
 import searchQueryParser from 'search-query-parser'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 
@@ -168,6 +172,8 @@ export default {
 		Actions,
 		ActionButton,
 		EntityTableRowPlaceholder,
+		Close,
+		Delete,
 	},
 	props: {
 		mode: {

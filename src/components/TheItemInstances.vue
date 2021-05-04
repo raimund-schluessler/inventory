@@ -30,7 +30,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="column column--actions">
 					<Actions :boundaries-element="boundaries">
-						<ActionButton icon="icon-add" @click="toggleInstanceInput">
+						<ActionButton @click="toggleInstanceInput">
+							<Plus slot="icon" :size="24" decorative />
 							{{ t('inventory', 'Add instance') }}
 						</ActionButton>
 					</Actions>
@@ -57,13 +58,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</template>
 					<div class="column column--actions">
 						<Actions :boundaries-element="boundaries">
-							<ActionButton icon="icon-add" :close-after-click="true" @click="toggleUuidInput(instance)">
+							<ActionButton :close-after-click="true" @click="toggleUuidInput(instance)">
+								<Plus slot="icon" :size="24" decorative />
 								{{ t('inventory', 'Add UUID') }}
 							</ActionButton>
-							<ActionButton icon="icon-rename" @click="toggleEditInstance(instance)">
+							<ActionButton @click="toggleEditInstance(instance)">
+								<Pencil slot="icon" :size="24" decorative />
 								{{ t('inventory', 'Edit instance') }}
 							</ActionButton>
-							<ActionButton icon="icon-delete" @click="removeInstance(instance)">
+							<ActionButton @click="removeInstance(instance)">
+								<Delete slot="icon" :size="24" decorative />
 								{{ t('inventory', 'Delete instance') }}
 							</ActionButton>
 						</Actions>
@@ -92,7 +96,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</template>
 					<div class="column column--actions">
 						<Actions :boundaries-element="boundaries">
-							<ActionButton icon="icon-checkmark" :close-after-click="true" @click="saveInstance">
+							<ActionButton :close-after-click="true" @click="saveInstance">
+								<Check slot="icon" :size="24" decorative />
 								{{ t('inventory', 'Save instance') }}
 							</ActionButton>
 						</Actions>
@@ -113,13 +118,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 					<div>
 						<Actions :boundaries-element="boundaries">
-							<ActionButton v-if="newUuidValid(instance.uuids)" icon="icon-checkmark" @click="setUuid(instance)">
+							<ActionButton v-if="newUuidValid(instance.uuids)" @click="setUuid(instance)">
+								<Check slot="icon" :size="24" decorative />
 								{{ t('inventory', 'Add UUID') }}
 							</ActionButton>
 							<ActionButton v-else
-								icon="icon-qrcode"
 								:close-after-click="true"
 								@click="openQrModal">
+								<QrcodeScan slot="icon" :size="24" decorative />
 								{{ t('inventory', 'Scan QR code') }}
 							</ActionButton>
 						</Actions>
@@ -134,10 +140,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<li v-for="uuid in instance.uuids" :key="`uuids${instance.id}${uuid.id}`">
 								<span>{{ uuid.uuid }}</span>
 								<Actions :boundaries-element="boundaries">
-									<ActionButton icon="icon-qrcode" :close-after-click="true" @click="$emit('open-barcode', uuid.uuid)">
+									<ActionButton :close-after-click="true" @click="$emit('open-barcode', uuid.uuid)">
+										<Qrcode slot="icon" :size="24" decorative />
 										{{ t('inventory', 'Show QR Code') }}
 									</ActionButton>
-									<ActionButton icon="icon-delete" @click="removeUuid(instance, uuid.uuid)">
+									<ActionButton @click="removeUuid(instance, uuid.uuid)">
+										<Delete slot="icon" :size="24" decorative />
 										{{ t('inventory', 'Delete UUID') }}
 									</ActionButton>
 								</Actions>
@@ -199,6 +207,13 @@ import QrScanModal from './QrScanModal.vue'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 
+import Check from 'vue-material-design-icons/Check.vue'
+import Delete from 'vue-material-design-icons/Delete.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
+import Qrcode from 'vue-material-design-icons/Qrcode.vue'
+import QrcodeScan from 'vue-material-design-icons/QrcodeScan.vue'
+
 import ClickOutside from 'vue-click-outside'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -208,6 +223,12 @@ export default {
 		ActionButton,
 		Attachments,
 		QrScanModal,
+		Check,
+		Delete,
+		Pencil,
+		Plus,
+		Qrcode,
+		QrcodeScan,
 	},
 	directives: {
 		ClickOutside,

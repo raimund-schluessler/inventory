@@ -33,22 +33,25 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					v-if="item && !loadingItem"
 					container="#controls"
 					:boundaries-element="boundaries">
-					<ActionButton icon="icon-add" :close-after-click="true" @click="openModal">
+					<ActionButton :close-after-click="true" @click="openModal">
+						<Plus slot="icon" :size="24" decorative />
 						{{ t('inventory', 'Link items') }}
 					</ActionButton>
 					<ActionButton
-						icon="icon-upload"
 						:close-after-click="true"
 						@click="upload">
+						<Upload slot="icon" :size="24" decorative />
 						{{ t('inventory', 'Upload image') }}
 					</ActionButton>
 					<ActionButton
 						icon="icon-rename"
 						:close-after-click="true"
 						@click="toggleEditItem">
+						<Pencil slot="icon" :size="24" decorative />
 						{{ t('inventory', 'Edit item') }}
 					</ActionButton>
-					<ActionButton icon="icon-delete" @click="removeItem">
+					<ActionButton @click="removeItem">
+						<Delete slot="icon" :size="24" decorative />
 						{{ t('inventory', 'Delete item') }}
 					</ActionButton>
 				</Actions>
@@ -104,7 +107,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 									<Actions
 										v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem "
 										:boundaries-element="boundaries">
-										<ActionButton icon="icon-gtin" :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
+										<ActionButton :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
+											<Barcode slot="icon" :size="24" decorative />
 											{{ t('inventory', 'Show GTIN') }}
 										</ActionButton>
 									</Actions>
@@ -132,7 +136,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<div v-if="editingItem" class="row">
 							<div class="column column--width-2 column--actions">
 								<Actions>
-									<ActionButton icon="icon-checkmark" @click="saveItem">
+									<ActionButton @click="saveItem">
+										<Check slot="icon" :size="24" decorative />
 										{{ t('inventory', 'Save changes') }}
 									</ActionButton>
 								</Actions>
@@ -221,6 +226,13 @@ import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
 
+import Barcode from 'vue-material-design-icons/Barcode.vue'
+import Check from 'vue-material-design-icons/Check.vue'
+import Delete from 'vue-material-design-icons/Delete.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
+import Upload from 'vue-material-design-icons/Upload.vue'
+
 import bwipjs from 'bwip-js'
 import ClickOutside from 'vue-click-outside'
 import { mapActions, mapGetters } from 'vuex'
@@ -237,6 +249,12 @@ export default {
 		Breadcrumb,
 		Modal,
 		EmptyContent,
+		Barcode,
+		Check,
+		Delete,
+		Pencil,
+		Plus,
+		Upload,
 	},
 	directives: {
 		ClickOutside,

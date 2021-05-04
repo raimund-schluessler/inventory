@@ -34,15 +34,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:boundaries-element="boundaries"
 				:open.sync="actionsOpen"
 				@close="addingCollection = false">
-				<ActionButton icon="icon-qrcode" :close-after-click="true" @click="openQrModal()">
+				<ActionButton :close-after-click="true" @click="openQrModal()">
+					<QrcodeScan slot="icon" :size="24" decorative />
 					{{ t('inventory', 'Scan QR code') }}
 				</ActionButton>
-				<ActionRouter :to="`/${collection}/${($route.params.path) ? $route.params.path + '/' : ''}additems`" icon="icon-add">
+				<ActionRouter :to="`/${collection}/${($route.params.path) ? $route.params.path + '/' : ''}additems`">
+					<Plus slot="icon" :size="24" decorative />
 					{{ t('inventory', 'Add items') }}
 				</ActionRouter>
 				<ActionButton v-if="!addingCollection"
-					icon="icon-folder"
 					@click.prevent.stop="openCollectionInput()">
+					<Folder slot="icon" :size="24" decorative />
 					{{ addCollectionString }}
 				</ActionButton>
 				<ActionInput v-if="addingCollection"
@@ -52,9 +54,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						trigger: 'manual',
 					}"
 					:class="{ 'error': collectionNameError }"
-					icon="icon-folder"
 					@submit="addCollection"
 					@input="checkCollectionName">
+					<Folder slot="icon" :size="24" decorative />
 					{{ collection === 'places' ? t('inventory', 'New Place') : t('inventory', 'New Folder') }}
 				</ActionInput>
 			</Actions>
@@ -80,6 +82,10 @@ import ActionRouter from '@nextcloud/vue/dist/Components/ActionRouter'
 import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
 import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
 
+import Folder from 'vue-material-design-icons/Folder.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
+import QrcodeScan from 'vue-material-design-icons/QrcodeScan.vue'
+
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -92,6 +98,9 @@ export default {
 		Breadcrumbs,
 		EntityTable,
 		QrScanModal,
+		Folder,
+		Plus,
+		QrcodeScan,
 	},
 	beforeRouteUpdate(to, from, next) {
 		this.loadCollectionsAndItems(to.params.path)
