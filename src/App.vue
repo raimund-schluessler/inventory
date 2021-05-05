@@ -27,8 +27,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					v-for="view in views"
 					:key="view.id"
 					:to="`/${view.id}/`"
-					:icon="`icon-${view.icon}`"
-					:title="view.name" />
+					:title="view.name">
+					<component
+						:is="view.icon"
+						slot="icon"
+						:size="24"
+						decorative />
+				</AppNavigationItem>
 			</template>
 			<template #footer>
 				<AppNavigationSettings />
@@ -49,6 +54,10 @@ import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
 import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
 import Content from '@nextcloud/vue/dist/Components/Content'
 
+import Folder from 'vue-material-design-icons/Folder.vue'
+import MapMarker from 'vue-material-design-icons/MapMarker.vue'
+import Tag from 'vue-material-design-icons/Tag.vue'
+
 export default {
 	name: 'App',
 	components: {
@@ -57,6 +66,9 @@ export default {
 		AppContent,
 		Content,
 		AppNavigationSettings,
+		Folder,
+		MapMarker,
+		Tag,
 	},
 	data() {
 		return {
@@ -65,17 +77,17 @@ export default {
 				{
 					name: this.t('inventory', 'Folders'),
 					id: 'folders',
-					icon: 'folders',
+					icon: 'Folder',
 				},
 				{
 					name: this.t('inventory', 'Places'),
 					id: 'places',
-					icon: 'places',
+					icon: 'MapMarker',
 				},
 				{
 					name: this.t('inventory', 'Tags'),
 					id: 'tags',
-					icon: 'tags',
+					icon: 'Tag',
 				},
 			],
 		}

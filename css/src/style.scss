@@ -47,10 +47,6 @@ body {
 
 @include icon-black-white('inventory', 'inventory', 1, false);
 
-@include icon-black-white('qrcode', 'inventory', 1, false);
-
-@include icon-black-white('gtin', 'inventory', 1, false);
-
 .action-item {
 	margin-left: auto !important;
 }
@@ -77,19 +73,6 @@ body {
 	&:not(&--close) + #app-content {
 		width: calc(100% - 300px);
 		max-width: calc(100% - 300px);
-	}
-
-	> ul > li .app-navigation-entry-icon {
-		background-image: unset;
-
-		&::before {
-			content: '';
-			position: absolute;
-			width: 16px;
-			height: 16px;
-			background: var(--icon-inventory-bw-000) no-repeat;
-			background-position: inherit;
-		}
 	}
 }
 
