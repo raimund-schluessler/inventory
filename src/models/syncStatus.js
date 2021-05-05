@@ -19,42 +19,17 @@
  *
  */
 
-export default class Status {
+export default class SyncStatus {
 
 	/**
-	 * Creates an instance of a status
+	 * Creates an instance of a SyncStatus
 	 *
-	 * @param {String} type The type of the status
-	 * @param {String} message The type of the status
-	 * @memberof Status
+	 * @param {String} status The type of the status
+	 * @param {String} message The message to show
+	 * @memberof SyncStatus
 	 */
-	constructor(type, message) {
-
-		this.duration = -1
-		this.type = type
-
-		switch (type) {
-		case 'refresh':
-			this.cssClass = 'refresh'
-			break
-		case 'sync':
-			this.cssClass = 'icon-loading-small-dark'
-			break
-		case 'success':
-			this.cssClass = 'success'
-			this.duration = 5000 // timeout in ms
-			break
-		case 'created':
-			this.cssClass = 'success'
-			break
-		case 'error':
-			this.cssClass = 'error'
-			break
-		case 'unsynced':
-			this.cssClass = 'unsynced'
-			break
-		}
-
+	constructor(status, message) {
+		this.status = status
 		this.message = message
 	}
 

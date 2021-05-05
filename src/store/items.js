@@ -22,7 +22,7 @@
 
 import Item from '../models/item.js'
 import Folder from '../models/folder.js'
-import Status from '../models/status.js'
+import SyncStatus from '../models/syncStatus.js'
 
 import Axios from '@nextcloud/axios'
 import { loadState } from '@nextcloud/initial-state'
@@ -478,7 +478,7 @@ const mutations = {
 	 * @param {String} status The sync status
 	 */
 	setSyncStatus(state, { item, status }) {
-		Vue.set(item, 'syncstatus', status)
+		Vue.set(item, 'syncStatus', status)
 	},
 }
 
@@ -524,10 +524,10 @@ const actions = {
 					const response = await Axios.post(generateUrl('apps/inventory/item/add'), { item: item.response })
 					Vue.set(item, 'response', response.data)
 					item.updateItem()
-					item.syncstatus = new Status('created', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
+					item.syncStatus = new SyncStatus('success', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
 					context.commit('addItem', item)
 				} catch {
-					item.syncstatus = new Status('error', 'Item creation failed.') // eslint-disable-line require-atomic-updates
+					item.syncStatus = new SyncStatus('error', 'Item creation failed.') // eslint-disable-line require-atomic-updates
 				}
 			})
 		})

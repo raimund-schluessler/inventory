@@ -243,7 +243,7 @@ export default {
 		},
 
 		oneEntityHasStatus() {
-			return this.filteredEntities.some(item => item.syncstatus)
+			return this.filteredEntities.some(item => item.syncStatus)
 		},
 
 		selectedItems: {

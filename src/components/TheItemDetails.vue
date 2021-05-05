@@ -23,7 +23,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div>
 			<div id="controls" class="itemnavigation">
-				<Breadcrumbs :root-icon="`icon-bw icon-${collection}`">
+				<Breadcrumbs :root-icon="`icon-${collection}`">
 					<Breadcrumb v-for="crumb in breadcrumbs"
 						:key="crumb.path"
 						:title="crumb.title"

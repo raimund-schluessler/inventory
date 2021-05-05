@@ -52,7 +52,7 @@ ifneq ("$(wildcard $(private_key))","") #(,$(wildcard $(private_key)))
 endif
 
 .PHONY: all
-all: dev-setup build-svg-sprite build-js-production
+all: dev-setup build-js-production
 
 # cleanup and generate a clean developement setup
 dev-setup: clean clean-dev npm-init
@@ -75,10 +75,6 @@ build-js-production:
 watch-js:
 	npm run watch
 
-# Build the svg sprite
-build-svg-sprite:
-	npm run svg_sprite
-
 composer.phar:
 	curl -sS https://getcomposer.org/installer | php
 
@@ -92,10 +88,6 @@ update-composer: composer.phar
 # Removes the build directory and the compiled files
 .PHONY: clean
 clean:
-	rm -f ./css/src/sprites.scss
-	rm -f ./css/src/sprites-bw.scss
-	rm -f ./img/sprites.svg
-	rm -f ./img/bw.svg
 	rm -f ./js/inventory-main.js
 	rm -f ./js/inventory-main.js.map
 	rm -f ./js/inventory-main.js.LICENSE.txt
@@ -108,7 +100,7 @@ clean-dev:
 
 # Builds the source package for the app store
 .PHONY: appstore
-appstore: clean build-svg-sprite build-js-production
+appstore: clean build-js-production
 	mkdir -p $(appstore_build_directory) $(appstore_artifact_directory)
 	rsync -av .	$(appstore_build_directory) \
 	--exclude=/.git \
@@ -143,10 +135,6 @@ appstore: clean build-svg-sprite build-js-production
 	--exclude=/phpunit.integration.xml \
 	--exclude=/README.md \
 	--exclude=/renovate.json \
-	--exclude=/svg-sprite-bw.json \
-	--exclude=/svg-sprite-bw.tmpl \
-	--exclude=/svg-sprite-color.json \
-	--exclude=/svg-sprite-color.tmpl \
 	--exclude=/webpack.common.js \
 	--exclude=/webpack.prod.js \
 	--exclude=/webpack.dev.js \

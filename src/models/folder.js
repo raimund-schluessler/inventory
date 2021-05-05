@@ -18,7 +18,7 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-import Status from './status.js'
+import SyncStatus from './syncStatus.js'
 
 export default class Folder {
 
@@ -35,7 +35,7 @@ export default class Folder {
 
 		this.response = response
 
-		this.syncstatus = null
+		this.syncStatus = null
 
 		this.initFolder()
 	}
@@ -48,8 +48,8 @@ export default class Folder {
 		this._name = this.response.name || ''
 		this._path = this.response.path || ''
 		this._parentid = this.response._parentid || ''
-		if (this.response.syncstatus) {
-			this.syncstatus = new Status(this.response.syncstatus.type, this.response.syncstatus.message)
+		if (this.response.syncStatus) {
+			this.syncStatus = new SyncStatus(this.response.syncStatus.type, this.response.syncStatus.message)
 		}
 	}
 
