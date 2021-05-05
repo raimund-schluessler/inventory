@@ -730,39 +730,6 @@ body {
 	}
 }
 
-.status-display {
-	display: inline-block;
-	width: 16px !important;
-	height: 16px !important;
-
-	&.success {
-		@extend .icon-color;
-		@extend .icon-checkmark-color;
-	}
-
-	&.error {
-		@extend .icon-color;
-		@extend .icon-error-color;
-	}
-
-	&.unsynced {
-		@extend .icon-color;
-		@extend .icon-warning-color;
-	}
-
-	&.refresh {
-		background-image: var(--icon-history-000);
-		animation: pulse 2s infinite;
-		border-radius: 50%;
-		opacity: .5;
-		cursor: pointer;
-
-		&:hover{
-			opacity: .7;
-		}
-	}
-}
-
 .attachments {
 	display: flex;
 	align-items: center;

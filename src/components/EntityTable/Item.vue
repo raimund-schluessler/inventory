@@ -20,7 +20,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div :class="{ 'row--selected': isSelected, 'row--has-status': entity.syncstatus }"
+	<div :class="{ 'row--selected': isSelected, 'row--has-status': entity.syncStatus }"
 		class="row handler"
 		@click.exact="() => {mode == 'selection' ? selectEntity(entity) : ''}"
 		@click.ctrl="selectEntity(entity)">
@@ -81,16 +81,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 			</ul>
 		</div>
-		<div v-if="entity.syncstatus" class="column">
-			<ItemStatusDisplay :item="entity" />
+		<div v-if="entity.syncStatus" class="column">
+			<ItemStatusDisplay :status="entity.syncStatus" @resetStatus="resetStatus(entity)" />
 		</div>
 	</div>
 </template>
 
 <script>
 import ItemStatusDisplay from './../ItemStatusDisplay.vue'
+import Item from '../../models/item.js'
 
 import { generateUrl } from '@nextcloud/router'
+
+import { mapMutations } from 'vuex'
 
 export default {
 	components: {
@@ -147,8 +150,7 @@ export default {
 		 * @returns {String} The link to show for the item
 		 */
 		itemRoute() {
-			const itemStatus = this.entity.syncstatus ? this.entity.syncstatus.type : null
-			if (this.mode === 'selection' || itemStatus === 'unsynced') {
+			if (this.mode === 'selection' || this.entity.syncStatus?.type === 'unsynced') {
 				return null
 			}
 			let basePath
@@ -162,6 +164,14 @@ export default {
 		},
 		showInstance() {
 			return this.entity.isInstance && this.entity.instances.length > 0
+		},
+	},
+	methods: {
+		...mapMutations(['setSyncStatus']),
+		resetStatus(entity) {
+			if (entity instanceof Item) {
+				this.setSyncStatus({ item: entity, status: null })
+			}
 		},
 	},
 }

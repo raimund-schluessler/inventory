@@ -121,7 +121,7 @@ export default {
 						categories.push({ name })
 					}
 				}
-				item.syncstatus = {
+				item.syncStatus = {
 					type: 'unsynced',
 					message: this.t('inventory', 'The item has not been saved to the server yet.'),
 				}
