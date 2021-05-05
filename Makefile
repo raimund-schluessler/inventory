@@ -96,8 +96,9 @@ clean:
 	rm -f ./css/src/sprites-bw.scss
 	rm -f ./img/sprites.svg
 	rm -f ./img/bw.svg
-	rm -f ./js/inventory.js
-	rm -f ./js/inventory.js.map
+	rm -f ./js/inventory-main.js
+	rm -f ./js/inventory-main.js.map
+	rm -f ./js/inventory-main.js.LICENSE.txt
 	rm -rf $(build_directory)
 
 # Same as clean but also removes dependencies installed by npm
