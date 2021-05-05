@@ -122,6 +122,9 @@
 			"^.+\\.js$": "<rootDir>/node_modules/babel-jest",
 			".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
 		},
+		"transformIgnorePatterns": [
+			"/node_modules/(?!vue-material-design-icons)"
+		],
 		"snapshotSerializers": [
 			"<rootDir>/node_modules/jest-serializer-vue"
 		],

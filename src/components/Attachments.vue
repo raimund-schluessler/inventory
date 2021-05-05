@@ -46,21 +46,21 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<Actions :boundaries-element="boundaries">
 						<ActionLink
 							:href="fileLink(attachment)"
-							icon="icon-external"
 							target="_blank"
 							:close-after-click="true">
+							<OpenInNew slot="icon" :size="24" decorative />
 							{{ t('inventory', 'Show in files') }}
 						</ActionLink>
 						<ActionButton v-if="canUnlink(attachment)"
-							icon="icon-close"
 							:close-after-click="true"
 							@click="unlinkAttachment(attachment)">
+							<Close slot="icon" :size="24" decorative />
 							{{ t('inventory', 'Unlink attachment') }}
 						</ActionButton>
 						<ActionButton
-							icon="icon-delete"
 							:close-after-click="true"
 							@click="deleteAttachment(attachment)">
+							<Delete slot="icon" :size="24" decorative />
 							{{ t('inventory', 'Delete attachment') }}
 						</ActionButton>
 					</Actions>
@@ -76,15 +76,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<Actions :boundaries-element="boundaries">
 			<ActionButton
-				icon="icon-upload"
 				:close-after-click="true"
 				@click="upload">
+				<Upload slot="icon" :size="24" decorative />
 				{{ t('inventory', 'Upload attachment') }}
 			</ActionButton>
 			<ActionButton
-				icon="icon-folder"
 				:close-after-click="true"
 				@click="select">
+				<Folder slot="icon" :size="24" decorative />
 				{{ t('inventory', 'Select attachment') }}
 			</ActionButton>
 		</Actions>
@@ -140,12 +140,23 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionLink from '@nextcloud/vue/dist/Components/ActionLink'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 
+import Close from 'vue-material-design-icons/Close.vue'
+import Delete from 'vue-material-design-icons/Delete.vue'
+import Folder from 'vue-material-design-icons/Folder.vue'
+import OpenInNew from 'vue-material-design-icons/OpenInNew.vue'
+import Upload from 'vue-material-design-icons/Upload.vue'
+
 export default {
 	components: {
 		Actions,
 		ActionButton,
 		ActionLink,
 		Modal,
+		Close,
+		Delete,
+		Folder,
+		OpenInNew,
+		Upload,
 	},
 	filters: {
 		bytes(bytes) {

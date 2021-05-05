@@ -41,6 +41,10 @@ body {
 	opacity: .5;
 }
 
+.folder-icon {
+	color: var(--color-primary);
+}
+
 @include icon-black-white('inventory', 'inventory', 1, false);
 
 @include icon-black-white('qrcode', 'inventory', 1, false);

@@ -58,12 +58,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				v-if="!deleteTimeout && showActions"
 				:boundaries-element="boundaries">
 				<ActionButton class="startRename"
-					icon="icon-rename"
 					:close-after-click="true"
 					@click="startRename">
+					<Pencil slot="icon" :size="24" decorative />
 					{{ t('inventory', 'Rename') }}
 				</ActionButton>
-				<ActionButton icon="icon-delete" @click="scheduleDelete">
+				<ActionButton @click="scheduleDelete">
+					<Delete slot="icon" :size="24" decorative />
 					{{ deleteString }}
 				</ActionButton>
 			</Actions>
@@ -71,8 +72,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				v-if="!!deleteTimeout"
 				:boundaries-element="boundaries">
 				<ActionButton
-					icon="icon-history"
 					@click.prevent.stop="cancelDelete">
+					<Undo slot="icon" :size="24" decorative />
 					{{ undoString }}
 				</ActionButton>
 			</Actions>
@@ -88,6 +89,10 @@ import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 
+import Delete from 'vue-material-design-icons/Delete.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import Undo from 'vue-material-design-icons/Undo.vue'
+
 import { mapActions } from 'vuex'
 import ClickOutside from 'v-click-outside'
 
@@ -97,6 +102,9 @@ export default {
 	components: {
 		Actions,
 		ActionButton,
+		Delete,
+		Pencil,
+		Undo,
 	},
 	directives: {
 		ClickOutside: ClickOutside.directive,
