@@ -22,7 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div>
 		<div id="controls">
-			<Breadcrumbs :root-icon="`icon-bw icon-${collection}`" @dropped="moveEntities">
+			<Breadcrumbs :root-icon="`icon-${collection}`" @dropped="moveEntities">
 				<Breadcrumb v-for="(crumb, index) in breadcrumbs"
 					:key="crumb.path"
 					:title="crumb.title"
