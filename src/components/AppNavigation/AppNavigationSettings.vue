@@ -20,17 +20,23 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div>
-		<button @click="selectFolder">
-			{{ t('inventory', 'Select attachment folder') }}
-		</button>
-	</div>
+	<AppNavigationSettings>
+		<div>
+			<button @click="selectFolder">
+				{{ t('inventory', 'Select attachment folder') }}
+			</button>
+		</div>
+	</AppNavigationSettings>
 </template>
 
 <script>
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
+import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
 
 export default {
+	components: {
+		AppNavigationSettings,
+	},
 	methods: {
 		async selectFolder() {
 			const folder = await this.$store.dispatch('getAttachmentFolder')

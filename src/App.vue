@@ -31,9 +31,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:title="view.name" />
 			</template>
 			<template #footer>
-				<AppNavigationSettings>
-					<TheSettings />
-				</AppNavigationSettings>
+				<AppNavigationSettings />
 			</template>
 		</AppNavigation>
 
@@ -44,12 +42,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import TheSettings from './components/AppNavigation/TheSettings'
+import AppNavigationSettings from './components/AppNavigation/AppNavigationSettings'
 
 import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
 import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
-import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
 import Content from '@nextcloud/vue/dist/Components/Content'
 
 export default {
@@ -57,10 +54,9 @@ export default {
 	components: {
 		AppNavigation,
 		AppNavigationItem,
-		AppNavigationSettings,
 		AppContent,
 		Content,
-		TheSettings,
+		AppNavigationSettings,
 	},
 	data() {
 		return {
