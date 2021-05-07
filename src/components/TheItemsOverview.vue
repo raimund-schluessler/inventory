@@ -22,12 +22,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div>
 		<div id="controls">
-			<Breadcrumbs :root-icon="`icon-${collection}`" @dropped="moveEntities">
+			<Breadcrumbs @dropped="moveEntities">
 				<Breadcrumb v-for="(crumb, index) in breadcrumbs"
 					:key="crumb.path"
 					:title="crumb.title"
 					:to="crumb.path"
-					:disable-drop="index === (breadcrumbs.length - 1)" />
+					:disable-drop="index === (breadcrumbs.length - 1)">
+					<component
+						:is="breadcrumbIcon"
+						v-if="index === 0"
+						slot="icon"
+						:size="24"
+						decorative />
+				</Breadcrumb>
 			</Breadcrumbs>
 			<Actions
 				container="#controls"
@@ -85,6 +92,8 @@ import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
 import Folder from 'vue-material-design-icons/Folder.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 import QrcodeScan from 'vue-material-design-icons/QrcodeScan.vue'
+import MapMarker from 'vue-material-design-icons/MapMarker.vue'
+import Tag from 'vue-material-design-icons/Tag.vue'
 
 import { mapGetters, mapActions } from 'vuex'
 
@@ -101,6 +110,8 @@ export default {
 		Folder,
 		Plus,
 		QrcodeScan,
+		MapMarker,
+		Tag,
 	},
 	beforeRouteUpdate(to, from, next) {
 		this.loadCollectionsAndItems(to.params.path)
@@ -140,6 +151,19 @@ export default {
 					path: `/${this.collection}/${crumbs.slice(0, i + 1).join('/')}`,
 				}
 			}))
+		},
+
+		breadcrumbIcon() {
+			if (this.collection === 'folders') {
+				return 'Folder'
+			}
+			if (this.collection === 'places') {
+				return 'MapMarker'
+			}
+			if (this.collection === 'tags') {
+				return 'Tag'
+			}
+			return 'Folder'
 		},
 
 		collections() {
