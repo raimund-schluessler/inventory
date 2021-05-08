@@ -23,11 +23,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div>
 			<div id="controls" class="itemnavigation">
-				<Breadcrumbs :root-icon="`icon-${collection}`">
-					<Breadcrumb v-for="crumb in breadcrumbs"
+				<Breadcrumbs>
+					<Breadcrumb v-for="(crumb, index) in breadcrumbs"
 						:key="crumb.path"
 						:title="crumb.title"
-						:to="crumb.path" />
+						:to="crumb.path">
+						<component
+							:is="breadcrumbIcon"
+							v-if="index === 0"
+							slot="icon"
+							:size="24"
+							decorative />
+					</Breadcrumb>
 				</Breadcrumbs>
 				<Actions
 					v-if="item && !loadingItem"
@@ -228,6 +235,9 @@ import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
 
 import Barcode from 'vue-material-design-icons/Barcode.vue'
 import Check from 'vue-material-design-icons/Check.vue'
+import Folder from 'vue-material-design-icons/Folder.vue'
+import MapMarker from 'vue-material-design-icons/MapMarker.vue'
+import Tag from 'vue-material-design-icons/Tag.vue'
 import Delete from 'vue-material-design-icons/Delete.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
@@ -255,6 +265,9 @@ export default {
 		Pencil,
 		Plus,
 		Upload,
+		Folder,
+		MapMarker,
+		Tag,
 	},
 	directives: {
 		ClickOutside,
@@ -357,6 +370,19 @@ export default {
 				}])
 			}
 			return breadcrumbs
+		},
+
+		breadcrumbIcon() {
+			if (this.collection === 'folders') {
+				return 'Folder'
+			}
+			if (this.collection === 'places') {
+				return 'MapMarker'
+			}
+			if (this.collection === 'tags') {
+				return 'Tag'
+			}
+			return 'Folder'
 		},
 
 		imageSrc() {
