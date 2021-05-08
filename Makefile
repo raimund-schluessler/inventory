@@ -135,9 +135,7 @@ appstore: clean build-js-production
 	--exclude=/phpunit.integration.xml \
 	--exclude=/README.md \
 	--exclude=/renovate.json \
-	--exclude=/webpack.common.js \
-	--exclude=/webpack.prod.js \
-	--exclude=/webpack.dev.js \
+	--exclude=/webpack.js \
 	--exclude=/build \
 	--exclude=/ci \
 	--exclude=/coverage \
