@@ -22,6 +22,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<AppNavigationSettings>
 		<div>
+			<button @click="downloadUuidPdf">
+				{{ t('inventory', 'Download UUID sticker sheet') }}
+			</button>
 			<button @click="selectFolder">
 				{{ t('inventory', 'Select attachment folder') }}
 			</button>
@@ -32,6 +35,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
 import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
+
+import { v4 as uuidv4 } from 'uuid'
+import bwipjs from 'bwip-js'
+import { jsPDF } from 'jspdf'
 
 export default {
 	components: {
@@ -49,6 +56,49 @@ export default {
 				.pick()
 
 			this.$store.dispatch('setAttachmentFolder', { path })
+		},
+		/**
+		 * Creates a PDF file with multiple randomly generated UUID qrcodes.
+		 */
+		async downloadUuidPdf() {
+			// eslint-disable-next-line new-cap
+			const doc = new jsPDF()
+
+			const printerOffsetLeft = 1
+			const printerOffsetTop = -1
+			const offsetLeft = 12 - printerOffsetLeft
+			const offsetTop = 15 - printerOffsetTop
+			const padding = 2
+			const spacing = 27
+			const columnCount = 7
+			const rowCount = 10
+			const size = 20
+			// Create canvas to write on
+			const canvas = document.createElement('canvas')
+			for (let column = 0; column < columnCount; column++) {
+				for (let row = 0; row < rowCount; row++) {
+					// Generate UUID qrcode on canvas
+					bwipjs.toCanvas(canvas, {
+						bcid: 'qrcode',
+						scale: 1,
+						text: uuidv4(),
+						height: 20,
+						includetext: true,
+					})
+					// Add the qrcode to the PDF
+					doc.addImage(
+						canvas,
+						'PNG',
+						spacing * column + offsetLeft + padding,
+						spacing * row + offsetTop + padding,
+						size,
+						size
+					)
+				}
+			}
+			doc.text(t('inventory', 'UUID sticker sheet'), 85, 10)
+			// Save the PDF for download
+			await doc.save('UUIDs.pdf')
 		},
 	},
 }
