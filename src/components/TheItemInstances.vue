@@ -118,11 +118,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 					<div>
 						<Actions :boundaries-element="boundaries">
-							<ActionButton v-if="newUuidValid(instance.uuids)" @click="setUuid(instance)">
+							<ActionButton
+								v-if="newUuidValid(instance.uuids)"
+								key="add"
+								@click="setUuid(instance)">
 								<Check slot="icon" :size="24" decorative />
 								{{ t('inventory', 'Add UUID') }}
 							</ActionButton>
 							<ActionButton v-else
+								key="scan"
 								:close-after-click="true"
 								@click="openQrModal">
 								<QrcodeScan slot="icon" :size="24" decorative />
