@@ -3,7 +3,7 @@ stages:
   - test
 
 build site:
-  image: node:10
+  image: node:15
   stage: build
   script:
     - npm ci
@@ -17,7 +17,7 @@ include:
   - template: Code-Quality.gitlab-ci.yml
 
 javascript:
-  image: node:10
+  image: node:15
   stage: test
   script:
     - npm ci
