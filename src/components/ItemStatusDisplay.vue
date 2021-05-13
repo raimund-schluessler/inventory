@@ -21,7 +21,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<Actions v-if="status" :disabled="isDisabled">
-		<ActionButton :key="status.status" :disabled="isDisabled" class="full" @click="statusClicked">
+		<ActionButton
+			:key="status.status"
+			:disabled="isDisabled"
+			class="full"
+			@click="statusClicked">
 			<template slot="icon">
 				<AlertCircleOutline v-if="status.status==='error' || status.status==='unsynced'" :size="24" class="status--error status--unsynced" />
 				<Check v-if="status.status==='success'" :size="24" class="status--success" />
