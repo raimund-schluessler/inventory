@@ -33,7 +33,7 @@
 		"@nextcloud/initial-state": "1.2.0",
 		"@nextcloud/moment": "1.1.1",
 		"@nextcloud/router": "2.0.0",
-		"@nextcloud/vue": "3.10.1",
+		"@nextcloud/vue": "4.0.0",
 		"@vue/test-utils": "1.2.0",
 		"bwip-js": "3.0.0",
 		"jspdf": "2.3.1",
