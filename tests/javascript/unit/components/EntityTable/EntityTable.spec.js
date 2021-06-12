@@ -137,12 +137,12 @@ describe('EntityTable.vue', () => {
 				searchString: '',
 			},
 		})
-		wrapper.find('input.select-all.checkbox').trigger('click')
+		wrapper.find('input.select-all.checkbox + label').trigger('click')
 		let itemsFound = wrapper.vm.selectedItems
 		let allSelected = wrapper.vm.allEntitiesSelected
 		expect(itemsFound.length).toBe(3)
 		expect(allSelected).toBe(true)
-		wrapper.find('input.select-all.checkbox').trigger('click')
+		wrapper.find('input.select-all.checkbox + label').trigger('click')
 		itemsFound = wrapper.vm.selectedItems
 		allSelected = wrapper.vm.allEntitiesSelected
 		expect(itemsFound.length).toBe(0)
