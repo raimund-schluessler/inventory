@@ -6,6 +6,7 @@ build site:
   image: node:15
   stage: build
   script:
+    - npm i -g npm@7
     - npm ci
     - npm run build
   artifacts:
@@ -20,6 +21,7 @@ javascript:
   image: node:15
   stage: test
   script:
+    - npm i -g npm@7
     - npm ci
     - npm run test
 
