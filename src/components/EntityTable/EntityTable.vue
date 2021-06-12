@@ -28,9 +28,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						:checked="allEntitiesSelected"
 						:indeterminate.prop="someEntitiesSelected"
 						class="select-all checkbox"
-						type="checkbox"
-						@change="selectEntities">
-					<label :for="`select_all_items-${_uid}`">
+						type="checkbox">
+					<label :for="`select_all_items-${_uid}`" @click.prevent="selectEntities">
 						<span class="hidden-visually">
 							{{ t('inventory', 'Select all') }}
 						</span>
@@ -433,14 +432,16 @@ export default {
 			return key
 		},
 
-		selectEntities(state) {
+		selectEntities() {
 			/**
 			 * If the checkbox is checked, we select all entities which are visible
 			 * (all filtered entities).
 			 *
 			 * Otherwise we deselect ALL entities.
 			 */
-			if (state.target.checked) {
+			if (this.allEntitiesSelected) {
+				this.selectedEntities = []
+			} else {
 				// add all filteredEntities to selectedEntities
 				for (let i = 0; i < this.filteredEntities.length; i++) {
 					const index = this.selectedEntities.indexOf(this.filteredEntities[i])
@@ -448,8 +449,6 @@ export default {
 						this.selectedEntities.push(this.filteredEntities[i])
 					}
 				}
-			} else {
-				this.selectedEntities = []
 			}
 			/**
 			 * Emits that the selected items have changed
