@@ -16,7 +16,6 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 'use strict'
 
@@ -36,16 +35,16 @@ const getters = {
 	/**
 	 * Returns the sort order how to sort tasks
 	 *
-	 * @param {Object} state The store data
-	 * @returns {String} The sort order
+	 * @param {object} state The store data
+	 * @return {string} The sort order
 	 */
 	sortOrder: (state) => state.settings.sortOrder,
 
 	/**
 	 * Returns the sort direction how to sort tasks
 	 *
-	 * @param {Object} state The store data
-	 * @returns {String} The sort direction
+	 * @param {object} state The store data
+	 * @return {string} The sort direction
 	 */
 	sortDirection: (state) => state.settings.sortDirection,
 }
@@ -54,8 +53,8 @@ const mutations = {
 	/**
 	 * Sets all settings
 	 *
-	 * @param {Object} state Default state
-	 * @param {Object} payload The settings object
+	 * @param {object} state Default state
+	 * @param {object} payload The settings object
 	 */
 	setSettings(state, payload) {
 		state.settings = payload.settings
@@ -64,8 +63,8 @@ const mutations = {
 	/**
 	 * Sets a setting value
 	 *
-	 * @param {Object} state Default state
-	 * @param {Object} payload The setting object
+	 * @param {object} state Default state
+	 * @param {object} payload The setting object
 	 */
 	setSetting(state, payload) {
 		state.settings[payload.type] = payload.value
@@ -74,12 +73,12 @@ const mutations = {
 
 const actions = {
 	/**
-	* Writes a setting to the server
-	*
-	* @param {Object} context The store context
-	* @param {Object} payload The setting to save
-	* @returns {Promise}
-	*/
+	 * Writes a setting to the server
+	 *
+	 * @param {object} context The store context
+	 * @param {object} payload The setting to save
+	 * @return {Promise}
+	 */
 	async setSetting(context, payload) {
 		try {
 			context.commit('setSetting', payload)
@@ -92,8 +91,9 @@ const actions = {
 	/**
 	 * Requests all app settings from the server
 	 *
-	 * @param {Object} commit The store mutations
-	 * @returns {Promise}
+	 * @param {object} context The store object
+	 * @param {object} context.commit The store mutations
+	 * @return {Promise}
 	 */
 	async loadSettings({ commit }) {
 		try {

@@ -16,7 +16,6 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 'use strict'
 
@@ -39,16 +38,16 @@ const getters = {
 	/**
 	 * Returns all places
 	 *
-	 * @param {Object} state The store data
-	 * @returns {Array} The places
+	 * @param {object} state The store data
+	 * @return {Array} The places
 	 */
 	getPlacesByPlace: (state) => Object.values(state.places),
 
 	/**
 	 * Returns whether we currently load places from the server
 	 *
-	 * @param {Object} state The store data
-	 * @returns {Boolean} Are we loading places
+	 * @param {object} state The store data
+	 * @return {boolean} Are we loading places
 	 */
 	loadingPlaces: (state) => {
 		return state.loading
@@ -59,8 +58,8 @@ const mutations = {
 	/**
 	 * Sets the places
 	 *
-	 * @param {Object} state Default state
-	 * @param {Object} payload The places object
+	 * @param {object} state Default state
+	 * @param {object} payload The places object
 	 */
 	setPlaces(state, payload) {
 		state.places = payload.places
@@ -69,8 +68,8 @@ const mutations = {
 	/**
 	 * Adds a place
 	 *
-	 * @param {Object} state Default state
-	 * @param {Object} payload The places object
+	 * @param {object} state Default state
+	 * @param {object} payload The places object
 	 */
 	addPlace(state, payload) {
 		state.places.push(payload.place)
@@ -79,8 +78,9 @@ const mutations = {
 	/**
 	 * Deletes a place
 	 *
-	 * @param {Object} state Default state
-	 * @param {Object} newPlace The places object
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {object} data.place The places object
 	 */
 	deletePlace(state, { place }) {
 		// Find index of place to update
@@ -92,8 +92,9 @@ const mutations = {
 	/**
 	 * Updates a place
 	 *
-	 * @param {Object} state Default state
-	 * @param {Object} newPlace The places object
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {object} data.newPlace The places object
 	 */
 	updatePlace(state, { newPlace }) {
 		// Find index of place to update
@@ -107,9 +108,11 @@ const actions = {
 	/**
 	 * Requests all places for a given path
 	 *
-	 * @param {Object} context The store context
-	 * @param {String} path The path to look at
-	 * @returns {Promise}
+	 * @param {object} context The store object
+	 * @param {object} context.commit The store mutations
+	 * @param {object} context.state The store state
+	 * @param {string} path The path to look at
+	 * @return {Promise}
 	 */
 	async getPlacesByPlace({ commit, state }, path) {
 		state.loading = true

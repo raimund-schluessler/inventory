@@ -206,8 +206,8 @@ export default {
 		 * Whether an attachment can be unlinked or only deleted.
 		 * Files that have been linked start with a '/' which indicates the path is absolute
 		 *
-		 * @param {Attachment} attachment The attachment to check
-		 * @returns {Boolean}
+		 * @param {object} attachment The attachment to check
+		 * @return {boolean}
 		 */
 		canUnlink(attachment) {
 			return attachment.basename.startsWith('/')

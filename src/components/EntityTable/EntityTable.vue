@@ -549,8 +549,8 @@ export default {
 		/**
 		 * Handler for starting the drag operation
 		 *
-		 * @param {Object} entity The dragged item or folder
-		 * @param {Object} e The dragStart event
+		 * @param {object} entity The dragged item or folder
+		 * @param {object} e The dragStart event
 		 */
 		dragStart(entity, e) {
 			if (this.selectedEntities.length > 0) {
