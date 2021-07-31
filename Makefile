@@ -121,6 +121,7 @@ appstore: clean build-js-production
 	--exclude=/.travis.yml \
 	--exclude=/.tx \
 	--exclude=/.v8flags*.json \
+	--exclude=/babel.config.js \
 	--exclude=/build.xml \
 	--exclude=/composer.json \
 	--exclude=/composer.lock \
@@ -134,6 +135,7 @@ appstore: clean build-js-production
 	--exclude=/phpunit.xml \
 	--exclude=/phpunit.integration.xml \
 	--exclude=/README.md \
+	--exclude=/stylelint.config.js \
 	--exclude=/renovate.json \
 	--exclude=/webpack.js \
 	--exclude=/build \
