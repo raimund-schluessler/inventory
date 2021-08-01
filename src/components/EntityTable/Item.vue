@@ -147,7 +147,7 @@ export default {
 		/**
 		 * Returns the link to the item or instance
 		 *
-		 * @returns {String} The link to show for the item
+		 * @return {string} The link to show for the item
 		 */
 		itemRoute() {
 			if (this.mode === 'selection' || this.entity.syncStatus?.type === 'unsynced') {

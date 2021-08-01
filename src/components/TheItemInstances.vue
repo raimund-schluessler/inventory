@@ -297,8 +297,9 @@ export default {
 		},
 		/**
 		 * Checks that the new UUID is valid and not already used for this instance.
+		 *
 		 * @param {Array} uuids The already used UUIDs
-		 * @returns {Boolean} Whether the new UUID is valid
+		 * @return {boolean} Whether the new UUID is valid
 		 */
 		newUuidValid(uuids) {
 			const uuidArray = uuids.map(uuid => {

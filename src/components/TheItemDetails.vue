@@ -453,9 +453,10 @@ export default {
 
 		/**
 		 * Generate a barcode for the given string
-		 * @param {String} value The string to show as barcode
-		 * @param {String} type The barcode type
-		 * @param {String} options The barcode options
+		 *
+		 * @param {string} value The string to show as barcode
+		 * @param {string} type The barcode type
+		 * @param {string} options The barcode options
 		 */
 		openBarcode(value, type = 'qrcode', options = '') {
 			if (value.length > 0) {

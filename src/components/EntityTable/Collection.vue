@@ -202,7 +202,7 @@ export default {
 		/**
 		 * Check if the name is allowed
 		 *
-		 * @param {Object} $event The event
+		 * @param {object} $event The event
 		 */
 		checkName($event) {
 			if ($event.keyCode === 27) {
@@ -220,7 +220,7 @@ export default {
 					this.countdown = 0
 				}
 			}, 1000)
-			this.deleteTimeout = setTimeout(async() => {
+			this.deleteTimeout = setTimeout(async () => {
 				try {
 					if (this.collection === 'folders') {
 						await this.deleteFolder(this.entity.id)

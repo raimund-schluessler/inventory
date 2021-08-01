@@ -16,7 +16,6 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 'use strict'
 
@@ -39,16 +38,16 @@ const getters = {
 	/**
 	 * Returns all folders
 	 *
-	 * @param {Object} state The store data
-	 * @returns {Array} The folders
+	 * @param {object} state The store data
+	 * @return {Array} The folders
 	 */
 	getFoldersByFolder: (state) => Object.values(state.folders),
 
 	/**
 	 * Returns whether we currently load folders from the server
 	 *
-	 * @param {Object} state The store data
-	 * @returns {Boolean} Are we loading folders
+	 * @param {object} state The store data
+	 * @return {boolean} Are we loading folders
 	 */
 	loadingFolders: (state) => {
 		return state.loading
@@ -59,8 +58,8 @@ const mutations = {
 	/**
 	 * Sets the folders
 	 *
-	 * @param {Object} state Default state
-	 * @param {Object} payload The folders object
+	 * @param {object} state Default state
+	 * @param {object} payload The folders object
 	 */
 	setFolders(state, payload) {
 		state.folders = payload.folders
@@ -69,8 +68,8 @@ const mutations = {
 	/**
 	 * Adds a folder
 	 *
-	 * @param {Object} state Default state
-	 * @param {Object} payload The folders object
+	 * @param {object} state Default state
+	 * @param {object} payload The folders object
 	 */
 	addFolder(state, payload) {
 		state.folders.push(payload.folder)
@@ -79,8 +78,9 @@ const mutations = {
 	/**
 	 * Deletes a folder
 	 *
-	 * @param {Object} state Default state
-	 * @param {Object} newFolder The folders object
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {object} data.folder The folders object
 	 */
 	deleteFolder(state, { folder }) {
 		// Find index of folder to update
@@ -92,8 +92,9 @@ const mutations = {
 	/**
 	 * Updates a folder
 	 *
-	 * @param {Object} state Default state
-	 * @param {Object} newFolder The folders object
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {object} data.newFolder The folders object
 	 */
 	updateFolder(state, { newFolder }) {
 		// Find index of folder to update
@@ -107,9 +108,11 @@ const actions = {
 	/**
 	 * Requests all folders for a given path
 	 *
-	 * @param {Object} context The store context
-	 * @param {String} path The path to look at
-	 * @returns {Promise}
+	 * @param {object} context The store object
+	 * @param {object} context.commit The store mutations
+	 * @param {object} context.state The store state
+	 * @param {string} path The path to look at
+	 * @return {Promise}
 	 */
 	async getFoldersByFolder({ commit, state }, path) {
 		state.loading = true

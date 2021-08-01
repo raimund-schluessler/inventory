@@ -16,7 +16,6 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 'use strict'
 
@@ -57,10 +56,10 @@ const getters = {
 	/**
 	 * Returns all items in the store
 	 *
-	 * @param {Object} state The store data
-	 * @param {Object} getters The store getters
-	 * @param {Object} rootState The store root state
-	 * @returns {Array} All items in store
+	 * @param {object} state The store data
+	 * @param {object} getters The store getters
+	 * @param {object} rootState The store root state
+	 * @return {Array} All items in store
 	 */
 	getAllItems: (state, getters, rootState) => {
 		return Object.values(state.items)
@@ -69,10 +68,10 @@ const getters = {
 	/**
 	 * Returns all parent items in the store
 	 *
-	 * @param {Object} state The store data
-	 * @param {Object} getters The store getters
-	 * @param {Object} rootState The store root state
-	 * @returns {Array} All parent items in store
+	 * @param {object} state The store data
+	 * @param {object} getters The store getters
+	 * @param {object} rootState The store root state
+	 * @return {Array} All parent items in store
 	 */
 	getParentItems: (state, getters, rootState) => {
 		return Object.values(state.parentItems)
@@ -81,10 +80,10 @@ const getters = {
 	/**
 	 * Returns all sub items in the store
 	 *
-	 * @param {Object} state The store data
-	 * @param {Object} getters The store getters
-	 * @param {Object} rootState The store root state
-	 * @returns {Array} All sub items in store
+	 * @param {object} state The store data
+	 * @param {object} getters The store getters
+	 * @param {object} rootState The store root state
+	 * @return {Array} All sub items in store
 	 */
 	getSubItems: (state, getters, rootState) => {
 		return Object.values(state.subItems)
@@ -93,10 +92,10 @@ const getters = {
 	/**
 	 * Returns all related items in the store
 	 *
-	 * @param {Object} state The store data
-	 * @param {Object} getters The store getters
-	 * @param {Object} rootState The store root state
-	 * @returns {Array} All related items in store
+	 * @param {object} state The store data
+	 * @param {object} getters The store getters
+	 * @param {object} rootState The store root state
+	 * @return {Array} All related items in store
 	 */
 	getRelatedItems: (state, getters, rootState) => {
 		return Object.values(state.relatedItems)
@@ -107,8 +106,8 @@ const getters = {
 	/**
 	 * Returns whether we currently load items from the server
 	 *
-	 * @param {Object} state The store data
-	 * @returns {Boolean} Are we loading items
+	 * @param {object} state The store data
+	 * @return {boolean} Are we loading items
 	 */
 	loadingItems: (state) => {
 		return state.loadingItems
@@ -117,8 +116,8 @@ const getters = {
 	/**
 	 * Returns whether we currently load a single item from the server
 	 *
-	 * @param {Object} state The store data
-	 * @returns {Boolean} Are we loading an item
+	 * @param {object} state The store data
+	 * @return {boolean} Are we loading an item
 	 */
 	loadingItem: (state) => {
 		return state.loadingItem
@@ -127,8 +126,8 @@ const getters = {
 	/**
 	 * Returns whether we currently load attachments of an item
 	 *
-	 * @param {Object} state The store data
-	 * @returns {Boolean} Are we loading an item
+	 * @param {object} state The store data
+	 * @return {boolean} Are we loading an item
 	 */
 	loadingAttachments: (state) => (itemID) => {
 		return state.loadingAttachments.includes(`item-${itemID}`)
@@ -137,8 +136,8 @@ const getters = {
 	/**
 	 * Returns whether we currently load a single item from the server
 	 *
-	 * @param {Object} state The store data
-	 * @returns {Boolean} Are we loading an item
+	 * @param {object} state The store data
+	 * @return {boolean} Are we loading an item
 	 */
 	loadingInstanceAttachments: (state) => ({ itemID, instanceID }) => {
 		return state.loadingInstanceAttachments.includes(`item-${itemID}_instance-${instanceID}`)
@@ -149,10 +148,10 @@ const getters = {
 	/**
 	 * Returns the search results from the server
 	 *
-	 * @param {Object} state The store data
-	 * @param {Object} getters The store getters
-	 * @param {Object} rootState The store root state
-	 * @returns {Array} The results
+	 * @param {object} state The store data
+	 * @param {object} getters The store getters
+	 * @param {object} rootState The store root state
+	 * @return {Array} The results
 	 */
 	searchResults: (state, getters, rootState) => {
 		return state.searchResults.filter(entity => {
@@ -172,8 +171,8 @@ const getters = {
 	/**
 	 * Returns the search results from the server
 	 *
-	 * @param {Object} state The store data
-	 * @returns {Array} The results
+	 * @param {object} state The store data
+	 * @return {Array} The results
 	 */
 	searching: (state) => state.searching,
 }
@@ -183,7 +182,7 @@ const mutations = {
 	/**
 	 * Adds multiple items to the store
 	 *
-	 * @param {Object} state Default state
+	 * @param {object} state Default state
 	 * @param {Array<Item>} items The items to add
 	 */
 	addItems(state, items = []) {
@@ -200,7 +199,7 @@ const mutations = {
 	/**
 	 * Sets the items in the store
 	 *
-	 * @param {Object} state Default state
+	 * @param {object} state Default state
 	 * @param {Array<Item>} items The items to set
 	 */
 	setItems(state, items = []) {
@@ -217,7 +216,7 @@ const mutations = {
 	/**
 	 * Adds an item to the store
 	 *
-	 * @param {Object} state Default state
+	 * @param {object} state Default state
 	 * @param {Item} item The item to add
 	 */
 	addItem(state, item) {
@@ -227,7 +226,7 @@ const mutations = {
 	/**
 	 * Deletes an item from the store
 	 *
-	 * @param {Object} state Default state
+	 * @param {object} state Default state
 	 * @param {Item} item The item to delete
 	 */
 	deleteItem(state, item) {
@@ -239,7 +238,7 @@ const mutations = {
 	/**
 	 * Edits an item in the store
 	 *
-	 * @param {Object} state Default state
+	 * @param {object} state Default state
 	 * @param {Item} item The item to edit
 	 */
 	editItem(state, item) {
@@ -254,7 +253,7 @@ const mutations = {
 	/**
 	 * Unlinks parent items
 	 *
-	 * @param {Object} state Default state
+	 * @param {object} state Default state
 	 * @param {Item} items The items to unlink
 	 */
 	unlinkParents(state, items) {
@@ -268,7 +267,7 @@ const mutations = {
 	/**
 	 * Unlinks related items
 	 *
-	 * @param {Object} state Default state
+	 * @param {object} state Default state
 	 * @param {Item} items The items to unlink
 	 */
 	unlinkRelated(state, items) {
@@ -282,7 +281,7 @@ const mutations = {
 	/**
 	 * Unlinks sub items
 	 *
-	 * @param {Object} state Default state
+	 * @param {object} state Default state
 	 * @param {Item} items The items to unlink
 	 */
 	unlinkSub(state, items) {
@@ -296,9 +295,10 @@ const mutations = {
 	/**
 	 * Adds a UUID to an item instance
 	 *
-	 * @param {Object} state Default state
-	 * @param {Array} instance The item instance
-	 * @param {Array} uuid The UUID
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {Array} data.instance The item instance
+	 * @param {Array} data.uuid The UUID
 	 */
 	addUuid(state, { instance, uuid }) {
 		instance.uuids.push(uuid)
@@ -307,9 +307,10 @@ const mutations = {
 	/**
 	 * Deletes a UUID from an item instance
 	 *
-	 * @param {Object} state Default state
-	 * @param {Array} instance The item instance
-	 * @param {Array} uuid The UUID
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {Array} data.instance The item instance
+	 * @param {Array} data.uuid The UUID
 	 */
 	deleteUuid(state, { instance, uuid }) {
 		instance.uuids = instance.uuids.filter((localUuid) => {
@@ -320,9 +321,10 @@ const mutations = {
 	/**
 	 * Adds an instance to an item
 	 *
-	 * @param {Object} state Default state
-	 * @param {Array} instance The item instance
-	 * @param {Array} uuid The UUID
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {Array} data.item The item
+	 * @param {Array} data.instance The item instance
 	 */
 	addInstance(state, { item, instance }) {
 		item.instances.push(instance)
@@ -331,9 +333,10 @@ const mutations = {
 	/**
 	 * Deletes an instance from an item
 	 *
-	 * @param {Object} state Default state
-	 * @param {Array} item The item
-	 * @param {Array} instance The item instance
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {Array} data.item The item
+	 * @param {Array} data.instance The item instance
 	 */
 	deleteInstance(state, { item, instance }) {
 		item.instances = item.instances.filter((localInstance) => {
@@ -344,9 +347,10 @@ const mutations = {
 	/**
 	 * Edits an instance of an item
 	 *
-	 * @param {Object} state Default state
-	 * @param {Array} item The item
-	 * @param {Array} instance The new item instance
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {Array} data.item The item
+	 * @param {Array} data.instance The new item instance
 	 */
 	editInstance(state, { item, instance }) {
 		item.instances = item.instances.map((localInstance) => {
@@ -463,8 +467,8 @@ const mutations = {
 	/**
 	 * Sets the search results
 	 *
-	 * @param {Object} state Default state
-	 * @param {Object} entities The search results
+	 * @param {object} state Default state
+	 * @param {object} entities The search results
 	 */
 	setSearchResults(state, entities) {
 		state.searchResults = entities
@@ -473,9 +477,10 @@ const mutations = {
 	/**
 	 * Sets the sync status of an item
 	 *
-	 * @param {Object} state Default state
-	 * @param {Object} item The item
-	 * @param {String} status The sync status
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {object} data.item The item
+	 * @param {string} data.status The sync status
 	 */
 	setSyncStatus(state, { item, status }) {
 		Vue.set(item, 'syncStatus', status)
@@ -518,8 +523,8 @@ const actions = {
 
 	async createItems(context, items) {
 		const queue = new PQueue({ concurrency: 5 })
-		items.forEach(async(item) => {
-			await queue.add(async() => {
+		items.forEach(async (item) => {
+			await queue.add(async () => {
 				try {
 					const response = await Axios.post(generateUrl('apps/inventory/item/add'), { item: item.response })
 					Vue.set(item, 'response', response.data)
@@ -695,7 +700,7 @@ const actions = {
 	},
 	async deleteItems(context, items) {
 		const queue = new PQueue({ concurrency: 5 })
-		items.forEach(async(item) => {
+		items.forEach(async (item) => {
 			await queue.add(() => context.dispatch('deleteItem', item))
 		})
 		await queue.onIdle()

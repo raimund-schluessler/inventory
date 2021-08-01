@@ -16,20 +16,20 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
  */
 'use strict'
 
 import Folder from '../models/folder.js'
+import Item from '../models/item.js'
 import Place from '../models/place.js'
 
 /**
  * Sorts items in specified order type
  *
  * @param {Array<Item>} items The items to sort
- * @param {String} sortOrder The sorting order type
- * @param {Boolean} sortDirection The sorting direction
- * @returns {Array}
+ * @param {string} sortOrder The sorting order type
+ * @param {boolean} sortDirection The sorting direction
+ * @return {Array}
  */
 function sort(items, sortOrder, sortDirection) {
 	try {
@@ -47,8 +47,8 @@ function sort(items, sortOrder, sortDirection) {
  *
  * @param {Item} itemA The first item
  * @param {Item} itemB The second item
- * @param {String} sortOrder The sorting order type
- * @returns {Integer}
+ * @param {string} sortOrder The sorting order type
+ * @return {number}
  */
 function sortAlphabetically(itemA, itemB, sortOrder) {
 	if ((itemA instanceof Folder && itemB instanceof Folder) || (itemA instanceof Place && itemB instanceof Place)) {
