@@ -26,7 +26,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			:disabled="isDisabled"
 			class="full"
 			@click="statusClicked">
-			<template slot="icon">
+			<template #icon>
 				<AlertCircleOutline v-if="status.status==='error' || status.status==='unsynced'" :size="24" class="status--error status--unsynced" />
 				<Check v-if="status.status==='success'" :size="24" class="status--success" />
 				<Loading v-if="status.status==='sync'" :size="24" class="status--sync" />

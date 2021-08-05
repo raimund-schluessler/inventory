@@ -31,7 +31,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="column column--actions">
 					<Actions :boundaries-element="boundaries">
 						<ActionButton @click="toggleInstanceInput">
-							<Plus slot="icon" :size="24" decorative />
+							<template #icon>
+								<Plus :size="24" decorative />
+							</template>
 							{{ t('inventory', 'Add instance') }}
 						</ActionButton>
 					</Actions>
@@ -59,15 +61,21 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="column column--actions">
 						<Actions :boundaries-element="boundaries">
 							<ActionButton :close-after-click="true" @click="toggleUuidInput(instance)">
-								<Plus slot="icon" :size="24" decorative />
+								<template #icon>
+									<Plus :size="24" decorative />
+								</template>
 								{{ t('inventory', 'Add UUID') }}
 							</ActionButton>
 							<ActionButton @click="toggleEditInstance(instance)">
-								<Pencil slot="icon" :size="24" decorative />
+								<template #icon>
+									<Pencil :size="24" decorative />
+								</template>
 								{{ t('inventory', 'Edit instance') }}
 							</ActionButton>
 							<ActionButton @click="removeInstance(instance)">
-								<Delete slot="icon" :size="24" decorative />
+								<template #icon>
+									<Delete :size="24" decorative />
+								</template>
 								{{ t('inventory', 'Delete instance') }}
 							</ActionButton>
 						</Actions>
@@ -97,7 +105,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="column column--actions">
 						<Actions :boundaries-element="boundaries">
 							<ActionButton :close-after-click="true" @click="saveInstance">
-								<Check slot="icon" :size="24" decorative />
+								<template #icon>
+									<Check :size="24" decorative />
+								</template>
 								{{ t('inventory', 'Save instance') }}
 							</ActionButton>
 						</Actions>
@@ -122,14 +132,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								v-if="newUuidValid(instance.uuids)"
 								key="add"
 								@click="setUuid(instance)">
-								<Check slot="icon" :size="24" decorative />
+								<template #icon>
+									<Check :size="24" decorative />
+								</template>
 								{{ t('inventory', 'Add UUID') }}
 							</ActionButton>
 							<ActionButton v-else
 								key="scan"
 								:close-after-click="true"
 								@click="openQrModal">
-								<QrcodeScan slot="icon" :size="24" decorative />
+								<template #icon>
+									<QrcodeScan :size="24" decorative />
+								</template>
 								{{ t('inventory', 'Scan QR code') }}
 							</ActionButton>
 						</Actions>
@@ -145,11 +159,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								<span>{{ uuid.uuid }}</span>
 								<Actions :boundaries-element="boundaries">
 									<ActionButton :close-after-click="true" @click="$emit('open-barcode', uuid.uuid)">
-										<Qrcode slot="icon" :size="24" decorative />
+										<template #icon>
+											<Qrcode :size="24" decorative />
+										</template>
 										{{ t('inventory', 'Show QR Code') }}
 									</ActionButton>
 									<ActionButton @click="removeUuid(instance, uuid.uuid)">
-										<Delete slot="icon" :size="24" decorative />
+										<template #icon>
+											<Delete :size="24" decorative />
+										</template>
 										{{ t('inventory', 'Delete UUID') }}
 									</ActionButton>
 								</Actions>

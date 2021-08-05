@@ -60,11 +60,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<ActionButton class="startRename"
 					:close-after-click="true"
 					@click="startRename">
-					<Pencil slot="icon" :size="24" decorative />
+					<template #icon>
+						<Pencil :size="24" decorative />
+					</template>
 					{{ t('inventory', 'Rename') }}
 				</ActionButton>
 				<ActionButton @click="scheduleDelete">
-					<Delete slot="icon" :size="24" decorative />
+					<template #icon>
+						<Delete :size="24" decorative />
+					</template>
 					{{ deleteString }}
 				</ActionButton>
 			</Actions>
@@ -73,7 +77,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:boundaries-element="boundaries">
 				<ActionButton
 					@click.prevent.stop="cancelDelete">
-					<Undo slot="icon" :size="24" decorative />
+					<template #icon>
+						<Undo :size="24" decorative />
+					</template>
 					{{ undoString }}
 				</ActionButton>
 			</Actions>

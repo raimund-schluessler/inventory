@@ -48,19 +48,25 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							:href="fileLink(attachment)"
 							target="_blank"
 							:close-after-click="true">
-							<OpenInNew slot="icon" :size="24" decorative />
+							<template #icon>
+								<OpenInNew :size="24" decorative />
+							</template>
 							{{ t('inventory', 'Show in files') }}
 						</ActionLink>
 						<ActionButton v-if="canUnlink(attachment)"
 							:close-after-click="true"
 							@click="unlinkAttachment(attachment)">
-							<Close slot="icon" :size="24" decorative />
+							<template #icon>
+								<Close :size="24" decorative />
+							</template>
 							{{ t('inventory', 'Unlink attachment') }}
 						</ActionButton>
 						<ActionButton
 							:close-after-click="true"
 							@click="deleteAttachment(attachment)">
-							<Delete slot="icon" :size="24" decorative />
+							<template #icon>
+								<Delete :size="24" decorative />
+							</template>
 							{{ t('inventory', 'Delete attachment') }}
 						</ActionButton>
 					</Actions>
@@ -78,13 +84,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<ActionButton
 				:close-after-click="true"
 				@click="upload">
-				<Upload slot="icon" :size="24" decorative />
+				<template #icon>
+					<Upload :size="24" decorative />
+				</template>
 				{{ t('inventory', 'Upload attachment') }}
 			</ActionButton>
 			<ActionButton
 				:close-after-click="true"
 				@click="select">
-				<Folder slot="icon" :size="24" decorative />
+				<template #icon>
+					<Folder :size="24" decorative />
+				</template>
 				{{ t('inventory', 'Select attachment') }}
 			</ActionButton>
 		</Actions>

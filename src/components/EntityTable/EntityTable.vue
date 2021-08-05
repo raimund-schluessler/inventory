@@ -70,14 +70,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<ActionButton v-if="allowDeletion && !unlink && selectedItems.length"
 							:close-after-click="true"
 							@click="removeItems">
-							<Delete slot="icon" :size="24" decorative />
+							<template #icon>
+								<Delete :size="24" decorative />
+							</template>
 							{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
 						</ActionButton>
 						<ActionButton v-if="unlink && selectedItems.length"
 							icon="icon-close"
 							:close-after-click="true"
 							@click="$emit('unlink')">
-							<Close slot="icon" :size="24" decorative />
+							<template #icon>
+								<Close :size="24" decorative />
+							</template>
 							{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
 						</ActionButton>
 					</Actions>

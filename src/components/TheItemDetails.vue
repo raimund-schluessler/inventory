@@ -28,12 +28,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						:key="crumb.path"
 						:title="crumb.title"
 						:to="crumb.path">
-						<component
-							:is="breadcrumbIcon"
-							v-if="index === 0"
-							slot="icon"
-							:size="24"
-							decorative />
+						<template #icon>
+							<component
+								:is="breadcrumbIcon"
+								v-if="index === 0"
+								:size="24"
+								decorative />
+						</template>
 					</Breadcrumb>
 				</Breadcrumbs>
 				<Actions
@@ -41,24 +42,32 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					container="#controls"
 					:boundaries-element="boundaries">
 					<ActionButton :close-after-click="true" @click="openModal">
-						<Plus slot="icon" :size="24" decorative />
+						<template #icon>
+							<Plus :size="24" decorative />
+						</template>
 						{{ t('inventory', 'Link items') }}
 					</ActionButton>
 					<ActionButton
 						:close-after-click="true"
 						@click="upload">
-						<Upload slot="icon" :size="24" decorative />
+						<template #icon>
+							<Upload :size="24" decorative />
+						</template>
 						{{ t('inventory', 'Upload image') }}
 					</ActionButton>
 					<ActionButton
 						icon="icon-rename"
 						:close-after-click="true"
 						@click="toggleEditItem">
-						<Pencil slot="icon" :size="24" decorative />
+						<template #icon>
+							<Pencil :size="24" decorative />
+						</template>
 						{{ t('inventory', 'Edit item') }}
 					</ActionButton>
 					<ActionButton @click="removeItem">
-						<Delete slot="icon" :size="24" decorative />
+						<template #icon>
+							<Delete :size="24" decorative />
+						</template>
 						{{ t('inventory', 'Delete item') }}
 					</ActionButton>
 				</Actions>
@@ -115,7 +124,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 										v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem "
 										:boundaries-element="boundaries">
 										<ActionButton :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
-											<Barcode slot="icon" :size="24" decorative />
+											<template #icon>
+												<Barcode :size="24" decorative />
+											</template>
 											{{ t('inventory', 'Show GTIN') }}
 										</ActionButton>
 									</Actions>
@@ -144,7 +155,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="column column--width-2 column--actions">
 								<Actions>
 									<ActionButton @click="saveItem">
-										<Check slot="icon" :size="24" decorative />
+										<template #icon>
+											<Check :size="24" decorative />
+										</template>
 										{{ t('inventory', 'Save changes') }}
 									</ActionButton>
 								</Actions>

@@ -28,12 +28,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:title="crumb.title"
 					:to="crumb.path"
 					:disable-drop="index === (breadcrumbs.length - 1)">
-					<component
-						:is="breadcrumbIcon"
-						v-if="index === 0"
-						slot="icon"
-						:size="24"
-						decorative />
+					<template #icon>
+						<component
+							:is="breadcrumbIcon"
+							v-if="index === 0"
+							:size="24"
+							decorative />
+					</template>
 				</Breadcrumb>
 			</Breadcrumbs>
 			<Actions
@@ -42,16 +43,22 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:open.sync="actionsOpen"
 				@close="addingCollection = false">
 				<ActionButton :close-after-click="true" @click="openQrModal()">
-					<QrcodeScan slot="icon" :size="24" decorative />
+					<template #icon>
+						<QrcodeScan :size="24" decorative />
+					</template>
 					{{ t('inventory', 'Scan QR code') }}
 				</ActionButton>
 				<ActionRouter :to="`/${collection}/${($route.params.path) ? $route.params.path + '/' : ''}additems`">
-					<Plus slot="icon" :size="24" decorative />
+					<template #icon>
+						<Plus :size="24" decorative />
+					</template>
 					{{ t('inventory', 'Add items') }}
 				</ActionRouter>
 				<ActionButton v-if="!addingCollection"
 					@click.prevent.stop="openCollectionInput()">
-					<Folder slot="icon" :size="24" decorative />
+					<template #icon>
+						<Folder :size="24" decorative />
+					</template>
 					{{ addCollectionString }}
 				</ActionButton>
 				<ActionInput v-if="addingCollection"
@@ -63,7 +70,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:class="{ 'error': collectionNameError }"
 					@submit="addCollection"
 					@input="checkCollectionName">
-					<Folder slot="icon" :size="24" decorative />
+					<template #icon>
+						<Folder :size="24" decorative />
+					</template>
 					{{ collection === 'places' ? t('inventory', 'New Place') : t('inventory', 'New Folder') }}
 				</ActionInput>
 			</Actions>

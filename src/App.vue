@@ -28,11 +28,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:key="view.id"
 					:to="`/${view.id}/`"
 					:title="view.name">
-					<component
-						:is="view.icon"
-						slot="icon"
-						:size="24"
-						decorative />
+					<template #icon>
+						<component
+							:is="view.icon"
+							:size="24"
+							decorative />
+					</template>
 				</AppNavigationItem>
 			</template>
 			<template #footer>
