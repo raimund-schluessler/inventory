@@ -29,7 +29,7 @@ import Axios from '@nextcloud/axios'
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 
-import PQueue from 'p-queue'
+import PQueue from 'p-queue/dist/index'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
