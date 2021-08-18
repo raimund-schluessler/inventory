@@ -106,7 +106,7 @@ class ItemrelationMapperTest extends MapperTestUtility {
 		$itemId = 3;
 		$uid = 'unit_tester_1';
 		$relations = array_slice($this->itemrelations, 0, 3);
-		$relatedIDs  = [];
+		$relatedIDs = [];
 		foreach ($relations as $relation) {
 			$relatedIDs[] = ($relation->getItemid1() === $itemId) ? $relation->getItemid2() : $relation->getItemid1();
 		}

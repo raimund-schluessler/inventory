@@ -96,7 +96,7 @@ body {
 }
 
 .dragged {
-	opacity: 0.4;
+	opacity: .4;
 }
 
 .entitytable {
@@ -115,7 +115,7 @@ body {
 			max-width: 150px;
 			grid-template-columns: 150px;
 			background-color: var(--color-border-dark);
-			
+
 			&:first-child {
 				border-top: 1px solid var(--color-border-dark);
 			}
@@ -241,7 +241,7 @@ body {
 			text-decoration: line-through;
 
 			.thumbnail {
-				opacity: 0.3 !important;
+				opacity: .3 !important;
 			}
 		}
 
@@ -254,7 +254,7 @@ body {
 			&--actions {
 				overflow: unset;
 			}
-			
+
 			&--selection {
 				display: inline-flex;
 				justify-content: center;
@@ -276,14 +276,14 @@ body {
 					height: 44px;
 					width: 44px;
 					margin-left: -4px;
-	
+
 					&__image {
 						height: 36px;
 						width: 36px;
 						margin: 4px;
 						background-size: 36px;
-						background-repeat:  no-repeat;
-	
+						background-repeat: no-repeat;
+
 						&--default {
 							opacity: .57;
 						}
@@ -364,15 +364,15 @@ body {
 					display: inline-flex;
 					align-items: center;
 					flex-wrap: wrap;
-		
+
 					span {
 						max-width: 100%;
-		
+
 						a {
 							word-wrap: break-word;
 						}
 					}
-		
+
 					.action-item {
 						margin-right: -10px;
 					}
@@ -444,7 +444,7 @@ body {
 				input {
 					width: 100%;
 				}
-			}	
+			}
 		}
 
 		@media only screen and (max-width: 800px) {
@@ -533,7 +533,7 @@ body {
 				padding-bottom: 100%;
 			}
 		}
-	
+
 		img {
 			width: 100%;
 		}
@@ -638,7 +638,7 @@ body {
 				flex-direction: row;
 				background-color: var(--color-primary);
 				padding: 8px;
-			
+
 				.title {
 					line-height: 38px;
 					padding: 0 20px;
@@ -664,7 +664,7 @@ body {
 						}
 					}
 				}
-			
+
 				.searchbox {
 					margin-left: auto;
 
@@ -677,7 +677,7 @@ body {
 							display: none;
 						}
 
-						&~ .close {
+						& ~ .close {
 							position: absolute;
 							right: 0;top: 0;
 							background-color: unset;
@@ -686,7 +686,7 @@ body {
 							z-index: 999;
 						}
 
-						&~ .search {
+						& ~ .search {
 							position: absolute;
 							left: 0;
 							width: 44px;
@@ -712,12 +712,12 @@ body {
 					top: 0;
 				}
 			}
-			
+
 			.footer {
 				box-sizing: border-box;
 				height: 56px;
 				padding: 8px;
-			
+
 				.item-adding-status {
 					line-height: 40px;
 					font-size: 13px;
@@ -738,7 +738,7 @@ body {
 		min-width: 250px;
 		text-align: center;
 		margin: 20px;
-	
+
 		button {
 			margin: 40px 3px 3px 3px;
 		}
@@ -810,7 +810,7 @@ body {
 						padding-bottom: 2px;
 					}
 					.extension {
-						opacity: 0.7;
+						opacity: .7;
 					}
 				}
 				.filesize,

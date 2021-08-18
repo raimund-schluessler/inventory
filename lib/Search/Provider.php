@@ -163,11 +163,11 @@ class Provider implements IProvider {
 	}
 
 	/**
-	* Format subline for items and folders
-	*
-	* @param string $path
-	* @return string
-	*/
+	 * Format subline for items and folders
+	 *
+	 * @param string $path
+	 * @return string
+	 */
 	private function formatSubline(string $path): string {
 		// Do not show the location if the file is in root
 		if ($path === '') {

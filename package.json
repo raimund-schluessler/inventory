@@ -1,6 +1,6 @@
 {
 	"name": "inventory",
-	"description": "Nextcloud Inventory",
+	"description": "Nextcloud - Inventory",
 	"version": "0.0.4",
 	"author": {
 		"name": "Raimund Schlüßler",
@@ -8,22 +8,22 @@
 	},
 	"license": "AGPLv3",
 	"private": true,
-	"homepage": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory",
+	"homepage": "https://github.com/raimund-schluessler/inventory",
 	"scripts": {
 		"build": "NODE_ENV=production webpack --progress --config webpack.js",
 		"dev": "NODE_ENV=development webpack --progress --config webpack.js",
 		"watch": "NODE_ENV=development webpack --progress --watch --config webpack.js",
 		"lint": "eslint --ext .js,.vue src tests",
 		"lint:fix": "eslint --ext .js,.vue src tests --fix",
-		"stylelint": "stylelint 'css/src/**/*.scss'",
-		"stylelint:fix": "stylelint 'css/src/**/*.scss' --fix",
+		"stylelint": "stylelint 'css/**/*.scss'",
+		"stylelint:fix": "stylelint 'css/**/*.scss' --fix",
 		"test": "jest --verbose"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git@gitlab.rschluessler.com:raimund.schluessler/Inventory.git"
+		"url": "git@github.com:raimund-schluessler/inventory.git"
 	},
-	"bugs": "https://gitlab.rschluessler.com/raimund.schluessler/Inventory/issues",
+	"bugs": "https://github.com/raimund-schluessler/inventory/issues",
 	"contributors": [],
 	"dependencies": {
 		"@nextcloud/axios": "1.6.0",
