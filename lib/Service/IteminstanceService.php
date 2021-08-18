@@ -170,19 +170,19 @@ class IteminstanceService {
 			$instance->place = null;
 		} elseif ($instance->placeid === -1) {
 			$instance->place = [
-				'id'	=> -1,
-				'name'	=> $this->l10n->t('No place assigned'),
-				'parent'=> null,
-				'path'	=> ''
+				'id' => -1,
+				'name' => $this->l10n->t('No place assigned'),
+				'parent' => null,
+				'path' => ''
 			];
 		} else {
 			try {
 				$place = $this->placeMapper->findPlace($this->userId, $instance->placeid);
 				$instance->place = [
-					'id'	=> $place->id,
-					'name'	=> $place->name,
-					'parent'=> $place->parentid,
-					'path'	=> $place->path
+					'id' => $place->id,
+					'name' => $place->name,
+					'parent' => $place->parentid,
+					'path' => $place->path
 				];
 			} catch (DoesNotExistException $e) {
 				$instance->place = null;

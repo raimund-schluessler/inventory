@@ -49,7 +49,7 @@ class IteminstanceMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
-	public function findByItemID(int $itemid, string $uid, $limit=null, $offset=null) {
+	public function findByItemID(int $itemid, string $uid, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -66,7 +66,7 @@ class IteminstanceMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function findByPlaceId(string $uid, int $placeId, $limit=null, $offset=null) {
+	public function findByPlaceId(string $uid, int $placeId, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
@@ -83,7 +83,7 @@ class IteminstanceMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function findByString(string $uid, string $searchString, $limit=null, $offset=null) {
+	public function findByString(string $uid, string $searchString, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')

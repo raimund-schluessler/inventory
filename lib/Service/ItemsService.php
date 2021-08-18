@@ -133,17 +133,17 @@ class ItemsService {
 			}
 			if ($place) {
 				$instance->place = [
-					'id'	=> $place->id,
-					'name'	=> $place->name,
-					'parent'=> $place->parentid,
-					'path'	=> $place->path
+					'id' => $place->id,
+					'name' => $place->name,
+					'parent' => $place->parentid,
+					'path' => $place->path
 				];
 			} else {
 				$instance->place = [
-					'id'	=> -1,
-					'name'	=> $this->l10n->t('No place assigned'),
-					'parent'=> null,
-					'path'	=> ''
+					'id' => -1,
+					'name' => $this->l10n->t('No place assigned'),
+					'parent' => null,
+					'path' => ''
 				];
 			}
 			$item = $this->itemMapper->find($instance->itemid, $this->userId);
@@ -439,8 +439,8 @@ class ItemsService {
 		foreach ($categories as $category) {
 			$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
 			$categoriesNames[] = [
-				'id'	=> $category->categoryid,
-				'name'	=> $name->name
+				'id' => $category->categoryid,
+				'name' => $name->name
 			];
 		}
 		try {

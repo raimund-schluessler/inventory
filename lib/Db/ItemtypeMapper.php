@@ -50,7 +50,7 @@ class ItemtypeMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
-	public function findAll(string $uid, $limit=null, $offset=null) {
+	public function findAll(string $uid, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')

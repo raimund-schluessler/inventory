@@ -33,10 +33,10 @@ use OCP\Util;
 use OCA\Inventory\Middleware\ExceptionMiddleware;
 use OCA\Inventory\Search\Provider;
 
-class Application extends App implements IBootstrap  {
+class Application extends App implements IBootstrap {
 	public const APP_ID = 'inventory';
 
-	public function __construct(array $urlParams=[]) {
+	public function __construct(array $urlParams = []) {
 		parent::__construct(self::APP_ID, $urlParams);
 	}
 

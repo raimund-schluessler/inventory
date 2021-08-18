@@ -10,11 +10,14 @@
         }
     ],
     "require-dev": {
-        "nextcloud/coding-standard": "0.5.0"
+        "nextcloud/coding-standard": "0.5.0",
+        "phpunit/phpunit": "^7.5"
     },
     "scripts": {
         "cs:check": "php-cs-fixer fix --dry-run --verbose",
         "cs:fix": "php-cs-fixer fix",
-        "lint": "find . -name \\*.php -not -path './lib/composer/*' -exec php -l \"{}\" \\;"
+        "lint": "find . -name \\*.php -not -path './vendor/*' -print0 | xargs -0 -n1 php -l",
+        "test:unit": "phpunit --configuration phpunit.xml --fail-on-warning",
+        "test:integration": "phpunit --configuration phpunit.integration.xml --fail-on-warning"
     }
 }
