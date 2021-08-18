@@ -82,7 +82,7 @@ export default {
 	},
 	methods: {
 		statusClicked() {
-			this.$emit('statusClicked')
+			this.$emit('status-clicked')
 		},
 		checkTimeout(newStatus) {
 			if (newStatus) {
@@ -92,7 +92,7 @@ export default {
 				if (newStatus.status === 'success') {
 					this.resetStatusTimeout = setTimeout(
 						() => {
-							this.$emit('resetStatus')
+							this.$emit('reset-status')
 						}, 5000
 					)
 				}

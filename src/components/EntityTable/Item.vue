@@ -82,7 +82,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</ul>
 		</div>
 		<div v-if="entity.syncStatus" class="column">
-			<ItemStatusDisplay :status="entity.syncStatus" @resetStatus="resetStatus(entity)" />
+			<ItemStatusDisplay :status="entity.syncStatus" @reset-status="resetStatus(entity)" />
 		</div>
 	</div>
 </template>
