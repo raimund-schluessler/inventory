@@ -2,7 +2,7 @@
 
 **An inventory app for [Nextcloud](http://nextcloud.com). Manage your inventory.**
 
-<img src="screenshots/inventory-1.png" width="900">
+![inventory](https://raw.githubusercontent.com/raimund-schluessler/inventory/master/screenshots/inventory-1.png)
 
 ## Features
 
