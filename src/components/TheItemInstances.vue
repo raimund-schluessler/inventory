@@ -226,6 +226,7 @@ import focus from '../directives/focus.vue'
 import Attachments from './Attachments.vue'
 import QrScanModal from './QrScanModal.vue'
 
+import { translate as t } from '@nextcloud/l10n'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 
@@ -271,26 +272,26 @@ export default {
 			instanceProperties: [
 				{
 					key: 'count',
-					name: this.t('inventory', 'Count'),
+					name: t('inventory', 'Count'),
 				}, {
 					key: 'available',
-					name: this.t('inventory', 'Available'),
+					name: t('inventory', 'Available'),
 				}, {
 					key: 'price',
-					name: this.t('inventory', 'Price'),
+					name: t('inventory', 'Price'),
 				}, {
 					key: 'date',
-					name: this.t('inventory', 'Date'),
+					name: t('inventory', 'Date'),
 				}, {
 					key: 'vendor',
-					name: this.t('inventory', 'Vendor'),
+					name: t('inventory', 'Vendor'),
 				}, {
 					key: 'place',
 					fn: this.getPlace,
-					name: this.t('inventory', 'Place'),
+					name: t('inventory', 'Place'),
 				}, {
 					key: 'comment',
-					name: this.t('inventory', 'Comment'),
+					name: t('inventory', 'Comment'),
 				},
 			],
 			newUuid: '',
@@ -310,6 +311,8 @@ export default {
 		}),
 	},
 	methods: {
+		t,
+
 		instanceActive(instance) {
 			return +instance.id === +this.instanceId
 		},

@@ -51,6 +51,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import EntityTable from './EntityTable/EntityTable.vue'
 import Item from '../models/item.js'
 
+import { translate as t } from '@nextcloud/l10n'
+
 import Papa from 'papaparse'
 import { mapActions } from 'vuex'
 
@@ -123,7 +125,7 @@ export default {
 				}
 				item.syncStatus = {
 					type: 'unsynced',
-					message: this.t('inventory', 'The item has not been saved to the server yet.'),
+					message: t('inventory', 'The item has not been saved to the server yet.'),
 				}
 				item.categories = categories
 				if (this.collection === 'folders') {
@@ -140,6 +142,8 @@ export default {
 		},
 	},
 	methods: {
+		t,
+
 		...mapActions([
 			'createItems',
 		]),

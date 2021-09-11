@@ -91,6 +91,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import ItemStatusDisplay from './../ItemStatusDisplay.vue'
 import Item from '../../models/item.js'
 
+import { translate as t } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
 
 import { mapMutations } from 'vuex'
@@ -167,6 +168,8 @@ export default {
 		},
 	},
 	methods: {
+		t,
+
 		...mapMutations(['setSyncStatus']),
 		resetStatus(entity) {
 			if (entity instanceof Item) {

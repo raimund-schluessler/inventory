@@ -158,6 +158,7 @@ import Folder from '../../models/folder.js'
 import Place from '../../models/place.js'
 import { sort } from '../../store/storeHelper.js'
 
+import { translate as t } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
@@ -360,28 +361,28 @@ export default {
 		},
 		upperPlaceholderMessage() {
 			if (this.loadingFolders && this.loadingItems) {
-				return this.t('inventory', 'Loading folders and items from server.')
+				return t('inventory', 'Loading folders and items from server.')
 			} else if (this.loadingPlaces && this.loadingItems) {
-				return this.t('inventory', 'Loading places and items from server.')
+				return t('inventory', 'Loading places and items from server.')
 			} else if (this.loadingFolders) {
-				return this.t('inventory', 'Loading folders from server.')
+				return t('inventory', 'Loading folders from server.')
 			} else if (this.loadingPlaces) {
-				return this.t('inventory', 'Loading places from server.')
+				return t('inventory', 'Loading places from server.')
 			} else if (this.searchString && this.items.length && !this.filterOnly) {
-				return this.t('inventory', 'No item found.')
+				return t('inventory', 'No item found.')
 			} else if (this.searchString && this.items.length) {
-				return this.t('inventory', 'No item matches the filter.')
+				return t('inventory', 'No item matches the filter.')
 			} else {
-				return this.t('inventory', 'The item list is empty.')
+				return t('inventory', 'The item list is empty.')
 			}
 		},
 		searchMessage() {
 			if (this.searching) {
-				return this.t('inventory', 'Searching in other folders.')
+				return t('inventory', 'Searching in other folders.')
 			} else if (!this.searchResults.length) {
-				return this.t('inventory', 'No items found in other folders.')
+				return t('inventory', 'No items found in other folders.')
 			} else {
-				return this.t('inventory', 'Found in other folders:')
+				return t('inventory', 'Found in other folders:')
 			}
 		},
 		sortOrder: {
@@ -414,6 +415,8 @@ export default {
 		},
 	},
 	methods: {
+		t,
+
 		...mapActions([
 			'deleteItems',
 			'unlinkItems',
@@ -474,7 +477,7 @@ export default {
 				return {
 					show: !this.loadingCollections && this.loadingItems,
 					loading: true,
-					message: this.t('inventory', 'Loading items from server.'),
+					message: t('inventory', 'Loading items from server.'),
 				}
 			}
 

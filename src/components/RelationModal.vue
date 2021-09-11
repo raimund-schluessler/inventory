@@ -95,6 +95,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import EntityTable from './EntityTable/EntityTable.vue'
 
+import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 
@@ -130,13 +131,13 @@ export default {
 			searchString: '',
 			relationTypes: [{
 				type: 'parent',
-				name: this.t('inventory', 'parent items'),
+				name: t('inventory', 'parent items'),
 			}, {
 				type: 'sub',
-				name: this.t('inventory', 'sub items'),
+				name: t('inventory', 'sub items'),
 			}, {
 				type: 'related',
-				name: this.t('inventory', 'related items'),
+				name: t('inventory', 'related items'),
 			}],
 			relationType: 'parent',
 		}
@@ -147,7 +148,7 @@ export default {
 		}),
 
 		headerString() {
-			return this.t('inventory', 'Please select the relation of the items:')
+			return t('inventory', 'Please select the relation of the items:')
 		},
 		statusString() {
 			let singular, plural
@@ -155,19 +156,19 @@ export default {
 			case 'parent':
 				singular = 'Add %n item as parent item.'
 				plural = 'Add %n items as parent items.'
-				return this.n('inventory', singular, plural, this.selectedItems.length)
+				return n('inventory', singular, plural, this.selectedItems.length)
 			case 'related':
 				singular = 'Add %n item as related item.'
 				plural = 'Add %n items as related items.'
-				return this.n('inventory', singular, plural, this.selectedItems.length)
+				return n('inventory', singular, plural, this.selectedItems.length)
 			case 'sub':
 				singular = 'Add %n item as sub item.'
 				plural = 'Add %n items as sub items.'
-				return this.n('inventory', singular, plural, this.selectedItems.length)
+				return n('inventory', singular, plural, this.selectedItems.length)
 			default:
 				singular = 'Add %n item.'
 				plural = 'Add %n items.'
-				return this.n('inventory', singular, plural, this.selectedItems.length)
+				return n('inventory', singular, plural, this.selectedItems.length)
 			}
 		},
 	},
@@ -178,6 +179,8 @@ export default {
 		this.loadItems()
 	},
 	methods: {
+		t,
+
 		changeRelationType(relation) {
 			this.relationType = relation.type
 			this.loadItems()
