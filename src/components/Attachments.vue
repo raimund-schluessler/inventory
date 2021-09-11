@@ -143,6 +143,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import { showError, getFilePickerBuilder } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'
+import { translate as t } from '@nextcloud/l10n'
 import moment from '@nextcloud/moment'
 import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
@@ -212,6 +213,8 @@ export default {
 		}
 	},
 	methods: {
+		t,
+
 		/**
 		 * Whether an attachment can be unlinked or only deleted.
 		 * Files that have been linked start with a '/' which indicates the path is absolute

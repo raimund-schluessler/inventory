@@ -26,7 +26,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
+import { translate as t } from '@nextcloud/l10n'
 
 export default {
+	methods: {
+		t,
+	},
 }
 </script>

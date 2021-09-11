@@ -238,6 +238,7 @@ import focus from '../directives/focus.vue'
 
 import { showError } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'
+import { translate as t } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
@@ -324,31 +325,31 @@ export default {
 			itemProperties: [
 				{
 					key: 'name',
-					name: this.t('inventory', 'Name'),
+					name: t('inventory', 'Name'),
 				}, {
 					key: 'maker',
-					name: this.t('inventory', 'Maker'),
+					name: t('inventory', 'Maker'),
 				}, {
 					key: 'description',
-					name: this.t('inventory', 'Description'),
+					name: t('inventory', 'Description'),
 				}, {
 					key: 'itemNumber',
-					name: this.t('inventory', 'Item number'),
+					name: t('inventory', 'Item number'),
 				}, {
 					key: 'link',
-					name: this.t('inventory', 'Link'),
+					name: t('inventory', 'Link'),
 				}, {
 					key: 'gtin',
-					name: this.t('inventory', 'GTIN'),
+					name: t('inventory', 'GTIN'),
 				}, {
 					key: 'details',
-					name: this.t('inventory', 'Details'),
+					name: t('inventory', 'Details'),
 				}, {
 					key: 'comment',
-					name: this.t('inventory', 'Comment'),
+					name: t('inventory', 'Comment'),
 				}, {
 					key: 'tags',
-					name: this.t('inventory', 'Tags'),
+					name: t('inventory', 'Tags'),
 				},
 			],
 			isDraggingOver: false,
@@ -413,6 +414,7 @@ export default {
 		this.loadRelatedItems(this.id)
 	},
 	methods: {
+		t,
 
 		upload() {
 			this.$refs.localAttachments.click()

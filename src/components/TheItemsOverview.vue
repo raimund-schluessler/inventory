@@ -91,6 +91,7 @@ import Item from '../models/item.js'
 import EntityTable from './EntityTable/EntityTable.vue'
 import QrScanModal from './QrScanModal.vue'
 
+import { translate as t } from '@nextcloud/l10n'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
@@ -198,6 +199,8 @@ export default {
 		this.loadCollectionsAndItems(this.$route.params.path)
 	},
 	methods: {
+		t,
+
 		...mapActions([
 			'createFolder',
 			'createPlace',

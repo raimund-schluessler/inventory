@@ -50,6 +50,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import AppNavigationSettings from './components/AppNavigation/AppNavigationSettings'
 
+import { translate as t } from '@nextcloud/l10n'
 import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
 import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
@@ -76,17 +77,17 @@ export default {
 			active: 'folders',
 			views: [
 				{
-					name: this.t('inventory', 'Folders'),
+					name: t('inventory', 'Folders'),
 					id: 'folders',
 					icon: 'Folder',
 				},
 				{
-					name: this.t('inventory', 'Places'),
+					name: t('inventory', 'Places'),
 					id: 'places',
 					icon: 'MapMarker',
 				},
 				{
-					name: this.t('inventory', 'Tags'),
+					name: t('inventory', 'Tags'),
 					id: 'tags',
 					icon: 'Tag',
 				},

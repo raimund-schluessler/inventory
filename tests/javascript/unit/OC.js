@@ -30,4 +30,14 @@ export class OC {
 		return false
 	}
 
+	L10N = {
+		translate(app, text) {
+			return text
+		},
+
+		translatePlural(app, text) {
+			return text
+		},
+	}
+
 }

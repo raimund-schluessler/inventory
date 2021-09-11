@@ -34,6 +34,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
+import { translate as t } from '@nextcloud/l10n'
 import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
 
 import { v4 as uuidv4 } from 'uuid'
@@ -45,6 +46,8 @@ export default {
 		AppNavigationSettings,
 	},
 	methods: {
+		t,
+
 		async selectFolder() {
 			const folder = await this.$store.dispatch('getAttachmentFolder')
 
