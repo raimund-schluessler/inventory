@@ -104,6 +104,7 @@ appstore: clean build-js-production
 	mkdir -p $(appstore_build_directory) $(appstore_artifact_directory)
 	rsync -av .	$(appstore_build_directory) \
 	--exclude=/.git \
+	--exclude=/.github \
 	--exclude=/.babelrc \
 	--exclude=/.babelrc.js \
 	--exclude=/.editorconfig \
