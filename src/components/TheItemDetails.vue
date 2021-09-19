@@ -32,7 +32,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<component
 								:is="breadcrumbIcon"
 								v-if="index === 0"
-								:size="24"
+								:size="20"
 								decorative />
 						</template>
 					</Breadcrumb>
@@ -43,7 +43,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:boundaries-element="boundaries">
 					<ActionButton :close-after-click="true" @click="openModal">
 						<template #icon>
-							<Plus :size="24" decorative />
+							<Plus :size="20" decorative />
 						</template>
 						{{ t('inventory', 'Link items') }}
 					</ActionButton>
@@ -51,7 +51,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						:close-after-click="true"
 						@click="upload">
 						<template #icon>
-							<Upload :size="24" decorative />
+							<Upload :size="20" decorative />
 						</template>
 						{{ t('inventory', 'Upload image') }}
 					</ActionButton>
@@ -60,13 +60,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						:close-after-click="true"
 						@click="toggleEditItem">
 						<template #icon>
-							<Pencil :size="24" decorative />
+							<Pencil :size="20" decorative />
 						</template>
 						{{ t('inventory', 'Edit item') }}
 					</ActionButton>
 					<ActionButton @click="removeItem">
 						<template #icon>
-							<Delete :size="24" decorative />
+							<Delete :size="20" decorative />
 						</template>
 						{{ t('inventory', 'Delete item') }}
 					</ActionButton>
@@ -125,7 +125,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 										:boundaries-element="boundaries">
 										<ActionButton :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
 											<template #icon>
-												<Barcode :size="24" decorative />
+												<Barcode :size="20" decorative />
 											</template>
 											{{ t('inventory', 'Show GTIN') }}
 										</ActionButton>
@@ -156,7 +156,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								<Actions>
 									<ActionButton @click="saveItem">
 										<template #icon>
-											<Check :size="24" decorative />
+											<Check :size="20" decorative />
 										</template>
 										{{ t('inventory', 'Save changes') }}
 									</ActionButton>
