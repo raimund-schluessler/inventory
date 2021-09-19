@@ -49,7 +49,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							target="_blank"
 							:close-after-click="true">
 							<template #icon>
-								<OpenInNew :size="24" decorative />
+								<OpenInNew :size="20" decorative />
 							</template>
 							{{ t('inventory', 'Show in files') }}
 						</ActionLink>
@@ -57,7 +57,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							:close-after-click="true"
 							@click="unlinkAttachment(attachment)">
 							<template #icon>
-								<Close :size="24" decorative />
+								<Close :size="20" decorative />
 							</template>
 							{{ t('inventory', 'Unlink attachment') }}
 						</ActionButton>
@@ -65,7 +65,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							:close-after-click="true"
 							@click="deleteAttachment(attachment)">
 							<template #icon>
-								<Delete :size="24" decorative />
+								<Delete :size="20" decorative />
 							</template>
 							{{ t('inventory', 'Delete attachment') }}
 						</ActionButton>
@@ -85,7 +85,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:close-after-click="true"
 				@click="upload">
 				<template #icon>
-					<Upload :size="24" decorative />
+					<Upload :size="20" decorative />
 				</template>
 				{{ t('inventory', 'Upload attachment') }}
 			</ActionButton>
@@ -93,7 +93,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:close-after-click="true"
 				@click="select">
 				<template #icon>
-					<Folder :size="24" decorative />
+					<Folder :size="20" decorative />
 				</template>
 				{{ t('inventory', 'Select attachment') }}
 			</ActionButton>

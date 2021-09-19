@@ -32,7 +32,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<component
 							:is="breadcrumbIcon"
 							v-if="index === 0"
-							:size="24"
+							:size="20"
 							decorative />
 					</template>
 				</Breadcrumb>
@@ -44,20 +44,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				@close="addingCollection = false">
 				<ActionButton :close-after-click="true" @click="openQrModal()">
 					<template #icon>
-						<QrcodeScan :size="24" decorative />
+						<QrcodeScan :size="20" decorative />
 					</template>
 					{{ t('inventory', 'Scan QR code') }}
 				</ActionButton>
 				<ActionRouter :to="`/${collection}/${($route.params.path) ? $route.params.path + '/' : ''}additems`">
 					<template #icon>
-						<Plus :size="24" decorative />
+						<Plus :size="20" decorative />
 					</template>
 					{{ t('inventory', 'Add items') }}
 				</ActionRouter>
 				<ActionButton v-if="!addingCollection"
 					@click.prevent.stop="openCollectionInput()">
 					<template #icon>
-						<Folder :size="24" decorative />
+						<Folder :size="20" decorative />
 					</template>
 					{{ addCollectionString }}
 				</ActionButton>
@@ -71,7 +71,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					@submit="addCollection"
 					@input="checkCollectionName">
 					<template #icon>
-						<Folder :size="24" decorative />
+						<Folder :size="20" decorative />
 					</template>
 					{{ collection === 'places' ? t('inventory', 'New Place') : t('inventory', 'New Folder') }}
 				</ActionInput>

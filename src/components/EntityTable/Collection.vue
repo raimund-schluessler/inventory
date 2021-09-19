@@ -61,13 +61,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:close-after-click="true"
 					@click="startRename">
 					<template #icon>
-						<Pencil :size="24" decorative />
+						<Pencil :size="20" decorative />
 					</template>
 					{{ t('inventory', 'Rename') }}
 				</ActionButton>
 				<ActionButton @click="scheduleDelete">
 					<template #icon>
-						<Delete :size="24" decorative />
+						<Delete :size="20" decorative />
 					</template>
 					{{ deleteString }}
 				</ActionButton>
@@ -78,7 +78,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<ActionButton
 					@click.prevent.stop="cancelDelete">
 					<template #icon>
-						<Undo :size="24" decorative />
+						<Undo :size="20" decorative />
 					</template>
 					{{ undoString }}
 				</ActionButton>

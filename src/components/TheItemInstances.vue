@@ -32,7 +32,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<Actions :boundaries-element="boundaries">
 						<ActionButton @click="toggleInstanceInput">
 							<template #icon>
-								<Plus :size="24" decorative />
+								<Plus :size="20" decorative />
 							</template>
 							{{ t('inventory', 'Add instance') }}
 						</ActionButton>
@@ -62,19 +62,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<Actions :boundaries-element="boundaries">
 							<ActionButton :close-after-click="true" @click="toggleUuidInput(instance)">
 								<template #icon>
-									<Plus :size="24" decorative />
+									<Plus :size="20" decorative />
 								</template>
 								{{ t('inventory', 'Add UUID') }}
 							</ActionButton>
 							<ActionButton @click="toggleEditInstance(instance)">
 								<template #icon>
-									<Pencil :size="24" decorative />
+									<Pencil :size="20" decorative />
 								</template>
 								{{ t('inventory', 'Edit instance') }}
 							</ActionButton>
 							<ActionButton @click="removeInstance(instance)">
 								<template #icon>
-									<Delete :size="24" decorative />
+									<Delete :size="20" decorative />
 								</template>
 								{{ t('inventory', 'Delete instance') }}
 							</ActionButton>
@@ -106,7 +106,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<Actions :boundaries-element="boundaries">
 							<ActionButton :close-after-click="true" @click="saveInstance">
 								<template #icon>
-									<Check :size="24" decorative />
+									<Check :size="20" decorative />
 								</template>
 								{{ t('inventory', 'Save instance') }}
 							</ActionButton>
@@ -133,7 +133,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								key="add"
 								@click="setUuid(instance)">
 								<template #icon>
-									<Check :size="24" decorative />
+									<Check :size="20" decorative />
 								</template>
 								{{ t('inventory', 'Add UUID') }}
 							</ActionButton>
@@ -142,7 +142,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								:close-after-click="true"
 								@click="openQrModal">
 								<template #icon>
-									<QrcodeScan :size="24" decorative />
+									<QrcodeScan :size="20" decorative />
 								</template>
 								{{ t('inventory', 'Scan QR code') }}
 							</ActionButton>
@@ -160,13 +160,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								<Actions :boundaries-element="boundaries">
 									<ActionButton :close-after-click="true" @click="$emit('open-barcode', uuid.uuid)">
 										<template #icon>
-											<Qrcode :size="24" decorative />
+											<Qrcode :size="20" decorative />
 										</template>
 										{{ t('inventory', 'Show QR Code') }}
 									</ActionButton>
 									<ActionButton @click="removeUuid(instance, uuid.uuid)">
 										<template #icon>
-											<Delete :size="24" decorative />
+											<Delete :size="20" decorative />
 										</template>
 										{{ t('inventory', 'Delete UUID') }}
 									</ActionButton>
