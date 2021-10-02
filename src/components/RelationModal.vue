@@ -93,15 +93,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import EntityTable from './EntityTable/EntityTable.vue'
+import EntityTable from './EntityTable/EntityTable'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 
-import { mapGetters, mapActions } from 'vuex'
 import Magnify from 'vue-material-design-icons/Magnify'
 import Close from 'vue-material-design-icons/Close'
+
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	components: {

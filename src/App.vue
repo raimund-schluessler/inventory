@@ -56,9 +56,9 @@ import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
 import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
 import Content from '@nextcloud/vue/dist/Components/Content'
 
-import Folder from 'vue-material-design-icons/Folder.vue'
-import MapMarker from 'vue-material-design-icons/MapMarker.vue'
-import Tag from 'vue-material-design-icons/Tag.vue'
+import Folder from 'vue-material-design-icons/Folder'
+import MapMarker from 'vue-material-design-icons/MapMarker'
+import Tag from 'vue-material-design-icons/Tag'
 
 export default {
 	name: 'App',

@@ -222,20 +222,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import focus from '../directives/focus.vue'
-import Attachments from './Attachments.vue'
-import QrScanModal from './QrScanModal.vue'
+import focus from '../directives/focus'
+import Attachments from './Attachments'
+import QrScanModal from './QrScanModal'
 
 import { translate as t } from '@nextcloud/l10n'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 
-import Check from 'vue-material-design-icons/Check.vue'
-import Delete from 'vue-material-design-icons/Delete.vue'
-import Pencil from 'vue-material-design-icons/Pencil.vue'
-import Plus from 'vue-material-design-icons/Plus.vue'
-import Qrcode from 'vue-material-design-icons/Qrcode.vue'
-import QrcodeScan from 'vue-material-design-icons/QrcodeScan.vue'
+import Check from 'vue-material-design-icons/Check'
+import Delete from 'vue-material-design-icons/Delete'
+import Pencil from 'vue-material-design-icons/Pencil'
+import Plus from 'vue-material-design-icons/Plus'
+import Qrcode from 'vue-material-design-icons/Qrcode'
+import QrcodeScan from 'vue-material-design-icons/QrcodeScan'
 
 import ClickOutside from 'vue-click-outside'
 import { mapActions, mapGetters } from 'vuex'

@@ -20,10 +20,10 @@
  *
  */
 
-import TheItemsOverview from './components/TheItemsOverview.vue'
-import ItemsNew from './components/TheItemsCreator.vue'
-import TheItemDetails from './components/TheItemDetails.vue'
-import Tags from './components/Tags.vue'
+import TheItemsOverview from './components/TheItemsOverview'
+import ItemsNew from './components/TheItemsCreator'
+import TheItemDetails from './components/TheItemDetails'
+import Tags from './components/Tags'
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'

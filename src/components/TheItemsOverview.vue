@@ -87,9 +87,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import Item from '../models/item.js'
-import EntityTable from './EntityTable/EntityTable.vue'
-import QrScanModal from './QrScanModal.vue'
+import Item from '../models/item'
+import EntityTable from './EntityTable/EntityTable'
+import QrScanModal from './QrScanModal'
 
 import { translate as t } from '@nextcloud/l10n'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
@@ -99,11 +99,11 @@ import ActionRouter from '@nextcloud/vue/dist/Components/ActionRouter'
 import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
 import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
 
-import Folder from 'vue-material-design-icons/Folder.vue'
-import Plus from 'vue-material-design-icons/Plus.vue'
-import QrcodeScan from 'vue-material-design-icons/QrcodeScan.vue'
-import MapMarker from 'vue-material-design-icons/MapMarker.vue'
-import Tag from 'vue-material-design-icons/Tag.vue'
+import Folder from 'vue-material-design-icons/Folder'
+import Plus from 'vue-material-design-icons/Plus'
+import QrcodeScan from 'vue-material-design-icons/QrcodeScan'
+import MapMarker from 'vue-material-design-icons/MapMarker'
+import Tag from 'vue-material-design-icons/Tag'
 
 import { mapGetters, mapActions } from 'vuex'
 

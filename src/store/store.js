@@ -21,10 +21,10 @@
  */
 'use strict'
 
-import items from './items.js'
-import folders from './folders.js'
-import places from './places.js'
-import settings from './settings.js'
+import items from './items'
+import folders from './folders'
+import places from './places'
+import settings from './settings'
 
 import Vue from 'vue'
 import Vuex from 'vuex'

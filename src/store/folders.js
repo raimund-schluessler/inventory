@@ -21,7 +21,7 @@
  */
 'use strict'
 
-import Folder from '../models/folder.js'
+import Folder from '../models/folder'
 
 import Axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'

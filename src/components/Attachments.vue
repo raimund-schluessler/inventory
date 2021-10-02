@@ -151,11 +151,11 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionLink from '@nextcloud/vue/dist/Components/ActionLink'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 
-import Close from 'vue-material-design-icons/Close.vue'
-import Delete from 'vue-material-design-icons/Delete.vue'
-import Folder from 'vue-material-design-icons/Folder.vue'
-import OpenInNew from 'vue-material-design-icons/OpenInNew.vue'
-import Upload from 'vue-material-design-icons/Upload.vue'
+import Close from 'vue-material-design-icons/Close'
+import Delete from 'vue-material-design-icons/Delete'
+import Folder from 'vue-material-design-icons/Folder'
+import OpenInNew from 'vue-material-design-icons/OpenInNew'
+import Upload from 'vue-material-design-icons/Upload'
 
 export default {
 	components: {

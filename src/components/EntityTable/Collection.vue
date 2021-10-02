@@ -88,7 +88,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import focus from '../../directives/focus.vue'
+import focus from '../../directives/focus'
 
 import { showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
@@ -96,9 +96,9 @@ import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 
-import Delete from 'vue-material-design-icons/Delete.vue'
-import Pencil from 'vue-material-design-icons/Pencil.vue'
-import Undo from 'vue-material-design-icons/Undo.vue'
+import Delete from 'vue-material-design-icons/Delete'
+import Pencil from 'vue-material-design-icons/Pencil'
+import Undo from 'vue-material-design-icons/Undo'
 
 import { mapActions } from 'vuex'
 import ClickOutside from 'v-click-outside'

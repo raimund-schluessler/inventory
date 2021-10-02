@@ -21,9 +21,9 @@
  */
 'use strict'
 
-import App from './App.vue'
-import router from './router.js'
-import store from './store/store.js'
+import App from './App'
+import router from './router'
+import store from './store/store'
 
 import { subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { linkTo } from '@nextcloud/router'

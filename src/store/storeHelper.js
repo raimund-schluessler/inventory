@@ -21,9 +21,9 @@
  */
 'use strict'
 
-import Folder from '../models/folder.js'
-import Item from '../models/item.js'
-import Place from '../models/place.js'
+import Folder from '../models/folder'
+import Item from '../models/item'
+import Place from '../models/place'
 
 /**
  * Sorts items in specified order type

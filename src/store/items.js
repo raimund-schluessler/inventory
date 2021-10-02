@@ -21,9 +21,9 @@
  */
 'use strict'
 
-import Item from '../models/item.js'
-import Folder from '../models/folder.js'
-import SyncStatus from '../models/syncStatus.js'
+import Item from '../models/item'
+import Folder from '../models/folder'
+import SyncStatus from '../models/syncStatus'
 
 import Axios from '@nextcloud/axios'
 import { loadState } from '@nextcloud/initial-state'

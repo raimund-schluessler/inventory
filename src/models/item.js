@@ -19,7 +19,7 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-import SyncStatus from './syncStatus.js'
+import SyncStatus from './syncStatus'
 
 export default class Item {
 
