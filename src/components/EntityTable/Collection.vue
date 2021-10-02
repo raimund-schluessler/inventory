@@ -173,6 +173,8 @@ export default {
 		},
 	},
 	methods: {
+		t,
+
 		...mapActions([
 			'renameFolder',
 			'renamePlace',
