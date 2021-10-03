@@ -230,11 +230,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import EntityTable from './EntityTable/EntityTable'
-import Attachments from './Attachments'
-import RelationModal from './RelationModal'
-import ItemInstances from './TheItemInstances'
-import focus from '../directives/focus'
+import EntityTable from '../../components/EntityTable/EntityTable'
+import Attachments from '../../components/Attachments'
+import RelationModal from '../../components/RelationModal'
+import ItemInstances from '../../components/ItemInstances'
+import focus from '../../directives/focus'
 
 import { showError } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'

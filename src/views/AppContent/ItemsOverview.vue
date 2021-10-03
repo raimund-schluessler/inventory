@@ -87,9 +87,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import Item from '../models/item'
-import EntityTable from './EntityTable/EntityTable'
-import QrScanModal from './QrScanModal'
+import Item from '../../models/item'
+import EntityTable from '../../components/EntityTable/EntityTable'
+import QrScanModal from '../../components/QrScanModal'
 
 import { translate as t } from '@nextcloud/l10n'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
