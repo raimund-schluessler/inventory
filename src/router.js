@@ -20,27 +20,27 @@
  *
  */
 
-import TheItemsOverview from './components/TheItemsOverview'
-import ItemsNew from './components/TheItemsCreator'
-import TheItemDetails from './components/TheItemDetails'
-import Tags from './components/Tags'
+import ItemsNew from './views/AppContent/ItemsCreator'
+import ItemDetails from './views/AppContent/ItemDetails'
+import ItemsOverview from './views/AppContent/ItemsOverview'
+import Tags from './views/AppContent/Tags'
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 const routes = [
 	// using
-	// { path: '/folders', component: TheItemsOverview, alias: '/' },
+	// { path: '/folders', component: ItemsOverview, alias: '/' },
 	// instead of
 	{ path: '/', redirect: '/folders/' },
 	{
 		path: '/folders/:path(.*)?/item-:id(\\d+)',
-		component: TheItemDetails,
+		component: ItemDetails,
 		props: (route) => ({ path: route.params.path, id: route.params.id, collection: 'folders' }),
 	},
 	{
 		path: '/folders/:path(.*)?/item-:id(\\d+)/instance-:instanceId(\\d+)',
-		component: TheItemDetails,
+		component: ItemDetails,
 		props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'folders' }),
 	},
 	{
@@ -48,19 +48,19 @@ const routes = [
 		component: ItemsNew,
 		props: (route) => ({ path: route.params.path, collection: 'folders' }),
 	},
-	{ name: 'folders', path: '/folders/:path(.*)', component: TheItemsOverview, props: { collection: 'folders' } },
+	{ name: 'folders', path: '/folders/:path(.*)', component: ItemsOverview, props: { collection: 'folders' } },
 	// would also be an option, but it currently does not work
 	// reliably with router-link due to
 	// https://github.com/vuejs/vue-router/issues/419
 
 	{
 		path: '/places/:path(.*)?/item-:id(\\d+)',
-		component: TheItemDetails,
+		component: ItemDetails,
 		props: (route) => ({ path: route.params.path, id: route.params.id, collection: 'places' }),
 	},
 	{
 		path: '/places/:path(.*)?/item-:id(\\d+)/instance-:instanceId(\\d+)',
-		component: TheItemDetails,
+		component: ItemDetails,
 		props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'places' }),
 	},
 	{
@@ -68,7 +68,12 @@ const routes = [
 		component: ItemsNew,
 		props: (route) => ({ path: route.params.path, collection: 'places' }),
 	},
-	{ name: 'places', path: '/places/:path(.*)', component: TheItemsOverview, props: { collection: 'places' } },
+	{
+		name: 'places',
+		path: '/places/:path(.*)',
+		component: ItemsOverview,
+		props: { collection: 'places' },
+	},
 
 	{ path: '/tags', component: Tags },
 ]
@@ -77,5 +82,5 @@ Vue.use(VueRouter)
 
 export default new VueRouter({
 	linkActiveClass: 'active',
-	routes, // short for `routes: routes`
+	routes,
 })
