@@ -24,6 +24,7 @@ import ItemsNew from './views/AppContent/ItemsCreator'
 import ItemDetails from './views/AppContent/ItemDetails'
 import ItemsOverview from './views/AppContent/ItemsOverview'
 import Tags from './views/AppContent/Tags'
+import AppSidebar from './views/AppSidebar'
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -48,7 +49,12 @@ const routes = [
 		component: ItemsNew,
 		props: (route) => ({ path: route.params.path, collection: 'folders' }),
 	},
-	{ name: 'folders', path: '/folders/:path(.*)', component: ItemsOverview, props: { collection: 'folders' } },
+	{
+		name: 'folders',
+		path: '/folders/:path(.*)',
+		component: ItemsOverview,
+		props: (route) => ({ path: route.params.path, collection: 'folders' }),
+	},
 	// would also be an option, but it currently does not work
 	// reliably with router-link due to
 	// https://github.com/vuejs/vue-router/issues/419
@@ -69,10 +75,19 @@ const routes = [
 		props: (route) => ({ path: route.params.path, collection: 'places' }),
 	},
 	{
+		name: 'placesDetails',
+		path: '/places/:path(.*)?/&details/:folder(.*)?',
+		components: { default: ItemsOverview, sidebar: AppSidebar },
+		props: {
+			default: (route) => ({ path: route.params.path, collection: 'places' }),
+			sidebar: (route) => ({ path: route.params.path, collection: 'places', folder: route.params.folder }),
+		},
+	},
+	{
 		name: 'places',
 		path: '/places/:path(.*)',
 		component: ItemsOverview,
-		props: { collection: 'places' },
+		props: (route) => ({ path: route.params.path, collection: 'places' }),
 	},
 
 	{ path: '/tags', component: Tags },

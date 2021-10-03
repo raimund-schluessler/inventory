@@ -25,14 +25,16 @@ namespace OCA\Inventory\Service;
 class SearchService {
 	private $userId;
 	private $AppName;
-	private $itemsService;
 	private $foldersService;
+	private $itemsService;
+	private $placesService;
 
-	public function __construct($userId, $AppName, ItemsService $itemsService, FoldersService $foldersService) {
+	public function __construct($userId, $AppName, FoldersService $foldersService, ItemsService $itemsService, PlacesService $placesService) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
-		$this->itemsService = $itemsService;
 		$this->foldersService = $foldersService;
+		$this->itemsService = $itemsService;
+		$this->placesService = $placesService;
 	}
 
 	/**
@@ -45,18 +47,16 @@ class SearchService {
 		// We don't need to search for an empty string
 		$results = [
 			'folders' => [],
+			'places' => [],
 			'items' => []
 		];
-		if ($searchString === '' || $searchString === null) {
+		if (strlen($searchString) === 0) {
 			return $results;
 		}
 
-		$items = $this->itemsService->findByString($searchString);
-
-		$folders = $this->foldersService->findByString($searchString);
-
-		$results['items'] = $items;
-		$results['folders'] = $folders;
+		$results['folders'] = $this->foldersService->findByString($searchString);
+		$results['items'] = $this->itemsService->findByString($searchString);
+		$results['places'] = $this->placesService->findByString($searchString);
 
 		return $results;
 	}

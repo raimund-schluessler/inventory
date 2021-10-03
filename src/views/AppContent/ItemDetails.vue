@@ -235,6 +235,7 @@ import Attachments from '../../components/Attachments'
 import RelationModal from '../../components/RelationModal'
 import ItemInstances from '../../components/ItemInstances'
 import focus from '../../directives/focus'
+import showBarcode from '../../mixins/showBarcode'
 import { encodePath } from '../../utils/encodePath'
 
 import { showError } from '@nextcloud/dialogs'
@@ -245,7 +246,6 @@ import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
 import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
-import Modal from '@nextcloud/vue/dist/Components/Modal'
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
 
 import Barcode from 'vue-material-design-icons/Barcode'
@@ -272,7 +272,6 @@ export default {
 		Attachments,
 		Breadcrumbs,
 		Breadcrumb,
-		Modal,
 		EmptyContent,
 		Barcode,
 		Check,
@@ -288,6 +287,7 @@ export default {
 		ClickOutside,
 		focus,
 	},
+	mixins: [showBarcode],
 	beforeRouteUpdate(to, from, next) {
 		this.getItem(to.params.id)
 		this.loadSubItems(to.params.id)

@@ -26,54 +26,21 @@ use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
-class PlaceMapper extends QBMapper {
+class PlaceUuidMapper extends QBMapper {
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, 'invtry_places');
+		parent::__construct($db, 'invtry_places_uuids');
 	}
 
-	/**
-	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
-	 */
-	public function findPlace(string $uid, int $placeId) {
+	public function find(int $placeId, string $uuid, string $uid) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('*PREFIX*invtry_places')
+			->from('*PREFIX*invtry_places_uuids')
 			->where(
-				$qb->expr()->eq('id', $qb->createNamedParameter($placeId, IQueryBuilder::PARAM_INT))
+				$qb->expr()->eq('placeid', $qb->createNamedParameter($placeId, IQueryBuilder::PARAM_INT))
 			)
 			->andWhere(
-				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
-			);
-
-		return $this->findEntity($qb);
-	}
-
-	public function findPlaceByPath(string $uid, string $path) {
-		$qb = $this->db->getQueryBuilder();
-
-		$qb->select('*')
-			->from('*PREFIX*invtry_places')
-			->where(
-				$qb->expr()->eq('path', $qb->createNamedParameter($path, IQueryBuilder::PARAM_STR))
-			)
-			->andWhere(
-				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
-			);
-
-		return $this->findEntity($qb);
-	}
-
-	/**
-	 */
-	public function findByParentId(string $uid, int $parentId) {
-		$qb = $this->db->getQueryBuilder();
-
-		$qb->select('*')
-			->from('*PREFIX*invtry_places')
-			->where(
-				$qb->expr()->eq('parentid', $qb->createNamedParameter($parentId, IQueryBuilder::PARAM_INT))
+				$qb->expr()->eq('uuid', $qb->createNamedParameter($uuid, IQueryBuilder::PARAM_STR))
 			)
 			->andWhere(
 				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
@@ -82,29 +49,44 @@ class PlaceMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function add(string $name, string $path, string $uid, int $parentId = null) {
-		$place = new Place();
-		$place->setName($name);
-		$place->setPath($path);
-		$place->setUid($uid);
-		$place->setParentid($parentId);
-		return $this->insert($place);
+	public function findByPlaceId(int $placeId, string $uid, $limit = null, $offset = null) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_places_uuids')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
+			->where(
+				$qb->expr()->eq('placeid', $qb->createNamedParameter($placeId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntities($qb);
 	}
 
 	public function findByString(string $uid, string $searchString, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('*PREFIX*invtry_places')
-			->where(
+			->from('*PREFIX*invtry_places_uuids')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
+			->andWhere('LOWER(uuid) LIKE LOWER(:searchString)')
+			->andWhere(
 				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			)
-			->andWhere('LOWER(name) LIKE LOWER(:searchString)')
-			->orWhere('LOWER(path) LIKE LOWER(:searchString)')
-			->setParameter('searchString', '%' . $searchString . '%')
-			->setMaxResults($limit)
-			->setFirstResult($offset);
+			->setParameter('searchString', '%' . $searchString . '%');
 
 		return $this->findEntities($qb);
+	}
+
+	public function add($params) {
+		$uuid = new PlaceUuid();
+		$uuid->setPlaceid($params['placeid']);
+		$uuid->setUuid($params['uuid']);
+		$uuid->setUid($params['uid']);
+		return $this->insert($uuid);
 	}
 }

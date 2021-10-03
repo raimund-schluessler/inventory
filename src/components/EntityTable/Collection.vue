@@ -65,6 +65,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</template>
 					{{ t('inventory', 'Rename') }}
 				</ActionButton>
+				<ActionRouter
+					v-if="collection === 'places'"
+					:close-after-click="true"
+					container=".row--collection"
+					:to="`/${collection}/${($route.params.path) ? encodePath($route.params.path) + '/' : ''}&details/${encodePath(entity.path)}`">
+					<template #icon>
+						<InformationOutline :size="20" decorative />
+					</template>
+					{{ t('inventory', 'Show details') }}
+				</ActionRouter>
 				<ActionButton @click="scheduleDelete">
 					<template #icon>
 						<Delete :size="20" decorative />
@@ -96,8 +106,10 @@ import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionRouter from '@nextcloud/vue/dist/Components/ActionRouter'
 
 import Delete from 'vue-material-design-icons/Delete'
+import InformationOutline from 'vue-material-design-icons/InformationOutline'
 import Pencil from 'vue-material-design-icons/Pencil'
 import Undo from 'vue-material-design-icons/Undo'
 
@@ -110,7 +122,9 @@ export default {
 	components: {
 		Actions,
 		ActionButton,
+		ActionRouter,
 		Delete,
+		InformationOutline,
 		Pencil,
 		Undo,
 	},
@@ -203,7 +217,7 @@ export default {
 			if (this.collection === 'folders') {
 				this.renameFolder({ folderID: this.entity.id, newName: this.newName })
 			} else if (this.collection === 'places') {
-				this.renamePlace({ placeID: this.entity.id, newName: this.newName })
+				this.renamePlace({ place: this.entity, newName: this.newName })
 			}
 		},
 
