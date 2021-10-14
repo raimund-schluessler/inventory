@@ -44,7 +44,7 @@ const routes = [
 		props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'folders' }),
 	},
 	{
-		path: '/folders/:path(.*)?/additems',
+		path: '/folders/:path(.*)?/&additems',
 		component: ItemsNew,
 		props: (route) => ({ path: route.params.path, collection: 'folders' }),
 	},
@@ -64,7 +64,7 @@ const routes = [
 		props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'places' }),
 	},
 	{
-		path: '/places/:path(.*)?/additems',
+		path: '/places/:path(.*)?/&additems',
 		component: ItemsNew,
 		props: (route) => ({ path: route.params.path, collection: 'places' }),
 	},

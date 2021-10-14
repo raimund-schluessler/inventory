@@ -48,7 +48,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</template>
 					{{ t('inventory', 'Scan QR code') }}
 				</ActionButton>
-				<ActionRouter :to="`/${collection}/${($route.params.path) ? $route.params.path + '/' : ''}additems`">
+				<ActionRouter :to="addItemPath">
 					<template #icon>
 						<Plus :size="20" decorative />
 					</template>
@@ -90,6 +90,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import Item from '../../models/item'
 import EntityTable from '../../components/EntityTable/EntityTable'
 import QrScanModal from '../../components/QrScanModal'
+import { encodePath } from '../../utils/encodePath'
 
 import { translate as t } from '@nextcloud/l10n'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
@@ -158,7 +159,7 @@ export default {
 			return [{ title: t('inventory', 'Items'), path: `/${this.collection}/` }].concat(crumbs.map((crumb, i) => {
 				return {
 					title: crumb,
-					path: `/${this.collection}/${crumbs.slice(0, i + 1).join('/')}`,
+					path: `/${this.collection}/${encodePath(crumbs.slice(0, i + 1).join('/'))}`,
 				}
 			}))
 		},
@@ -188,6 +189,10 @@ export default {
 				return t('inventory', 'New Place')
 			}
 			return t('inventory', 'New Folder')
+		},
+		addItemPath() {
+			const encodedPath = encodePath(this.$route.params.path)
+			return `/${this.collection}/${(encodedPath) ? encodedPath + '/' : ''}&additems`
 		},
 	},
 	watch: {

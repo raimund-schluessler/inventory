@@ -90,6 +90,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import ItemStatusDisplay from './../ItemStatusDisplay'
 import Item from '../../models/item'
+import { encodePath } from '../../utils/encodePath'
 
 import { translate as t } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
@@ -157,9 +158,11 @@ export default {
 			let basePath
 			const instance = (this.entity.isInstance && this.entity.instances.length > 0) ? this.entity.instances[0] : null
 			if (instance) {
-				basePath = `/places/${(instance.place.path) ? instance.place.path + '/' : ''}`
+				const encodedPath = encodePath(instance.place.path)
+				basePath = `/places/${(encodedPath) ? encodedPath + '/' : ''}`
 			} else {
-				basePath = `/folders/${(this.entity.path) ? this.entity.path + '/' : ''}`
+				const encodedPath = encodePath(this.entity.path)
+				basePath = `/folders/${(encodedPath) ? encodedPath + '/' : ''}`
 			}
 			return `${basePath}item-${this.entity.id + (instance ? '/instance-' + instance.id : '')}`
 		},
