@@ -36,7 +36,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</label>
 		</div>
 		<div class="column">
-			<RouterLink :to="`/${collection}/${entity.path}`"
+			<RouterLink :to="`/${collection}/${encodePath(entity.path)}`"
 				tag="a"
 				@click.ctrl.prevent>
 				<div class="thumbnail">
@@ -89,6 +89,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import focus from '../../directives/focus'
+import { encodePath } from '../../utils/encodePath'
 
 import { showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
@@ -174,6 +175,8 @@ export default {
 	},
 	methods: {
 		t,
+
+		encodePath,
 
 		...mapActions([
 			'renameFolder',

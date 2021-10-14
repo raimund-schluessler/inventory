@@ -235,6 +235,7 @@ import Attachments from '../../components/Attachments'
 import RelationModal from '../../components/RelationModal'
 import ItemInstances from '../../components/ItemInstances'
 import focus from '../../directives/focus'
+import { encodePath } from '../../utils/encodePath'
 
 import { showError } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'
@@ -374,13 +375,13 @@ export default {
 			const breadcrumbs = [{ title: t('inventory', 'Items'), path: `/${this.collection}/` }].concat(crumbs.map((crumb, i) => {
 				return {
 					title: crumb,
-					path: `/${this.collection}/` + crumbs.slice(0, i + 1).join('/'),
+					path: `/${this.collection}/` + encodePath(crumbs.slice(0, i + 1).join('/')),
 				}
 			}))
 			if (this.item && !this.loadingItem) {
 				return breadcrumbs.concat([{
 					title: this.item.description,
-					path: `/${this.collection}/${(this.path) ? this.path + '/' : ''}item-${this.id}${(this.instanceId) ? `/instance-${this.instanceId}` : ''}`,
+					path: `/${this.collection}/${(this.path) ? encodePath(this.path) + '/' : ''}item-${this.id}${(this.instanceId) ? `/instance-${this.instanceId}` : ''}`,
 				}])
 			}
 			return breadcrumbs

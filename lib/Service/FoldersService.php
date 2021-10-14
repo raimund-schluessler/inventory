@@ -129,8 +129,6 @@ class FoldersService {
 	 *
 	 * The names
 	 * "item-(\\d+)"
-	 * "additem"
-	 * "additems"
 	 * are not allowed as they interfere with the routing.
 	 *
 	 * Also the name must not be empty, already exist or contain "/".
@@ -143,7 +141,7 @@ class FoldersService {
 			throw new BadRequestException('Folder name cannot be empty.');
 		}
 
-		if (preg_match('/item-\d+/', $name) || in_array($name, ['additem', 'additems'])) {
+		if (preg_match('/item-\d+/', $name)) {
 			throw new BadRequestException('This name is not allowed');
 		}
 
