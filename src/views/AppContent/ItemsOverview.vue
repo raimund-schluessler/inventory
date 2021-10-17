@@ -67,6 +67,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						content: errorString,
 						trigger: 'manual',
 					}"
+					icon=""
 					:class="{ 'error': collectionNameError }"
 					@submit="addCollection"
 					@input="checkCollectionName">
