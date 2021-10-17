@@ -158,7 +158,7 @@ import Folder from '../../models/folder'
 import Place from '../../models/place'
 import { sort } from '../../store/storeHelper'
 
-import { translate as t } from '@nextcloud/l10n'
+import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
 import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
@@ -416,6 +416,7 @@ export default {
 	},
 	methods: {
 		t,
+		n,
 
 		...mapActions([
 			'deleteItems',
