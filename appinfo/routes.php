@@ -40,6 +40,7 @@ return [
 		['name' => 'items#delete',			'url' => '/item/{itemID}/delete',						'verb' => 'DELETE'],
 		['name' => 'items#edit',			'url' => '/item/{itemID}/edit',							'verb' => 'PATCH'],
 		['name' => 'items#move',			'url' => '/item/{itemID}/move',							'verb' => 'PATCH'],
+		['name' => 'items#moveByUuid',		'url' => '/item/move',									'verb' => 'PATCH'],
 		['name' => 'items#moveInstance',	'url' => '/item/{itemID}/instance/{instanceID}/move',	'verb' => 'PATCH'],
 
 		['name' => 'attachment#getAll',		'url' => '/item/{itemID}/attachments',						'verb' => 'GET'],
@@ -86,6 +87,11 @@ return [
 		['name' => 'places#delete',			'url' => '/places/{placeID}/delete',					'verb' => 'DELETE'],
 		['name' => 'places#rename',			'url' => '/places/{placeID}/rename',					'verb' => 'PATCH'],
 		['name' => 'places#move',			'url' => '/places/{placeID}/move',						'verb' => 'PATCH'],
+
+		['name' => 'places#get',			'url' => '/place',										'verb' => 'POST'],
+		['name' => 'places#addUuid',		'url' => '/place/{placeID}/uuid/add',					'verb' => 'POST'],
+		['name' => 'places#deleteUuid',		'url' => '/place/{placeID}/uuid/delete',				'verb' => 'POST'],
+		['name' => 'places#setDescription',	'url' => '/place/{placeID}/description',				'verb' => 'POST'],
 
 		['name' => 'search#find',			'url' => '/search',										'verb' => 'POST'],
 	]

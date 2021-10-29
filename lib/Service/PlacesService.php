@@ -26,6 +26,7 @@ use OCP\IConfig;
 use OCA\Inventory\Db\IteminstanceUuidMapper;
 use OCA\Inventory\Db\Place;
 use OCA\Inventory\Db\PlaceMapper;
+use OCA\Inventory\Db\PlaceUuidMapper;
 use OCA\Inventory\Db\ItemMapper;
 use OCA\Inventory\Db\IteminstanceMapper;
 use OCA\Inventory\BadRequestException;
@@ -36,6 +37,7 @@ class PlacesService {
 	private $settings;
 	private $AppName;
 	private $placeMapper;
+	private $placeUuidMapper;
 	private $itemMapper;
 	private $iteminstanceMapper;
 	private $iteminstanceUuidMapper;
@@ -45,12 +47,13 @@ class PlacesService {
 	 * @param IConfig $settings
 	 * @param string $AppName
 	 */
-	public function __construct(string $userId, IConfig $settings, string $AppName, PlaceMapper $placeMapper,
+	public function __construct(string $userId, IConfig $settings, string $AppName, PlaceMapper $placeMapper, PlaceUuidMapper $placeUuidMapper,
 		ItemMapper $itemMapper, IteminstanceMapper $iteminstanceMapper, IteminstanceUuidMapper $iteminstanceUuidMapper) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->settings = $settings;
 		$this->placeMapper = $placeMapper;
+		$this->placeUuidMapper = $placeUuidMapper;
 		$this->iteminstanceUuidMapper = $iteminstanceUuidMapper;
 		$this->itemMapper = $itemMapper;
 		$this->iteminstanceMapper = $iteminstanceMapper;
@@ -64,6 +67,30 @@ class PlacesService {
 	public function getByPlace($path):array {
 		$parentId = $this->getIdByPath($path);
 		return $this->placeMapper->findByParentId($this->userId, $parentId);
+	}
+
+	/**
+	 * Get a place by its path
+	 *
+	 * @param $path
+	 * @return Place
+	 * @throws DoesNotExistException
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws BadRequestException
+	 */
+	public function get($path) {
+		if ($path === '') {
+			return [
+				'id' => -1,
+				'uid' => $this->userId,
+				'name' => 'Global',
+				'path' => '',
+				'parentid' => null,
+			];
+		}
+		$place = $this->placeMapper->findPlaceByPath($this->userId, $path);
+		$place->uuids = $this->placeUuidMapper->findByPlaceId($place->id, $this->userId);
+		return $place;
 	}
 	
 	/**
@@ -160,7 +187,7 @@ class PlacesService {
 		if (strpos($name, "/")) {
 			throw new BadRequestException('"/" is not allowed inside a place name.');
 		}
-		if ($name === "") {
+		if (strlen($name) === 0) {
 			throw new BadRequestException('Place name cannot be empty.');
 		}
 
@@ -265,7 +292,21 @@ class PlacesService {
 	 * @return array
 	 */
 	public function findByString($searchString) {
-		// return $this->placeMapper->findByString($this->userId, $searchString);
+		$places = $this->placeMapper->findByString($this->userId, $searchString);
+
+		$placeIds = array_map(function ($place) {
+			return $place->id;
+		}, $places);
+
+		$uuids = $this->placeUuidMapper->findByString($this->userId, $searchString);
+		foreach ($uuids as $uuid) {
+			// We only add the place if it is not present already
+			if (!in_array($uuid->placeid, $placeIds)) {
+				$places[] = $this->placeMapper->findPlace($this->userId, $uuid->placeid);
+			}
+		}
+
+		return $places;
 	}
 
 	private function movePlace($place, $newParent) {
@@ -305,5 +346,57 @@ class PlacesService {
 		} catch (DoesNotExistException $e) {
 			return false;
 		}
+	}
+
+	public function setDescription($placeId, $newDescription) {
+		$place = $this->placeMapper->findPlace($this->userId, $placeId);
+		if ($place) {
+			$place->description = $newDescription;
+			return $this->placeMapper->update($place);
+		}
+		throw new BadRequestException('The place to edit does not exist.');
+	}
+
+	/**
+	 * Adds a UUID to a place
+	 */
+	public function addUuid($placeId, $uuid) {
+		if ($this->isValidUuid($uuid) === false) {
+			throw new BadRequestException('The given UUID is invalid.');
+		}
+
+		if ($this->placeUuidMapper->find($placeId, $uuid, $this->userId)) {
+			throw new BadRequestException('The given UUID is already set for this place.');
+		}
+
+		$place = $this->placeMapper->findPlace($this->userId, $placeId);
+		if ($place) {
+			$params['placeid'] = $placeId;
+			$params['uuid'] = $uuid;
+			$params['uid'] = $this->userId;
+			return $this->placeUuidMapper->add($params);
+		}
+	}
+
+	/**
+	 * Deletes a UUID from a place
+	 */
+	public function deleteUuid($placeId, $uuid) {
+		$uuids = $this->placeUuidMapper->find($placeId, $uuid, $this->userId);
+		foreach ($uuids as $uuid) {
+			$this->placeUuidMapper->delete($uuid);
+		}
+	}
+
+	/**
+	 * Check if the given string is a valid UUID of version 4, variant 1, RFC 4122/DCE 1.1
+	 * @param	string	$uuid	The string to check
+	 * @return	boolean
+	 */
+	private function isValidUuid($uuid) {
+		if (!is_string($uuid) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $uuid) !== 1)) {
+			return false;
+		}
+		return true;
 	}
 }

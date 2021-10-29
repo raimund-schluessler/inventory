@@ -22,6 +22,8 @@
 'use strict'
 
 import Place from '../models/place'
+import router from '../router'
+import { encodePath } from '../utils/encodePath'
 
 import Axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
@@ -33,10 +35,15 @@ Vue.use(Vuex)
 
 const state = {
 	places: {},
+	place: null,
 	loading: false,
+	loadingPlace: false,
 }
 
 const getters = {
+
+	getPlace: (state) => state.place,
+
 	/**
 	 * Returns all places
 	 *
@@ -65,6 +72,10 @@ const mutations = {
 	 */
 	setPlaces(state, payload) {
 		state.places = payload.places
+	},
+
+	setPlace(state, payload) {
+		state.place = payload.place
 	},
 
 	/**
@@ -104,6 +115,58 @@ const mutations = {
 		// Replace place with new data
 		Vue.set(state.places, index, newPlace)
 	},
+
+	/**
+	 * Renames a place
+	 *
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {object} data.place The place
+	 * @param {object} data.newName The new name
+	 * @param {object} data.newPath The new path
+	 */
+	renamePlace(state, { place, newName, newPath }) {
+		Vue.set(place, 'name', newName)
+		Vue.set(place, 'path', newPath)
+	},
+
+	/**
+	 * Set the description of a place
+	 *
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {object} data.place The place
+	 * @param {object} data.description The new description
+	 */
+	setPlaceDescription(state, { place, description }) {
+		Vue.set(place, 'description', description)
+	},
+
+	/**
+	 * Adds a UUID to a place
+	 *
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {Array} data.place The place
+	 * @param {Array} data.uuid The UUID
+	 */
+	addUuidToPlace(state, { place, uuid }) {
+		place.uuids.push(uuid)
+	},
+
+	/**
+	 * Deletes a UUID from a place
+	 *
+	 * @param {object} state Default state
+	 * @param {object} data Destructuring object
+	 * @param {Array} data.place The place
+	 * @param {Array} data.uuid The UUID
+	 */
+	deleteUuidFromPlace(state, { place, uuid }) {
+		place.uuids = place.uuids.filter((localUuid) => {
+			return localUuid.uuid !== uuid
+		})
+	},
 }
 
 const actions = {
@@ -129,6 +192,18 @@ const actions = {
 			console.debug('Could not load the places.')
 		}
 		state.loading = false
+	},
+
+	async getPlaceByPath({ commit }, path) {
+		state.loadingPlace = true
+		try {
+			const response = await Axios.post(generateUrl('apps/inventory/place'), { path })
+			const place = new Place(response.data)
+			commit('setPlace', { place })
+		} catch {
+			commit('setPlace', { place: null })
+		}
+		state.loadingPlace = false
 	},
 
 	async createPlace(context, { name, path }) {
@@ -159,12 +234,57 @@ const actions = {
 		}
 	},
 
-	async renamePlace(context, { placeID, newName }) {
+	async renamePlace(context, { place, newName }) {
 		try {
-			const response = await Axios.patch(generateUrl(`apps/inventory/places/${placeID}/rename`), { newName })
-			context.commit('updatePlace', { newPlace: new Place(response.data) })
+			const forward1 = (context.rootState.route.params.path === place.path)
+			const forward2 = (context.rootState.route.params.folder === place.path)
+
+			const response = await Axios.patch(generateUrl(`apps/inventory/places/${place.id}/rename`), { newName })
+			const newPlace = new Place(response.data)
+			// If the place is loaded, rename it
+			if (context.state.place?.path === place.path) {
+				context.commit('renamePlace', { place: context.state.place, newName: newPlace.name, newPath: newPlace.path })
+			}
+			context.commit('updatePlace', { newPlace })
+
+			// If the place is currently open, we have to update the current route
+			if (context.rootState.route.name === 'placesDetails') {
+				if (forward1) {
+					router.push(`/places/${encodePath(newPlace.path)}/&details`)
+				} else if (forward2) {
+					router.push(`/places/${encodePath(context.rootState.route.params.path)}/&details/${encodePath(newPlace.path)}`)
+				}
+			}
+
 		} catch {
 			console.debug('Could not rename the place.')
+		}
+	},
+
+	async setPlaceDescription(context, { place, description }) {
+		try {
+			await Axios.post(generateUrl(`apps/inventory/place/${place.id}/description`), { description })
+			context.commit('setPlaceDescription', { place, description })
+		} catch {
+			console.debug('Could not set the description of the place.')
+		}
+	},
+
+	async addUuidToPlace({ commit }, { place, uuid }) {
+		try {
+			const newUuid = await Axios.post(generateUrl(`apps/inventory/place/${place.id}/uuid/add`), { uuid })
+			commit('addUuidToPlace', { place, uuid: newUuid.data })
+		} catch {
+			console.debug('Saving uuid failed.')
+		}
+	},
+
+	async deleteUuidFromPlace({ commit }, { place, uuid }) {
+		try {
+			await Axios.post(generateUrl(`apps/inventory/place/${place.id}/uuid/delete`), { uuid })
+			commit('deleteUuidFromPlace', { place, uuid })
+		} catch {
+			console.debug('Uuid deletion failed.')
 		}
 	},
 }

@@ -139,6 +139,13 @@ class ItemsController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 */
+	public function moveByUuid($uuid, $newPath) {
+		return $this->itemsService->moveInstanceByUuid($uuid, $newPath);
+	}
+
+	/**
 	 * Moves an instance to a different place
 	 *
 	 * @NoAdminRequired

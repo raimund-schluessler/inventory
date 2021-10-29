@@ -25,6 +25,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		size="full"
 		@close="closeModal">
 		<QrcodeStream @decode="onDecode" @init="onInit" />
+		<div v-if="statusString" class="status-bar">
+			<span>{{ statusString }}</span>
+		</div>
 	</Modal>
 </template>
 
@@ -42,6 +45,10 @@ export default {
 		qrModalOpen: {
 			type: Boolean,
 			default: false,
+		},
+		statusString: {
+			type: String,
+			default: '',
 		},
 	},
 	data() {
@@ -80,3 +87,24 @@ export default {
 	},
 }
 </script>
+
+<style lang="scss" scoped>
+::v-deep .modal-container {
+	position: relative;
+}
+
+.status-bar {
+	position: absolute;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-top: -50px;
+
+	span {
+		border-radius: var(--border-radius-pill);
+		text-align: center;
+		padding: 10px;
+		background-color: var(--color-main-background-translucent);
+	}
+}
+</style>

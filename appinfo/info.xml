@@ -4,7 +4,7 @@
 	<name>Inventory</name>
 	<summary>The inventory app for Nextcloud</summary>
 	<description>Inventory App</description>
-	<version>0.0.4</version>
+	<version>0.0.5</version>
 	<licence>agpl</licence>
 	<author mail="raimund.schluessler@mailbox.org">Raimund Schlüßler</author>
 	<namespace>Inventory</namespace>

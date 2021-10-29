@@ -6,6 +6,7 @@ import 'regenerator-runtime/runtime'
 
 global.OC = new OC()
 global.OCA = OCA
+global.URL.createObjectURL = () => {}
 
 // Mock nextcloud translate functions
 config.mocks.t = function(app, string) {

@@ -47,6 +47,15 @@ class PlacesController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 * @param $path
+	 * @return \OCP\AppFramework\Db\Entity
+	 */
+	public function get($path) {
+		return $this->placesService->get($path);
+	}
+
+	/**
 	 * Adds a place
 	 *
 	 * @NoAdminRequired
@@ -88,5 +97,36 @@ class PlacesController extends Controller {
 	 */
 	public function move($placeID, $path) {
 		return $this->placesService->move($placeID, $path);
+	}
+
+	/**
+	 * Edit the description of a place
+	 *
+	 * @NoAdminRequired
+	 * @param $placeID		The id of the place to edit
+	 * @param $description	The new description of the place
+	 */
+	public function setDescription($placeID, $description) {
+		return $this->placesService->setDescription($placeID, $description);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @param $placeID
+	 * @param $uuid
+	 * @return \OCP\AppFramework\Db\Entity
+	 */
+	public function addUuid($placeID, $uuid) {
+		return $this->placesService->addUuid($placeID, $uuid);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @param $placeID
+	 * @param $uuid
+	 * @return \OCP\AppFramework\Db\Entity
+	 */
+	public function deleteUuid($placeID, $uuid) {
+		return $this->placesService->deleteUuid($placeID, $uuid);
 	}
 }

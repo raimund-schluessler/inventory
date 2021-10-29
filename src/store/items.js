@@ -23,6 +23,7 @@
 
 import Item from '../models/item'
 import Folder from '../models/folder'
+import Place from '../models/place'
 import SyncStatus from '../models/syncStatus'
 
 import Axios from '@nextcloud/axios'
@@ -726,6 +727,13 @@ const actions = {
 			console.debug('Item editing failed.')
 		}
 	},
+	async moveItemByUuid({ commit }, { uuid, newPath }) {
+		try {
+			return await Axios.patch(generateUrl('apps/inventory/item/move'), { newPath, uuid })
+		} catch {
+			console.debug('Moving the item by UUID failed.')
+		}
+	},
 	async moveInstance({ commit }, { itemID, instanceID, newPath }) {
 		try {
 			const response = await Axios.patch(generateUrl(`apps/inventory/item/${itemID}/instance/${instanceID}/move`), { path: newPath })
@@ -835,9 +843,16 @@ const actions = {
 	async searchByUUID({ commit }, searchString) {
 		try {
 			const response = await Axios.post(generateUrl('apps/inventory/search'), { searchString })
-			return response.data.items.map(item => {
+			const items = response.data.items.map(item => {
 				return new Item(item)
 			})
+			const places = response.data.places.map(place => {
+				return new Place(place)
+			})
+			const folders = response.data.folders.map(folder => {
+				return new Folder(folder)
+			})
+			return items.concat(places, folders)
 		} catch {
 			return []
 		}

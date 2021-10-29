@@ -38,21 +38,38 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</Breadcrumb>
 			</Breadcrumbs>
 			<Actions
-				container="#controls"
 				:boundaries-element="boundaries"
 				:open.sync="actionsOpen"
 				@close="addingCollection = false">
-				<ActionButton :close-after-click="true" @click="openQrModal()">
+				<ActionButton :close-after-click="true" @click="openQrModal('search')">
 					<template #icon>
 						<QrcodeScan :size="20" decorative />
 					</template>
 					{{ t('inventory', 'Scan QR code') }}
+				</ActionButton>
+				<ActionButton
+					v-if="collection === 'places'"
+					:close-after-click="true"
+					@click="openQrModal('move')">
+					<template #icon>
+						<QrcodePlus :size="20" decorative />
+					</template>
+					{{ t('inventory', 'Move items to place') }}
 				</ActionButton>
 				<ActionRouter :to="addItemPath">
 					<template #icon>
 						<Plus :size="20" decorative />
 					</template>
 					{{ t('inventory', 'Add items') }}
+				</ActionRouter>
+				<ActionRouter
+					v-if="collection === 'places'"
+					:close-after-click="true"
+					:to="`/${collection}/${(path) ? encodePath(path) + '/' : ''}&details`">
+					<template #icon>
+						<InformationOutline :size="20" decorative />
+					</template>
+					{{ t('inventory', 'Show details') }}
 				</ActionRouter>
 				<ActionButton v-if="!addingCollection"
 					@click.prevent.stop="openCollectionInput()">
@@ -83,12 +100,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			:collection-type="collection"
 			:search-string="$root.searchString" />
 		<!-- qrcode -->
-		<QrScanModal :qr-modal-open.sync="qrModalOpen" @recognized-qr-code="foundUuid" />
+		<QrScanModal :qr-modal-open.sync="qrModalOpen" :status-string="statusMessage" @recognized-qr-code="foundUuid" />
 	</div>
 </template>
 
 <script>
 import Item from '../../models/item'
+import Place from '../../models/place'
 import EntityTable from '../../components/EntityTable/EntityTable'
 import QrScanModal from '../../components/QrScanModal'
 import { encodePath } from '../../utils/encodePath'
@@ -102,7 +120,9 @@ import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
 import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
 
 import Folder from 'vue-material-design-icons/Folder'
+import InformationOutline from 'vue-material-design-icons/InformationOutline'
 import Plus from 'vue-material-design-icons/Plus'
+import QrcodePlus from 'vue-material-design-icons/QrcodePlus'
 import QrcodeScan from 'vue-material-design-icons/QrcodeScan'
 import MapMarker from 'vue-material-design-icons/MapMarker'
 import Tag from 'vue-material-design-icons/Tag'
@@ -121,15 +141,23 @@ export default {
 		QrScanModal,
 		Folder,
 		Plus,
+		InformationOutline,
+		QrcodePlus,
 		QrcodeScan,
 		MapMarker,
 		Tag,
 	},
 	beforeRouteUpdate(to, from, next) {
-		this.loadCollectionsAndItems(to.params.path)
+		if (to.params.path !== from.params.path) {
+			this.loadCollectionsAndItems(to.params.path || '')
+		}
 		next()
 	},
 	props: {
+		path: {
+			type: String,
+			default: '',
+		},
 		collection: {
 			type: String,
 			default: 'folders',
@@ -144,6 +172,9 @@ export default {
 			collectionNameError: false,
 			errorString: null,
 			qrModalOpen: false,
+			qrTarget: '',
+			statusMessage: '',
+			resetStatusTimeout: null,
 		}
 	},
 	computed: {
@@ -155,7 +186,7 @@ export default {
 		}),
 
 		breadcrumbs() {
-			const path = this.$route.params.path
+			const path = this.path
 			const crumbs = (path === '') ? [] : path.split('/')
 			return [{ title: t('inventory', 'Items'), path: `/${this.collection}/` }].concat(crumbs.map((crumb, i) => {
 				return {
@@ -192,42 +223,68 @@ export default {
 			return t('inventory', 'New Folder')
 		},
 		addItemPath() {
-			const encodedPath = encodePath(this.$route.params.path)
+			const encodedPath = encodePath(this.path)
 			return `/${this.collection}/${(encodedPath) ? encodedPath + '/' : ''}&additems`
 		},
 	},
 	watch: {
 		collection(newVal, oldVal) {
-			this.loadCollectionsAndItems(this.$route.params.path)
+			if (newVal !== oldVal) {
+				this.loadCollectionsAndItems(this.path)
+			}
 		},
 	},
 	created() {
-		this.loadCollectionsAndItems(this.$route.params.path)
+		this.loadCollectionsAndItems(this.path)
 	},
 	methods: {
 		t,
+		encodePath,
 
 		...mapActions([
 			'createFolder',
 			'createPlace',
 			'moveItem',
+			'moveItemByUuid',
 			'moveInstance',
 			'moveFolder',
 			'movePlace',
 			'searchByUUID',
 		]),
 
-		openQrModal() {
+		openQrModal(qrTarget) {
+			this.qrTarget = qrTarget
 			this.qrModalOpen = true
 		},
 
 		async foundUuid(uuid) {
-			const response = await this.searchByUUID(uuid)
-			if (response.length) {
-				this.qrModalOpen = false
-				const item = response[0]
-				this.$router.push(`/folders/${item.path}/item-${item.id}`)
+			if (this.qrTarget === 'search') {
+				const response = await this.searchByUUID(uuid)
+				if (response.length) {
+					this.qrModalOpen = false
+					const entity = response[0]
+					if (entity instanceof Item) {
+						this.$router.push(`/folders/${encodePath(entity.path)}/item-${entity.id}`)
+					} else if (entity instanceof Place) {
+						this.$router.push(`/places/${encodePath(entity.path)}/&details`)
+					}
+				}
+			} else if (this.qrTarget === 'move' && this.collection === 'places') {
+				const item = await this.moveItemByUuid({ newPath: this.path, uuid })
+				this.setStatusMessage(t('inventory', 'Item "{item}" moved', { item: item?.data?.name }))
 			}
+		},
+
+		setStatusMessage(message) {
+			this.statusMessage = message
+			if (this.resetStatusTimeout) {
+				clearTimeout(this.resetStatusTimeout)
+			}
+			this.resetStatusTimeout = setTimeout(
+				() => {
+					this.statusMessage = ''
+				}, 3000
+			)
 		},
 
 		moveEntities(e, newPath) {
@@ -269,9 +326,9 @@ export default {
 			}
 			const name = event.target.querySelector('input[type=text]').value
 			if (this.collection === 'places') {
-				await this.createPlace({ name, path: this.$route.params.path })
+				await this.createPlace({ name, path: this.path })
 			} else {
-				await this.createFolder({ name, path: this.$route.params.path })
+				await this.createFolder({ name, path: this.path })
 			}
 			this.addingCollection = false
 			this.actionsOpen = false

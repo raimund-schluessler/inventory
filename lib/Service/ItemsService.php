@@ -613,6 +613,24 @@ class ItemsService {
 	}
 
 	/**
+	 * Move an item to other folder
+	 *
+	 * @param $instanceUuid
+	 * @param $newPath
+	 * @throws DoesNotExistException
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws BadRequestException
+	 */
+	public function moveInstanceByUuid($instanceUuid, $newPath) {
+		$instances = $this->iteminstanceService->findByString($instanceUuid);
+		
+		if (count($instances) > 0) {
+			$this->moveInstance($instances[0]->itemid, $instances[0]->id, $newPath);
+			return $this->itemMapper->find($instances[0]->itemid, $this->userId);
+		}
+	}
+
+	/**
 	 * Moves an instance to a new place
 	 *
 	 * @NoAdminRequired

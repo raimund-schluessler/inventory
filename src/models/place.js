@@ -48,7 +48,9 @@ export default class Place {
 		this._uid = this.response.uid || ''
 		this._name = this.response.name || ''
 		this._path = this.response.path || ''
+		this._uuids = this.response.uuids || []
 		this._parentid = this.response._parentid || ''
+		this._description = this.response.description || ''
 		if (this.response.syncStatus) {
 			this.syncStatus = new SyncStatus(this.response.syncStatus.type, this.response.syncStatus.message)
 		}
@@ -115,6 +117,17 @@ export default class Place {
 	}
 
 	/**
+	 * Set the path (important for renaming the place)
+	 *
+	 * @param {string} path The new path
+	 * @memberof Place
+	 */
+	set path(path) {
+		this.response.path = path
+		this._path = this.response.path || ''
+	}
+
+	/**
 	 * Return the parent id
 	 *
 	 * @readonly
@@ -143,6 +156,48 @@ export default class Place {
 	set name(name) {
 		this.response.name = name
 		this._name = this.response.name || ''
+	}
+
+	/**
+	 * Return the description
+	 *
+	 * @readonly
+	 * @memberof Place
+	 */
+	get description() {
+		return this._description
+	}
+
+	/**
+	 * Set the description
+	 *
+	 * @param {string} description The new description
+	 * @memberof Place
+	 */
+	set description(description) {
+		this.response.description = description
+		this._description = this.response.description || ''
+	}
+
+	/**
+	 * Return the assigned UUIDs
+	 *
+	 * @readonly
+	 * @memberof Place
+	 */
+	get uuids() {
+		return this._uuids
+	}
+
+	/**
+	 * Set the UUIDs
+	 *
+	 * @param {Array} uuids The UUIDs
+	 * @memberof Place
+	 */
+	set uuids(uuids) {
+		this.response.uuids = uuids
+		this._uuids = this.response.uuids || []
 	}
 
 }
