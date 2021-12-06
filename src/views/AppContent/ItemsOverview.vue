@@ -32,8 +32,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<component
 							:is="breadcrumbIcon"
 							v-if="index === 0"
-							:size="20"
-							decorative />
+							:size="20" />
 					</template>
 				</Breadcrumb>
 			</Breadcrumbs>
@@ -43,7 +42,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				@close="addingCollection = false">
 				<ActionButton :close-after-click="true" @click="openQrModal('search')">
 					<template #icon>
-						<QrcodeScan :size="20" decorative />
+						<QrcodeScan :size="20" />
 					</template>
 					{{ t('inventory', 'Scan QR code') }}
 				</ActionButton>
@@ -52,13 +51,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:close-after-click="true"
 					@click="openQrModal('move')">
 					<template #icon>
-						<QrcodePlus :size="20" decorative />
+						<QrcodePlus :size="20" />
 					</template>
 					{{ t('inventory', 'Move items to place') }}
 				</ActionButton>
 				<ActionRouter :to="addItemPath">
 					<template #icon>
-						<Plus :size="20" decorative />
+						<Plus :size="20" />
 					</template>
 					{{ t('inventory', 'Add items') }}
 				</ActionRouter>
@@ -67,14 +66,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:close-after-click="true"
 					:to="`/${collection}/${(path) ? encodePath(path) + '/' : ''}&details`">
 					<template #icon>
-						<InformationOutline :size="20" decorative />
+						<InformationOutline :size="20" />
 					</template>
 					{{ t('inventory', 'Show details') }}
 				</ActionRouter>
 				<ActionButton v-if="!addingCollection"
 					@click.prevent.stop="openCollectionInput()">
 					<template #icon>
-						<Folder :size="20" decorative />
+						<Folder :size="20" />
 					</template>
 					{{ addCollectionString }}
 				</ActionButton>
@@ -89,7 +88,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					@submit="addCollection"
 					@input="checkCollectionName">
 					<template #icon>
-						<Folder :size="20" decorative />
+						<Folder :size="20" />
 					</template>
 					{{ collection === 'places' ? t('inventory', 'New Place') : t('inventory', 'New Folder') }}
 				</ActionInput>

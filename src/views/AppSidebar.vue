@@ -47,7 +47,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 				:close-after-click="true"
 				@click="editTitle(true)">
 				<template #icon>
-					<Pencil :size="20" decorative />
+					<Pencil :size="20" />
 				</template>
 				{{ t('inventory', 'Rename') }}
 			</ActionButton>
@@ -55,7 +55,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 				:close-after-click="true"
 				@click.stop="editDescription(true)">
 				<template #icon>
-					<TextBoxOutline :size="20" decorative />
+					<TextBoxOutline :size="20" />
 				</template>
 				{{ t('inventory', 'Edit description') }}
 			</ActionButton>
@@ -63,13 +63,13 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 				:close-after-click="true"
 				@click.stop="addUuid = true">
 				<template #icon>
-					<Plus :size="20" decorative />
+					<Plus :size="20" />
 				</template>
 				{{ t('inventory', 'Add UUID') }}
 			</ActionButton>
 			<ActionButton :close-after-click="true" @click="openQrModal('move')">
 				<template #icon>
-					<QrcodePlus :size="20" decorative />
+					<QrcodePlus :size="20" />
 				</template>
 				{{ t('inventory', 'Move items to place') }}
 			</ActionButton>
@@ -104,7 +104,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 						key="add"
 						@click="setUuid()">
 						<template #icon>
-							<Check :size="20" decorative />
+							<Check :size="20" />
 						</template>
 						{{ t('inventory', 'Add UUID') }}
 					</ActionButton>
@@ -113,7 +113,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 						:close-after-click="true"
 						@click="openQrModal('add')">
 						<template #icon>
-							<QrcodeScan :size="20" decorative />
+							<QrcodeScan :size="20" />
 						</template>
 						{{ t('inventory', 'Scan QR code') }}
 					</ActionButton>
@@ -127,13 +127,13 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 							<Actions>
 								<ActionButton :close-after-click="true" @click="openBarcode(uuid.uuid)">
 									<template #icon>
-										<Qrcode :size="20" decorative />
+										<Qrcode :size="20" />
 									</template>
 									{{ t('inventory', 'Show QR Code') }}
 								</ActionButton>
 								<ActionButton @click="removeUuid(uuid.uuid)">
 									<template #icon>
-										<Delete :size="20" decorative />
+										<Delete :size="20" />
 									</template>
 									{{ t('inventory', 'Delete UUID') }}
 								</ActionButton>
@@ -152,7 +152,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 			</EmptyContent>
 			<EmptyContent v-else>
 				<template #icon>
-					<Magnify :size="50" decorative />
+					<Magnify :size="50" />
 				</template>
 				{{ t('inventory', 'Place not found.') }}
 			</EmptyContent>

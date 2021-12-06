@@ -31,8 +31,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<template #icon>
 						<component
 							:is="view.icon"
-							:size="20"
-							decorative />
+							:size="20" />
 					</template>
 				</AppNavigationItem>
 			</template>

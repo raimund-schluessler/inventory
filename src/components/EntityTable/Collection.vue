@@ -61,7 +61,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:close-after-click="true"
 					@click="startRename">
 					<template #icon>
-						<Pencil :size="20" decorative />
+						<Pencil :size="20" />
 					</template>
 					{{ t('inventory', 'Rename') }}
 				</ActionButton>
@@ -71,13 +71,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					container=".row--collection"
 					:to="`/${collection}/${($route.params.path) ? encodePath($route.params.path) + '/' : ''}&details/${encodePath(entity.path)}`">
 					<template #icon>
-						<InformationOutline :size="20" decorative />
+						<InformationOutline :size="20" />
 					</template>
 					{{ t('inventory', 'Show details') }}
 				</ActionRouter>
 				<ActionButton @click="scheduleDelete">
 					<template #icon>
-						<Delete :size="20" decorative />
+						<Delete :size="20" />
 					</template>
 					{{ deleteString }}
 				</ActionButton>
@@ -88,7 +88,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<ActionButton
 					@click.prevent.stop="cancelDelete">
 					<template #icon>
-						<Undo :size="20" decorative />
+						<Undo :size="20" />
 					</template>
 					{{ undoString }}
 				</ActionButton>
