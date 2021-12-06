@@ -71,7 +71,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							:close-after-click="true"
 							@click="removeItems">
 							<template #icon>
-								<Delete :size="20" decorative />
+								<Delete :size="20" />
 							</template>
 							{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
 						</ActionButton>
@@ -80,7 +80,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							:close-after-click="true"
 							@click="$emit('unlink')">
 							<template #icon>
-								<Close :size="20" decorative />
+								<Close :size="20" />
 							</template>
 							{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
 						</ActionButton>
