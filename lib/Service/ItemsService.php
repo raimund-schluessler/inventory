@@ -598,16 +598,17 @@ class ItemsService {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
-		if ($newPath === '') {
-			$folder->id = -1;
-			$folder->path = '';
-		} else {
+		$folderId = -1;
+		$folderPath = '';
+		if ($newPath !== '') {
 			$folder = $this->folderMapper->findFolderByPath($this->userId, $newPath);
+			$folderId = $folder->id;
+			$folderPath = $folder->path;
 		}
 		$item = $this->itemMapper->find($itemId, $this->userId);
 		
-		$item->setFolderid($folder->id);
-		$item->setPath($folder->path);
+		$item->setFolderid($folderId);
+		$item->setPath($folderPath);
 		$editedItem = $this->itemMapper->update($item);
 		return $this->getItemDetails($editedItem);
 	}
@@ -648,14 +649,14 @@ class ItemsService {
 			throw new BadRequestException('Instance id must be a number.');
 		}
 
-		if ($newPath === '') {
-			$place->id = -1;
-		} else {
+		$placeId = -1;
+		if ($newPath !== '') {
 			$place = $this->placeMapper->findPlaceByPath($this->userId, $newPath);
+			$placeId = $place->id;
 		}
 		$instance = $this->iteminstanceMapper->find($instanceId, $this->userId);
 		
-		$instance->setPlaceid($place->id);
+		$instance->setPlaceid($placeId);
 		$instance = $this->iteminstanceMapper->update($instance);
 
 		$item = $this->itemMapper->find($itemId, $this->userId);
