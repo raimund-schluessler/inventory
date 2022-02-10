@@ -209,7 +209,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="edit_item" method="POST" />
 		<Modal v-if="showBarcode"
 			id="qrcode-modal"
-			size="full"
+			size="small"
 			@close="closeBarcode">
 			<div>
 				<canvas ref="canvas" class="qrcode" />
