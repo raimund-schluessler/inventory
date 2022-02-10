@@ -20,20 +20,17 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<AppSidebar
-		:title="(place && !loading) ? place.name : ''"
+	<AppSidebar :title="(place && !loading) ? place.name : ''"
 		:title-editable="editingTitle"
 		:title-tooltip="place ? place.path : null"
 		@update:titleEditable="editTitle"
 		@update:title="updateTitle"
 		@submit-title="saveTitle()"
 		@close="closeAppSidebar()">
-		<template
-			v-if="(place && place.description && !loading) || editingDescription"
+		<template v-if="(place && place.description && !loading) || editingDescription"
 			#description>
 			<pre><span>{{ place.description }}</span><br><br></pre>
-			<textarea
-				ref="description__editor"
+			<textarea ref="description__editor"
 				v-model="place.description"
 				v-click-outside="() => { editDescription(false) }"
 				@keyup.27="editDescription(false)"
@@ -43,24 +40,21 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 		</template>
 
 		<template v-if="place && !loading" #secondary-actions>
-			<ActionButton
-				:close-after-click="true"
+			<ActionButton :close-after-click="true"
 				@click="editTitle(true)">
 				<template #icon>
 					<Pencil :size="20" />
 				</template>
 				{{ t('inventory', 'Rename') }}
 			</ActionButton>
-			<ActionButton
-				:close-after-click="true"
+			<ActionButton :close-after-click="true"
 				@click.stop="editDescription(true)">
 				<template #icon>
 					<TextBoxOutline :size="20" />
 				</template>
 				{{ t('inventory', 'Edit description') }}
 			</ActionButton>
-			<ActionButton
-				:close-after-click="true"
+			<ActionButton :close-after-click="true"
 				@click.stop="addUuid = true">
 				<template #icon>
 					<Plus :size="20" />
@@ -99,8 +93,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 						@keyup.27="addUuid = false">
 				</form>
 				<Actions>
-					<ActionButton
-						v-if="newUuidValid"
+					<ActionButton v-if="newUuidValid"
 						key="add"
 						@click="setUuid()">
 						<template #icon>

@@ -128,8 +128,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 					<div>
 						<Actions :boundaries-element="boundaries">
-							<ActionButton
-								v-if="newUuidValid(instance.uuids)"
+							<ActionButton v-if="newUuidValid(instance.uuids)"
 								key="add"
 								@click="setUuid(instance)">
 								<template #icon>

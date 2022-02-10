@@ -44,8 +44,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</a>
 					</div>
 					<Actions :boundaries-element="boundaries">
-						<ActionLink
-							:href="fileLink(attachment)"
+						<ActionLink :href="fileLink(attachment)"
 							target="_blank"
 							:close-after-click="true">
 							<template #icon>
@@ -61,8 +60,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</template>
 							{{ t('inventory', 'Unlink attachment') }}
 						</ActionButton>
-						<ActionButton
-							:close-after-click="true"
+						<ActionButton :close-after-click="true"
 							@click="deleteAttachment(attachment)">
 							<template #icon>
 								<Delete :size="20" />
@@ -81,16 +79,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</ul>
 		</div>
 		<Actions :boundaries-element="boundaries">
-			<ActionButton
-				:close-after-click="true"
+			<ActionButton :close-after-click="true"
 				@click="upload">
 				<template #icon>
 					<Upload :size="20" />
 				</template>
 				{{ t('inventory', 'Upload attachment') }}
 			</ActionButton>
-			<ActionButton
-				:close-after-click="true"
+			<ActionButton :close-after-click="true"
 				@click="select">
 				<template #icon>
 					<Folder :size="20" />
@@ -104,13 +100,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			@change="handleUploadFile">
 
 		<transition name="fade" mode="out-in">
-			<div
-				v-show="isDraggingOver"
+			<div v-show="isDraggingOver"
 				class="dragover">
 				<div class="drop-hint">
 					<div class="drop-hint__icon icon-upload" />
-					<h2
-						class="drop-hint__text">
+					<h2 class="drop-hint__text">
 						{{ t('inventory', 'Drop your files to upload') }}
 					</h2>
 				</div>

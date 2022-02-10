@@ -29,15 +29,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:to="crumb.path"
 					:disable-drop="index === (breadcrumbs.length - 1)">
 					<template #icon>
-						<component
-							:is="breadcrumbIcon"
+						<component :is="breadcrumbIcon"
 							v-if="index === 0"
 							:size="20" />
 					</template>
 				</Breadcrumb>
 			</Breadcrumbs>
-			<Actions
-				:boundaries-element="boundaries"
+			<Actions :boundaries-element="boundaries"
 				:open.sync="actionsOpen"
 				@close="addingCollection = false">
 				<ActionButton :close-after-click="true" @click="openQrModal('search')">
@@ -46,8 +44,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</template>
 					{{ t('inventory', 'Scan QR code') }}
 				</ActionButton>
-				<ActionButton
-					v-if="collection === 'places'"
+				<ActionButton v-if="collection === 'places'"
 					:close-after-click="true"
 					@click="openQrModal('move')">
 					<template #icon>
@@ -61,8 +58,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</template>
 					{{ t('inventory', 'Add items') }}
 				</ActionRouter>
-				<ActionRouter
-					v-if="collection === 'places'"
+				<ActionRouter v-if="collection === 'places'"
 					:close-after-click="true"
 					:to="`/${collection}/${(path) ? encodePath(path) + '/' : ''}&details`">
 					<template #icon>
