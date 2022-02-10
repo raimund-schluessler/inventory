@@ -22,7 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<Modal v-if="qrModalOpen"
 		:out-transition="true"
-		size="full"
+		size="large"
 		@close="closeModal">
 		<QrcodeStream @decode="onDecode" @init="onInit" />
 		<div v-if="statusString" class="status-bar">

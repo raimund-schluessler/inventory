@@ -618,8 +618,8 @@ body {
 // item selection modal
 .relation-modal {
 	.modal-container {
-		height: 85%;
-		width: 85%;
+		height: 85% !important;
+		width: 85% !important;
 
 		.content {
 			display: flex;
