@@ -35,8 +35,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<textarea v-model="rawInput" />
 					{{ t('inventory', 'Items:') }}
 					<div>
-						<EntityTable
-							:items="items"
+						<EntityTable :items="items"
 							:allow-deletion="false"
 							:search-string="$root.searchString" />
 					</div>

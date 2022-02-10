@@ -65,8 +65,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 				<div class="column column--actions">
-					<Actions
-						:boundaries-element="boundaries">
+					<Actions :boundaries-element="boundaries">
 						<ActionButton v-if="allowDeletion && !unlink && selectedItems.length"
 							:close-after-click="true"
 							@click="removeItems">

@@ -29,15 +29,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						:title="crumb.title"
 						:to="crumb.path">
 						<template #icon>
-							<component
-								:is="breadcrumbIcon"
+							<component :is="breadcrumbIcon"
 								v-if="index === 0"
 								:size="20" />
 						</template>
 					</Breadcrumb>
 				</Breadcrumbs>
-				<Actions
-					v-if="item && !loadingItem"
+				<Actions v-if="item && !loadingItem"
 					container="#controls"
 					:boundaries-element="boundaries">
 					<ActionButton :close-after-click="true" @click="openModal">
@@ -46,16 +44,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</template>
 						{{ t('inventory', 'Link items') }}
 					</ActionButton>
-					<ActionButton
-						:close-after-click="true"
+					<ActionButton :close-after-click="true"
 						@click="upload">
 						<template #icon>
 							<Upload :size="20" />
 						</template>
 						{{ t('inventory', 'Upload image') }}
 					</ActionButton>
-					<ActionButton
-						icon="icon-rename"
+					<ActionButton icon="icon-rename"
 						:close-after-click="true"
 						@click="toggleEditItem">
 						<template #icon>
@@ -119,8 +115,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 								<div v-else class="wrapper">
 									<span :class="{ 'visibility-hidden': editingItem }">{{ item[itemProperty.key] }}</span>
-									<Actions
-										v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem "
+									<Actions v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem "
 										:boundaries-element="boundaries">
 										<ActionButton :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
 											<template #icon>
@@ -144,8 +139,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="column">
 								{{ t('inventory', 'Attachments') }}
 							</div>
-							<Attachments
-								:attachments="item.attachments"
+							<Attachments :attachments="item.attachments"
 								:item-id="String(item.id)"
 								:loading-attachments="loadingAttachments(item.id)"
 								class="column column--attachments" />

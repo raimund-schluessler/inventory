@@ -54,8 +54,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</form>
 		</div>
 		<div class="column column--actions">
-			<Actions
-				v-if="!deleteTimeout && showActions"
+			<Actions v-if="!deleteTimeout && showActions"
 				:boundaries-element="boundaries">
 				<ActionButton class="startRename"
 					:close-after-click="true"
@@ -65,8 +64,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</template>
 					{{ t('inventory', 'Rename') }}
 				</ActionButton>
-				<ActionRouter
-					v-if="collection === 'places'"
+				<ActionRouter v-if="collection === 'places'"
 					:close-after-click="true"
 					container=".row--collection"
 					:to="`/${collection}/${($route.params.path) ? encodePath($route.params.path) + '/' : ''}&details/${encodePath(entity.path)}`">
@@ -82,11 +80,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ deleteString }}
 				</ActionButton>
 			</Actions>
-			<Actions
-				v-if="!!deleteTimeout"
+			<Actions v-if="!!deleteTimeout"
 				:boundaries-element="boundaries">
-				<ActionButton
-					@click.prevent.stop="cancelDelete">
+				<ActionButton @click.prevent.stop="cancelDelete">
 					<template #icon>
 						<Undo :size="20" />
 					</template>

@@ -30,8 +30,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="title">
 					{{ headerString }}
 				</span>
-				<Multiselect
-					:value="relationTypes.find( _ => _.type === relationType )"
+				<Multiselect :value="relationTypes.find( _ => _.type === relationType )"
 					:multiple="false"
 					:allow-empty="false"
 					track-by="type"
