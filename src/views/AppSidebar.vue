@@ -73,7 +73,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 			<QrScanModal :qr-modal-open.sync="qrModalOpen" :status-string="statusMessage" @recognized-qr-code="foundUuid" />
 			<Modal v-if="showBarcode"
 				id="qrcode-modal"
-				size="full"
+				size="small"
 				@close="closeBarcode">
 				<div>
 					<canvas ref="canvas" class="qrcode" />
