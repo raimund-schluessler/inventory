@@ -266,8 +266,9 @@ class PlacesService {
 			throw new BadRequestException('Place does not exist.');
 		}
 		if ($newPath === '') {
-			$newParent->id = -1;
-			$newParent->path = '';
+			$newParent = new Place();
+			$newParent->setId(-1);
+			$newParent->setPath('');
 		} else {
 			$newParent = $this->placeMapper->findPlaceByPath($this->userId, $newPath);
 		}
