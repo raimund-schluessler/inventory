@@ -21,13 +21,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<AppNavigationSettings>
-		<div>
-			<button @click="downloadUuidPdf">
+		<div class="settings-wrapper">
+			<Button @click="downloadUuidPdf">
+				<template #icon>
+					<Qrcode :size="20" />
+				</template>
 				{{ t('inventory', 'Download UUID sticker sheet') }}
-			</button>
-			<button @click="selectFolder">
+			</Button>
+			<Button @click="selectFolder">
+				<template #icon>
+					<Folder :size="20" />
+				</template>
 				{{ t('inventory', 'Select attachment folder') }}
-			</button>
+			</Button>
 		</div>
 	</AppNavigationSettings>
 </template>
@@ -36,6 +42,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
 import { translate as t } from '@nextcloud/l10n'
 import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
+import Button from '@nextcloud/vue/dist/Components/Button'
+
+import Folder from 'vue-material-design-icons/Folder'
+import Qrcode from 'vue-material-design-icons/Qrcode'
 
 import { v4 as uuidv4 } from 'uuid'
 import bwipjs from 'bwip-js'
@@ -44,6 +54,9 @@ import { jsPDF } from 'jspdf'
 export default {
 	components: {
 		AppNavigationSettings,
+		Button,
+		Folder,
+		Qrcode,
 	},
 	methods: {
 		t,
@@ -108,7 +121,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-	button {
-		width: 100%;
+	.settings-wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		button {
+			margin-bottom: 5px;
+		}
 	}
 </style>
