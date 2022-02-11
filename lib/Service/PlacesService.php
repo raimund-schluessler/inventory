@@ -270,7 +270,11 @@ class PlacesService {
 			$newParent->setId(-1);
 			$newParent->setPath('');
 		} else {
-			$newParent = $this->placeMapper->findPlaceByPath($this->userId, $newPath);
+			try {
+				$newParent = $this->placeMapper->findPlaceByPath($this->userId, $newPath);
+			} catch (DoesNotExistException $e) {
+				throw new BadRequestException('New parent place does not exist.');
+			}
 		}
 
 		// Check that the new parent does not have a child named like this already.
