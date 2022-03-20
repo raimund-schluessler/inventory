@@ -62,10 +62,6 @@ body {
 @include icon-black-white('places', 'inventory', 1, false);
 @include icon-black-white('tags', 'inventory', 1, false);
 
-.action-item {
-	margin-left: auto !important;
-}
-
 .error input[type='text'] {
 	border: 1px solid red !important;
 }
@@ -571,10 +567,6 @@ body {
 			width: 400px;
 		}
 	}
-}
-
-.breadcrumb .crumb.action-item {
-	margin-left: unset !important;
 }
 
 .tags li {
