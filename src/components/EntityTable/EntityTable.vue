@@ -104,12 +104,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				draggable="true"
 				class="entity"
 				@select-entity="selectEntity"
-				@dragstart.native="dragStart(item, $event)"
-				@dragend.native="dragEnd"
-				@drop.native="dropped(item, $event)"
-				@dragover.native="dragOver"
-				@dragenter.native="($event) => dragEnter(item, $event)"
-				@dragleave.native="dragLeave" />
+				@dragstart="dragStart(item, $event)"
+				@dragend="dragEnd"
+				@drop="dropped(item, $event)"
+				@dragover="dragOver"
+				@dragenter="($event) => dragEnter(item, $event)"
+				@dragleave="dragLeave" />
 			<EntityTableRowPlaceholder :placeholder="placeholder('lower')" />
 			<div v-if="searchString && !filterOnly" class="row row--search">
 				<div class="column" :class="{'column__left': !searching}">

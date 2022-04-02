@@ -3,7 +3,7 @@
  *
  * @author Raimund Schlüßler
  *
- * @copyright 2019 Raimund Schlüßler <raimund.schluessler@mailbox.org>
+ * @copyright 2023 Raimund Schlüßler <raimund.schluessler@mailbox.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -19,22 +19,15 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-'use strict'
 
-import items from './items.js'
-import folders from './folders.js'
-import places from './places.js'
-import settings from './settings.js'
-import tags from './tags.js'
+/**
+ * Checks wether the given string is a valid UUID
+ *
+ * @param {String} uuid The UUID
+ * @return {boolean} Whether the string is a UUID
+ */
+const isUuid = (uuid) => {
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(uuid)
+}
 
-import { createStore } from 'vuex'
-
-export default createStore({
-	modules: {
-		items,
-		folders,
-		places,
-		settings,
-		tags,
-	},
-})
+export default isUuid

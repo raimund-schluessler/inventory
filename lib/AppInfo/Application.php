@@ -49,22 +49,7 @@ class Application extends App implements IBootstrap {
 		});
 
 		$context->registerMiddleware(ExceptionMiddleware::class);
-
-		/**
-		 * Add worker-src blob to content security policy, so that
-		 * https://github.com/gruhn/vue-qrcode-reader works correctly.
-		 */
-		if (class_exists('\\OCP\\AppFramework\\Http\\EmptyContentSecurityPolicy')) {
-			$manager = \OC::$server->getContentSecurityPolicyManager();
-
-			$policy = new \OCP\AppFramework\Http\EmptyContentSecurityPolicy();
-			$policy->addAllowedWorkerSrcDomain('blob:');
-			// This line is for Safari on iOS and Mac, which doesn't know 'worker-src' yet.
-			$policy->addAllowedChildSrcDomain('blob:');
-
-			$manager->addDefaultPolicy($policy);
-		}
-
+		
 		$context->registerSearchProvider(Provider::class);
 	}
 

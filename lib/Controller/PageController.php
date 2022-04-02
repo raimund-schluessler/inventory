@@ -24,6 +24,7 @@ namespace OCA\Inventory\Controller;
 
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Controller;
 use OCP\IConfig;
 use OCP\IInitialStateService;
@@ -62,6 +63,14 @@ class PageController extends Controller {
 			'attachmentFolder', $attachmentFolder
 		);
 
-		return new TemplateResponse('inventory', 'main');
+		$response = new TemplateResponse('inventory', 'main');
+
+		$csp = new ContentSecurityPolicy();
+		$csp->allowEvalScript(true);
+		// Needed to get https://github.com/gruhn/vue-qrcode-reader to work.
+		// $csp->allowEvalWasm(true);
+		$response->setContentSecurityPolicy($csp);
+
+		return $response;
 	}
 }

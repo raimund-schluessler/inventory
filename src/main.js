@@ -27,8 +27,7 @@ import store from './store/store.js'
 
 import { linkTo } from '@nextcloud/router'
 
-import Vue from 'vue'
-import { sync } from 'vuex-router-sync'
+import { createApp } from 'vue'
 
 // CSP config for webpack dynamic chunk loading
 // eslint-disable-next-line
@@ -41,8 +40,6 @@ __webpack_nonce__ = btoa(OC.requestToken)
 // eslint-disable-next-line
 __webpack_public_path__ = linkTo('inventory', 'js/')
 
-sync(store, router)
-
 if (!OCA.Inventory) {
 	/**
 	 * @namespace OCA.Inventory
@@ -50,14 +47,9 @@ if (!OCA.Inventory) {
 	OCA.Inventory = {}
 }
 
-Vue.prototype.$OC = OC
-Vue.prototype.$OCA = OCA
-
-const Inventory = new Vue({
-	el: '.app-inventory',
-	router,
-	store,
-	render: h => h(App),
-})
+const Inventory = createApp(App)
+	.use(router)
+	.use(store)
+	.mount('.app-inventory')
 
 OCA.Inventory.App = Inventory

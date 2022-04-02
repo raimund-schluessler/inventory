@@ -39,17 +39,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</NcActions>
 				</div>
 			</div>
-			<template v-for="instance in item.instances">
+			<template v-for="instance in item.instances" :key="`instance-${instance.id}`">
 				<div v-if="editedInstance.id !== instance.id"
 					:key="`instance-${instance.id}`"
 					class="row row--properties"
 					:class="{active: instanceActive(instance)}">
 					<div class="column column--narrow-header column--narrow-spacer" />
-					<template v-for="instanceProperty in instanceProperties">
-						<div :key="`narrow-header-${instanceProperty.key}`" class="column column--narrow-header">
+					<template v-for="instanceProperty in instanceProperties" :key="`column-${instanceProperty.key}`">
+						<div class="column column--narrow-header">
 							<span>{{ instanceProperty.name }}</span>
 						</div>
-						<div :key="`body-${instanceProperty.key}`" class="column">
+						<div class="column">
 							<router-link v-if="instanceProperty.key === 'place' && instance.place" :to="`/places/${instance.place.path}`">
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</router-link>
@@ -86,11 +86,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					v-click-outside="($event) => { hideEditInstance(instance, $event) }"
 					class="row row--properties">
 					<div class="column column--narrow-header column--narrow-spacer" />
-					<template v-for="instanceProperty in instanceProperties">
-						<div :key="`narrow-edit-header-${instanceProperty.key}`" class="column column--narrow-header">
+					<template v-for="instanceProperty in instanceProperties" :key="`narrow-edit-header-${instanceProperty.key}`">
+						<div class="column column--narrow-header">
 							<span>{{ instanceProperty.name }}</span>
 						</div>
-						<div :key="`edit-body-${instanceProperty.key}`" class="column column--input">
+						<div class="column column--input">
 							<div v-if="instanceProperty.key === 'place'">
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</div>
@@ -134,7 +134,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 					<div>
 						<NcActions :boundaries-element="boundaries">
-							<NcActionButton v-if="newUuidValid(instance.uuids)"
+							<NcActionButton v-if="isNewUuidUnique(instance)"
 								key="add"
 								@click="setUuid(instance)">
 								<template #icon>
@@ -180,7 +180,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</ul>
 					</div>
 				</div>
-				<div :key="`attachments${instance.id}`" class="row row--column-all">
+				<div class="row row--column-all">
 					<Attachments :attachments="instance.attachments"
 						:item-id="String(item.id)"
 						:instance-id="String(instance.id)"
@@ -195,11 +195,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<div v-if="addingInstance" v-click-outside="hideInstanceInput" class="row row--properties">
 				<div class="column column--narrow-header column--narrow-spacer" />
-				<template v-for="instanceProperty in instanceProperties">
-					<div :key="`label-${instanceProperty.key}`" class="column column--narrow-header">
+				<template v-for="instanceProperty in instanceProperties" :key="instanceProperty.key">
+					<div class="column column--narrow-header">
 						<span>{{ instanceProperty.name }}</span>
 					</div>
-					<div :key="instanceProperty.key" class="column column--input">
+					<div class="column column--input">
 						<input v-model="newInstance[instanceProperty.key]"
 							type="text"
 							:placeholder="instanceProperty.name"
@@ -222,7 +222,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="new_instance" method="POST" />
 		<form id="edit_instance" method="POST" />
 		<!-- qrcode -->
-		<QrScanModal :qr-modal-open.sync="qrModalOpen" @recognized-qr-code="foundUuid" />
+		<QrScanModal v-model:qr-modal-open="qrModalOpen" @codes-detected="foundCodes" />
 	</div>
 </template>
 
@@ -230,6 +230,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import focus from '../directives/focus.vue'
 import Attachments from './Attachments.vue'
 import QrScanModal from './QrScanModal.vue'
+import isUuid from '../utils/isUuid.js'
 
 import { translate as t } from '@nextcloud/l10n'
 import {
@@ -334,23 +335,27 @@ export default {
 		/**
 		 * Checks that the new UUID is valid and not already used for this instance.
 		 *
-		 * @param {Array} uuids The already used UUIDs
+		 * @param {Object} instance The instance to check the UUID against
 		 * @return {boolean} Whether the new UUID is valid
 		 */
-		newUuidValid(uuids) {
-			const uuidArray = uuids.map(uuid => {
+		isNewUuidUnique(instance) {
+			const uuids = instance.uuids.map(uuid => {
 				return uuid.uuid
 			})
-			return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(this.newUuid) && !uuidArray.includes(this.newUuid)
+			return this.isUuid(this.newUuid) && !uuids.includes(this.newUuid)
 		},
 
 		openQrModal() {
 			this.qrModalOpen = true
 		},
 
-		foundUuid(uuid) {
-			this.newUuid = uuid
-			this.qrModalOpen = false
+		foundCodes(codes) {
+			// We use the first valid UUID
+			const code = codes.find(code => isUuid(code.rawValue))
+			if (code) {
+				this.newUuid = code.rawValue
+				this.qrModalOpen = false
+			}
 		},
 
 		showEditInstance(instance) {
@@ -427,7 +432,7 @@ export default {
 		},
 
 		async setUuid(instance) {
-			if (this.newUuidValid(instance.uuids)) {
+			if (this.isNewUuidUnique(instance)) {
 				await this.addUuid({ item: this.item, instance, uuid: this.newUuid })
 				this.newUuid = ''
 			}

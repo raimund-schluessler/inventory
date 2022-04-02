@@ -26,80 +26,222 @@ import ItemsOverview from './views/AppContent/ItemsOverview.vue'
 import Tags from './views/AppContent/Tags.vue'
 import AppSidebar from './views/AppSidebar.vue'
 
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { h } from 'vue'
+import { createWebHashHistory, createRouter, RouterView } from 'vue-router'
 
 const routes = [
-	// using
-	// { path: '/folders', component: ItemsOverview, alias: '/' },
-	// instead of
 	{ path: '/', redirect: '/folders/' },
 	{
-		path: '/folders/:path(.*)?/item-:id(\\d+)',
-		component: ItemDetails,
-		props: (route) => ({ path: route.params.path, id: route.params.id, collection: 'folders' }),
+		path: '/folders',
+		component: { render: () => h(RouterView) },
+		children: [
+			{
+				path: '/folders',
+				component: ItemsOverview,
+				props: (route) => ({ path: route.params.path, collection: 'folders' }),
+			},
+			{
+				path: '/folders/',
+				component: { render: () => h(RouterView) },
+				children: [
+					{
+						path: '/folders/',
+						component: ItemsOverview,
+						props: (route) => ({ path: route.params.path, collection: 'folders' }),
+					},
+					{
+						path: '/folders/item-:id(\\d+)',
+						component: ItemDetails,
+						props: (route) => ({ path: route.params.path, id: route.params.id, collection: 'folders' }),
+					},
+					{
+						path: '/folders/item-:id(\\d+)/instance-:instanceId(\\d+)',
+						component: ItemDetails,
+						props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'folders' }),
+					},
+					{
+						path: '/folders/&additems',
+						component: ItemsNew,
+						props: (route) => ({ path: route.params.path, collection: 'folders' }),
+					},
+					{
+						path: '/folders/:path(.*?)',
+						component: { render: () => h(RouterView) },
+						children: [
+							{
+								path: '/folders/:path(.*?)',
+								component: ItemsOverview,
+								props: (route) => ({ path: route.params.path, collection: 'folders' }),
+							},
+							{
+								path: '/folders/:path(.*?)/item-:id(\\d+)',
+								component: ItemDetails,
+								props: (route) => ({ path: route.params.path, id: route.params.id, collection: 'folders' }),
+							},
+							{
+								path: '/folders/:path(.*?)/item-:id(\\d+)/instance-:instanceId(\\d+)',
+								component: ItemDetails,
+								props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'folders' }),
+							},
+							{
+								path: '/folders/:path(.*?)/&additems',
+								component: ItemsNew,
+								props: (route) => ({ path: route.params.path, collection: 'folders' }),
+							},
+						],
+					},
+				],
+			},
+		],
 	},
 	{
-		path: '/folders/:path(.*)?/item-:id(\\d+)/instance-:instanceId(\\d+)',
-		component: ItemDetails,
-		props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'folders' }),
-	},
-	{
-		path: '/folders/:path(.*)?/&additems',
-		component: ItemsNew,
-		props: (route) => ({ path: route.params.path, collection: 'folders' }),
-	},
-	{
-		name: 'folders',
-		path: '/folders/:path(.*)',
-		component: ItemsOverview,
-		props: (route) => ({ path: route.params.path, collection: 'folders' }),
-	},
-	// would also be an option, but it currently does not work
-	// reliably with router-link due to
-	// https://github.com/vuejs/vue-router/issues/419
-
-	{
-		path: '/places/:path(.*)?/item-:id(\\d+)',
-		component: ItemDetails,
-		props: (route) => ({ path: route.params.path, id: route.params.id, collection: 'places' }),
-	},
-	{
-		path: '/places/:path(.*)?/item-:id(\\d+)/instance-:instanceId(\\d+)',
-		component: ItemDetails,
-		props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'places' }),
-	},
-	{
-		path: '/places/:path(.*)?/&additems',
-		component: ItemsNew,
-		props: (route) => ({ path: route.params.path, collection: 'places' }),
-	},
-	{
-		name: 'placesDetails',
-		path: '/places/:path(.*)?/&details/:folder(.*)?',
-		components: { default: ItemsOverview, AppSidebar },
-		props: {
-			default: (route) => ({ path: route.params.path, collection: 'places' }),
-			AppSidebar: (route) => ({ path: route.params.path, collection: 'places', folder: route.params.folder }),
+		path: '/places',
+		components: {
+			default: { render: () => h(RouterView, { name: 'default' }) },
+			AppSidebar: { render: () => h(RouterView, { name: 'AppSidebar' }) },
 		},
+		children: [
+			{
+				path: '/places',
+				component: ItemsOverview,
+				props: (route) => ({ path: route.params.path, collection: 'places' }),
+			},
+			{
+				path: '/places/',
+				components: {
+					default: { render: () => h(RouterView, { name: 'default' }) },
+					AppSidebar: { render: () => h(RouterView, { name: 'AppSidebar' }) },
+				},
+				children: [
+					{
+						path: '/places/',
+						component: ItemsOverview,
+						props: (route) => ({ path: route.params.path, collection: 'places' }),
+					},
+					{
+						path: '/places/item-:id(\\d+)',
+						component: ItemDetails,
+						props: (route) => ({ path: route.params.path, id: route.params.id, collection: 'places' }),
+					},
+					{
+						path: '/places/item-:id(\\d+)/instance-:instanceId(\\d+)',
+						component: ItemDetails,
+						props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'places' }),
+					},
+					{
+						path: '/places/&details',
+						components: { default: ItemsOverview, AppSidebar },
+						props: {
+							default: (route) => ({ path: route.params.path, collection: 'places' }),
+							AppSidebar: (route) => ({ path: route.params.path, collection: 'places', folder: route.params.folder }),
+						},
+					},
+					{
+						path: '/places/&details/:folder(.*?)',
+						components: { default: ItemsOverview, AppSidebar },
+						name: 'placeRootDetails',
+						props: {
+							default: (route) => ({ path: route.params.path, collection: 'places' }),
+							AppSidebar: (route) => ({ path: route.params.path, collection: 'places', folder: route.params.folder }),
+						},
+					},
+					{
+						path: '/places/&additems',
+						component: ItemsNew,
+						props: (route) => ({ path: route.params.path, collection: 'places' }),
+					},
+					{
+						path: '/places/:path(.*?)',
+						components: {
+							default: { render: () => h(RouterView, { name: 'default' }) },
+							AppSidebar: { render: () => h(RouterView, { name: 'AppSidebar' }) },
+						},
+						children: [
+							{
+								path: '/places/:path(.*?)',
+								component: ItemsOverview,
+								props: (route) => ({ path: route.params.path, collection: 'places' }),
+							},
+							{
+								path: '/places/:path(.*?)/item-:id(\\d+)',
+								component: ItemDetails,
+								props: (route) => ({ path: route.params.path, id: route.params.id, collection: 'places' }),
+							},
+							{
+								path: '/places/:path(.*?)/item-:id(\\d+)/instance-:instanceId(\\d+)',
+								component: ItemDetails,
+								props: (route) => ({ path: route.params.path, id: route.params.id, instanceId: route.params.instanceId, collection: 'places' }),
+							},
+							{
+								path: '/places/:path(.*?)/&details',
+								components: { default: ItemsOverview, AppSidebar },
+								name: 'placeDetails',
+								props: {
+									default: (route) => ({ path: route.params.path, collection: 'places' }),
+									AppSidebar: (route) => ({ path: route.params.path, collection: 'places', folder: route.params.folder }),
+								},
+							},
+							{
+								path: '/places/:path(.*?)/&details/:folder(.*?)',
+								components: { default: ItemsOverview, AppSidebar },
+								name: 'placeChildDetails',
+								props: {
+									default: (route) => ({ path: route.params.path, collection: 'places' }),
+									AppSidebar: (route) => ({ path: route.params.path, collection: 'places', folder: route.params.folder }),
+								},
+							},
+							{
+								path: '/places/:path(.*?)/&additems',
+								component: ItemsNew,
+								props: (route) => ({ path: route.params.path, collection: 'places' }),
+							},
+						],
+					},
+				],
+			},
+		],
 	},
 	{
-		name: 'places',
-		path: '/places/:path(.*)',
-		component: ItemsOverview,
-		props: (route) => ({ path: route.params.path, collection: 'places' }),
-	},
-	{
-		name: 'tags',
-		path: '/tags/:path(.*)',
+		path: '/tags',
 		component: Tags,
 		props: (route) => ({ path: route.params.path }),
+		children: [
+			{
+				path: '/tags',
+				component: Tags,
+				props: (route) => ({ path: route.params.path }),
+			},
+			{
+				path: '/tags/',
+				component: Tags,
+				props: (route) => ({ path: route.params.path }),
+				children: [
+					{
+						path: '/tags/',
+						component: Tags,
+						props: (route) => ({ path: route.params.path }),
+					},
+					{
+						path: '/tags/:path(.*?)',
+						component: Tags,
+						props: (route) => ({ path: route.params.path }),
+						children: [
+							{
+								path: '/tags/:path(.*?)',
+								component: Tags,
+								props: (route) => ({ path: route.params.path }),
+							},
+						],
+					},
+				],
+			},
+		],
 	},
 ]
 
-Vue.use(VueRouter)
-
-export default new VueRouter({
-	linkActiveClass: 'active',
+const router = createRouter({
+	history: createWebHashHistory(),
 	routes,
 })
+
+export default router

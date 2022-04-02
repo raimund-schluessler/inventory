@@ -25,16 +25,13 @@ import Item from '../models/item.js'
 import Folder from '../models/folder.js'
 import Place from '../models/place.js'
 import SyncStatus from '../models/syncStatus.js'
+import router from '../router.js'
 
 import Axios from '@nextcloud/axios'
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 
 import PQueue from 'p-queue'
-import Vue from 'vue'
-import Vuex from 'vuex'
-
-Vue.use(Vuex)
 
 const state = {
 	items: {},
@@ -168,13 +165,13 @@ const getters = {
 	searchResults: (state, getters, rootState) => {
 		return state.searchResults.filter(entity => {
 			if (entity instanceof Item) {
-				return entity.path !== rootState.route.params.path
+				return entity.path !== router.currentRoute.value.params.path
 			}
 			if (entity instanceof Folder) {
 				// Don't show folders in the same folder
 				// or their parent folder (since we are already in the folder)
-				return entity.path !== rootState.route.params.path
-				&& entity.path !== `${rootState.route.params.path}/${entity.name}`
+				return entity.path !== router.currentRoute.value.params.path
+				&& entity.path !== `${router.currentRoute.value.params.path}/${entity.name}`
 			}
 			return false
 		})
@@ -200,7 +197,7 @@ const mutations = {
 	addItems(state, items = []) {
 		state.items = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, item.key, item)
+				list[item.key] = item
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -217,7 +214,7 @@ const mutations = {
 	setItems(state, items = []) {
 		state.items = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, item.key, item)
+				list[item.key] = item
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -232,7 +229,7 @@ const mutations = {
 	 * @param {Item} item The item to add
 	 */
 	addItem(state, item) {
-		Vue.set(state.items, item.key, item)
+		state.items[item.key] = item
 	},
 
 	/**
@@ -243,7 +240,7 @@ const mutations = {
 	 */
 	deleteItem(state, item) {
 		if (state.items[item.key] && item instanceof Item) {
-			Vue.delete(state.items, item.key)
+			delete state.items[item.key]
 		}
 	},
 
@@ -255,7 +252,7 @@ const mutations = {
 	 */
 	editItem(state, item) {
 		if (state.items[item.id] && item instanceof Item) {
-			Vue.set(state.items, item.key, item)
+			state.items[item.key] = item
 		}
 		if (state.item.id === item.id) {
 			state.item = item
@@ -271,7 +268,7 @@ const mutations = {
 	unlinkParents(state, items) {
 		items.forEach((item) => {
 			if (state.parentItems[item.key] && item instanceof Item) {
-				Vue.delete(state.parentItems, item.key)
+				delete state.parentItems[item.key]
 			}
 		})
 	},
@@ -285,7 +282,7 @@ const mutations = {
 	unlinkRelated(state, items) {
 		items.forEach((item) => {
 			if (state.relatedItems[item.key] && item instanceof Item) {
-				Vue.delete(state.relatedItems, item.key)
+				delete state.relatedItems[item.key]
 			}
 		})
 	},
@@ -299,7 +296,7 @@ const mutations = {
 	unlinkSub(state, items) {
 		items.forEach((item) => {
 			if (state.subItems[item.key] && item instanceof Item) {
-				Vue.delete(state.subItems, item.key)
+				delete state.subItems[item.key]
 			}
 		})
 	},
@@ -399,7 +396,7 @@ const mutations = {
 	},
 
 	setAttachments(state, { attachments }) {
-		Vue.set(state.item, 'attachments', attachments)
+		state.item.attachments = attachments
 	},
 
 	createAttachment(state, { attachment }) {
@@ -412,20 +409,20 @@ const mutations = {
 	updateAttachment(state, { attachment }) {
 		const index = state.item.attachments.findIndex(a => a.id === attachment.id)
 		if (index > -1) {
-			Vue.set(state.item.attachments, index, attachment)
+			state.item.attachments[index] = attachment
 		}
 	},
 
 	deleteAttachment(state, { attachmentId }) {
 		const index = state.item.attachments.findIndex(a => a.id === attachmentId)
 		if (index > -1) {
-			Vue.delete(state.item.attachments, index)
+			state.item.attachments.splice(index, 1)
 		}
 	},
 
 	setInstanceAttachments(state, { instanceID, attachments }) {
 		const instance = state.item.instances.find(instance => instance.id === instanceID)
-		Vue.set(instance, 'attachments', attachments)
+		instance.attachments = attachments
 	},
 
 	createInstanceAttachment(state, { attachment, instanceId }) {
@@ -443,7 +440,7 @@ const mutations = {
 		if (instance) {
 			const index = instance.attachments.findIndex(a => a.id === attachment.id)
 			if (index > -1) {
-				Vue.set(instance.attachments, index, attachment)
+				instance.attachments[index] = attachment
 			}
 		}
 	},
@@ -453,7 +450,7 @@ const mutations = {
 		if (instance) {
 			const index = instance.attachments.findIndex(a => a.id === attachmentId)
 			if (index > -1) {
-				Vue.delete(instance.attachments, index)
+				instance.attachments.splice(index, 1)
 			}
 		}
 	},
@@ -465,7 +462,7 @@ const mutations = {
 	setSubItems(state, items) {
 		state.subItems = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, item.key, item)
+				list[item.key] = item
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -475,7 +472,7 @@ const mutations = {
 	setParentItems(state, items) {
 		state.parentItems = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, item.key, item)
+				list[item.key] = item
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -485,7 +482,7 @@ const mutations = {
 	setRelatedItems(state, items) {
 		state.relatedItems = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, item.key, item)
+				list[item.key] = item
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -529,7 +526,7 @@ const mutations = {
 	 * @param {string} data.status The sync status
 	 */
 	setSyncStatus(state, { item, status }) {
-		Vue.set(item, 'syncStatus', status)
+		item.syncStatus = status
 	},
 }
 
@@ -594,7 +591,7 @@ const actions = {
 				try {
 					item.syncStatus = new SyncStatus('sync', 'Creating the item.')
 					const response = await Axios.post(generateUrl('apps/inventory/item/add'), { item: item.response })
-					Vue.set(item, 'response', response.data)
+					item.response = response.data
 					item.updateItem()
 					item.syncStatus = new SyncStatus('success', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
 					context.commit('addItem', item)
@@ -777,7 +774,7 @@ const actions = {
 	async editItem({ commit }, item) {
 		try {
 			const response = await Axios.patch(generateUrl(`apps/inventory/item/${item.id}/edit`), { item: item.response })
-			Vue.set(item, 'response', response.data)
+			item.response = response.data
 			item.updateItem()
 			commit('editItem', item)
 		} catch {

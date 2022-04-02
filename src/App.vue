@@ -104,7 +104,7 @@ export default {
 	beforeMount() {
 		this.$store.dispatch('loadSettings')
 	},
-	beforeDestroy() {
+	beforeUnmount() {
 		unsubscribe('nextcloud:unified-search.search', this.filter)
 		unsubscribe('nextcloud:unified-search.reset', this.cleanFilter)
 	},
