@@ -30,26 +30,26 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="headline">
 					{{ t('inventory', 'Please select the relation of the items:') }}
 				</span>
-				<NcCheckboxRadioSwitch :checked.sync="relationType"
+				<NcCheckboxRadioSwitch v-model="relationType"
 					value="parent"
 					name="relation_type"
 					type="radio">
 					{{ t('inventory', 'Parent items') }}
 				</NcCheckboxRadioSwitch>
-				<NcCheckboxRadioSwitch :checked.sync="relationType"
+				<NcCheckboxRadioSwitch v-model="relationType"
 					value="related"
 					name="relation_type"
 					type="radio">
 					{{ t('inventory', 'Related items') }}
 				</NcCheckboxRadioSwitch>
-				<NcCheckboxRadioSwitch :checked.sync="relationType"
+				<NcCheckboxRadioSwitch v-model="relationType"
 					value="sub"
 					name="relation_type"
 					type="radio">
 					{{ t('inventory', 'Sub items') }}
 				</NcCheckboxRadioSwitch>
 
-				<NcTextField :value.sync="searchString"
+				<NcTextField v-model="searchString"
 					:label="t('inventory', 'Filter items')"
 					trailing-button-icon="close"
 					:show-trailing-button="searchString !== ''"

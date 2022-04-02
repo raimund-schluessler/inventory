@@ -28,11 +28,6 @@ import { encodePath } from '../utils/encodePath.js'
 import Axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 
-import Vue from 'vue'
-import Vuex from 'vuex'
-
-Vue.use(Vuex)
-
 const state = {
 	places: {},
 	place: null,
@@ -113,7 +108,7 @@ const mutations = {
 		// Find index of place to update
 		const index = state.places.findIndex(f => f.id === place.id)
 		// Replace place with new data
-		Vue.delete(state.places, index)
+		delete state.places[index]
 	},
 
 	/**
@@ -127,7 +122,7 @@ const mutations = {
 		// Find index of place to update
 		const index = state.places.findIndex(place => place.id === newPlace.id)
 		// Replace place with new data
-		Vue.set(state.places, index, newPlace)
+		state.places[index] = newPlace
 	},
 
 	/**
@@ -140,8 +135,8 @@ const mutations = {
 	 * @param {object} data.newPath The new path
 	 */
 	renamePlace(state, { place, newName, newPath }) {
-		Vue.set(place, 'name', newName)
-		Vue.set(place, 'path', newPath)
+		place.name = newName
+		place.path = newPath
 	},
 
 	/**
@@ -153,7 +148,7 @@ const mutations = {
 	 * @param {object} data.description The new description
 	 */
 	setPlaceDescription(state, { place, description }) {
-		Vue.set(place, 'description', description)
+		place.description = description
 	},
 
 	/**
@@ -252,9 +247,6 @@ const actions = {
 
 	async renamePlace(context, { place, newName }) {
 		try {
-			const forward1 = (context.rootState.route.params.path === place.path)
-			const forward2 = (context.rootState.route.params.folder === place.path)
-
 			const response = await Axios.patch(generateUrl(`apps/inventory/places/${place.id}/rename`), { newName })
 			const newPlace = new Place(response.data)
 			// If the place is loaded, rename it
@@ -264,14 +256,11 @@ const actions = {
 			context.commit('updatePlace', { newPlace })
 
 			// If the place is currently open, we have to update the current route
-			if (context.rootState.route.name === 'placesDetails') {
-				if (forward1) {
-					router.push(`/places/${encodePath(newPlace.path)}/&details`)
-				} else if (forward2) {
-					router.push(`/places/${encodePath(context.rootState.route.params.path)}/&details/${encodePath(newPlace.path)}`)
-				}
+			if (router.currentRoute.value.name === 'placeDetails') {
+				router.push(`/places/${encodePath(newPlace.path)}/&details`)
+			} else if (['placeChildDetails', 'placeRootDetails'].includes(router.currentRoute.value.name)) {
+				router.push(`/places/${encodePath(newPlace.path.replace(newPlace.name, ''))}&details/${encodePath(newPlace.path)}`)
 			}
-
 		} catch {
 			console.debug('Could not rename the place.')
 		}

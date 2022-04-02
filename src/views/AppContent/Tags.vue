@@ -27,7 +27,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 				label="name"
 				:multiple="true"
 				:loading="loading"
-				@input="navigate" />
+				@update:model-value="navigate" />
 		</div>
 		<EntityTable v-if="selectedTags.length" :items="items" />
 		<NcEmptyContent v-else :name="loading ? t('inventory', 'Loading available tags.') : t('inventory', 'Please select a tag to search for.')">
@@ -95,7 +95,7 @@ export default {
 		this.setTagIds(this.path)
 		this.loadItems()
 	},
-	beforeDestroy() {
+	beforeUnmount() {
 		// Abort possibly running requests
 		this.abortController?.abort()
 		this.abortControllerTags?.abort()

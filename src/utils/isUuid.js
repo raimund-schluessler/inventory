@@ -3,7 +3,7 @@
  *
  * @author Raimund Schlüßler
  *
- * @copyright 2017 Raimund Schlüßler <raimund.schluessler@mailbox.org>
+ * @copyright 2023 Raimund Schlüßler <raimund.schluessler@mailbox.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -19,24 +19,15 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-'use strict'
 
-import App from './App.vue'
-import router from './router.js'
-import store from './store/store.js'
-
-import { createApp } from 'vue'
-
-if (!OCA.Inventory) {
-	/**
-	 * @namespace OCA.Inventory
-	 */
-	OCA.Inventory = {}
+/**
+ * Checks wether the given string is a valid UUID
+ *
+ * @param {string} uuid The UUID
+ * @return {boolean} Whether the string is a UUID
+ */
+const isUuid = (uuid) => {
+	return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(uuid)
 }
 
-const Inventory = createApp(App)
-	.use(router)
-	.use(store)
-	.mount('.app-inventory')
-
-OCA.Inventory.App = Inventory
+export default isUuid

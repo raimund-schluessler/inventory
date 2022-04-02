@@ -24,7 +24,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="entitytable" @dragover="dragOverTable">
 			<div :class="{ 'row--has-status': oneEntityHasStatus }" class="row row--header">
 				<div class="column column--selection">
-					<NcCheckboxRadioSwitch v-bind="selectAllBind" @update:checked="selectEntities" />
+					<NcCheckboxRadioSwitch v-bind="selectAllBind" @update:model-value="selectEntities" />
 				</div>
 				<div class="column column--name">
 					<NcButton alignment="center-reverse"
@@ -104,12 +104,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				draggable="true"
 				class="entity"
 				@select-entity="selectEntity"
-				@dragstart.native="dragStart(item, $event)"
-				@dragend.native="dragEnd"
-				@drop.native="dropped(item, $event)"
-				@dragover.native="dragOver"
-				@dragenter.native="($event) => dragEnter(item, $event)"
-				@dragleave.native="dragLeave" />
+				@dragstart="dragStart(item, $event)"
+				@dragend="dragEnd"
+				@drop="dropped(item, $event)"
+				@dragover="dragOver"
+				@dragenter="($event) => dragEnter(item, $event)"
+				@dragleave="dragLeave" />
 			<EntityTableRowPlaceholder :placeholder="placeholder('lower')" />
 			<div v-if="searchString && !filterOnly" class="row row--search">
 				<div class="column" :class="{'column__left': !searching}">
@@ -255,7 +255,7 @@ export default {
 				: this.t('inventory', 'Unselect all')
 			return {
 				'aria-label': label,
-				checked: this.allEntitiesSelected,
+				'model-value': this.allEntitiesSelected,
 				indeterminate: this.someEntitiesSelected,
 				'data-testid': 'select-all-checkbox',
 				title: label,
@@ -726,8 +726,10 @@ export default {
 		height: 44px;
 		transition: background-color .3s ease;
 		border-bottom: 1px solid var(--color-border-dark);
+		padding-left: 8px;
 		@media only screen and (max-width: 500px) {
 			grid-template-columns: 44px 2fr 1fr 3fr;
+			padding-left: 0;
 
 			&--has-status {
 				grid-template-columns: 44px 2fr 1fr 3fr 44px;

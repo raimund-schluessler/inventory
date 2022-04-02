@@ -104,7 +104,7 @@ export default {
 	beforeMount() {
 		this.$store.dispatch('loadSettings')
 	},
-	beforeDestroy() {
+	beforeUnmount() {
 		unsubscribe('nextcloud:unified-search.search', this.filter)
 		unsubscribe('nextcloud:unified-search.reset', this.cleanFilter)
 	},
@@ -139,7 +139,7 @@ body {
 	}
 }
 // Adjust app-navigation-toggle position
-#app-navigation-vue .app-navigation-toggle {
+.app-navigation-toggle-wrapper {
 	@media only screen and (max-width: 500px) {
 		right: 0 !important;
 		top: 0 !important;
@@ -147,9 +147,9 @@ body {
 }
 #controls {
 	display: flex;
-	padding-left: 48px;
-	padding-top: 4px;
-	height: 48px;
+	padding-left: 52px;
+	padding-top: 8px;
+	height: 52px;
 	position: sticky;
 	top: 0;
 	background-color: var(--color-main-background-translucent);
@@ -162,6 +162,7 @@ body {
 	}
 
 	.breadcrumb {
+		height: 44px;
 		width: calc(100% - 44px);
 	}
 }
