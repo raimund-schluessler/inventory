@@ -39,17 +39,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</Actions>
 				</div>
 			</div>
-			<template v-for="instance in item.instances">
+			<template v-for="instance in item.instances" :key="`instance-${instance.id}`">
 				<div v-if="editedInstance.id !== instance.id"
 					:key="`instance-${instance.id}`"
 					class="row row--properties"
 					:class="{active: instanceActive(instance)}">
 					<div class="column column--narrow-header column--narrow-spacer" />
-					<template v-for="instanceProperty in instanceProperties">
-						<div :key="`narrow-header-${instanceProperty.key}`" class="column column--narrow-header">
+					<template v-for="instanceProperty in instanceProperties" :key="`column-${instanceProperty.key}`">
+						<div class="column column--narrow-header">
 							<span>{{ instanceProperty.name }}</span>
 						</div>
-						<div :key="`body-${instanceProperty.key}`" class="column">
+						<div class="column">
 							<router-link v-if="instanceProperty.key === 'place' && instance.place" :to="`/places/${instance.place.path}`">
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</router-link>
@@ -86,11 +86,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					v-click-outside="() => { hideEditInstance(instance) }"
 					class="row row--properties">
 					<div class="column column--narrow-header column--narrow-spacer" />
-					<template v-for="instanceProperty in instanceProperties">
-						<div :key="`narrow-edit-header-${instanceProperty.key}`" class="column column--narrow-header">
+					<template v-for="instanceProperty in instanceProperties" :key="`narrow-edit-header-${instanceProperty.key}`">
+						<div class="column column--narrow-header">
 							<span>{{ instanceProperty.name }}</span>
 						</div>
-						<div :key="`edit-body-${instanceProperty.key}`" class="column column--input">
+						<div class="column column--input">
 							<div v-if="instanceProperty.key === 'place'">
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</div>
@@ -123,7 +123,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								v-focus
 								:placeholder="t('inventory', 'Add UUID')"
 								type="text"
-								@keyup.27="addUuidTo = null">
+								@keyup.escape="addUuidTo = null">
 						</form>
 					</div>
 					<div>
@@ -174,7 +174,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</ul>
 					</div>
 				</div>
-				<div :key="`attachments${instance.id}`" class="row row--column-2">
+				<div class="row row--column-2">
 					<div class="column column--center">
 						{{ t('inventory', 'Attachments') }}
 					</div>
@@ -192,11 +192,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<div v-if="addingInstance" v-click-outside="hideInstanceInput" class="row row--properties">
 				<div class="column column--narrow-header column--narrow-spacer" />
-				<template v-for="instanceProperty in instanceProperties">
-					<div :key="instanceProperty.key" class="column column--narrow-header">
+				<template v-for="instanceProperty in instanceProperties" :key="instanceProperty.key">
+					<div class="column column--narrow-header">
 						<span>{{ instanceProperty.name }}</span>
 					</div>
-					<div :key="instanceProperty.key" class="column column--input">
+					<div class="column column--input">
 						<input v-model="newInstance[instanceProperty.key]"
 							type="text"
 							:placeholder="instanceProperty.name"
@@ -216,7 +216,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="new_instance" method="POST" />
 		<form id="edit_instance" method="POST" />
 		<!-- qrcode -->
-		<QrScanModal :qr-modal-open.sync="qrModalOpen" @recognized-qr-code="foundUuid" />
+		<QrScanModal v-model:qr-modal-open="qrModalOpen" @recognized-qr-code="foundUuid" />
 	</div>
 </template>
 

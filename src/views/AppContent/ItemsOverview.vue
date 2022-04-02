@@ -35,8 +35,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</template>
 				</Breadcrumb>
 			</Breadcrumbs>
-			<Actions :boundaries-element="boundaries"
-				:open.sync="actionsOpen"
+			<Actions v-model:open="actionsOpen"
+				:boundaries-element="boundaries"
 				@close="addingCollection = false">
 				<ActionButton :close-after-click="true" @click="openQrModal('search')">
 					<template #icon>
@@ -95,16 +95,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			:collection-type="collection"
 			:search-string="$root.searchString" />
 		<!-- qrcode -->
-		<QrScanModal :qr-modal-open.sync="qrModalOpen" :status-string="statusMessage" @recognized-qr-code="foundUuid" />
+		<QrScanModal v-model:qr-modal-open="qrModalOpen" :status-string="statusMessage" @recognized-qr-code="foundUuid" />
 	</div>
 </template>
 
 <script>
-import Item from '../../models/item'
-import Place from '../../models/place'
-import EntityTable from '../../components/EntityTable/EntityTable'
-import QrScanModal from '../../components/QrScanModal'
-import { encodePath } from '../../utils/encodePath'
+import Item from '../../models/item.js'
+import Place from '../../models/place.js'
+import EntityTable from '../../components/EntityTable/EntityTable.vue'
+import QrScanModal from '../../components/QrScanModal.vue'
+import { encodePath } from '../../utils/encodePath.js'
 
 import { translate as t } from '@nextcloud/l10n'
 import Actions from '@nextcloud/vue/dist/Components/Actions'

@@ -31,10 +31,6 @@ import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 
 import PQueue from 'p-queue'
-import Vue from 'vue'
-import Vuex from 'vuex'
-
-Vue.use(Vuex)
 
 const state = {
 	items: {},
@@ -191,7 +187,7 @@ const mutations = {
 	addItems(state, items = []) {
 		state.items = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, item.key, item)
+				list[item.key] = item
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -208,7 +204,7 @@ const mutations = {
 	setItems(state, items = []) {
 		state.items = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, item.key, item)
+				list[item.key] = item
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -223,7 +219,7 @@ const mutations = {
 	 * @param {Item} item The item to add
 	 */
 	addItem(state, item) {
-		Vue.set(state.items, item.key, item)
+		state.items[item.key] = item
 	},
 
 	/**
@@ -246,7 +242,7 @@ const mutations = {
 	 */
 	editItem(state, item) {
 		if (state.items[item.id] && item instanceof Item) {
-			Vue.set(state.items, item.key, item)
+			state.items[item.key] = item
 		}
 		if (state.item.id === item.id) {
 			state.item = item
@@ -366,7 +362,7 @@ const mutations = {
 	},
 
 	setAttachments(state, { attachments }) {
-		Vue.set(state.item, 'attachments', attachments)
+		state.item.attachments = attachments
 	},
 
 	createAttachment(state, { attachment }) {
@@ -379,7 +375,7 @@ const mutations = {
 	updateAttachment(state, { attachment }) {
 		const index = state.item.attachments.findIndex(a => a.id === attachment.id)
 		if (index > -1) {
-			Vue.set(state.item.attachments, index, attachment)
+			state.item.attachments[index] = attachment
 		}
 	},
 
@@ -392,7 +388,7 @@ const mutations = {
 
 	setInstanceAttachments(state, { instanceID, attachments }) {
 		const instance = state.item.instances.find(instance => instance.id === instanceID)
-		Vue.set(instance, 'attachments', attachments)
+		instance.attachments = attachments
 	},
 
 	createInstanceAttachment(state, { attachment, instanceId }) {
@@ -410,7 +406,7 @@ const mutations = {
 		if (instance) {
 			const index = instance.attachments.findIndex(a => a.id === attachment.id)
 			if (index > -1) {
-				Vue.set(instance.attachments, index, attachment)
+				instance.attachments[index] = attachment
 			}
 		}
 	},
@@ -432,7 +428,7 @@ const mutations = {
 	setSubItems(state, items) {
 		state.subItems = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, item.key, item)
+				list[item.key] = item
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -442,7 +438,7 @@ const mutations = {
 	setParentItems(state, items) {
 		state.parentItems = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, item.key, item)
+				list[item.key] = item
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -452,7 +448,7 @@ const mutations = {
 	setRelatedItems(state, items) {
 		state.relatedItems = items.reduce(function(list, item) {
 			if (item instanceof Item) {
-				Vue.set(list, item.key, item)
+				list[item.key] = item
 			} else {
 				console.error('Wrong item object', item)
 			}
@@ -486,7 +482,7 @@ const mutations = {
 	 * @param {string} data.status The sync status
 	 */
 	setSyncStatus(state, { item, status }) {
-		Vue.set(item, 'syncStatus', status)
+		item.syncStatus = status
 	},
 }
 
@@ -530,7 +526,7 @@ const actions = {
 			await queue.add(async () => {
 				try {
 					const response = await Axios.post(generateUrl('apps/inventory/item/add'), { item: item.response })
-					Vue.set(item, 'response', response.data)
+					item.response = response.data
 					item.updateItem()
 					item.syncStatus = new SyncStatus('success', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
 					context.commit('addItem', item)
@@ -711,7 +707,7 @@ const actions = {
 	async editItem({ commit }, item) {
 		try {
 			const response = await Axios.patch(generateUrl(`apps/inventory/item/${item.id}/edit`), { item: item.response })
-			Vue.set(item, 'response', response.data)
+			item.response = response.data
 			item.updateItem()
 			commit('editItem', item)
 		} catch {

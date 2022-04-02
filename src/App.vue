@@ -47,7 +47,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import AppNavigationSettings from './components/AppNavigation/AppNavigationSettings'
+import AppNavigationSettings from './components/AppNavigation/AppNavigationSettings.vue'
 
 import { subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { translate as t } from '@nextcloud/l10n'
@@ -103,7 +103,7 @@ export default {
 	beforeMount() {
 		this.$store.dispatch('loadSettings')
 	},
-	beforeDestroy() {
+	beforeUnmount() {
 		unsubscribe('nextcloud:unified-search.search', this.filter)
 		unsubscribe('nextcloud:unified-search.reset', this.cleanFilter)
 	},

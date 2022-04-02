@@ -33,7 +33,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 			<textarea ref="description__editor"
 				v-model="place.description"
 				v-click-outside="() => { editDescription(false) }"
-				@keyup.27="editDescription(false)"
+				@keyup.escape="editDescription(false)"
 				@keydown.enter.ctrl.prevent="setDescription()"
 				@change="setDescription()"
 				@click="editDescription(true)" />
@@ -70,7 +70,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 		</template>
 		<template v-if="place && !loading" #default>
 			<!-- qrcode -->
-			<QrScanModal :qr-modal-open.sync="qrModalOpen" :status-string="statusMessage" @recognized-qr-code="foundUuid" />
+			<QrScanModal v-model:qr-modal-open="qrModalOpen" :status-string="statusMessage" @recognized-qr-code="foundUuid" />
 			<Modal v-if="showBarcode"
 				id="qrcode-modal"
 				size="small"
@@ -90,7 +90,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 						v-focus
 						:placeholder="t('inventory', 'Add UUID')"
 						type="text"
-						@keyup.27="addUuid = false">
+						@keyup.escape="addUuid = false">
 				</form>
 				<Actions>
 					<ActionButton v-if="newUuidValid"
@@ -154,11 +154,11 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import Loading from '../components/Loading'
-import QrScanModal from '../components/QrScanModal'
-import focus from '../directives/focus'
-import showBarcode from '../mixins/showBarcode'
-import { encodePath } from '../utils/encodePath'
+import Loading from '../components/Loading.vue'
+import QrScanModal from '../components/QrScanModal.vue'
+import focus from '../directives/focus.vue'
+import showBarcode from '../mixins/showBarcode.js'
+import { encodePath } from '../utils/encodePath.js'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
@@ -383,11 +383,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .app-sidebar-tabs {
+:deep(.app-sidebar-tabs) {
 	padding: 0 6px 0 10px;
 }
 
-::v-deep .app-sidebar-header__description {
+:deep(.app-sidebar-header__description) {
 	position: relative;
 }
 

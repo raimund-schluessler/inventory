@@ -52,7 +52,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<input id="modalSearchbox"
 							v-model="searchString"
 							name="query"
-							value=""
 							required=""
 							autocomplete="off"
 							type="search">

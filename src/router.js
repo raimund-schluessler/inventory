@@ -26,8 +26,7 @@ import ItemsOverview from './views/AppContent/ItemsOverview'
 import Tags from './views/AppContent/Tags'
 import AppSidebar from './views/AppSidebar'
 
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { createWebHashHistory, createRouter } from 'vue-router'
 
 const routes = [
 	// using
@@ -93,9 +92,10 @@ const routes = [
 	{ path: '/tags', component: Tags },
 ]
 
-Vue.use(VueRouter)
-
-export default new VueRouter({
+const router = createRouter({
 	linkActiveClass: 'active',
+	history: createWebHashHistory(),
 	routes,
 })
+
+export default router

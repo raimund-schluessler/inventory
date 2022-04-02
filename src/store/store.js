@@ -26,12 +26,9 @@ import folders from './folders'
 import places from './places'
 import settings from './settings'
 
-import Vue from 'vue'
-import Vuex, { Store } from 'vuex'
+import { createStore } from 'vuex'
 
-Vue.use(Vuex)
-
-export default new Store({
+export default createStore({
 	modules: {
 		items,
 		folders,

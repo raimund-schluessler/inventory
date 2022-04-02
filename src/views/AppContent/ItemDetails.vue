@@ -204,7 +204,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 			</div>
-			<RelationModal :modal-open.sync="modalOpen" :link="link" :item-id="id" />
+			<RelationModal v-model:modal-open="modalOpen" :link="link" :item-id="id" />
 		</div>
 		<form id="edit_item" method="POST" />
 		<Modal v-if="showBarcode"
