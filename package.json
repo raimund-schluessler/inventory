@@ -36,6 +36,7 @@
 		"@nextcloud/router": "2.0.0",
 		"@nextcloud/vue": "5.2.1",
 		"@vue/test-utils": "1.3.0",
+		"@vue/vue2-jest": "^27.0.0-alpha.4",
 		"bwip-js": "3.0.4",
 		"jspdf": "2.5.1",
 		"p-queue": "6.6.2",
@@ -63,8 +64,7 @@
 		"jest": "27.5.1",
 		"jest-environment-jsdom": "27.5.1",
 		"jest-serializer-vue": "2.0.2",
-		"regenerator-runtime": "0.13.9",
-		"vue-jest": "3.0.7"
+		"regenerator-runtime": "0.13.9"
 	},
 	"engines": {
 		"node": ">=15.0.0",
@@ -89,7 +89,7 @@
 		"testEnvironment": "jsdom",
 		"transform": {
 			"^.+\\.js$": "<rootDir>/node_modules/babel-jest",
-			".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
+			".*\\.(vue)$": "<rootDir>/node_modules/@vue/vue2-jest"
 		},
 		"transformIgnorePatterns": [
 			"/node_modules/(?!(.*vue-material-design-icons))"
