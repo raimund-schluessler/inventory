@@ -25,7 +25,6 @@ import App from './App'
 import router from './router'
 import store from './store/store'
 
-import { subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { linkTo } from '@nextcloud/router'
 
 import Vue from 'vue'
@@ -58,38 +57,11 @@ if (!OCA.Inventory) {
 Vue.prototype.$OC = OC
 Vue.prototype.$OCA = OCA
 
-OCA.Inventory.App = new Vue({
+const Inventory = new Vue({
 	el: '.app-inventory',
 	router,
 	store,
-	data() {
-		return {
-			searchString: '',
-		}
-	},
-	mounted() {
-		// Hook to new global event for unified search
-		subscribe('nextcloud:unified-search.search', this.filter)
-		subscribe('nextcloud:unified-search.reset', this.cleanFilter)
-	},
-	beforeMount() {
-		this.$store.dispatch('loadSettings')
-	},
-	beforeDestroy() {
-		unsubscribe('nextcloud:unified-search.search', this.filter)
-		unsubscribe('nextcloud:unified-search.reset', this.cleanFilter)
-	},
-	methods: {
-		filter({ query }) {
-			this.searchString = query
-			if (!query) {
-				this.$store.commit('setSearchResults', [])
-			}
-		},
-		cleanFilter() {
-			this.searchString = ''
-			this.$store.commit('setSearchResults', [])
-		},
-	},
 	render: h => h(App),
 })
+
+OCA.Inventory.App = Inventory

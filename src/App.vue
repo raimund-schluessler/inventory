@@ -49,6 +49,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import AppNavigationSettings from './components/AppNavigation/AppNavigationSettings'
 
+import { subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { translate as t } from '@nextcloud/l10n'
 import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
@@ -74,6 +75,7 @@ export default {
 	data() {
 		return {
 			active: 'folders',
+			searchString: '',
 			views: [
 				{
 					name: t('inventory', 'Folders'),
@@ -92,6 +94,30 @@ export default {
 				},
 			],
 		}
+	},
+	mounted() {
+		// Hook to new global event for unified search
+		subscribe('nextcloud:unified-search.search', this.filter)
+		subscribe('nextcloud:unified-search.reset', this.cleanFilter)
+	},
+	beforeMount() {
+		this.$store.dispatch('loadSettings')
+	},
+	beforeDestroy() {
+		unsubscribe('nextcloud:unified-search.search', this.filter)
+		unsubscribe('nextcloud:unified-search.reset', this.cleanFilter)
+	},
+	methods: {
+		filter({ query }) {
+			this.searchString = query
+			if (!query) {
+				this.$store.commit('setSearchResults', [])
+			}
+		},
+		cleanFilter() {
+			this.searchString = ''
+			this.$store.commit('setSearchResults', [])
+		},
 	},
 }
 </script>
