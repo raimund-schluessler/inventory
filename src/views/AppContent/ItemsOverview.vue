@@ -113,6 +113,7 @@ import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import ActionRouter from '@nextcloud/vue/dist/Components/ActionRouter'
 import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
 import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
+import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
 
 import Folder from 'vue-material-design-icons/Folder'
 import InformationOutline from 'vue-material-design-icons/InformationOutline'
@@ -141,6 +142,9 @@ export default {
 		QrcodeScan,
 		MapMarker,
 		Tag,
+	},
+	directives: {
+		Tooltip,
 	},
 	beforeRouteUpdate(to, from, next) {
 		if (to.params.path !== from.params.path) {

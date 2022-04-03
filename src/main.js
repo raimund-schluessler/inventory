@@ -29,8 +29,6 @@ import { linkTo } from '@nextcloud/router'
 
 import Vue from 'vue'
 import { sync } from 'vuex-router-sync'
-// eslint-disable-next-line import/no-named-as-default
-import VTooltip from 'v-tooltip'
 
 // CSP config for webpack dynamic chunk loading
 // eslint-disable-next-line
@@ -44,8 +42,6 @@ __webpack_nonce__ = btoa(OC.requestToken)
 __webpack_public_path__ = linkTo('inventory', 'js/')
 
 sync(store, router)
-
-Vue.use(VTooltip)
 
 if (!OCA.Inventory) {
 	/**
