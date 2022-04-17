@@ -10,9 +10,9 @@
 	"private": true,
 	"homepage": "https://github.com/raimund-schluessler/inventory",
 	"scripts": {
-		"build": "NODE_ENV=production webpack --progress",
-		"dev": "NODE_ENV=development webpack",
-		"watch": "NODE_ENV=development webpack --progress --watch",
+		"build": "webpack --node-env production --progress",
+		"dev": "webpack --node-env development --progress",
+		"watch": "webpack --node-env development --progress --watch",
 		"lint": "eslint --ext .js,.vue src tests",
 		"lint:fix": "eslint --ext .js,.vue src tests --fix",
 		"stylelint": "stylelint 'css/**/*.scss'",
