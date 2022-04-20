@@ -38,8 +38,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								<span class="basename">{{ attachment.extendedData.info.filename }}</span>
 								<span class="extension">{{ '.' + attachment.extendedData.info.extension }}</span>
 							</div>
-							<span class="filesize">{{ attachment.extendedData.filesize | bytes }}</span>
-							<span class="filedate">{{ attachment.lastModified | relativeDateFilter }}</span>
+							<span class="filesize">{{ bytes(attachment.extendedData.filesize) }}</span>
+							<span class="filedate">{{ relativeDate(attachment.lastModified) }}</span>
 							<span class="filedate">{{ t('inventory', 'by') + ' ' + attachment.createdBy }}</span>
 						</a>
 					</div>
@@ -163,20 +163,6 @@ export default {
 		OpenInNew,
 		Upload,
 	},
-	filters: {
-		bytes(bytes) {
-			if (isNaN(parseFloat(bytes, 10)) || !isFinite(bytes)) {
-				return '-'
-			}
-			const precision = 2
-			const units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB']
-			const number = Math.floor(Math.log(bytes) / Math.log(1024))
-			return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number]
-		},
-		relativeDateFilter(timestamp) {
-			return moment.unix(timestamp).fromNow()
-		},
-	},
 	props: {
 		attachments: {
 			type: Array,
@@ -218,6 +204,19 @@ export default {
 		 */
 		canUnlink(attachment) {
 			return attachment.basename.startsWith('/')
+		},
+
+		bytes(bytes) {
+			if (isNaN(parseFloat(bytes, 10)) || !isFinite(bytes)) {
+				return '-'
+			}
+			const precision = 2
+			const units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB']
+			const number = Math.floor(Math.log(bytes) / Math.log(1024))
+			return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number]
+		},
+		relativeDate(timestamp) {
+			return moment.unix(timestamp).fromNow()
 		},
 
 		async unlinkAttachment(attachment) {
