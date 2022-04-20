@@ -88,9 +88,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import ItemStatusDisplay from './../ItemStatusDisplay'
-import Item from '../../models/item'
-import { encodePath } from '../../utils/encodePath'
+import ItemStatusDisplay from './../ItemStatusDisplay.vue'
+import Item from '../../models/item.js'
+import { encodePath } from '../../utils/encodePath.js'
 
 import { translate as t } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'

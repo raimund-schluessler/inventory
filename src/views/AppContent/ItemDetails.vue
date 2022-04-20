@@ -223,13 +223,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import EntityTable from '../../components/EntityTable/EntityTable'
-import Attachments from '../../components/Attachments'
-import RelationModal from '../../components/RelationModal'
-import ItemInstances from '../../components/ItemInstances'
-import focus from '../../directives/focus'
-import showBarcode from '../../mixins/showBarcode'
-import { encodePath } from '../../utils/encodePath'
+import EntityTable from '../../components/EntityTable/EntityTable.vue'
+import Attachments from '../../components/Attachments.vue'
+import RelationModal from '../../components/RelationModal.vue'
+import ItemInstances from '../../components/ItemInstances.vue'
+import focus from '../../directives/focus.vue'
+import showBarcode from '../../mixins/showBarcode.js'
+import { encodePath } from '../../utils/encodePath.js'
 
 import { showError } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'

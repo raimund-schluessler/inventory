@@ -92,7 +92,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import EntityTable from './EntityTable/EntityTable'
+import EntityTable from './EntityTable/EntityTable.vue'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import Modal from '@nextcloud/vue/dist/Components/Modal'

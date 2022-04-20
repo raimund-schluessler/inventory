@@ -21,9 +21,9 @@
  */
 'use strict'
 
-import Place from '../models/place'
-import router from '../router'
-import { encodePath } from '../utils/encodePath'
+import Place from '../models/place.js'
+import router from '../router.js'
+import { encodePath } from '../utils/encodePath.js'
 
 import Axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'

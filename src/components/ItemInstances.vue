@@ -221,9 +221,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import focus from '../directives/focus'
-import Attachments from './Attachments'
-import QrScanModal from './QrScanModal'
+import focus from '../directives/focus.vue'
+import Attachments from './Attachments.vue'
+import QrScanModal from './QrScanModal.vue'
 
 import { translate as t } from '@nextcloud/l10n'
 import Actions from '@nextcloud/vue/dist/Components/Actions'
