@@ -190,7 +190,7 @@ export default {
 			return [{ title: t('inventory', 'Items'), path: `/${this.collection}/` }].concat(crumbs.map((crumb, i) => {
 				return {
 					title: crumb,
-					path: `/${this.collection}/${encodePath(crumbs.slice(0, i + 1).join('/'))}`,
+					path: `/${this.collection}/${crumbs.slice(0, i + 1).join('/')}`,
 				}
 			}))
 		},
