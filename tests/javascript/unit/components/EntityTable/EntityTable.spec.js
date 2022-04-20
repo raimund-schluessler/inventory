@@ -1,7 +1,7 @@
 import { mount, shallowMount, RouterLinkStub } from '@vue/test-utils'
 import EntityTable from 'Components/EntityTable/EntityTable.vue'
 
-import { store, localVue } from '../../setupStore'
+import { store, localVue } from '../../setupStore.js'
 
 const items = store.getters.getAllItems
 

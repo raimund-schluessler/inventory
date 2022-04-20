@@ -20,11 +20,11 @@
  *
  */
 
-import ItemsNew from './views/AppContent/ItemsCreator'
-import ItemDetails from './views/AppContent/ItemDetails'
-import ItemsOverview from './views/AppContent/ItemsOverview'
-import Tags from './views/AppContent/Tags'
-import AppSidebar from './views/AppSidebar'
+import ItemsNew from './views/AppContent/ItemsCreator.vue'
+import ItemDetails from './views/AppContent/ItemDetails.vue'
+import ItemsOverview from './views/AppContent/ItemsOverview.vue'
+import Tags from './views/AppContent/Tags.vue'
+import AppSidebar from './views/AppSidebar.vue'
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'

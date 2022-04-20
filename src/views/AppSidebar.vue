@@ -154,11 +154,11 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import Loading from '../components/Loading'
-import QrScanModal from '../components/QrScanModal'
-import focus from '../directives/focus'
-import showBarcode from '../mixins/showBarcode'
-import { encodePath } from '../utils/encodePath'
+import Loading from '../components/Loading.vue'
+import QrScanModal from '../components/QrScanModal.vue'
+import focus from '../directives/focus.vue'
+import showBarcode from '../mixins/showBarcode.js'
+import { encodePath } from '../utils/encodePath.js'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import Actions from '@nextcloud/vue/dist/Components/Actions'

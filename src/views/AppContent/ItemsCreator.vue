@@ -47,8 +47,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import EntityTable from '../../components/EntityTable/EntityTable'
-import Item from '../../models/item'
+import EntityTable from '../../components/EntityTable/EntityTable.vue'
+import Item from '../../models/item.js'
 
 import { translate as t } from '@nextcloud/l10n'
 

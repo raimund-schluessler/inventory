@@ -94,8 +94,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import focus from '../../directives/focus'
-import { encodePath } from '../../utils/encodePath'
+import focus from '../../directives/focus.vue'
+import { encodePath } from '../../utils/encodePath.js'
 
 import { showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
