@@ -252,7 +252,7 @@ import Plus from 'vue-material-design-icons/Plus'
 import Upload from 'vue-material-design-icons/Upload'
 
 import bwipjs from 'bwip-js'
-import ClickOutside from 'vue-click-outside'
+import ClickOutside from 'v-click-outside'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -277,7 +277,7 @@ export default {
 		Tag,
 	},
 	directives: {
-		ClickOutside,
+		ClickOutside: ClickOutside.directive,
 		focus,
 	},
 	mixins: [showBarcode],

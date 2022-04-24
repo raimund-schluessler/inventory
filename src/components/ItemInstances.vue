@@ -236,7 +236,7 @@ import Plus from 'vue-material-design-icons/Plus'
 import Qrcode from 'vue-material-design-icons/Qrcode'
 import QrcodeScan from 'vue-material-design-icons/QrcodeScan'
 
-import ClickOutside from 'vue-click-outside'
+import ClickOutside from 'v-click-outside'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -253,7 +253,7 @@ export default {
 		QrcodeScan,
 	},
 	directives: {
-		ClickOutside,
+		ClickOutside: ClickOutside.directive,
 		focus,
 	},
 	props: {
