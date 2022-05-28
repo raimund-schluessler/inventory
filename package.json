@@ -35,7 +35,7 @@
 		"@nextcloud/moment": "1.2.1",
 		"@nextcloud/router": "2.0.0",
 		"@nextcloud/vue": "5.3.1",
-		"bwip-js": "3.0.4",
+		"bwip-js": "3.0.5",
 		"jspdf": "2.5.1",
 		"p-queue": "6.6.2",
 		"papaparse": "5.3.2",
