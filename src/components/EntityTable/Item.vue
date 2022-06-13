@@ -75,11 +75,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</component>
 		</div>
 		<div class="column column--hide">
-			<ul class="tags">
-				<li v-for="tag in entity.tags" :key="tag.id">
-					<span>{{ tag.name }}</span>
-				</li>
-			</ul>
+			<TagList :tags="entity.tags" />
 		</div>
 		<div v-if="entity.syncStatus" class="column">
 			<ItemStatusDisplay :status="entity.syncStatus" @reset-status="resetStatus(entity)" />
@@ -89,6 +85,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import ItemStatusDisplay from './../ItemStatusDisplay.vue'
+import TagList from './../TagList.vue'
 import Item from '../../models/item.js'
 import { encodePath } from '../../utils/encodePath.js'
 
@@ -100,6 +97,7 @@ import { mapMutations } from 'vuex'
 export default {
 	components: {
 		ItemStatusDisplay,
+		TagList,
 	},
 	props: {
 		entity: {

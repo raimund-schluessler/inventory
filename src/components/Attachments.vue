@@ -339,3 +339,103 @@ export default {
 	},
 }
 </script>
+
+<style lang="scss" scoped>
+.attachments {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+
+	&--empty {
+		flex-wrap: nowrap;
+	}
+
+	&__wrapper {
+		display: inline-block;
+		flex: 1 1 auto;
+
+		>ul {
+			display: grid;
+			grid-gap: 5px;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			grid-auto-flow: dense;
+
+			li.attachment {
+				display: flex;
+				padding: 3px 0;
+				align-items: center;
+
+				&--placeholder {
+					.icon {
+						height: 38px;
+						width: 38px;
+					}
+					.message {
+						padding-left: 10px;
+					}
+				}
+
+				&.deleted {
+					opacity: .5;
+				}
+
+				.fileicon {
+					display: inline-block;
+					min-width: 32px;
+					width: 32px;
+					height: 32px;
+					background-size: contain;
+					margin-bottom: auto;
+				}
+				.details {
+					flex-grow: 1;
+					flex-shrink: 1;
+					min-width: 0;
+					flex-basis: 50%;
+					line-height: 110%;
+					padding: 2px;
+				}
+				.filename {
+					width: 70%;
+					display: flex;
+					white-space: nowrap;
+					.basename {
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						padding-bottom: 2px;
+					}
+					.extension {
+						opacity: .7;
+					}
+				}
+				.filesize,
+				.filedate {
+					font-size: 90%;
+					color: var(--color-text-lighter);
+				}
+			}
+		}
+	}
+	.dragover {
+		width: 100%;
+
+		.drop-hint__text {
+			text-align: center;
+		}
+	}
+}
+
+.modal-attachments {
+	.modal__content {
+		width: 25vw;
+		min-width: 250px;
+		text-align: center;
+		margin: 20px;
+
+		button {
+			margin: 40px 3px 3px 3px;
+		}
+	}
+}
+</style>

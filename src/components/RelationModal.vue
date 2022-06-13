@@ -210,3 +210,119 @@ export default {
 	},
 }
 </script>
+
+<style lang="scss" scoped>
+.relation-modal .modal-container {
+	height: 85% !important;
+	width: 85% !important;
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		background-color: var(--color-main-background);
+		border-radius: 2px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+		transition: all .3s ease;
+		font-family: Helvetica, Arial, sans-serif;
+
+		.header {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			flex-direction: row;
+			background-color: var(--color-primary);
+			padding: 8px;
+
+			.title {
+				line-height: 38px;
+				padding: 0 20px;
+				padding-left: 6px;
+				font-size: 14px;
+				color: white;
+			}
+
+			.multiselect {
+				z-index: 100;
+				background-color: unset;
+				font-size: 14px;
+
+				@media only screen and (max-width: 400px) {
+					width: 100%;
+				}
+
+				.multiselect__tags {
+					align-items: center;
+
+					.multiselect__input {
+						padding: 0 !important;
+					}
+				}
+			}
+
+			.searchbox {
+				margin-left: auto;
+
+				.searchbox-input input[type='search'] {
+					padding-left: 35px;
+					z-index: 99;
+					font-size: 14px;
+
+					&:not(:valid) ~ .close {
+						display: none;
+					}
+
+					& ~ .close {
+						position: absolute;
+						right: 0;top: 0;
+						background-color: unset;
+						border: none;
+						display: inline;
+						z-index: 999;
+					}
+
+					& ~ .search {
+						position: absolute;
+						left: 0;
+						width: 44px;
+						height: 44px;
+						display: inline-block;
+						padding: 10px;
+						box-sizing: border-box;
+					}
+				}
+			}
+		}
+
+		.body {
+			display: flex;
+			flex: 1;
+			overflow-y: auto;
+
+			> div {
+				width: 100%;
+			}
+
+			.row--header {
+				top: 0;
+			}
+		}
+
+		.footer {
+			box-sizing: border-box;
+			height: 56px;
+			padding: 8px;
+
+			.item-adding-status {
+				line-height: 40px;
+				font-size: 13px;
+				padding-left: 20px;
+			}
+
+			.default-button {
+				float: right;
+			}
+		}
+	}
+}
+</style>

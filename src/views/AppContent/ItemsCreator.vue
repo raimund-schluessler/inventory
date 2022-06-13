@@ -20,28 +20,26 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div>
-		<div id="newItemsView">
-			<div class="header">
-				{{ t('inventory', 'Add multiple new items (as comma separated list).') }}
-				<br>
-				{{ t('inventory', 'Expects csv with the fields:') }}
-				<span v-for="field in fields" :key="field">
-					&lt;{{ field }}&gt;;
-				</span>
-			</div>
-			<div>
-				<form id="newItems" @submit.prevent="enlist">
-					<textarea v-model="rawInput" />
-					{{ t('inventory', 'Items:') }}
-					<div>
-						<EntityTable :items="items"
-							:allow-deletion="false"
-							:search-string="$root.searchString" />
-					</div>
-					<input :value="t('inventory', 'Enlist')" type="submit" :disabled="!canEnlist">
-				</form>
-			</div>
+	<div class="items-creator">
+		<div class="items-creator__header">
+			{{ t('inventory', 'Add multiple new items (as comma separated list).') }}
+			<br>
+			{{ t('inventory', 'Expects csv with the fields:') }}
+			<span v-for="field in fields" :key="field">
+				&lt;{{ field }}&gt;;
+			</span>
+		</div>
+		<div>
+			<form class="items-creator__form" @submit.prevent="enlist">
+				<textarea v-model="rawInput" />
+				{{ t('inventory', 'Items:') }}
+				<div>
+					<EntityTable :items="items"
+						:allow-deletion="false"
+						:search-string="$root.searchString" />
+				</div>
+				<input :value="t('inventory', 'Enlist')" type="submit" :disabled="!canEnlist">
+			</form>
 		</div>
 	</div>
 </template>
@@ -74,7 +72,25 @@ export default {
 			rawInput: '',
 			enlisted: false,
 			items: [],
-			fields: ['name', 'maker', 'description', 'item_number', 'link', 'GTIN', 'details', 'comment', 'type', 'place', 'price', 'count', 'available', 'vendor', 'date', 'tags', 'related'],
+			fields: [
+				'name',
+				'maker',
+				'description',
+				'item_number',
+				'link',
+				'GTIN',
+				'details',
+				'comment',
+				'type',
+				'place',
+				'price',
+				'count',
+				'available',
+				'vendor',
+				'date',
+				'tags',
+				'related',
+			],
 		}
 	},
 	computed: {
@@ -154,3 +170,32 @@ export default {
 	},
 }
 </script>
+
+<style lang="scss" scoped>
+.items-creator {
+	padding: 10px;
+	height: 100%;
+
+	&__header {
+		padding-left: 34px;
+	}
+
+	&__form {
+		height: 20%;
+		margin-top: 10px;
+
+		textarea {
+			user-select: text;
+			width: 100%;
+			min-height: 200px;
+			margin: 0;
+			resize: none;
+		}
+
+		input[type='submit'] {
+			float: right;
+			margin: 10px 0;
+		}
+	}
+}
+</style>

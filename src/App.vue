@@ -121,3 +121,37 @@ export default {
 	},
 }
 </script>
+
+<style lang="scss">
+// Hack for https://github.com/nextcloud/nextcloud-vue/issues/1384
+body {
+	min-height: 100%;
+	height: auto;
+}
+
+// Prevent iOS safari from zooming in when focusing input
+@media only screen and (max-width: 800px) {
+	input {
+		font-size: 16px !important;
+	}
+}
+.folder-icon {
+	color: var(--color-primary);
+}
+#controls {
+	padding-left: 44px;
+
+	.breadcrumb {
+		width: calc(100% - 44px);
+	}
+}
+.error input[type='text'] {
+	border: 1px solid red !important;
+}
+.over {
+	background-color: var(--color-primary-light);
+}
+.dragged {
+	opacity: .4;
+}
+</style>

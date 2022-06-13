@@ -72,7 +72,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<span v-else>{{ t('inventory', 'Item not found!') }}</span>
 			</EmptyContent>
 			<div v-else id="itemdetails">
-				<div class="paragraph images"
+				<div class="paragraph paragraph--images"
 					@dragover.prevent="!isDraggingOver && (isDraggingOver = true)"
 					@dragleave.prevent="isDraggingOver && (isDraggingOver = false)"
 					@drop.prevent="handleDropImages">
@@ -82,7 +82,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 				</div>
-				<div class="paragraph properties">
+				<div class="paragraph paragraph--properties">
 					<h3>
 						<span>{{ t('inventory', 'Properties') }}</span>
 					</h3>
@@ -107,11 +107,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 									</span>
 								</div>
 								<div v-else-if="itemProperty.key === 'tags'" class="wrapper">
-									<ul class="tags">
-										<li v-for="tag in item.tags" :key="tag.id">
-											<span>{{ tag.name }}</span>
-										</li>
-									</ul>
+									<TagList :tags="item.tags" />
 								</div>
 								<div v-else class="wrapper">
 									<span :class="{ 'visibility-hidden': editingItem }">{{ item[itemProperty.key] }}</span>
@@ -208,7 +204,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<form id="edit_item" method="POST" />
 		<Modal v-if="showBarcode"
-			id="qrcode-modal"
+			class="qrcode-modal"
 			size="small"
 			@close="closeBarcode">
 			<div>
@@ -227,6 +223,7 @@ import EntityTable from '../../components/EntityTable/EntityTable.vue'
 import Attachments from '../../components/Attachments.vue'
 import RelationModal from '../../components/RelationModal.vue'
 import ItemInstances from '../../components/ItemInstances.vue'
+import TagList from '../../components/TagList.vue'
 import focus from '../../directives/focus.vue'
 import showBarcode from '../../mixins/showBarcode.js'
 import { encodePath } from '../../utils/encodePath.js'
@@ -262,6 +259,7 @@ export default {
 		EntityTable,
 		RelationModal,
 		ItemInstances,
+		TagList,
 		Attachments,
 		Breadcrumbs,
 		Breadcrumb,
@@ -570,3 +568,143 @@ export default {
 	},
 }
 </script>
+
+<style lang="scss" scoped>
+#itemdetails {
+	padding-top: 10px;
+	display: flex;
+	flex-wrap: wrap;
+
+	.table {
+		white-space: unset;
+		width: 100%;
+
+		.row {
+			display: grid;
+			min-height: 44px;
+			border-bottom: 1px solid var(--color-border-dark);
+		}
+
+		.column {
+			display: flex;
+			align-items: center;
+			overflow: hidden;
+			padding: 0 10px;
+
+			&--actions {
+				padding: 0;
+			}
+		}
+
+		&--properties {
+
+			.row {
+				grid-template-columns: 110px 1fr;
+
+				.column {
+					&--width-2 {
+						grid-column-start: 1;
+						grid-column-end: 3;
+					}
+
+					&--attachments {
+						padding-right: 0;
+					}
+
+					.wrapper {
+						width: 100%;
+						display: inline-flex;
+						align-items: center;
+						flex-wrap: wrap;
+
+						span {
+							max-width: 100%;
+
+							a {
+								word-wrap: break-word;
+							}
+						}
+
+						.action-item {
+							margin-right: -10px;
+						}
+					}
+				}
+			}
+
+			.button--save {
+				margin-left: auto;
+			}
+
+			.input {
+				width: 100%;
+
+				input {
+					width: 100%;
+				}
+			}
+		}
+	}
+
+	.item_images {
+		width: 100%;
+		min-width: 200px;
+
+		// Make the item_images square
+		&.default {
+			opacity: .3;
+			background: var(--icon-inventory-inventory-000) no-repeat;
+			background-size: cover;
+			&:after {
+				content: '';
+				display: block;
+				padding-bottom: 100%;
+			}
+		}
+
+		img {
+			width: 100%;
+		}
+	}
+
+	.paragraph {
+		margin-bottom: 40px;
+		width: 100%;
+
+		&--properties {
+			width: 100%;
+			flex-grow: 1;
+		}
+
+		h3 {
+			margin: 0 10px;
+		}
+
+		@media only screen and (min-width: 500px) {
+			> div {
+				padding: 0 10px;
+			}
+
+			&--properties {
+				width: 60%;
+			}
+
+			&--images {
+				width: 40%;
+			}
+		}
+	}
+}
+
+.qrcode-modal .modal-container .qrcode {
+	min-width: 200px;
+	max-width: 100%;
+	width: 400px;
+}
+
+.visibility-hidden {
+	visibility: hidden;
+	display: block;
+	height: 0;
+}
+</style>
