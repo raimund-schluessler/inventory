@@ -834,16 +834,19 @@ export default {
 					height: 44px;
 					width: 44px;
 					margin-left: -4px;
+					color: var(--color-placeholder-dark);
 
-					&__image {
+					&__image,
+					&__placeholder {
 						height: 36px;
 						width: 36px;
 						margin: 4px;
 						background-size: 36px;
 						background-repeat: no-repeat;
 
-						&--default {
-							opacity: .57;
+						svg {
+							height: 36px;
+							width: 36px;
 						}
 					}
 				}

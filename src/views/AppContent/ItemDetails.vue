@@ -76,10 +76,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					@dragover.prevent="!isDraggingOver && (isDraggingOver = true)"
 					@dragleave.prevent="isDraggingOver && (isDraggingOver = false)"
 					@drop.prevent="handleDropImages">
-					<div class="item_images" :class="{default: !item.images.length}">
-						<div>
-							<img v-if="item.images.length > 0" :src="imageSrc">
-						</div>
+					<div class="item_images">
+						<img v-if="item.images.length > 0" :src="imageSrc">
+						<SVGViewer v-else :svg-base64="InventorySVG" />
 					</div>
 				</div>
 				<div class="paragraph paragraph--properties">
@@ -223,10 +222,12 @@ import EntityTable from '../../components/EntityTable/EntityTable.vue'
 import Attachments from '../../components/Attachments.vue'
 import RelationModal from '../../components/RelationModal.vue'
 import ItemInstances from '../../components/ItemInstances.vue'
+import SVGViewer from '../../components/SVGViewer.vue'
 import TagList from '../../components/TagList.vue'
 import focus from '../../directives/focus.vue'
 import showBarcode from '../../mixins/showBarcode.js'
 import { encodePath } from '../../utils/encodePath.js'
+import InventorySVG from '../../assets/inventory.svg'
 
 import { showError } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'
@@ -258,6 +259,7 @@ export default {
 		ActionButton,
 		EntityTable,
 		RelationModal,
+		SVGViewer,
 		ItemInstances,
 		TagList,
 		Attachments,
@@ -306,6 +308,7 @@ export default {
 	},
 	data() {
 		return {
+			InventorySVG,
 			modalOpen: false,
 			selectedParents: [],
 			selectedSub: [],
@@ -396,7 +399,7 @@ export default {
 				const img = this.item.images[0]
 				return generateUrl(`/core/preview?fileId=${img.fileid}&x=${512}&y=${512}&a=true&v=${img.etag}`)
 			}
-			return ''
+			return null
 		},
 	},
 	created() {
@@ -649,20 +652,13 @@ export default {
 	.item_images {
 		width: 100%;
 		min-width: 200px;
+		color: var(--color-placeholder-dark);
 
-		// Make the item_images square
-		&.default {
-			opacity: .3;
-			background: var(--icon-inventory-inventory-000) no-repeat;
-			background-size: cover;
-			&:after {
-				content: '';
-				display: block;
-				padding-bottom: 100%;
-			}
+		img{
+			width: 100%;
 		}
-
-		img {
+		::v-deep svg {
+			height: 100%;
 			width: 100%;
 		}
 	}
