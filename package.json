@@ -15,8 +15,6 @@
 		"watch": "webpack --node-env development --progress --watch",
 		"lint": "eslint --ext .js,.vue src tests",
 		"lint:fix": "eslint --ext .js,.vue src tests --fix",
-		"stylelint": "stylelint 'css/**/*.scss'",
-		"stylelint:fix": "stylelint 'css/**/*.scss' --fix",
 		"test": "jest --verbose"
 	},
 	"repository": {
