@@ -139,7 +139,8 @@ body {
 	color: var(--color-primary);
 }
 #controls {
-	padding-left: 44px;
+	margin-left: 48px;
+	margin-top: 4px;
 
 	.breadcrumb {
 		width: calc(100% - 44px);
