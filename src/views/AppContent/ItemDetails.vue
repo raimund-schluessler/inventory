@@ -694,6 +694,10 @@ export default {
 	min-width: 200px;
 	max-width: 100%;
 	width: 400px;
+	background-color: white;
+	border-radius: var(--border-radius-large);
+	padding: 4px;
+	box-sizing: border-box;
 }
 
 .visibility-hidden {
