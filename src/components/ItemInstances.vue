@@ -436,3 +436,119 @@ export default {
 	},
 }
 </script>
+
+<style lang="scss" scoped>
+.table {
+	white-space: unset;
+	width: 100%;
+
+	.row {
+		display: grid;
+		min-height: 44px;
+		border-bottom: 1px solid var(--color-border-dark);
+	}
+
+	.column {
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+		padding: 0 10px;
+
+		&--actions {
+			padding: 0;
+		}
+	}
+
+	&--instances {
+		.row {
+			grid-template-columns: 75px 75px 90px 110px 2fr 1fr 2fr 44px;
+
+			&--column-2 {
+				grid-template-columns: 100px 1fr;
+			}
+
+			&--add-uuid {
+				grid-template-columns: 1fr 44px;
+			}
+
+			&--empty {
+				grid-template-columns: 1fr;
+			}
+
+			.column {
+				&--uuids,
+				&--attachments {
+					padding-right: 0;
+				}
+
+				&--center {
+					display: flex;
+					justify-content: center;
+				}
+
+				&--narrow-header {
+					display: none;
+				}
+
+				&--uuids ul {
+					width: 100%;
+
+					> li {
+						display: flex;
+						align-items: center;
+
+						.action-item {
+							margin-left: auto;
+						}
+					}
+				}
+
+				&--add-uuid form {
+					width: 100%;
+				}
+
+				input {
+					width: 100%;
+				}
+			}
+		}
+
+		@media only screen and (max-width: 800px) {
+			.row {
+				&--wide-header {
+					grid-template-columns: 1fr;
+
+					.column {
+						&--wide-header {
+							display: none;
+						}
+					}
+				}
+
+				&--properties {
+					grid-template-columns: 100px 1fr;
+					grid-template-rows: repeat(8, 44px);
+
+					.column {
+						&--narrow-header {
+							display: flex;
+						}
+
+						&--narrow-spacer {
+							order: -2;
+						}
+
+						&--actions {
+							order: -1;
+						}
+
+						&--input {
+							padding-right: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+</style>

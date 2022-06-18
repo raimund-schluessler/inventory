@@ -72,7 +72,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 			<!-- qrcode -->
 			<QrScanModal :qr-modal-open.sync="qrModalOpen" :status-string="statusMessage" @recognized-qr-code="foundUuid" />
 			<Modal v-if="showBarcode"
-				id="qrcode-modal"
+				class="qrcode-modal"
 				size="small"
 				@close="closeBarcode">
 				<div>
@@ -421,6 +421,12 @@ textarea {
 			width: 100%;
 		}
 	}
+}
+
+.qrcode-modal .modal-container .qrcode {
+	min-width: 200px;
+	max-width: 100%;
+	width: 400px;
 }
 
 .uuid-item {

@@ -43,7 +43,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				tag="a"
 				@click.ctrl.prevent>
 				<div class="thumbnail">
-					<div :style="{ backgroundImage: `url(${getIconUrl})` }" class="thumbnail__image" :class="{'thumbnail__image--default': !entity.images.length}" />
+					<img v-if="entity.images.length > 0" :src="imageSrc" class="thumbnail__image">
+					<InventoryIcon v-else class="thumbnail__placeholder" />
 				</div>
 				<div class="text" :class="{'text--singleline': showInstance}">
 					<span>{{ entity.name }}</span>
@@ -75,11 +76,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</component>
 		</div>
 		<div class="column column--hide">
-			<ul class="tags">
-				<li v-for="tag in entity.tags" :key="tag.id">
-					<span>{{ tag.name }}</span>
-				</li>
-			</ul>
+			<TagList :tags="entity.tags" />
 		</div>
 		<div v-if="entity.syncStatus" class="column">
 			<ItemStatusDisplay :status="entity.syncStatus" @reset-status="resetStatus(entity)" />
@@ -89,6 +86,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import ItemStatusDisplay from './../ItemStatusDisplay.vue'
+import InventoryIcon from '../InventoryIcon.vue'
+import TagList from './../TagList.vue'
 import Item from '../../models/item.js'
 import { encodePath } from '../../utils/encodePath.js'
 
@@ -100,6 +99,8 @@ import { mapMutations } from 'vuex'
 export default {
 	components: {
 		ItemStatusDisplay,
+		InventoryIcon,
+		TagList,
 	},
 	props: {
 		entity: {
@@ -132,19 +133,12 @@ export default {
 		},
 	},
 	computed: {
-		getIconUrl() {
+		imageSrc() {
 			if (this.entity.images.length > 0) {
 				const img = this.entity.images[0]
 				return generateUrl(`/core/preview?fileId=${img.fileid}&x=${128}&y=${128}&a=false&v=${img.etag}`)
-			} else if (this.entity.iconurl) {
-				return this.entity.iconurl
-			} else {
-				let color = '000'
-				if (OCA.Accessibility) {
-					color = (OCA.Accessibility.theme === 'dark' ? 'fff' : '000')
-				}
-				return generateUrl(`svg/inventory/item_${this.entity.icon}?color=${color}`)
 			}
+			return null
 		},
 		/**
 		 * Returns the link to the item or instance
