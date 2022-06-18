@@ -44,7 +44,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				@click.ctrl.prevent>
 				<div class="thumbnail">
 					<img v-if="entity.images.length > 0" :src="imageSrc" class="thumbnail__image">
-					<SVGViewer v-else class="thumbnail__placeholder" :svg-base64="InventorySVG" />
+					<InventoryIcon v-else class="thumbnail__placeholder" />
 				</div>
 				<div class="text" :class="{'text--singleline': showInstance}">
 					<span>{{ entity.name }}</span>
@@ -86,11 +86,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <script>
 import ItemStatusDisplay from './../ItemStatusDisplay.vue'
-import SVGViewer from '../SVGViewer.vue'
+import InventoryIcon from '../InventoryIcon.vue'
 import TagList from './../TagList.vue'
 import Item from '../../models/item.js'
 import { encodePath } from '../../utils/encodePath.js'
-import InventorySVG from '../../assets/inventory.svg'
 
 import { translate as t } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
@@ -100,7 +99,7 @@ import { mapMutations } from 'vuex'
 export default {
 	components: {
 		ItemStatusDisplay,
-		SVGViewer,
+		InventoryIcon,
 		TagList,
 	},
 	props: {
@@ -132,11 +131,6 @@ export default {
 			type: String,
 			default: 'navigation',
 		},
-	},
-	data() {
-		return {
-			InventorySVG,
-		}
 	},
 	computed: {
 		imageSrc() {

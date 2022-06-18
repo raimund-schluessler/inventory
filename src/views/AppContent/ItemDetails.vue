@@ -78,7 +78,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					@drop.prevent="handleDropImages">
 					<div class="item_images">
 						<img v-if="item.images.length > 0" :src="imageSrc">
-						<SVGViewer v-else :svg-base64="InventorySVG" />
+						<InventoryIcon v-else />
 					</div>
 				</div>
 				<div class="paragraph paragraph--properties">
@@ -222,12 +222,11 @@ import EntityTable from '../../components/EntityTable/EntityTable.vue'
 import Attachments from '../../components/Attachments.vue'
 import RelationModal from '../../components/RelationModal.vue'
 import ItemInstances from '../../components/ItemInstances.vue'
-import SVGViewer from '../../components/SVGViewer.vue'
+import InventoryIcon from '../../components/InventoryIcon.vue'
 import TagList from '../../components/TagList.vue'
 import focus from '../../directives/focus.vue'
 import showBarcode from '../../mixins/showBarcode.js'
 import { encodePath } from '../../utils/encodePath.js'
-import InventorySVG from '../../assets/inventory.svg'
 
 import { showError } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'
@@ -259,7 +258,7 @@ export default {
 		ActionButton,
 		EntityTable,
 		RelationModal,
-		SVGViewer,
+		InventoryIcon,
 		ItemInstances,
 		TagList,
 		Attachments,
@@ -308,7 +307,6 @@ export default {
 	},
 	data() {
 		return {
-			InventorySVG,
 			modalOpen: false,
 			selectedParents: [],
 			selectedSub: [],

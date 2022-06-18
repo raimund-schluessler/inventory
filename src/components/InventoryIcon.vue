@@ -20,29 +20,28 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<!-- eslint-disable-next-line vue/no-v-html -->
-	<div v-html="svg" />
+	<svg width="32px" height="32px" viewBox="0 0 32 32">
+		<g fill="currentColor">
+			<rect x="2"
+				y="2"
+				width="13"
+				height="28" />
+			<rect x="17"
+				y="2"
+				width="13"
+				height="13" />
+			<rect x="24.5"
+				y="17"
+				width="5.5"
+				height="13" />
+			<rect x="17"
+				y="17"
+				width="5.5"
+				height="5.5" />
+			<rect x="17"
+				y="24.5"
+				width="5.5"
+				height="5.5" />
+		</g>
+	</svg>
 </template>
-
-<script>
-import DOMPurify from 'dompurify'
-
-export default {
-	name: 'SVGViewer',
-	props: {
-		svgBase64: {
-			type: String,
-			default: '',
-		},
-	},
-	computed: {
-		svg() {
-			try {
-				return DOMPurify.sanitize(atob(this.svgBase64.split(',')[1]))
-			} catch (e) {
-				return ''
-			}
-		},
-	},
-}
-</script>
