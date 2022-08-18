@@ -29,14 +29,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<span>{{ instanceProperty.name }}</span>
 				</div>
 				<div class="column column--actions">
-					<Actions :boundaries-element="boundaries">
-						<ActionButton @click="toggleInstanceInput">
+					<NcActions :boundaries-element="boundaries">
+						<NcActionButton @click="toggleInstanceInput">
 							<template #icon>
 								<Plus :size="20" />
 							</template>
 							{{ t('inventory', 'Add instance') }}
-						</ActionButton>
-					</Actions>
+						</NcActionButton>
+					</NcActions>
 				</div>
 			</div>
 			<template v-for="instance in item.instances">
@@ -59,26 +59,26 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</template>
 					<div class="column column--actions">
-						<Actions :boundaries-element="boundaries">
-							<ActionButton :close-after-click="true" @click="toggleUuidInput(instance)">
+						<NcActions :boundaries-element="boundaries">
+							<NcActionButton :close-after-click="true" @click="toggleUuidInput(instance)">
 								<template #icon>
 									<Plus :size="20" />
 								</template>
 								{{ t('inventory', 'Add UUID') }}
-							</ActionButton>
-							<ActionButton @click="toggleEditInstance(instance)">
+							</NcActionButton>
+							<NcActionButton @click="toggleEditInstance(instance)">
 								<template #icon>
 									<Pencil :size="20" />
 								</template>
 								{{ t('inventory', 'Edit instance') }}
-							</ActionButton>
-							<ActionButton @click="removeInstance(instance)">
+							</NcActionButton>
+							<NcActionButton @click="removeInstance(instance)">
 								<template #icon>
 									<Delete :size="20" />
 								</template>
 								{{ t('inventory', 'Delete instance') }}
-							</ActionButton>
-						</Actions>
+							</NcActionButton>
+						</NcActions>
 					</div>
 				</div>
 				<div v-else
@@ -103,14 +103,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</template>
 					<div class="column column--actions">
-						<Actions :boundaries-element="boundaries">
-							<ActionButton :close-after-click="true" @click="saveInstance">
+						<NcActions :boundaries-element="boundaries">
+							<NcActionButton :close-after-click="true" @click="saveInstance">
 								<template #icon>
 									<Check :size="20" />
 								</template>
 								{{ t('inventory', 'Save instance') }}
-							</ActionButton>
-						</Actions>
+							</NcActionButton>
+						</NcActions>
 					</div>
 				</div>
 				<div v-if="addUuidTo === instance.id"
@@ -127,16 +127,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</form>
 					</div>
 					<div>
-						<Actions :boundaries-element="boundaries">
-							<ActionButton v-if="newUuidValid(instance.uuids)"
+						<NcActions :boundaries-element="boundaries">
+							<NcActionButton v-if="newUuidValid(instance.uuids)"
 								key="add"
 								@click="setUuid(instance)">
 								<template #icon>
 									<Check :size="20" />
 								</template>
 								{{ t('inventory', 'Add UUID') }}
-							</ActionButton>
-							<ActionButton v-else
+							</NcActionButton>
+							<NcActionButton v-else
 								key="scan"
 								:close-after-click="true"
 								@click="openQrModal">
@@ -144,8 +144,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 									<QrcodeScan :size="20" />
 								</template>
 								{{ t('inventory', 'Scan QR code') }}
-							</ActionButton>
-						</Actions>
+							</NcActionButton>
+						</NcActions>
 					</div>
 				</div>
 				<div v-if="instance.uuids.length" :key="`uuids${instance.id}`" class="row row--column-2">
@@ -156,20 +156,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<ul>
 							<li v-for="uuid in instance.uuids" :key="`uuids${instance.id}${uuid.id}`">
 								<span>{{ uuid.uuid }}</span>
-								<Actions :boundaries-element="boundaries">
-									<ActionButton :close-after-click="true" @click="$emit('open-barcode', uuid.uuid)">
+								<NcActions :boundaries-element="boundaries">
+									<NcActionButton :close-after-click="true" @click="$emit('open-barcode', uuid.uuid)">
 										<template #icon>
 											<Qrcode :size="20" />
 										</template>
 										{{ t('inventory', 'Show QR Code') }}
-									</ActionButton>
-									<ActionButton @click="removeUuid(instance, uuid.uuid)">
+									</NcActionButton>
+									<NcActionButton @click="removeUuid(instance, uuid.uuid)">
 										<template #icon>
 											<Delete :size="20" />
 										</template>
 										{{ t('inventory', 'Delete UUID') }}
-									</ActionButton>
-								</Actions>
+									</NcActionButton>
+								</NcActions>
 							</li>
 						</ul>
 					</div>
@@ -205,11 +205,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</template>
 				<div class="column column--actions">
-					<Actions :boundaries-element="boundaries">
-						<ActionButton icon="icon-checkmark" :close-after-click="true" @click="putInstance">
+					<NcActions :boundaries-element="boundaries">
+						<NcActionButton icon="icon-checkmark" :close-after-click="true" @click="putInstance">
 							{{ t('inventory', 'Add instance') }}
-						</ActionButton>
-					</Actions>
+						</NcActionButton>
+					</NcActions>
 				</div>
 			</div>
 		</div>
@@ -226,8 +226,8 @@ import Attachments from './Attachments.vue'
 import QrScanModal from './QrScanModal.vue'
 
 import { translate as t } from '@nextcloud/l10n'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
 
 import Check from 'vue-material-design-icons/Check'
 import Delete from 'vue-material-design-icons/Delete'
@@ -241,8 +241,8 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
 	components: {
-		Actions,
-		ActionButton,
+		NcActions,
+		NcActionButton,
 		Attachments,
 		QrScanModal,
 		Check,

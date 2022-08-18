@@ -65,16 +65,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 				<div class="column column--actions">
-					<Actions :boundaries-element="boundaries">
-						<ActionButton v-if="allowDeletion && !unlink && selectedItems.length"
+					<NcActions :boundaries-element="boundaries">
+						<NcActionButton v-if="allowDeletion && !unlink && selectedItems.length"
 							:close-after-click="true"
 							@click="removeItems">
 							<template #icon>
 								<Delete :size="20" />
 							</template>
 							{{ n('inventory', 'Delete item', 'Delete items', selectedItems.length) }}
-						</ActionButton>
-						<ActionButton v-if="unlink && selectedItems.length"
+						</NcActionButton>
+						<NcActionButton v-if="unlink && selectedItems.length"
 							icon="icon-close"
 							:close-after-click="true"
 							@click="$emit('unlink')">
@@ -82,8 +82,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								<Close :size="20" />
 							</template>
 							{{ n('inventory', 'Unlink item', 'Unlink items', selectedItems.length) }}
-						</ActionButton>
-					</Actions>
+						</NcActionButton>
+					</NcActions>
 				</div>
 			</div>
 			<EntityTableRowPlaceholder :placeholder="placeholder('upper')" />
@@ -159,8 +159,8 @@ import { sort } from '../../store/storeHelper.js'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
 
 import Close from 'vue-material-design-icons/Close'
 import Delete from 'vue-material-design-icons/Delete'
@@ -172,8 +172,8 @@ export default {
 	components: {
 		ItemComponent,
 		Collection,
-		Actions,
-		ActionButton,
+		NcActions,
+		NcActionButton,
 		EntityTableRowPlaceholder,
 		Close,
 		Delete,

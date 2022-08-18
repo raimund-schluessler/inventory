@@ -20,7 +20,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<AppSidebar :title="(place && !loading) ? place.name : ''"
+	<NcAppSidebar :title="(place && !loading) ? place.name : ''"
 		:title-editable="editingTitle"
 		:title-tooltip="place ? place.path : null"
 		@update:titleEditable="editTitle"
@@ -40,45 +40,45 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 		</template>
 
 		<template v-if="place && !loading" #secondary-actions>
-			<ActionButton :close-after-click="true"
+			<NcActionButton :close-after-click="true"
 				@click="editTitle(true)">
 				<template #icon>
 					<Pencil :size="20" />
 				</template>
 				{{ t('inventory', 'Rename') }}
-			</ActionButton>
-			<ActionButton :close-after-click="true"
+			</NcActionButton>
+			<NcActionButton :close-after-click="true"
 				@click.stop="editDescription(true)">
 				<template #icon>
 					<TextBoxOutline :size="20" />
 				</template>
 				{{ t('inventory', 'Edit description') }}
-			</ActionButton>
-			<ActionButton :close-after-click="true"
+			</NcActionButton>
+			<NcActionButton :close-after-click="true"
 				@click.stop="addUuid = true">
 				<template #icon>
 					<Plus :size="20" />
 				</template>
 				{{ t('inventory', 'Add UUID') }}
-			</ActionButton>
-			<ActionButton :close-after-click="true" @click="openQrModal('move')">
+			</NcActionButton>
+			<NcActionButton :close-after-click="true" @click="openQrModal('move')">
 				<template #icon>
 					<QrcodePlus :size="20" />
 				</template>
 				{{ t('inventory', 'Move items to place') }}
-			</ActionButton>
+			</NcActionButton>
 		</template>
 		<template v-if="place && !loading" #default>
 			<!-- qrcode -->
 			<QrScanModal :qr-modal-open.sync="qrModalOpen" :status-string="statusMessage" @recognized-qr-code="foundUuid" />
-			<Modal v-if="showBarcode"
+			<NcModal v-if="showBarcode"
 				class="qrcode-modal"
 				size="small"
 				@close="closeBarcode">
 				<div>
 					<canvas ref="canvas" class="qrcode" />
 				</div>
-			</Modal>
+			</NcModal>
 			<div v-if="place.uuids.length || addUuid">
 				<h3>{{ t('inventory', 'Linked UUIDs') }}</h3>
 			</div>
@@ -92,16 +92,16 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 						type="text"
 						@keyup.27="addUuid = false">
 				</form>
-				<Actions>
-					<ActionButton v-if="newUuidValid"
+				<NcActions>
+					<NcActionButton v-if="newUuidValid"
 						key="add"
 						@click="setUuid()">
 						<template #icon>
 							<Check :size="20" />
 						</template>
 						{{ t('inventory', 'Add UUID') }}
-					</ActionButton>
-					<ActionButton v-else
+					</NcActionButton>
+					<NcActionButton v-else
 						key="scan"
 						:close-after-click="true"
 						@click="openQrModal('add')">
@@ -109,48 +109,48 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 							<QrcodeScan :size="20" />
 						</template>
 						{{ t('inventory', 'Scan QR code') }}
-					</ActionButton>
-				</Actions>
+					</NcActionButton>
+				</NcActions>
 			</div>
 			<div v-if="place.uuids.length" key="uuids">
 				<div>
 					<ul>
 						<li v-for="uuid in place.uuids" :key="`uuids${uuid.id}`" class="uuid-item">
 							<span>{{ uuid.uuid }}</span>
-							<Actions>
-								<ActionButton :close-after-click="true" @click="openBarcode(uuid.uuid)">
+							<NcActions>
+								<NcActionButton :close-after-click="true" @click="openBarcode(uuid.uuid)">
 									<template #icon>
 										<Qrcode :size="20" />
 									</template>
 									{{ t('inventory', 'Show QR Code') }}
-								</ActionButton>
-								<ActionButton @click="removeUuid(uuid.uuid)">
+								</NcActionButton>
+								<NcActionButton @click="removeUuid(uuid.uuid)">
 									<template #icon>
 										<Delete :size="20" />
 									</template>
 									{{ t('inventory', 'Delete UUID') }}
-								</ActionButton>
-							</Actions>
+								</NcActionButton>
+							</NcActions>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</template>
 		<template v-else #default>
-			<EmptyContent v-if="loading">
+			<NcEmptyContent v-if="loading">
 				<template #icon>
 					<Loading :size="50" />
 				</template>
 				{{ t('inventory', 'Loading the place.') }}
-			</EmptyContent>
-			<EmptyContent v-else>
+			</NcEmptyContent>
+			<NcEmptyContent v-else>
 				<template #icon>
 					<Magnify :size="50" />
 				</template>
 				{{ t('inventory', 'Place not found.') }}
-			</EmptyContent>
+			</NcEmptyContent>
 		</template>
-	</AppSidebar>
+	</NcAppSidebar>
 </template>
 
 <script>
@@ -161,10 +161,10 @@ import showBarcode from '../mixins/showBarcode.js'
 import { encodePath } from '../utils/encodePath.js'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import AppSidebar from '@nextcloud/vue/dist/Components/AppSidebar'
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
+import NcAppSidebar from '@nextcloud/vue/dist/Components/NcAppSidebar'
+import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent'
 
 import Check from 'vue-material-design-icons/Check'
 import Delete from 'vue-material-design-icons/Delete'
@@ -181,12 +181,12 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	components: {
-		Actions,
-		ActionButton,
-		AppSidebar,
+		NcActions,
+		NcActionButton,
+		NcAppSidebar,
 		Check,
 		Delete,
-		EmptyContent,
+		NcEmptyContent,
 		Loading,
 		Magnify,
 		Pencil,

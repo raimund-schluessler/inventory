@@ -20,7 +20,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<Modal v-if="modalOpen"
+	<NcModal v-if="modalOpen"
 		:out-transition="true"
 		size="full"
 		class="relation-modal"
@@ -30,7 +30,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="title">
 					{{ headerString }}
 				</span>
-				<Multiselect :value="relationTypes.find( _ => _.type === relationType )"
+				<NcMultiselect :value="relationTypes.find( _ => _.type === relationType )"
 					:multiple="false"
 					:allow-empty="false"
 					track-by="type"
@@ -88,15 +88,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</button>
 			</div>
 		</div>
-	</Modal>
+	</NcModal>
 </template>
 
 <script>
 import EntityTable from './EntityTable/EntityTable.vue'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
-import Modal from '@nextcloud/vue/dist/Components/Modal'
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
+import NcModal from '@nextcloud/vue/dist/Components/NcModal'
+import NcMultiselect from '@nextcloud/vue/dist/Components/NcMultiselect'
 
 import Magnify from 'vue-material-design-icons/Magnify'
 import Close from 'vue-material-design-icons/Close'
@@ -108,8 +108,8 @@ export default {
 		Close,
 		EntityTable,
 		Magnify,
-		Modal,
-		Multiselect,
+		NcModal,
+		NcMultiselect,
 	},
 	props: {
 		modalOpen: {

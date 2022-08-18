@@ -43,31 +43,31 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<span class="filedate">{{ t('inventory', 'by') + ' ' + attachment.createdBy }}</span>
 						</a>
 					</div>
-					<Actions :boundaries-element="boundaries">
-						<ActionLink :href="fileLink(attachment)"
+					<NcActions :boundaries-element="boundaries">
+						<NcActionLink :href="fileLink(attachment)"
 							target="_blank"
 							:close-after-click="true">
 							<template #icon>
 								<OpenInNew :size="20" />
 							</template>
 							{{ t('inventory', 'Show in files') }}
-						</ActionLink>
-						<ActionButton v-if="canUnlink(attachment)"
+						</NcActionLink>
+						<NcActionButton v-if="canUnlink(attachment)"
 							:close-after-click="true"
 							@click="unlinkAttachment(attachment)">
 							<template #icon>
 								<Close :size="20" />
 							</template>
 							{{ t('inventory', 'Unlink attachment') }}
-						</ActionButton>
-						<ActionButton :close-after-click="true"
+						</NcActionButton>
+						<NcActionButton :close-after-click="true"
 							@click="deleteAttachment(attachment)">
 							<template #icon>
 								<Delete :size="20" />
 							</template>
 							{{ t('inventory', 'Delete attachment') }}
-						</ActionButton>
-					</Actions>
+						</NcActionButton>
+					</NcActions>
 				</li>
 				<li v-if="loadingAttachments" class="attachment attachment--placeholder">
 					<span class="icon icon-loading" />
@@ -78,22 +78,22 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 			</ul>
 		</div>
-		<Actions :boundaries-element="boundaries">
-			<ActionButton :close-after-click="true"
+		<NcActions :boundaries-element="boundaries">
+			<NcActionButton :close-after-click="true"
 				@click="upload">
 				<template #icon>
 					<Upload :size="20" />
 				</template>
 				{{ t('inventory', 'Upload attachment') }}
-			</ActionButton>
-			<ActionButton :close-after-click="true"
+			</NcActionButton>
+			<NcActionButton :close-after-click="true"
 				@click="select">
 				<template #icon>
 					<Folder :size="20" />
 				</template>
 				{{ t('inventory', 'Select attachment') }}
-			</ActionButton>
-		</Actions>
+			</NcActionButton>
+		</NcActions>
 		<input ref="localAttachments"
 			type="file"
 			style="display: none;"
@@ -111,7 +111,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</transition>
 
-		<Modal v-if="modalShow"
+		<NcModal v-if="modalShow"
 			class="modal-attachments"
 			:title="t('inventory', 'File already exists')"
 			@close="modalShow=false">
@@ -130,7 +130,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ t('inventory', 'Keep existing file') }}
 				</button>
 			</div>
-		</Modal>
+		</NcModal>
 	</div>
 </template>
 
@@ -140,10 +140,10 @@ import { formatFileSize } from '@nextcloud/files'
 import { translate as t } from '@nextcloud/l10n'
 import moment from '@nextcloud/moment'
 import { generateUrl } from '@nextcloud/router'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import ActionLink from '@nextcloud/vue/dist/Components/ActionLink'
-import Modal from '@nextcloud/vue/dist/Components/Modal'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
+import NcActionLink from '@nextcloud/vue/dist/Components/NcActionLink'
+import NcModal from '@nextcloud/vue/dist/Components/NcModal'
 
 import Close from 'vue-material-design-icons/Close'
 import Delete from 'vue-material-design-icons/Delete'
@@ -153,10 +153,10 @@ import Upload from 'vue-material-design-icons/Upload'
 
 export default {
 	components: {
-		Actions,
-		ActionButton,
-		ActionLink,
-		Modal,
+		NcActions,
+		NcActionButton,
+		NcActionLink,
+		NcModal,
 		Close,
 		Delete,
 		Folder,

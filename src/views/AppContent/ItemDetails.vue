@@ -23,8 +23,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div>
 			<div id="controls" class="itemnavigation">
-				<Breadcrumbs>
-					<Breadcrumb v-for="(crumb, index) in breadcrumbs"
+				<NcBreadcrumbs>
+					<NcBreadcrumb v-for="(crumb, index) in breadcrumbs"
 						:key="crumb.path"
 						:title="crumb.title"
 						:to="crumb.path">
@@ -33,44 +33,44 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								v-if="index === 0"
 								:size="20" />
 						</template>
-					</Breadcrumb>
-				</Breadcrumbs>
-				<Actions v-if="item && !loadingItem"
+					</NcBreadcrumb>
+				</NcBreadcrumbs>
+				<NcActions v-if="item && !loadingItem"
 					container="#controls"
 					:boundaries-element="boundaries">
-					<ActionButton :close-after-click="true" @click="openModal">
+					<NcActionButton :close-after-click="true" @click="openModal">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
 						{{ t('inventory', 'Link items') }}
-					</ActionButton>
-					<ActionButton :close-after-click="true"
+					</NcActionButton>
+					<NcActionButton :close-after-click="true"
 						@click="upload">
 						<template #icon>
 							<Upload :size="20" />
 						</template>
 						{{ t('inventory', 'Upload image') }}
-					</ActionButton>
-					<ActionButton icon="icon-rename"
+					</NcActionButton>
+					<NcActionButton icon="icon-rename"
 						:close-after-click="true"
 						@click="toggleEditItem">
 						<template #icon>
 							<Pencil :size="20" />
 						</template>
 						{{ t('inventory', 'Edit item') }}
-					</ActionButton>
-					<ActionButton @click="removeItem">
+					</NcActionButton>
+					<NcActionButton @click="removeItem">
 						<template #icon>
 							<Delete :size="20" />
 						</template>
 						{{ t('inventory', 'Delete item') }}
-					</ActionButton>
-				</Actions>
+					</NcActionButton>
+				</NcActions>
 			</div>
-			<EmptyContent v-if="loadingItem || !item" :icon="loadingItem ? 'icon-loading' : 'icon-search'">
+			<NcEmptyContent v-if="loadingItem || !item" :icon="loadingItem ? 'icon-loading' : 'icon-search'">
 				<span v-if="loadingItem">{{ t('inventory', 'Loading item from server.') }}</span>
 				<span v-else>{{ t('inventory', 'Item not found!') }}</span>
-			</EmptyContent>
+			</NcEmptyContent>
 			<div v-else id="itemdetails">
 				<div class="paragraph paragraph--images"
 					@dragover.prevent="!isDraggingOver && (isDraggingOver = true)"
@@ -110,15 +110,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 								<div v-else class="wrapper">
 									<span :class="{ 'visibility-hidden': editingItem }">{{ item[itemProperty.key] }}</span>
-									<Actions v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem "
+									<NcActions v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem "
 										:boundaries-element="boundaries">
-										<ActionButton :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
+										<NcActionButton :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
 											<template #icon>
 												<Barcode :size="20" />
 											</template>
 											{{ t('inventory', 'Show GTIN') }}
-										</ActionButton>
-									</Actions>
+										</NcActionButton>
+									</NcActions>
 									<span v-if="editingItem" class="input">
 										<input v-model="editedItem[itemProperty.key]"
 											v-focus="itemProperty.key === 'name'"
@@ -141,14 +141,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div v-if="editingItem" class="row">
 							<div class="column column--width-2 column--actions">
-								<Actions>
-									<ActionButton @click="saveItem">
+								<NcActions>
+									<NcActionButton @click="saveItem">
 										<template #icon>
 											<Check :size="20" />
 										</template>
 										{{ t('inventory', 'Save changes') }}
-									</ActionButton>
-								</Actions>
+									</NcActionButton>
+								</NcActions>
 							</div>
 						</div>
 					</div>
@@ -202,14 +202,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<RelationModal :modal-open.sync="modalOpen" :link="link" :item-id="id" />
 		</div>
 		<form id="edit_item" method="POST" />
-		<Modal v-if="showBarcode"
+		<NcModal v-if="showBarcode"
 			class="qrcode-modal"
 			size="small"
 			@close="closeBarcode">
 			<div>
 				<canvas ref="canvas" class="qrcode" />
 			</div>
-		</Modal>
+		</NcModal>
 		<input ref="localAttachments"
 			type="file"
 			style="display: none;"
@@ -232,11 +232,11 @@ import { showError } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'
 import { translate as t } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
-import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
+import NcBreadcrumbs from '@nextcloud/vue/dist/Components/NcBreadcrumbs'
+import NcBreadcrumb from '@nextcloud/vue/dist/Components/NcBreadcrumb'
+import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent'
 
 import Barcode from 'vue-material-design-icons/Barcode'
 import Check from 'vue-material-design-icons/Check'
@@ -254,17 +254,17 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
 	components: {
-		Actions,
-		ActionButton,
+		NcActions,
+		NcActionButton,
 		EntityTable,
 		RelationModal,
 		InventoryIcon,
 		ItemInstances,
 		TagList,
 		Attachments,
-		Breadcrumbs,
-		Breadcrumb,
-		EmptyContent,
+		NcBreadcrumbs,
+		NcBreadcrumb,
+		NcEmptyContent,
 		Barcode,
 		Check,
 		Delete,

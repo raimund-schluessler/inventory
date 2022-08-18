@@ -22,8 +22,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div>
 		<div id="controls">
-			<Breadcrumbs @dropped="moveEntities">
-				<Breadcrumb v-for="(crumb, index) in breadcrumbs"
+			<NcBreadcrumbs @dropped="moveEntities">
+				<NcBreadcrumb v-for="(crumb, index) in breadcrumbs"
 					:key="crumb.path"
 					:title="crumb.title"
 					:to="crumb.path"
@@ -33,47 +33,47 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							v-if="index === 0"
 							:size="20" />
 					</template>
-				</Breadcrumb>
-			</Breadcrumbs>
-			<Actions :boundaries-element="boundaries"
+				</NcBreadcrumb>
+			</NcBreadcrumbs>
+			<NcActions :boundaries-element="boundaries"
 				:open.sync="actionsOpen"
 				@close="addingCollection = false">
-				<ActionButton :close-after-click="true" @click="openQrModal('search')">
+				<NcActionButton :close-after-click="true" @click="openQrModal('search')">
 					<template #icon>
 						<QrcodeScan :size="20" />
 					</template>
 					{{ t('inventory', 'Scan QR code') }}
-				</ActionButton>
-				<ActionButton v-if="collection === 'places'"
+				</NcActionButton>
+				<NcActionButton v-if="collection === 'places'"
 					:close-after-click="true"
 					@click="openQrModal('move')">
 					<template #icon>
 						<QrcodePlus :size="20" />
 					</template>
 					{{ t('inventory', 'Move items to place') }}
-				</ActionButton>
-				<ActionRouter :to="addItemPath">
+				</NcActionButton>
+				<NcActionRouter :to="addItemPath">
 					<template #icon>
 						<Plus :size="20" />
 					</template>
 					{{ t('inventory', 'Add items') }}
-				</ActionRouter>
-				<ActionRouter v-if="collection === 'places'"
+				</NcActionRouter>
+				<NcActionRouter v-if="collection === 'places'"
 					:close-after-click="true"
 					:to="`/${collection}/${(path) ? encodePath(path) + '/' : ''}&details`">
 					<template #icon>
 						<InformationOutline :size="20" />
 					</template>
 					{{ t('inventory', 'Show details') }}
-				</ActionRouter>
-				<ActionButton v-if="!addingCollection"
+				</NcActionRouter>
+				<NcActionButton v-if="!addingCollection"
 					@click.prevent.stop="openCollectionInput()">
 					<template #icon>
 						<Folder :size="20" />
 					</template>
 					{{ addCollectionString }}
-				</ActionButton>
-				<ActionInput v-if="addingCollection"
+				</NcActionButton>
+				<NcActionInput v-if="addingCollection"
 					v-tooltip="{
 						show: collectionNameError,
 						content: errorString,
@@ -87,8 +87,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<Folder :size="20" />
 					</template>
 					{{ collection === 'places' ? t('inventory', 'New Place') : t('inventory', 'New Folder') }}
-				</ActionInput>
-			</Actions>
+				</NcActionInput>
+			</NcActions>
 		</div>
 		<EntityTable :items="items"
 			:collections="collections"
@@ -107,12 +107,12 @@ import QrScanModal from '../../components/QrScanModal.vue'
 import { encodePath } from '../../utils/encodePath.js'
 
 import { translate as t } from '@nextcloud/l10n'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionInput from '@nextcloud/vue/dist/Components/ActionInput'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import ActionRouter from '@nextcloud/vue/dist/Components/ActionRouter'
-import Breadcrumbs from '@nextcloud/vue/dist/Components/Breadcrumbs'
-import Breadcrumb from '@nextcloud/vue/dist/Components/Breadcrumb'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions'
+import NcActionInput from '@nextcloud/vue/dist/Components/NcActionInput'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
+import NcActionRouter from '@nextcloud/vue/dist/Components/NcActionRouter'
+import NcBreadcrumbs from '@nextcloud/vue/dist/Components/NcBreadcrumbs'
+import NcBreadcrumb from '@nextcloud/vue/dist/Components/NcBreadcrumb'
 import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
 
 import Folder from 'vue-material-design-icons/Folder'
@@ -127,12 +127,12 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	components: {
-		Actions,
-		ActionInput,
-		ActionRouter,
-		ActionButton,
-		Breadcrumb,
-		Breadcrumbs,
+		NcActions,
+		NcActionInput,
+		NcActionRouter,
+		NcActionButton,
+		NcBreadcrumb,
+		NcBreadcrumbs,
 		EntityTable,
 		QrScanModal,
 		Folder,
