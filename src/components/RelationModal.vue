@@ -80,12 +80,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="item-adding-status">
 					{{ statusString }}
 				</span>
-				<button class="default-button" @click="closeModal">
-					{{ t('inventory', 'Cancel') }}
-				</button>
-				<button class="default-button" @click="selectItems">
+				<NcButton type="primary" @click="selectItems">
 					{{ t('inventory', 'Select') }}
-				</button>
+				</NcButton>
+				<NcButton @click="closeModal">
+					{{ t('inventory', 'Cancel') }}
+				</NcButton>
 			</div>
 		</div>
 	</NcModal>
@@ -95,6 +95,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import EntityTable from './EntityTable/EntityTable.vue'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton'
 import NcModal from '@nextcloud/vue/dist/Components/NcModal'
 import NcMultiselect from '@nextcloud/vue/dist/Components/NcMultiselect'
 
@@ -108,6 +109,7 @@ export default {
 		Close,
 		EntityTable,
 		Magnify,
+		NcButton,
 		NcModal,
 		NcMultiselect,
 	},
@@ -310,8 +312,8 @@ export default {
 
 		.footer {
 			box-sizing: border-box;
-			height: 56px;
-			padding: 8px;
+			height: 44px;
+			margin-bottom: 10px;
 
 			.item-adding-status {
 				line-height: 40px;
@@ -319,7 +321,8 @@ export default {
 				padding-left: 20px;
 			}
 
-			.default-button {
+			.button-vue {
+				margin: 0 10px;
 				float: right;
 			}
 		}
