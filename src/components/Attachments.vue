@@ -70,7 +70,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</NcActions>
 				</li>
 				<li v-if="loadingAttachments" class="attachment attachment--placeholder">
-					<span class="icon icon-loading" />
+					<NcLoadingIcon />
 					<span class="message">{{ t('inventory', 'Load attachments from server.') }}</span>
 				</li>
 				<li v-else-if="!attachments.length" class="attachment attachment--placeholder">
@@ -147,6 +147,7 @@ import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
 import NcActionLink from '@nextcloud/vue/dist/Components/NcActionLink'
 import NcButton from '@nextcloud/vue/dist/Components/NcButton'
 import NcModal from '@nextcloud/vue/dist/Components/NcModal'
+import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon'
 
 import Close from 'vue-material-design-icons/Close'
 import Delete from 'vue-material-design-icons/Delete'
@@ -161,6 +162,7 @@ export default {
 		NcActionLink,
 		NcButton,
 		NcModal,
+		NcLoadingIcon,
 		Close,
 		Delete,
 		Folder,

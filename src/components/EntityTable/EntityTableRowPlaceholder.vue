@@ -22,14 +22,19 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div v-if="placeholder.show" class="row row--empty">
 		<div class="column">
-			<span v-if="placeholder.loading" class="icon-loading" />
+			<NcLoadingIcon v-if="placeholder.loading" :size="44" />
 			<span>{{ placeholder.message }}</span>
 		</div>
 	</div>
 </template>
 
 <script>
+import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon'
+
 export default {
+	components: {
+		NcLoadingIcon,
+	},
 	props: {
 		placeholder: {
 			type: Object,

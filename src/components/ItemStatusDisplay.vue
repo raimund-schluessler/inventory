@@ -28,7 +28,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<template #icon>
 				<AlertCircleOutline v-if="status.status==='error' || status.status==='unsynced'" :size="20" class="status--error status--unsynced" />
 				<Check v-if="status.status==='success'" :size="20" class="status--success" />
-				<Loading v-if="status.status==='sync'" :size="20" class="status--sync" />
+				<NcLoadingIcon v-if="status.status==='sync'" :size="20" class="status--sync" />
 				<SyncAlert v-if="status.status==='conflict'" :size="20" class="status--conflict" />
 			</template>
 			{{ status.message }}
@@ -39,10 +39,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import NcActions from '@nextcloud/vue/dist/Components/NcActions'
 import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
+import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon'
 
 import AlertCircleOutline from 'vue-material-design-icons/AlertCircleOutline'
 import Check from 'vue-material-design-icons/Check'
-import Loading from 'vue-material-design-icons/Loading'
 import SyncAlert from 'vue-material-design-icons/SyncAlert'
 
 export default {
@@ -50,9 +50,9 @@ export default {
 	components: {
 		NcActions,
 		NcActionButton,
+		NcLoadingIcon,
 		AlertCircleOutline,
 		Check,
-		Loading,
 		SyncAlert,
 	},
 	props: {
@@ -116,26 +116,14 @@ export default {
 		&--success {
 			color: var(--color-success);
 		}
-		&--sync svg,
 		&--conflict svg {
 			animation-iteration-count: infinite;
 			animation-duration: 1s;
-		}
-		&--sync svg {
-			animation-name: spin;
 		}
 		&--conflict svg {
 			animation-name: pulse;
 			border-radius: 50%;
 		}
-	}
-}
-@keyframes spin {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
 	}
 }
 @keyframes pulse {
