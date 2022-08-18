@@ -123,12 +123,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<p>
 					{{ t('inventory', 'Do you want to overwrite it?') }}
 				</p>
-				<button @click="overrideAttachment">
-					{{ t('inventory', 'Overwrite file') }}
-				</button>
-				<button class="primary" @click="modalShow=false">
-					{{ t('inventory', 'Keep existing file') }}
-				</button>
+				<div class="button-wrapper">
+					<NcButton @click="overrideAttachment">
+						{{ t('inventory', 'Overwrite file') }}
+					</NcButton>
+					<NcButton type="primary" @click="modalShow=false">
+						{{ t('inventory', 'Keep existing file') }}
+					</NcButton>
+				</div>
 			</div>
 		</NcModal>
 	</div>
@@ -143,6 +145,7 @@ import { generateUrl } from '@nextcloud/router'
 import NcActions from '@nextcloud/vue/dist/Components/NcActions'
 import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
 import NcActionLink from '@nextcloud/vue/dist/Components/NcActionLink'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton'
 import NcModal from '@nextcloud/vue/dist/Components/NcModal'
 
 import Close from 'vue-material-design-icons/Close'
@@ -156,6 +159,7 @@ export default {
 		NcActions,
 		NcActionButton,
 		NcActionLink,
+		NcButton,
 		NcModal,
 		Close,
 		Delete,
@@ -428,13 +432,18 @@ export default {
 
 .modal-attachments {
 	.modal__content {
-		width: 25vw;
 		min-width: 250px;
 		text-align: center;
 		margin: 20px;
 
-		button {
-			margin: 40px 3px 3px 3px;
+		.button-wrapper {
+			display: flex;
+			justify-content: center;
+			padding-top: 40px;
+
+			.button-vue {
+				margin: 0 20px;
+			}
 		}
 	}
 }
