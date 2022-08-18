@@ -20,10 +20,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<Content app-name="inventory">
-		<AppNavigation>
+	<NcContent app-name="inventory">
+		<NcAppNavigation>
 			<template #list>
-				<AppNavigationItem v-for="view in views"
+				<NcAppNavigationItem v-for="view in views"
 					:key="view.id"
 					:to="`/${view.id}/`"
 					:title="view.name">
@@ -31,19 +31,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<component :is="view.icon"
 							:size="20" />
 					</template>
-				</AppNavigationItem>
+				</NcAppNavigationItem>
 			</template>
 			<template #footer>
 				<AppNavigationSettings />
 			</template>
-		</AppNavigation>
+		</NcAppNavigation>
 
-		<AppContent>
+		<NcAppContent>
 			<RouterView />
-		</AppContent>
+		</NcAppContent>
 
 		<RouterView name="sidebar" />
-	</Content>
+	</NcContent>
 </template>
 
 <script>
@@ -51,10 +51,10 @@ import AppNavigationSettings from './components/AppNavigation/AppNavigationSetti
 
 import { subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { translate as t } from '@nextcloud/l10n'
-import AppContent from '@nextcloud/vue/dist/Components/AppContent'
-import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
-import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
-import Content from '@nextcloud/vue/dist/Components/Content'
+import NcAppContent from '@nextcloud/vue/dist/Components/NcAppContent'
+import NcAppNavigation from '@nextcloud/vue/dist/Components/NcAppNavigation'
+import NcAppNavigationItem from '@nextcloud/vue/dist/Components/NcAppNavigationItem'
+import NcContent from '@nextcloud/vue/dist/Components/NcContent'
 
 import Folder from 'vue-material-design-icons/Folder'
 import MapMarker from 'vue-material-design-icons/MapMarker'
@@ -63,10 +63,10 @@ import Tag from 'vue-material-design-icons/Tag'
 export default {
 	name: 'App',
 	components: {
-		AppNavigation,
-		AppNavigationItem,
-		AppContent,
-		Content,
+		NcAppNavigation,
+		NcAppNavigationItem,
+		NcAppContent,
+		NcContent,
 		AppNavigationSettings,
 		Folder,
 		MapMarker,
@@ -139,6 +139,7 @@ body {
 	color: var(--color-primary);
 }
 #controls {
+	display: flex;
 	padding-left: 48px;
 	padding-top: 4px;
 	height: 48px;

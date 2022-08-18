@@ -20,29 +20,29 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<AppNavigationSettings>
+	<NcAppNavigationSettings>
 		<div class="settings-wrapper">
-			<Button @click="downloadUuidPdf">
+			<NcButton @click="downloadUuidPdf">
 				<template #icon>
 					<Qrcode :size="20" />
 				</template>
 				{{ t('inventory', 'Download UUID sticker sheet') }}
-			</Button>
-			<Button @click="selectFolder">
+			</NcButton>
+			<NcButton @click="selectFolder">
 				<template #icon>
 					<Folder :size="20" />
 				</template>
 				{{ t('inventory', 'Select attachment folder') }}
-			</Button>
+			</NcButton>
 		</div>
-	</AppNavigationSettings>
+	</NcAppNavigationSettings>
 </template>
 
 <script>
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
 import { translate as t } from '@nextcloud/l10n'
-import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
-import Button from '@nextcloud/vue/dist/Components/Button'
+import NcAppNavigationSettings from '@nextcloud/vue/dist/Components/NcAppNavigationSettings'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton'
 
 import Folder from 'vue-material-design-icons/Folder'
 import Qrcode from 'vue-material-design-icons/Qrcode'
@@ -53,8 +53,8 @@ import { jsPDF } from 'jspdf'
 
 export default {
 	components: {
-		AppNavigationSettings,
-		Button,
+		NcAppNavigationSettings,
+		NcButton,
 		Folder,
 		Qrcode,
 	},

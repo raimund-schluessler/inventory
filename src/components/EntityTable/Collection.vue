@@ -54,17 +54,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</form>
 		</div>
 		<div class="column column--actions">
-			<Actions v-if="!deleteTimeout && showActions"
+			<NcActions v-if="!deleteTimeout && showActions"
 				:boundaries-element="boundaries">
-				<ActionButton class="startRename"
+				<NcActionButton class="startRename"
 					:close-after-click="true"
 					@click="startRename">
 					<template #icon>
 						<Pencil :size="20" />
 					</template>
 					{{ t('inventory', 'Rename') }}
-				</ActionButton>
-				<ActionRouter v-if="collection === 'places'"
+				</NcActionButton>
+				<NcActionRouter v-if="collection === 'places'"
 					:close-after-click="true"
 					container=".row--collection"
 					:to="`/${collection}/${($route.params.path) ? encodePath($route.params.path) + '/' : ''}&details/${encodePath(entity.path)}`">
@@ -72,23 +72,23 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<InformationOutline :size="20" />
 					</template>
 					{{ t('inventory', 'Show details') }}
-				</ActionRouter>
-				<ActionButton @click="scheduleDelete">
+				</NcActionRouter>
+				<NcActionButton @click="scheduleDelete">
 					<template #icon>
 						<Delete :size="20" />
 					</template>
 					{{ deleteString }}
-				</ActionButton>
-			</Actions>
-			<Actions v-if="!!deleteTimeout"
+				</NcActionButton>
+			</NcActions>
+			<NcActions v-if="!!deleteTimeout"
 				:boundaries-element="boundaries">
-				<ActionButton @click.prevent.stop="cancelDelete">
+				<NcActionButton @click.prevent.stop="cancelDelete">
 					<template #icon>
 						<Undo :size="20" />
 					</template>
 					{{ undoString }}
-				</ActionButton>
-			</Actions>
+				</NcActionButton>
+			</NcActions>
 		</div>
 	</div>
 </template>
@@ -100,9 +100,9 @@ import { encodePath } from '../../utils/encodePath.js'
 import { showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import ActionRouter from '@nextcloud/vue/dist/Components/ActionRouter'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
+import NcActionRouter from '@nextcloud/vue/dist/Components/NcActionRouter'
 
 import Delete from 'vue-material-design-icons/Delete'
 import InformationOutline from 'vue-material-design-icons/InformationOutline'
@@ -116,9 +116,9 @@ const CD_DURATION = 7
 
 export default {
 	components: {
-		Actions,
-		ActionButton,
-		ActionRouter,
+		NcActions,
+		NcActionButton,
+		NcActionRouter,
 		Delete,
 		InformationOutline,
 		Pencil,

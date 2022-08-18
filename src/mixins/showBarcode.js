@@ -19,13 +19,13 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-import Modal from '@nextcloud/vue/dist/Components/Modal'
+import NcModal from '@nextcloud/vue/dist/Components/NcModal'
 
 import bwipjs from 'bwip-js'
 
 export default {
 	components: {
-		Modal,
+		NcModal,
 	},
 	data() {
 		return {
