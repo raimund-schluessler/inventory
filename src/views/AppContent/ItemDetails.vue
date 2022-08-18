@@ -67,7 +67,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<NcEmptyContent v-if="loadingItem || !item" :icon="loadingItem ? 'icon-loading' : 'icon-search'">
+			<NcEmptyContent v-if="loadingItem || !item">
+				<template #icon>
+					<NcLoadingIcon v-if="loadingItem" />
+					<Magnify v-else />
+				</template>
 				<span v-if="loadingItem">{{ t('inventory', 'Loading item from server.') }}</span>
 				<span v-else>{{ t('inventory', 'Item not found!') }}</span>
 			</NcEmptyContent>
@@ -237,10 +241,12 @@ import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
 import NcBreadcrumbs from '@nextcloud/vue/dist/Components/NcBreadcrumbs'
 import NcBreadcrumb from '@nextcloud/vue/dist/Components/NcBreadcrumb'
 import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent'
+import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon'
 
 import Barcode from 'vue-material-design-icons/Barcode'
 import Check from 'vue-material-design-icons/Check'
 import Folder from 'vue-material-design-icons/Folder'
+import Magnify from 'vue-material-design-icons/Magnify'
 import MapMarker from 'vue-material-design-icons/MapMarker'
 import Tag from 'vue-material-design-icons/Tag'
 import Delete from 'vue-material-design-icons/Delete'
@@ -265,6 +271,7 @@ export default {
 		NcBreadcrumbs,
 		NcBreadcrumb,
 		NcEmptyContent,
+		NcLoadingIcon,
 		Barcode,
 		Check,
 		Delete,
@@ -272,6 +279,7 @@ export default {
 		Plus,
 		Upload,
 		Folder,
+		Magnify,
 		MapMarker,
 		Tag,
 	},

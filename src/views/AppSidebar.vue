@@ -139,7 +139,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 		<template v-else #default>
 			<NcEmptyContent v-if="loading">
 				<template #icon>
-					<Loading :size="50" />
+					<NcLoadingIcon :size="50" />
 				</template>
 				{{ t('inventory', 'Loading the place.') }}
 			</NcEmptyContent>
@@ -154,7 +154,6 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import Loading from '../components/Loading.vue'
 import QrScanModal from '../components/QrScanModal.vue'
 import focus from '../directives/focus.vue'
 import showBarcode from '../mixins/showBarcode.js'
@@ -165,6 +164,7 @@ import NcActions from '@nextcloud/vue/dist/Components/NcActions'
 import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
 import NcAppSidebar from '@nextcloud/vue/dist/Components/NcAppSidebar'
 import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent'
+import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon'
 
 import Check from 'vue-material-design-icons/Check'
 import Delete from 'vue-material-design-icons/Delete'
@@ -187,7 +187,7 @@ export default {
 		Check,
 		Delete,
 		NcEmptyContent,
-		Loading,
+		NcLoadingIcon,
 		Magnify,
 		Pencil,
 		Plus,

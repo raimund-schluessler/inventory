@@ -109,7 +109,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<EntityTableRowPlaceholder :placeholder="placeholder('lower')" />
 			<div v-if="searchString && !filterOnly" class="row row--search">
 				<div class="column" :class="{'column__left': !searching}">
-					<span v-if="searching" class="icon-loading" />
+					<NcLoadingIcon v-if="searching" :size="44" />
 					<span>{{ searchMessage }}</span>
 				</div>
 			</div>
@@ -161,6 +161,7 @@ import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
 import NcActions from '@nextcloud/vue/dist/Components/NcActions'
 import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
+import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon'
 
 import Close from 'vue-material-design-icons/Close'
 import Delete from 'vue-material-design-icons/Delete'
@@ -174,6 +175,7 @@ export default {
 		Collection,
 		NcActions,
 		NcActionButton,
+		NcLoadingIcon,
 		EntityTableRowPlaceholder,
 		Close,
 		Delete,
@@ -773,11 +775,6 @@ export default {
 				&__left {
 					justify-content: left;
 					padding: 0 14px;
-				}
-
-				.icon-loading {
-					display: inline-block;
-					width: 44px;
 				}
 			}
 		}
