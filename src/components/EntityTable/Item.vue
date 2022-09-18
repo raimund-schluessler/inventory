@@ -116,7 +116,7 @@ export default {
 			default: () => {},
 		},
 		uuid: {
-			type: Number,
+			type: String,
 			required: true,
 		},
 		showActions: {
