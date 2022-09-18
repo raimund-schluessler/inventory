@@ -41,11 +41,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <script>
 import { getFilePickerBuilder } from '@nextcloud/dialogs'
 import { translate as t } from '@nextcloud/l10n'
-import NcAppNavigationSettings from '@nextcloud/vue/dist/Components/NcAppNavigationSettings'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton'
+import NcAppNavigationSettings from '@nextcloud/vue/dist/Components/NcAppNavigationSettings.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 
-import Folder from 'vue-material-design-icons/Folder'
-import Qrcode from 'vue-material-design-icons/Qrcode'
+import Folder from 'vue-material-design-icons/Folder.vue'
+import Qrcode from 'vue-material-design-icons/Qrcode.vue'
 
 import { v4 as uuidv4 } from 'uuid'
 import bwipjs from 'bwip-js'

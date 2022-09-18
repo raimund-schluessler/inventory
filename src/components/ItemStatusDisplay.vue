@@ -37,13 +37,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import NcActions from '@nextcloud/vue/dist/Components/NcActions'
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton'
-import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
+import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
 
-import AlertCircleOutline from 'vue-material-design-icons/AlertCircleOutline'
-import Check from 'vue-material-design-icons/Check'
-import SyncAlert from 'vue-material-design-icons/SyncAlert'
+import AlertCircleOutline from 'vue-material-design-icons/AlertCircleOutline.vue'
+import Check from 'vue-material-design-icons/Check.vue'
+import SyncAlert from 'vue-material-design-icons/SyncAlert.vue'
 
 export default {
 	name: 'ItemStatusDisplay',
