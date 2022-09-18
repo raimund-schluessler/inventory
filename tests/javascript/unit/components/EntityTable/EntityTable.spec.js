@@ -15,9 +15,9 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
-				searchString: '',
 			},
 		})
+		store.commit('setSearchString', '')
 		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(3)
 	})
@@ -29,9 +29,9 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
-				searchString: 'Cat1',
 			},
 		})
+		store.commit('setSearchString', 'Cat1')
 		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(2)
 	})
@@ -43,9 +43,9 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
-				searchString: 'Maker1',
 			},
 		})
+		store.commit('setSearchString', 'Maker1')
 		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(2)
 	})
@@ -57,9 +57,9 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
-				searchString: 'tags:Cat1',
 			},
 		})
+		store.commit('setSearchString', 'tags:Cat1')
 		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(2)
 	})
@@ -71,9 +71,9 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
-				searchString: 'comment:Maker1',
 			},
 		})
+		store.commit('setSearchString', 'comment:Maker1')
 		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(1)
 	})
@@ -85,9 +85,9 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
-				searchString: 'itemNumber:42',
 			},
 		})
+		store.commit('setSearchString', 'itemNumber:42')
 		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(0)
 	})
@@ -98,9 +98,9 @@ describe('EntityTable.vue', () => {
 			store,
 			propsData: {
 				showDropdown: false,
-				searchString: '',
 			},
 		})
+		store.commit('setSearchString', '')
 		const itemsFound = wrapper.vm.filteredEntities
 		expect(itemsFound.length).toBe(0)
 	})
@@ -112,12 +112,12 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
-				searchString: '',
 			},
 			stubs: {
 				RouterLink: RouterLinkStub,
 			},
 		})
+		store.commit('setSearchString', '')
 		wrapper.find('label[for="select-item-1-' + wrapper.vm.compUid + '"]').trigger('click')
 		wrapper.find('label[for="select-item-2-' + wrapper.vm.compUid + '"]').trigger('click')
 		wrapper.find('label[for="select-item-3-' + wrapper.vm.compUid + '"]').trigger('click')
@@ -134,9 +134,9 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
-				searchString: '',
 			},
 		})
+		store.commit('setSearchString', '')
 		wrapper.find('input.select-all.checkbox + label').trigger('click')
 		let itemsFound = wrapper.vm.selectedItems
 		let allSelected = wrapper.vm.allEntitiesSelected
@@ -156,12 +156,12 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
-				searchString: '',
 			},
 			stubs: {
 				RouterLink: RouterLinkStub,
 			},
 		})
+		store.commit('setSearchString', '')
 		wrapper.find('label[for="select-item-1-' + wrapper.vm.compUid + '"]').trigger('click')
 		let selectedItems = wrapper.vm.selectedItems
 		let allSelected = wrapper.vm.allEntitiesSelected
