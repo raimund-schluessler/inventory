@@ -23,13 +23,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div class="entitytable" @dragover="dragOverTable">
 			<div :class="{ 'row--has-status': oneEntityHasStatus }" class="row row--header">
-				<div :id="`headerSelection-${_uid}`" class="column column--selection">
-					<input :id="`select_all_items-${_uid}`"
+				<div :id="`headerSelection-${compUid}`" class="column column--selection">
+					<input :id="`select_all_items-${compUid}`"
 						:checked="allEntitiesSelected"
 						:indeterminate.prop="someEntitiesSelected"
 						class="select-all checkbox"
 						type="checkbox">
-					<label :for="`select_all_items-${_uid}`" @click.prevent="selectEntities">
+					<label :for="`select_all_items-${compUid}`" @click.prevent="selectEntities">
 						<span class="hidden-visually">
 							{{ t('inventory', 'Select all') }}
 						</span>
@@ -95,7 +95,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:collection="collectionType"
 				:class="{ 'dragged': isDragged(item) }"
 				:select-entity="selectItem"
-				:uuid="_uid"
+				:uuid="compUid"
 				:mode="mode"
 				draggable="true"
 				class="entity"
@@ -121,7 +121,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:collection="collectionType"
 				:class="{ 'dragged': isDragged(item) }"
 				:select-entity="selectItem"
-				:uuid="_uid"
+				:uuid="compUid"
 				:mode="mode"
 				:show-actions="false" />
 		</div>
@@ -156,6 +156,7 @@ import Item from '../../models/item.js'
 import Folder from '../../models/folder.js'
 import Place from '../../models/place.js'
 import { sort } from '../../store/storeHelper.js'
+import GenRandomId from '../../utils/GenRandomId.js'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
@@ -228,6 +229,7 @@ export default {
 			draggedEntities: [],
 			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
 			boundaries: document.querySelector('#content-vue'),
+			compUid: 'table-' + GenRandomId(),
 		}
 	},
 	computed: {
