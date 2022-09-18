@@ -51,6 +51,10 @@ export default {
 			default: '',
 		},
 	},
+	emits: [
+		'update:qrModalOpen',
+		'recognized-qr-code',
+	],
 	data() {
 		return {
 			error: '',

@@ -127,6 +127,7 @@ export default {
 			required: true,
 		},
 	},
+	emits: ['update:modalOpen'],
 	data() {
 		return {
 			selectedItems: [],

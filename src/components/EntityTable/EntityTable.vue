@@ -218,6 +218,10 @@ export default {
 			default: false,
 		},
 	},
+	emits: [
+		'unlink',
+		'selected-items-changed',
+	],
 	data() {
 		return {
 			selectedEntities: [],
