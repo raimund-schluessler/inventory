@@ -51,6 +51,10 @@ export default {
 			default: '',
 		},
 	},
+	emits: [
+		'update:qrModalOpen',
+		'recognized-qr-code',
+	],
 	data() {
 		return {
 			error: '',
@@ -89,7 +93,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .modal-container {
+:deep(.modal-container) {
 	position: relative;
 }
 

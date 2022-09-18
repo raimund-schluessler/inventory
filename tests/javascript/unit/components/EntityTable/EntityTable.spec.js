@@ -118,9 +118,9 @@ describe('EntityTable.vue', () => {
 				RouterLink: RouterLinkStub,
 			},
 		})
-		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
-		wrapper.find('label[for="select-item-2-' + wrapper.vm._uid + '"]').trigger('click')
-		wrapper.find('label[for="select-item-3-' + wrapper.vm._uid + '"]').trigger('click')
+		wrapper.find('label[for="select-item-1-' + wrapper.vm.compUid + '"]').trigger('click')
+		wrapper.find('label[for="select-item-2-' + wrapper.vm.compUid + '"]').trigger('click')
+		wrapper.find('label[for="select-item-3-' + wrapper.vm.compUid + '"]').trigger('click')
 		const itemsFound = wrapper.vm.selectedItems
 		const allSelected = wrapper.vm.allEntitiesSelected
 		expect(itemsFound.length).toBe(3)
@@ -162,12 +162,12 @@ describe('EntityTable.vue', () => {
 				RouterLink: RouterLinkStub,
 			},
 		})
-		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
+		wrapper.find('label[for="select-item-1-' + wrapper.vm.compUid + '"]').trigger('click')
 		let selectedItems = wrapper.vm.selectedItems
 		let allSelected = wrapper.vm.allEntitiesSelected
 		expect(selectedItems.length).toBe(1)
 		expect(allSelected).toBe(false)
-		wrapper.find('label[for="select-item-1-' + wrapper.vm._uid + '"]').trigger('click')
+		wrapper.find('label[for="select-item-1-' + wrapper.vm.compUid + '"]').trigger('click')
 		selectedItems = wrapper.vm.selectedItems
 		allSelected = wrapper.vm.allEntitiesSelected
 		expect(selectedItems.length).toBe(0)

@@ -77,10 +77,10 @@ const routes = [
 	{
 		name: 'placesDetails',
 		path: '/places/:path(.*)?/&details/:folder(.*)?',
-		components: { default: ItemsOverview, sidebar: AppSidebar },
+		components: { default: ItemsOverview, AppSidebar },
 		props: {
 			default: (route) => ({ path: route.params.path, collection: 'places' }),
-			sidebar: (route) => ({ path: route.params.path, collection: 'places', folder: route.params.folder }),
+			AppSidebar: (route) => ({ path: route.params.path, collection: 'places', folder: route.params.folder }),
 		},
 	},
 	{

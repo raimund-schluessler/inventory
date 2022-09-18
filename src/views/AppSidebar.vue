@@ -383,11 +383,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .app-sidebar-tabs {
+:deep(.app-sidebar-tabs) {
 	padding: 0 6px 0 10px;
 }
 
-::v-deep .app-sidebar-header__description {
+:deep(.app-sidebar-header__description) {
 	position: relative;
 }
 

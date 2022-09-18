@@ -266,6 +266,9 @@ export default {
 			default: null,
 		},
 	},
+	emits: [
+		'open-barcode',
+	],
 	data() {
 		return {
 			instanceProperties: [
