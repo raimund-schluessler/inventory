@@ -75,7 +75,6 @@ export default {
 	data() {
 		return {
 			active: 'folders',
-			searchString: '',
 			views: [
 				{
 					name: t('inventory', 'Folders'),
@@ -109,13 +108,13 @@ export default {
 	},
 	methods: {
 		filter({ query }) {
-			this.searchString = query
+			this.$store.commit('setSearchString', query)
 			if (!query) {
 				this.$store.commit('setSearchResults', [])
 			}
 		},
 		cleanFilter() {
-			this.searchString = ''
+			this.$store.commit('setSearchString', '')
 			this.$store.commit('setSearchResults', [])
 		},
 	},

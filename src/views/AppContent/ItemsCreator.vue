@@ -35,8 +35,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				{{ t('inventory', 'Items:') }}
 				<div>
 					<EntityTable :items="items"
-						:allow-deletion="false"
-						:search-string="$root.searchString" />
+						:allow-deletion="false" />
 				</div>
 				<input :value="t('inventory', 'Enlist')" type="submit" :disabled="!canEnlist">
 			</form>

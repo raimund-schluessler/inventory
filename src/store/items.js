@@ -50,6 +50,7 @@ const state = {
 	draggedEntities: [],
 	searching: false,
 	searchResults: [],
+	searchString: '',
 }
 
 const getters = {
@@ -149,6 +150,14 @@ const getters = {
 	getDraggedEntities: (state) => state.draggedEntities,
 
 	/**
+	 * Returns the search string
+	 *
+	 * @param {object} state The store data
+	 * @return {Array} The search string
+	 */
+	searchString: (state) => state.searchString,
+
+	/**
 	 * Returns the search results from the server
 	 *
 	 * @param {object} state The store data
@@ -172,10 +181,10 @@ const getters = {
 	},
 
 	/**
-	 * Returns the search results from the server
+	 * Returns whether we currently search
 	 *
 	 * @param {object} state The store data
-	 * @return {Array} The results
+	 * @return {boolean} Whether we currently search
 	 */
 	searching: (state) => state.searching,
 }
@@ -465,6 +474,16 @@ const mutations = {
 
 	setDraggedEntities(state, entities) {
 		state.draggedEntities = entities
+	},
+
+	/**
+	 * Sets the search string
+	 *
+	 * @param {object} state Default state
+	 * @param {object} searchString The search string
+	 */
+	setSearchString(state, searchString) {
+		state.searchString = searchString
 	},
 
 	/**

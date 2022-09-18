@@ -207,10 +207,6 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		searchString: {
-			type: String,
-			default: '',
-		},
 		/*
 			Don't initialize a server side serach if true.
 		*/
@@ -236,6 +232,7 @@ export default {
 		...mapGetters([
 			'searching',
 			'searchResults',
+			'searchString',
 			'loadingItems',
 			'loadingFolders',
 			'loadingPlaces',

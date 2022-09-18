@@ -170,7 +170,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<div>
 						<EntityTable :items="parentItems"
 							:unlink="true"
-							:search-string="$root.searchString"
 							:filter-only="true"
 							@selected-items-changed="selectedParentsChanged"
 							@unlink="unlink('parent')" />
@@ -183,7 +182,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<div>
 						<EntityTable :items="subItems"
 							:unlink="true"
-							:search-string="$root.searchString"
 							:filter-only="true"
 							@selected-items-changed="selectedSubChanged"
 							@unlink="unlink('sub')" />
@@ -196,7 +194,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<div>
 						<EntityTable :items="relatedItems"
 							:unlink="true"
-							:search-string="$root.searchString"
 							:filter-only="true"
 							@selected-items-changed="selectedRelatedChanged"
 							@unlink="unlink('related')" />
