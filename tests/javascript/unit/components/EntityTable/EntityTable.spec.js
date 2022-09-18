@@ -15,6 +15,7 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
+				filterOnly: true,
 			},
 		})
 		store.commit('setSearchString', '')
@@ -29,6 +30,7 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
+				filterOnly: true,
 			},
 		})
 		store.commit('setSearchString', 'Cat1')
@@ -43,6 +45,7 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
+				filterOnly: true,
 			},
 		})
 		store.commit('setSearchString', 'Maker1')
@@ -57,6 +60,7 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
+				filterOnly: true,
 			},
 		})
 		store.commit('setSearchString', 'tags:Cat1')
@@ -71,6 +75,7 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
+				filterOnly: true,
 			},
 		})
 		store.commit('setSearchString', 'comment:Maker1')
@@ -85,6 +90,7 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
+				filterOnly: true,
 			},
 		})
 		store.commit('setSearchString', 'itemNumber:42')
@@ -98,6 +104,7 @@ describe('EntityTable.vue', () => {
 			store,
 			propsData: {
 				showDropdown: false,
+				filterOnly: true,
 			},
 		})
 		store.commit('setSearchString', '')
@@ -112,6 +119,7 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
+				filterOnly: true,
 			},
 			stubs: {
 				RouterLink: RouterLinkStub,
@@ -134,6 +142,7 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
+				filterOnly: true,
 			},
 		})
 		store.commit('setSearchString', '')
@@ -156,6 +165,7 @@ describe('EntityTable.vue', () => {
 			propsData: {
 				items,
 				showDropdown: false,
+				filterOnly: true,
 			},
 			stubs: {
 				RouterLink: RouterLinkStub,
