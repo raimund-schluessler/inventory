@@ -32,7 +32,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
-import NcModal from '@nextcloud/vue/dist/Components/NcModal'
+import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
 
 import { QrcodeStream } from 'vue-qrcode-reader'
 

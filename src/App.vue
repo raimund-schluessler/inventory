@@ -51,14 +51,14 @@ import AppNavigationSettings from './components/AppNavigation/AppNavigationSetti
 
 import { subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { translate as t } from '@nextcloud/l10n'
-import NcAppContent from '@nextcloud/vue/dist/Components/NcAppContent'
-import NcAppNavigation from '@nextcloud/vue/dist/Components/NcAppNavigation'
-import NcAppNavigationItem from '@nextcloud/vue/dist/Components/NcAppNavigationItem'
-import NcContent from '@nextcloud/vue/dist/Components/NcContent'
+import NcAppContent from '@nextcloud/vue/dist/Components/NcAppContent.js'
+import NcAppNavigation from '@nextcloud/vue/dist/Components/NcAppNavigation.js'
+import NcAppNavigationItem from '@nextcloud/vue/dist/Components/NcAppNavigationItem.js'
+import NcContent from '@nextcloud/vue/dist/Components/NcContent.js'
 
-import Folder from 'vue-material-design-icons/Folder'
-import MapMarker from 'vue-material-design-icons/MapMarker'
-import Tag from 'vue-material-design-icons/Tag'
+import Folder from 'vue-material-design-icons/Folder.vue'
+import MapMarker from 'vue-material-design-icons/MapMarker.vue'
+import Tag from 'vue-material-design-icons/Tag.vue'
 
 export default {
 	name: 'App',

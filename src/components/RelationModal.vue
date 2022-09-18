@@ -95,12 +95,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 import EntityTable from './EntityTable/EntityTable.vue'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton'
-import NcModal from '@nextcloud/vue/dist/Components/NcModal'
-import NcMultiselect from '@nextcloud/vue/dist/Components/NcMultiselect'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
+import NcMultiselect from '@nextcloud/vue/dist/Components/NcMultiselect.js'
 
-import Magnify from 'vue-material-design-icons/Magnify'
-import Close from 'vue-material-design-icons/Close'
+import Magnify from 'vue-material-design-icons/Magnify.vue'
+import Close from 'vue-material-design-icons/Close.vue'
 
 import { mapGetters, mapActions } from 'vuex'
 
