@@ -89,7 +89,7 @@
 			".*\\.(vue)$": "<rootDir>/node_modules/@vue/vue2-jest"
 		},
 		"transformIgnorePatterns": [
-			"/node_modules/(?!(.*vue-material-design-icons)|(uuid))"
+			"/node_modules/(?!(.*vue-material-design-icons|.*uuid)/)"
 		],
 		"snapshotSerializers": [
 			"<rootDir>/node_modules/jest-serializer-vue"
