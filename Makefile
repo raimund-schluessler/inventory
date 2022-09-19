@@ -138,7 +138,7 @@ appstore: clean build-js-production
 	--exclude=/README.md \
 	--exclude=/stylelint.config.js \
 	--exclude=/renovate.json \
-	--exclude=/webpack.js \
+	--exclude=/webpack.config.js \
 	--exclude=/build \
 	--exclude=/ci \
 	--exclude=/coverage \
