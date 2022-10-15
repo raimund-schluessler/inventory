@@ -27,12 +27,12 @@ namespace OCA\Inventory\Db;
 
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IDBConnection;
-use Test\AppFramework\Db\MapperTestUtility;
+use Test\TestCase;
 
 /**
  * @group DB
  */
-class PlaceMapperTest extends MapperTestUtility {
+class PlaceMapperTest extends TestCase {
 
 	/** @var IDBConnection */
 	private $dbConnection;

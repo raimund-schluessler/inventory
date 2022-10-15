@@ -26,12 +26,12 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
-use Test\AppFramework\Db\MapperTestUtility;
+use Test\TestCase;
 
 /**
  * @group DB
  */
-class CategoryMapperTest extends MapperTestUtility {
+class CategoryMapperTest extends TestCase {
 
 	/** @var IDBConnection */
 	private $dbConnection;
