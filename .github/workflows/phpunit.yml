@@ -11,15 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['7.3', '7.4']
-        nextcloud-versions: ['stable23']
+        php-versions: ['7.4']
+        nextcloud-versions: ['stable23', 'stable24', 'stable25']
         include:
-          - php-versions: '7.4'
-            nextcloud-versions: 'master'
-          # - php-versions: '8.0'
-          #   nextcloud-versions: 'stable21'
-          # - php-versions: '8.0'
-          #   nextcloud-versions: 'master'
+          - php-versions: '7.3'
+            nextcloud-versions: 'stable23'
     name: php${{ matrix.php-versions }} on ${{ matrix.nextcloud-versions }} unit tests
     env:
       CI: true
