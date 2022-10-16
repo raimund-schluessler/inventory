@@ -126,6 +126,8 @@ export default {
 body {
 	min-height: 100%;
 	height: auto;
+	// Adjustment necessary to use nc/vue@6 with NC25
+	position: initial;
 }
 
 // Prevent iOS safari from zooming in when focusing input
@@ -142,6 +144,9 @@ body {
 	padding-left: 48px;
 	padding-top: 4px;
 	height: 48px;
+	position: sticky;
+	top: 0;
+	background-color: var(--color-main-background-translucent);
 
 	.breadcrumb {
 		width: calc(100% - 44px);
@@ -155,5 +160,16 @@ body {
 }
 .dragged {
 	opacity: .4;
+}
+</style>
+
+<style lang="scss" scoped>
+// Adjustment necessary to use nc/vue@6 with NC25
+#content-vue {
+	max-height: 100vh;
+}
+.app-content {
+	// Adjustment necessary to use nc/vue@6 with NC25
+	overflow-y: scroll;
 }
 </style>
