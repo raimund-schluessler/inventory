@@ -696,7 +696,7 @@ export default {
 		}
 	}
 
-	::v-deep .row {
+	:deep() .row {
 		display: grid;
 		grid-template-columns: 44px 2fr 1fr 3fr 1fr;
 		height: 44px;
