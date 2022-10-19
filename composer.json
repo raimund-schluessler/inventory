@@ -9,9 +9,19 @@
             "email": "raimund.schluessler@mailbox.org"
         }
     ],
+    "require": {
+        "php": ">=7.3 <=8.1"
+    },
     "require-dev": {
-        "nextcloud/coding-standard": "0.5.0",
-        "phpunit/phpunit": "^7.5"
+        "nextcloud/coding-standard": "^1.0.0",
+        "phpunit/phpunit": "^9.5"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        },
+        "optimize-autoloader": true,
+        "classmap-authoritative": true
     },
     "scripts": {
         "cs:check": "php-cs-fixer fix --dry-run --verbose",

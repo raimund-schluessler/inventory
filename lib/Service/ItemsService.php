@@ -62,7 +62,7 @@ class ItemsService {
 	public function __construct($userId, $AppName, IL10N $l10n, ItemMapper $itemMapper, IteminstanceService $iteminstanceService,
 		IteminstanceMapper $iteminstanceMapper, CategoryMapper $categoryMapper, ItemcategoriesMapper $itemcategoriesMapper,
 		ItemparentMapper $itemParentMapper, ItemRelationMapper $itemRelationMapper, ItemtypeMapper $itemtypeMapper,
-		FolderMapper $folderMapper,PlaceMapper $placeMapper, AttachmentStorage $attachmentStorage) {
+		FolderMapper $folderMapper, PlaceMapper $placeMapper, AttachmentStorage $attachmentStorage) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->l10n = $l10n;

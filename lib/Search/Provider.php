@@ -38,7 +38,6 @@ use OCP\Search\SearchResult;
 use OCP\Search\SearchResultEntry;
 
 class Provider implements IProvider {
-
 	/** @var IAppManager */
 	protected $appManager;
 

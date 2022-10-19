@@ -32,7 +32,6 @@ use Test\TestCase;
  * @group DB
  */
 class IteminstanceUuidMapperTest extends TestCase {
-
 	/** @var IDBConnection */
 	private $dbConnection;
 	/** @var IteminstanceUuidMapper */

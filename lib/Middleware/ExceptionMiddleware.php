@@ -32,7 +32,6 @@ use OCA\Inventory\StatusException;
 use OCA\Inventory\Exceptions\ConflictException;
 
 class ExceptionMiddleware extends Middleware {
-
 	/**
 	 * ExceptionMiddleware constructor.
 	 */
