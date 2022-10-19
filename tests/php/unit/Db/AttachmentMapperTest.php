@@ -32,7 +32,6 @@ use Test\TestCase;
  * @group DB
  */
 class AttachmentMapperTest extends TestCase {
-
 	/** @var IDBConnection */
 	private $dbConnection;
 	/** @var AttachmentMapper */

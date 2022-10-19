@@ -14,7 +14,6 @@ use OCP\Migration\IOutput;
  * Auto-generated migration step: Please modify to your needs!
  */
 class Version000001Date20191015191048 extends SimpleMigrationStep {
-
 	/**
 	 * @param IOutput $output
 	 * @param Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`

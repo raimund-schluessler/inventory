@@ -33,7 +33,6 @@ use Test\TestCase;
  * @group DB
  */
 class FolderMapperTest extends TestCase {
-
 	/** @var IDBConnection */
 	private $dbConnection;
 	/** @var FolderMapper */

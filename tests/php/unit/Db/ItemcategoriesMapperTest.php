@@ -32,7 +32,6 @@ use Test\TestCase;
  * @group DB
  */
 class ItemcategoriesMapperTest extends TestCase {
-
 	/** @var IDBConnection */
 	private $dbConnection;
 	/** @var ItemcategoriesMapper */

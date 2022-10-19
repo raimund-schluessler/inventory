@@ -24,7 +24,6 @@
 namespace OCA\Inventory;
 
 class InvalidAttachmentType extends \Exception {
-
 	/**
 	 * InvalidAttachmentType constructor.
 	 */
