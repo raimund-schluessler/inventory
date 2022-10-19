@@ -6,6 +6,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
@@ -22,7 +25,7 @@ jobs:
       XDEBUG_MODE: coverage
     steps:
     - name: Set up php${{ matrix.php-versions }}
-      uses: shivammathur/setup-php@master
+      uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
         extensions: ctype, curl, dom, gd, gmp, iconv, intl, json, mbstring, openssl, pdo_sqlite, posix, sqlite, xml, zip
@@ -61,7 +64,7 @@ jobs:
 
     # - name: Upload coverage to Codecov
     #   if: ${{ matrix.nextcloud-versions == 'master' }}
-    #   uses: codecov/codecov-action@v1
+    #   uses: codecov/codecov-action@v3
     #   with:
     #     file: nextcloud/apps/inventory/clover.unit.xml
     #     flags: php
