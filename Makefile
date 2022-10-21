@@ -113,8 +113,8 @@ appstore: clean build-js-production
 	--exclude=/.gitignore \
 	--exclude=/.gitlab-ci.yml \
 	--exclude=/.phpunit.result.cache \
-	--exclude=/.php_cs.cache \
-	--exclude=/.php_cs.dist \
+	--exclude=/.php-cs-fixer.cache \
+	--exclude=/.php-cs-fixer.dist.php \
 	--exclude=/.prettierrc.js \
 	--exclude=/.scrutinizer.yml \
 	--exclude=/.stylelintignore \
