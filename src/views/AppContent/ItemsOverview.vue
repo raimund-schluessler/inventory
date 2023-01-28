@@ -106,13 +106,15 @@ import QrScanModal from '../../components/QrScanModal.vue'
 import { encodePath } from '../../utils/encodePath.js'
 
 import { translate as t } from '@nextcloud/l10n'
-import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
-import NcActionInput from '@nextcloud/vue/dist/Components/NcActionInput.js'
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
-import NcActionRouter from '@nextcloud/vue/dist/Components/NcActionRouter.js'
-import NcBreadcrumbs from '@nextcloud/vue/dist/Components/NcBreadcrumbs.js'
-import NcBreadcrumb from '@nextcloud/vue/dist/Components/NcBreadcrumb.js'
-import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip.js'
+import {
+	NcActions,
+	NcActionInput,
+	NcActionButton,
+	NcActionRouter,
+	NcBreadcrumbs,
+	NcBreadcrumb,
+	Tooltip,
+} from '@nextcloud/vue'
 
 import Folder from 'vue-material-design-icons/Folder.vue'
 import InformationOutline from 'vue-material-design-icons/InformationOutline.vue'

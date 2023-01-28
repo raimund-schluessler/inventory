@@ -100,9 +100,11 @@ import { encodePath } from '../../utils/encodePath.js'
 import { showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
-import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
-import NcActionRouter from '@nextcloud/vue/dist/Components/NcActionRouter.js'
+import {
+	NcActions,
+	NcActionButton,
+	NcActionRouter,
+} from '@nextcloud/vue'
 
 import Delete from 'vue-material-design-icons/Delete.vue'
 import InformationOutline from 'vue-material-design-icons/InformationOutline.vue'

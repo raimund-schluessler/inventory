@@ -226,8 +226,10 @@ import Attachments from './Attachments.vue'
 import QrScanModal from './QrScanModal.vue'
 
 import { translate as t } from '@nextcloud/l10n'
-import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
+import {
+	NcActions,
+	NcActionButton,
+} from '@nextcloud/vue'
 
 import Check from 'vue-material-design-icons/Check.vue'
 import Delete from 'vue-material-design-icons/Delete.vue'
