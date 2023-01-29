@@ -51,10 +51,12 @@ import AppNavigationSettings from './components/AppNavigation/AppNavigationSetti
 
 import { subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { translate as t } from '@nextcloud/l10n'
-import NcAppContent from '@nextcloud/vue/dist/Components/NcAppContent.js'
-import NcAppNavigation from '@nextcloud/vue/dist/Components/NcAppNavigation.js'
-import NcAppNavigationItem from '@nextcloud/vue/dist/Components/NcAppNavigationItem.js'
-import NcContent from '@nextcloud/vue/dist/Components/NcContent.js'
+import {
+	NcAppContent,
+	NcAppNavigation,
+	NcAppNavigationItem,
+	NcContent,
+} from '@nextcloud/vue'
 
 import Folder from 'vue-material-design-icons/Folder.vue'
 import MapMarker from 'vue-material-design-icons/MapMarker.vue'

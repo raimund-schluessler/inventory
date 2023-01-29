@@ -160,11 +160,13 @@ import showBarcode from '../mixins/showBarcode.js'
 import { encodePath } from '../utils/encodePath.js'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
-import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
-import NcAppSidebar from '@nextcloud/vue/dist/Components/NcAppSidebar.js'
-import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
-import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
+import {
+	NcActions,
+	NcActionButton,
+	NcAppSidebar,
+	NcEmptyContent,
+	NcLoadingIcon,
+} from '@nextcloud/vue'
 
 import Check from 'vue-material-design-icons/Check.vue'
 import Delete from 'vue-material-design-icons/Delete.vue'

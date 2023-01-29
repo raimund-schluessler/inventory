@@ -233,12 +233,14 @@ import { showError } from '@nextcloud/dialogs'
 import { formatFileSize } from '@nextcloud/files'
 import { translate as t } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
-import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
-import NcBreadcrumbs from '@nextcloud/vue/dist/Components/NcBreadcrumbs.js'
-import NcBreadcrumb from '@nextcloud/vue/dist/Components/NcBreadcrumb.js'
-import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
-import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
+import {
+	NcActions,
+	NcActionButton,
+	NcBreadcrumbs,
+	NcBreadcrumb,
+	NcEmptyContent,
+	NcLoadingIcon,
+} from '@nextcloud/vue'
 
 import Barcode from 'vue-material-design-icons/Barcode.vue'
 import Check from 'vue-material-design-icons/Check.vue'
