@@ -94,12 +94,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:is-selected="isSelected(item)"
 				:collection="collectionType"
 				:class="{ 'dragged': isDragged(item) }"
-				:select-entity="selectItem"
 				:uuid="compUid"
 				:mode="mode"
 				draggable="true"
 				class="entity"
-				@selectItem="selectItem"
+				@select-entity="selectEntity"
 				@dragstart.native="dragStart(item, $event)"
 				@dragend.native="dragEnd"
 				@drop.native="dropped(item, $event)"
@@ -120,10 +119,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:is-selected="isSelected(item)"
 				:collection="collectionType"
 				:class="{ 'dragged': isDragged(item) }"
-				:select-entity="selectItem"
 				:uuid="compUid"
 				:mode="mode"
-				:show-actions="false" />
+				:show-actions="false"
+				@select-entity="selectEntity" />
 		</div>
 		<div id="drag-preview" class="entitytable entitytable--drag-preview">
 			<div v-for="entity in draggedEntities" :key="entity.key" class="row">
@@ -531,14 +530,14 @@ export default {
 				return generateUrl(`svg/inventory/item_${item.icon}?color=${color}`)
 			}
 		},
-		selectItem(item) {
-			if (this.isSelected(item)) {
-				const index = this.selectedEntities.indexOf(item)
+		selectEntity(entity) {
+			if (this.isSelected(entity)) {
+				const index = this.selectedEntities.indexOf(entity)
 				if (index !== -1) {
 					this.selectedEntities.splice(index, 1)
 				}
 			} else {
-				this.selectedEntities.push(item)
+				this.selectedEntities.push(entity)
 			}
 			this.$emit('selected-items-changed', this.selectedItems)
 		},
