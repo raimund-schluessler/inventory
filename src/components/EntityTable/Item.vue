@@ -31,7 +31,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:checked="isSelected"
 				class="selectCheckBox checkbox"
 				type="checkbox">
-			<label :for="`select-item-${entity.id}-${uuid}`" @click.prevent="selectEntity(entity)">
+			<label :for="`select-item-${entity.id}-${uuid}`" @click.stop.prevent="selectEntity(entity)">
 				<span class="hidden-visually">
 					{{ t('inventory', 'Select') }}
 				</span>
