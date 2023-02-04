@@ -22,14 +22,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div :class="{ 'row--selected': isSelected, 'row--deleted': !!deleteTimeout }"
 		class="row row--collection handler"
-		@click.ctrl="selectEntity(entity)">
+		@click.ctrl="selectEntity">
 		<div class="column column--selection">
 			<input :id="`select-folder-${entity.id}-${uuid}`"
 				:value="entity.id"
 				:checked="isSelected"
 				class="selectCheckBox checkbox"
 				type="checkbox">
-			<label v-if="showActions" :for="`select-folder-${entity.id}-${uuid}`" @click.stop.prevent="selectEntity(entity)">
+			<label v-if="showActions" :for="`select-folder-${entity.id}-${uuid}`" @click.stop.prevent="selectEntity">
 				<span class="hidden-visually">
 					{{ t('inventory', 'Select') }}
 				</span>
@@ -143,10 +143,6 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		selectEntity: {
-			type: Function,
-			default: () => {},
-		},
 		uuid: {
 			type: String,
 			required: true,
@@ -156,6 +152,9 @@ export default {
 			default: true,
 		},
 	},
+	emits: [
+		'select-entity',
+	],
 	data() {
 		return {
 			// Deleting
@@ -196,6 +195,10 @@ export default {
 			'deleteFolder',
 			'deletePlace',
 		]),
+
+		selectEntity() {
+			this.$emit('select-entity', this.entity)
+		},
 
 		startRename() {
 			this.newName = this.entity.name

@@ -22,8 +22,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<div :class="{ 'row--selected': isSelected, 'row--has-status': entity.syncStatus }"
 		class="row handler"
-		@click.exact="() => {mode == 'selection' ? selectEntity(entity) : ''}"
-		@click.ctrl="selectEntity(entity)">
+		@click.exact="() => {mode == 'selection' ? selectEntity() : ''}"
+		@click.ctrl="selectEntity">
 		<div class="column column--selection">
 			<input v-if="showActions"
 				:id="`select-item-${entity.id}-${uuid}`"
@@ -31,7 +31,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:checked="isSelected"
 				class="selectCheckBox checkbox"
 				type="checkbox">
-			<label :for="`select-item-${entity.id}-${uuid}`" @click.stop.prevent="selectEntity(entity)">
+			<label :for="`select-item-${entity.id}-${uuid}`" @click.stop.prevent="selectEntity">
 				<span class="hidden-visually">
 					{{ t('inventory', 'Select') }}
 				</span>
@@ -111,10 +111,6 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		selectEntity: {
-			type: Function,
-			default: () => {},
-		},
 		uuid: {
 			type: String,
 			required: true,
@@ -132,6 +128,9 @@ export default {
 			default: 'navigation',
 		},
 	},
+	emits: [
+		'select-entity',
+	],
 	computed: {
 		imageSrc() {
 			if (this.entity.images.length > 0) {
@@ -166,6 +165,10 @@ export default {
 	},
 	methods: {
 		t,
+
+		selectEntity() {
+			this.$emit('select-entity', this.entity)
+		},
 
 		...mapMutations(['setSyncStatus']),
 		resetStatus(entity) {
