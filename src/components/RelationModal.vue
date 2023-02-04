@@ -22,55 +22,45 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<NcModal v-if="modalOpen"
 		:out-transition="true"
-		size="full"
+		size="large"
 		class="relation-modal"
 		@close="closeModal">
 		<div class="content">
 			<div class="header">
 				<span class="title">
-					{{ headerString }}
+					{{ t('inventory', 'Please select the relation of the items:') }}
 				</span>
-				<NcMultiselect :value="relationTypes.find( _ => _.type === relationType )"
-					:multiple="false"
-					:allow-empty="false"
-					track-by="type"
-					:placeholder="t('inventory', 'Select relation type')"
-					label="name"
-					:options="relationTypes"
-					:close-on-select="true"
-					class="multiselect-vue"
-					@input="changeRelationType" />
-				<form class="searchbox"
-					action="#"
-					method="post"
-					role="search"
-					novalidate="">
-					<label for="modalSearchbox" class="hidden-visually">
-						{{ t('inventory', 'Search') }}
-					</label>
-					<div class="searchbox-input">
-						<input id="modalSearchbox"
-							v-model="searchString"
-							name="query"
-							value=""
-							required=""
-							autocomplete="off"
-							type="search">
-						<Magnify class="search" :size="20" fill-color="var(--color-primary-text)" />
-						<button class="close" type="reset" @click="searchString=''">
-							<Close :size="20" fill-color="var(--color-primary-text)" />
-							<span class="hidden-visually">
-								{{ t('inventory', 'Reset search') }}
-							</span>
-						</button>
-					</div>
-				</form>
+				<NcCheckboxRadioSwitch :checked.sync="relationType"
+					value="parent"
+					name="relation_type"
+					type="radio">
+					{{ t('inventory', 'Parent items') }}
+				</NcCheckboxRadioSwitch>
+				<NcCheckboxRadioSwitch :checked.sync="relationType"
+					value="related"
+					name="relation_type"
+					type="radio">
+					{{ t('inventory', 'Related items') }}
+				</NcCheckboxRadioSwitch>
+				<NcCheckboxRadioSwitch :checked.sync="relationType"
+					value="sub"
+					name="relation_type"
+					type="radio">
+					{{ t('inventory', 'Sub items') }}
+				</NcCheckboxRadioSwitch>
+
+				<NcTextField :value.sync="searchString"
+					:label="t('inventory', 'Filter items')"
+					trailing-button-icon="close"
+					:show-trailing-button="searchString !== ''"
+					@trailing-button-click="searchString=''">
+					<Magnify :size="16" />
+				</NcTextField>
 			</div>
 
 			<div class="body">
 				<EntityTable :items="items"
 					:allow-deletion="false"
-					:search-string="searchString"
 					:filter-only="true"
 					mode="selection"
 					@selected-items-changed="selectedItemsChanged" />
@@ -97,23 +87,23 @@ import EntityTable from './EntityTable/EntityTable.vue'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import {
 	NcButton,
+	NcCheckboxRadioSwitch,
 	NcModal,
-	NcMultiselect,
+	NcTextField,
 } from '@nextcloud/vue'
 
 import Magnify from 'vue-material-design-icons/Magnify.vue'
-import Close from 'vue-material-design-icons/Close.vue'
 
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	components: {
-		Close,
 		EntityTable,
 		Magnify,
 		NcButton,
+		NcCheckboxRadioSwitch,
 		NcModal,
-		NcMultiselect,
+		NcTextField,
 	},
 	props: {
 		modalOpen: {
@@ -152,23 +142,20 @@ export default {
 			items: 'getItemCandidates',
 		}),
 
-		headerString() {
-			return t('inventory', 'Please select the relation of the items:')
-		},
 		statusString() {
 			let singular, plural
 			switch (this.relationType) {
 			case 'parent':
-				singular = 'Add %n item as parent item.'
-				plural = 'Add %n items as parent items.'
+				singular = 'Add %n parent item.'
+				plural = 'Add %n parent items.'
 				return n('inventory', singular, plural, this.selectedItems.length)
 			case 'related':
-				singular = 'Add %n item as related item.'
-				plural = 'Add %n items as related items.'
+				singular = 'Add %n related item.'
+				plural = 'Add %n related items.'
 				return n('inventory', singular, plural, this.selectedItems.length)
 			case 'sub':
-				singular = 'Add %n item as sub item.'
-				plural = 'Add %n items as sub items.'
+				singular = 'Add %n sub item.'
+				plural = 'Add %n sub items.'
 				return n('inventory', singular, plural, this.selectedItems.length)
 			default:
 				singular = 'Add %n item.'
@@ -179,6 +166,10 @@ export default {
 	},
 	watch: {
 		modalOpen: 'loadItems',
+		relationType: 'loadItems',
+		searchString(searchString) {
+			this.$store.commit('setSearchString', searchString)
+		},
 	},
 	created() {
 		this.loadItems()
@@ -186,10 +177,6 @@ export default {
 	methods: {
 		t,
 
-		changeRelationType(relation) {
-			this.relationType = relation.type
-			this.loadItems()
-		},
 		closeModal(event) {
 			this.searchString = ''
 			this.$emit('update:modalOpen', false)
@@ -217,117 +204,60 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.relation-modal .modal-container {
-	height: 85% !important;
-	width: 85% !important;
+.relation-modal :deep(.modal-container) {
+		height: 85% !important;
+		width: 85% !important;
+}
 
-	.content {
+.relation-modal .modal-container .content {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	.header {
 		display: flex;
-		flex-direction: column;
-		height: 100%;
-		background-color: var(--color-main-background);
-		border-radius: 2px;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-		transition: all .3s ease;
-		font-family: Helvetica, Arial, sans-serif;
+		align-items: center;
+		flex-wrap: wrap;
+		flex-direction: row;
+		padding: 8px;
 
-		.header {
-			display: flex;
-			align-items: center;
-			flex-wrap: wrap;
-			flex-direction: row;
-			background-color: var(--color-primary);
-			padding: 8px;
-
-			.title {
-				line-height: 38px;
-				padding: 0 20px;
-				padding-left: 6px;
-				font-size: 14px;
-				color: white;
-			}
-
-			.multiselect {
-				z-index: 100;
-				background-color: unset;
-				font-size: 14px;
-
-				@media only screen and (max-width: 400px) {
-					width: 100%;
-				}
-
-				.multiselect__tags {
-					align-items: center;
-
-					.multiselect__input {
-						padding: 0 !important;
-					}
-				}
-			}
-
-			.searchbox {
-				margin-left: auto;
-
-				.searchbox-input input[type='search'] {
-					padding-left: 35px;
-					z-index: 99;
-					font-size: 14px;
-
-					&:not(:valid) ~ .close {
-						display: none;
-					}
-
-					& ~ .close {
-						position: absolute;
-						right: 0;top: 0;
-						background-color: unset;
-						border: none;
-						display: inline;
-						z-index: 999;
-					}
-
-					& ~ .search {
-						position: absolute;
-						left: 0;
-						width: 44px;
-						height: 44px;
-						display: inline-block;
-						padding: 10px;
-						box-sizing: border-box;
-					}
-				}
-			}
+		.title {
+			line-height: 38px;
+			padding: 0 14px;
+			padding-left: 6px;
 		}
 
-		.body {
-			display: flex;
-			flex: 1;
-			overflow-y: auto;
-
-			> div {
-				width: 100%;
-			}
-
-			.row--header {
-				top: 0;
-			}
+		.checkbox-radio-switch {
+			margin: 0 16px;
 		}
 
-		.footer {
-			box-sizing: border-box;
-			height: 44px;
-			margin-bottom: 10px;
+		.input-field {
+			margin-top: var(--default-grid-baseline);
+		}
+	}
 
-			.item-adding-status {
-				line-height: 40px;
-				font-size: 13px;
-				padding-left: 20px;
-			}
+	.body {
+		display: flex;
+		flex: 1;
+		overflow-y: auto;
 
-			.button-vue {
-				margin: 0 10px;
-				float: right;
-			}
+		> div {
+			width: 100%;
+		}
+	}
+
+	.footer {
+		box-sizing: border-box;
+		padding: 8px;
+
+		.item-adding-status {
+			line-height: 40px;
+			padding-left: 6px;
+		}
+
+		.button-vue {
+			margin-right: var(--default-grid-baseline);
+			float: right;
 		}
 	}
 }
