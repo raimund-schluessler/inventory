@@ -725,7 +725,6 @@ export default {
 
 		&--header {
 			position: sticky;
-			top: 44px;
 			height: 50px;
 			background-color: var(--color-main-background-translucent);
 			z-index: 55;
