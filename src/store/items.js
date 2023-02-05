@@ -374,6 +374,26 @@ const mutations = {
 		state.item = payload.item
 	},
 
+	/**
+	 * Set the loading state of an item
+	 *
+	 * @param {object} state Default state
+	 * @param {Item} loading Whether we load an item
+	 */
+	setLoadingItem(state, loading) {
+		state.loadingItem = loading
+	},
+
+	/**
+	 * Set the loading state of the items
+	 *
+	 * @param {object} state Default state
+	 * @param {Item} loading Whether we load items
+	 */
+	setLoadingItems(state, loading) {
+		state.loadingItems = loading
+	},
+
 	setAttachments(state, { attachments }) {
 		Vue.set(state.item, 'attachments', attachments)
 	},
@@ -512,35 +532,35 @@ const mutations = {
 const actions = {
 
 	async loadItems({ commit, state }) {
-		state.loadingItems = true
+		commit('setLoadingItems', true)
 		const response = await Axios.get(generateUrl('apps/inventory/items'))
 		const items = response.data.map(payload => {
 			return new Item(payload)
 		})
 		commit('addItems', items)
-		state.loadingItems = false
+		commit('setLoadingItems', false)
 	},
 
 	async getItemsByFolder({ commit, state }, path) {
-		state.loadingItems = true
+		commit('setLoadingItems', true)
 		commit('setItems', [])
 		const response = await Axios.post(generateUrl('apps/inventory/items/folder'), { path })
 		const items = response.data.map(payload => {
 			return new Item(payload)
 		})
 		commit('setItems', items)
-		state.loadingItems = false
+		commit('setLoadingItems', false)
 	},
 
 	async getItemsByPlace({ commit, state }, path) {
-		state.loadingItems = true
+		commit('setLoadingItems', true)
 		commit('setItems', [])
 		const response = await Axios.post(generateUrl('apps/inventory/items/place'), { path })
 		const items = response.data.map(payload => {
 			return new Item(payload)
 		})
 		commit('setItems', items)
-		state.loadingItems = false
+		commit('setLoadingItems', false)
 	},
 
 	async createItems(context, items) {
@@ -561,7 +581,7 @@ const actions = {
 	},
 
 	async getItemById({ commit }, itemID) {
-		state.loadingItem = true
+		commit('setLoadingItem', true)
 		try {
 			const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}`))
 			const item = new Item(response.data)
@@ -569,7 +589,7 @@ const actions = {
 		} catch {
 			commit('setItem', { item: null })
 		}
-		state.loadingItem = false
+		commit('setLoadingItem', false)
 	},
 
 	async getAttachments({ commit }, itemID) {
@@ -699,7 +719,7 @@ const actions = {
 		}
 	},
 	async loadItemCandidates({ commit }, parameters) {
-		state.loadingItems = true
+		commit('setLoadingItems', true)
 		try {
 			commit('setItemCandidates', { itemCandidates: [] })
 			const response = await Axios.get(generateUrl(`apps/inventory/item/${parameters.itemID}/candidates/${parameters.relationType}`))
@@ -710,7 +730,7 @@ const actions = {
 		} catch {
 			commit('setItemCandidates', { itemCandidates: [] })
 		}
-		state.loadingItems = false
+		commit('setLoadingItems', false)
 	},
 	async deleteItem({ commit }, item) {
 		try {
