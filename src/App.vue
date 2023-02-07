@@ -149,6 +149,7 @@ body {
 	position: sticky;
 	top: 0;
 	background-color: var(--color-main-background-translucent);
+	z-index: 1000;
 
 	.breadcrumb {
 		width: calc(100% - 44px);
