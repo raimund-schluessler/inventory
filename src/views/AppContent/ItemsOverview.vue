@@ -67,7 +67,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ t('inventory', 'Show details') }}
 				</NcActionRouter>
 				<NcActionButton v-if="!addingCollection"
-					@click.prevent.stop="openCollectionInput()">
+					@click.prevent.stop="openCollectionInput">
 					<template #icon>
 						<Folder :size="20" />
 					</template>
@@ -76,17 +76,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<NcActionInput v-if="addingCollection"
 					v-tooltip="{
 						show: collectionNameError,
-						content: errorString,
+						content: collectionNameErrorString,
 						trigger: 'manual',
 					}"
-					icon=""
+					:value.sync="newCollectionName"
 					:class="{ 'error': collectionNameError }"
-					@submit="addCollection"
-					@input="checkCollectionName">
+					@submit="addCollection">
 					<template #icon>
 						<Folder :size="20" />
 					</template>
-					{{ collection === 'places' ? t('inventory', 'New Place') : t('inventory', 'New Folder') }}
 				</NcActionInput>
 			</NcActions>
 		</div>
@@ -169,8 +167,7 @@ export default {
 			addingCollection: false,
 			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
 			boundaries: document.querySelector('#content-vue'),
-			collectionNameError: false,
-			errorString: null,
+			newCollectionName: '',
 			qrModalOpen: false,
 			qrTarget: '',
 			statusMessage: '',
@@ -225,6 +222,24 @@ export default {
 		addItemPath() {
 			const encodedPath = encodePath(this.path)
 			return `/${this.collection}/${(encodedPath) ? encodedPath + '/' : ''}&additems`
+		},
+
+		collectionNameError() {
+			return !!this.collectionNameErrorString
+		},
+
+		collectionNameErrorString() {
+			if (this.newCollectionName === '') {
+				return this.collection === 'places'
+					? t('inventory', 'Place name cannot be empty.')
+					: t('inventory', 'Folder name cannot be empty.')
+			}
+			if (this.newCollectionName.includes('/')) {
+				return this.collection === 'places'
+					? t('inventory', '"/" is not allowed inside a place name.')
+					: t('inventory', '"/" is not allowed inside a folder name.')
+			}
+			return ''
 		},
 	},
 	watch: {
@@ -324,32 +339,13 @@ export default {
 			if (this.collectionNameError) {
 				return
 			}
-			const name = event.target.querySelector('input[type=text]').value
 			if (this.collection === 'places') {
-				await this.createPlace({ name, path: this.path })
+				await this.createPlace({ name: this.newCollectionName, path: this.path })
 			} else {
-				await this.createFolder({ name, path: this.path })
+				await this.createFolder({ name: this.newCollectionName, path: this.path })
 			}
 			this.addingCollection = false
 			this.actionsOpen = false
-		},
-
-		checkCollectionName(event) {
-			const newName = event.target.value
-			if (newName === '') {
-				this.collectionNameError = true
-				this.errorString = this.collection === 'places'
-					? t('inventory', 'Place name cannot be empty.')
-					: t('inventory', 'Folder name cannot be empty.')
-			} else if (newName.includes('/')) {
-				this.collectionNameError = true
-				this.errorString = this.collection === 'places'
-					? t('inventory', '"/" is not allowed inside a place name.')
-					: t('inventory', '"/" is not allowed inside a folder name.')
-			} else {
-				this.collectionNameError = false
-				this.errorString = null
-			}
 		},
 
 		...mapActions([
