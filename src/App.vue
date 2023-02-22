@@ -26,7 +26,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<NcAppNavigationItem v-for="view in views"
 					:key="view.id"
 					:to="`/${view.id}/`"
-					:title="view.name">
+					:name="view.name">
 					<template #icon>
 						<component :is="view.icon"
 							:size="20" />
