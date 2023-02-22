@@ -74,13 +74,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ addCollectionString }}
 				</NcActionButton>
 				<NcActionInput v-if="addingCollection"
-					v-tooltip="{
-						show: collectionNameError,
-						content: collectionNameErrorString,
-						trigger: 'manual',
-					}"
 					:value.sync="newCollectionName"
-					:class="{ 'error': collectionNameError }"
+					:helper-text="collectionNameErrorString"
+					:error="collectionNameError"
 					@submit="addCollection">
 					<template #icon>
 						<Folder :size="20" />
