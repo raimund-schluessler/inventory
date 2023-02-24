@@ -38,9 +38,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</label>
 		</div>
 		<div class="column">
-			<component :is="itemRoute ? 'RouterLink': 'a'"
+			<component :is="itemRoute ? 'RouterLink' : 'a'"
 				:to="itemRoute"
-				tag="a"
 				@click.ctrl.prevent>
 				<div class="thumbnail">
 					<img v-if="entity.images.length > 0" :src="imageSrc" class="thumbnail__image">
@@ -53,9 +52,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</component>
 		</div>
 		<div class="column">
-			<component :is="itemRoute ? 'RouterLink': 'a'"
+			<component :is="itemRoute ? 'RouterLink' : 'a'"
 				:to="itemRoute"
-				tag="a"
 				@click.ctrl.prevent>
 				<div class="text" :class="{'text--singleline': showInstance}">
 					<span>{{ entity.maker }}</span>
@@ -64,9 +62,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			</component>
 		</div>
 		<div class="column">
-			<component :is="itemRoute ? 'RouterLink': 'a'"
+			<component :is="itemRoute ? 'RouterLink' : 'a'"
 				:to="itemRoute"
-				tag="a"
 				@click.ctrl.prevent>
 				<div class="text" :class="{'text--singleline': showInstance}">
 					<span>{{ entity.description }}</span>
