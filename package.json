@@ -36,7 +36,7 @@
 		"bwip-js": "3.3.0",
 		"jspdf": "2.5.1",
 		"p-queue": "6.6.2",
-		"papaparse": "5.3.2",
+		"papaparse": "5.4.0",
 		"search-query-parser": "1.6.0",
 		"uuid": "9.0.0",
 		"v-click-outside": "3.2.0",
