@@ -40,7 +40,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 							<span class="filesize">{{ bytes(attachment.extendedData.filesize) }}</span>
 							<span class="filedate">{{ relativeDate(attachment.lastModified) }}</span>
-							<span class="filedate">{{ t('inventory', 'by') + ' ' + attachment.createdBy }}</span>
+							<span class="filedate">{{ t('inventory', 'by {username}', { username: attachment.createdBy }) }}</span>
 						</a>
 					</div>
 					<NcActions :boundaries-element="boundaries">
@@ -421,6 +421,7 @@ export default {
 				.filedate {
 					font-size: 90%;
 					color: var(--color-text-lighter);
+					padding-right: 2px;
 				}
 			}
 		}
