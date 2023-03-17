@@ -53,7 +53,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</NcActionButton>
 					<NcActionButton icon="icon-rename"
 						:close-after-click="true"
-						@click="toggleEditItem">
+						@click="startEditingItem">
 						<template #icon>
 							<Pencil :size="20" />
 						</template>
@@ -89,7 +89,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Properties') }}</span>
 					</h3>
-					<div v-click-outside="hideEditItem" class="table table--properties">
+					<div v-click-outside="stopEditingItem" class="table table--properties">
 						<div v-for="itemProperty in itemProperties" :key="itemProperty.key" class="row">
 							<div class="column">
 								<span>{{ itemProperty.name }}</span>
@@ -254,7 +254,7 @@ import Plus from 'vue-material-design-icons/Plus.vue'
 import Upload from 'vue-material-design-icons/Upload.vue'
 
 import bwipjs from 'bwip-js'
-import ClickOutside from 'v-click-outside'
+import { vOnClickOutside as ClickOutside } from '@vueuse/components'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -283,7 +283,7 @@ export default {
 		Tag,
 	},
 	directives: {
-		ClickOutside: ClickOutside.directive,
+		ClickOutside,
 		focus,
 	},
 	mixins: [showBarcode],
@@ -503,18 +503,12 @@ export default {
 			})
 		},
 
-		hideEditItem() {
-			if (this.closing) {
-				this.editingItem = false
-			}
-			this.closing = true
+		stopEditingItem() {
+			this.editingItem = false
 		},
-		toggleEditItem() {
-			this.editingItem = !this.editingItem
-			if (this.editingItem) {
-				this.editedItem = this.item.response
-				this.closing = false
-			}
+		startEditingItem() {
+			this.editingItem = true
+			this.editedItem = this.item.response
 		},
 		async saveItem() {
 			await this.editItem(this.item)

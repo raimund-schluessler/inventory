@@ -46,7 +46,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<span v-if="!renaming">{{ entity.name }}</span>
 				</div>
 			</RouterLink>
-			<form v-if="renaming" v-click-outside="{ handler: finishRenaming, middleware: checkClickOutside }" @submit.prevent="rename">
+			<form v-if="renaming" v-click-outside="finishRenaming" @submit.prevent="rename">
 				<input v-model="newName"
 					v-focus
 					@keyup="checkName">
@@ -111,7 +111,7 @@ import Pencil from 'vue-material-design-icons/Pencil.vue'
 import Undo from 'vue-material-design-icons/Undo.vue'
 
 import { mapActions } from 'vuex'
-import ClickOutside from 'v-click-outside'
+import { vOnClickOutside as ClickOutside } from '@vueuse/components'
 
 const CD_DURATION = 7
 
@@ -126,7 +126,7 @@ export default {
 		Undo,
 	},
 	directives: {
-		ClickOutside: ClickOutside.directive,
+		ClickOutside,
 		focus,
 	},
 	props: {
@@ -204,7 +204,7 @@ export default {
 			this.renaming = true
 		},
 
-		finishRenaming($event) {
+		finishRenaming() {
 			this.renaming = false
 		},
 
@@ -221,10 +221,6 @@ export default {
 			}
 		},
 
-		checkClickOutside($event) {
-			return !$event.target.classList.contains('startRename')
-		},
-
 		/**
 		 * Check if the name is allowed
 		 *
@@ -232,7 +228,7 @@ export default {
 		 */
 		checkName($event) {
 			if ($event.keyCode === 27) {
-				this.finishRenaming($event)
+				this.finishRenaming()
 			}
 		},
 
