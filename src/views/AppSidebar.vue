@@ -178,7 +178,7 @@ import QrcodePlus from 'vue-material-design-icons/QrcodePlus.vue'
 import QrcodeScan from 'vue-material-design-icons/QrcodeScan.vue'
 import TextBoxOutline from 'vue-material-design-icons/TextBoxOutline.vue'
 
-import ClickOutside from 'v-click-outside'
+import { vOnClickOutside as ClickOutside } from '@vueuse/components'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -200,7 +200,7 @@ export default {
 		TextBoxOutline,
 	},
 	directives: {
-		ClickOutside: ClickOutside.directive,
+		ClickOutside,
 		focus,
 	},
 	mixins: [showBarcode],

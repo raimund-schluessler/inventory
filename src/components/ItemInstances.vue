@@ -30,7 +30,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="column column--actions">
 					<NcActions :boundaries-element="boundaries">
-						<NcActionButton @click="toggleInstanceInput">
+						<NcActionButton @click="showInstanceInput">
 							<template #icon>
 								<Plus :size="20" />
 							</template>
@@ -60,13 +60,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</template>
 					<div class="column column--actions">
 						<NcActions :boundaries-element="boundaries">
-							<NcActionButton :close-after-click="true" @click="toggleUuidInput(instance)">
+							<NcActionButton :close-after-click="true" @click="showUuidInput(instance)">
 								<template #icon>
 									<Plus :size="20" />
 								</template>
 								{{ t('inventory', 'Add UUID') }}
 							</NcActionButton>
-							<NcActionButton @click="toggleEditInstance(instance)">
+							<NcActionButton @click="showEditInstance(instance)">
 								<template #icon>
 									<Pencil :size="20" />
 								</template>
@@ -193,7 +193,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<div v-if="addingInstance" v-click-outside="hideInstanceInput" class="row row--properties">
 				<div class="column column--narrow-header column--narrow-spacer" />
 				<template v-for="instanceProperty in instanceProperties">
-					<div :key="instanceProperty.key" class="column column--narrow-header">
+					<div :key="`label-${instanceProperty.key}`" class="column column--narrow-header">
 						<span>{{ instanceProperty.name }}</span>
 					</div>
 					<div :key="instanceProperty.key" class="column column--input">
@@ -238,7 +238,7 @@ import Plus from 'vue-material-design-icons/Plus.vue'
 import Qrcode from 'vue-material-design-icons/Qrcode.vue'
 import QrcodeScan from 'vue-material-design-icons/QrcodeScan.vue'
 
-import ClickOutside from 'v-click-outside'
+import { vOnClickOutside as ClickOutside } from '@vueuse/components'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -255,7 +255,7 @@ export default {
 		QrcodeScan,
 	},
 	directives: {
-		ClickOutside: ClickOutside.directive,
+		ClickOutside,
 		focus,
 	},
 	props: {
@@ -303,7 +303,6 @@ export default {
 			addingInstance: false,
 			newInstance: {},
 			editedInstance: {},
-			closing: true,
 			qrModalOpen: false,
 			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
 			boundaries: document.querySelector('#content-vue'),
@@ -342,53 +341,40 @@ export default {
 			this.qrModalOpen = false
 		},
 
-		toggleEditInstance(instance) {
+		showEditInstance(instance) {
 			if (this.editedInstance.id === instance.id) {
 				this.editedInstance = {}
 			} else {
 				this.editedInstance = Object.assign({}, instance)
-				this.closing = false
 			}
 		},
 
 		hideEditInstance(instance) {
-			if (this.closing && this.editedInstance.id === instance.id) {
+			if (this.editedInstance.id === instance.id) {
 				this.editedInstance = {}
 			}
-			this.closing = true
 		},
 
-		toggleInstanceInput() {
-			this.addingInstance = !this.addingInstance
-			// Temporarily disable the click-outside-directive
-			if (this.addingInstance) {
-				this.closing = false
-			}
+		showInstanceInput() {
+			this.addingInstance = true
 		},
 
 		hideInstanceInput(e) {
-			if (this.closing) {
-				this.addingInstance = false
-			}
-			this.closing = true
+			this.addingInstance = false
 		},
 
-		toggleUuidInput(instance) {
+		showUuidInput(instance) {
 			if (this.addUuidTo === instance.id) {
 				this.addUuidTo = null
 			} else {
 				this.addUuidTo = instance.id
-				// Temporarily disable the click-outside-directive
-				this.closing = false
 			}
 		},
 
 		hideUuidInput(instance) {
-			if (this.closing && instance.id === this.addUuidTo) {
+			if (instance.id === this.addUuidTo) {
 				this.addUuidTo = null
 			}
-			// Enable closing the menus again
-			this.closing = true
 		},
 
 		getPlace(place) {
