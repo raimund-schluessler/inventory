@@ -266,7 +266,7 @@ const mutations = {
 	 * Unlinks parent items
 	 *
 	 * @param {object} state Default state
-	 * @param {Item} items The items to unlink
+	 * @param {Array<Item>} items The items to unlink
 	 */
 	unlinkParents(state, items) {
 		items.forEach((item) => {
@@ -280,7 +280,7 @@ const mutations = {
 	 * Unlinks related items
 	 *
 	 * @param {object} state Default state
-	 * @param {Item} items The items to unlink
+	 * @param {Array<Item>} items The items to unlink
 	 */
 	unlinkRelated(state, items) {
 		items.forEach((item) => {
@@ -294,7 +294,7 @@ const mutations = {
 	 * Unlinks sub items
 	 *
 	 * @param {object} state Default state
-	 * @param {Item} items The items to unlink
+	 * @param {Array<Item>} items The items to unlink
 	 */
 	unlinkSub(state, items) {
 		items.forEach((item) => {
