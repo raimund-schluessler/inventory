@@ -168,6 +168,7 @@ export default {
 			qrTarget: '',
 			statusMessage: '',
 			resetStatusTimeout: null,
+			abortController: null,
 		}
 	},
 	computed: {
@@ -248,6 +249,10 @@ export default {
 	created() {
 		this.loadCollectionsAndItems(this.path)
 	},
+	beforeDestroy() {
+		// Abort possibly running requests
+		this.abortController?.abort()
+	},
 	methods: {
 		t,
 		encodePath,
@@ -318,12 +323,15 @@ export default {
 		},
 
 		loadCollectionsAndItems(path) {
+			// Abort possibly running requests from previous paths
+			this.abortController?.abort()
+			this.abortController = new AbortController()
 			if (this.collection === 'places') {
-				this.getPlacesByPlace(path)
-				this.getItemsByPlace(path)
+				this.getPlacesByPlace({ path, signal: this.abortController.signal })
+				this.getItemsByPlace({ path, signal: this.abortController.signal })
 			} else {
-				this.getFoldersByFolder(path)
-				this.getItemsByFolder(path)
+				this.getFoldersByFolder({ path, signal: this.abortController.signal })
+				this.getItemsByFolder({ path, signal: this.abortController.signal })
 			}
 		},
 

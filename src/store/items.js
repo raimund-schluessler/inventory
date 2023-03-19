@@ -39,7 +39,7 @@ Vue.use(Vuex)
 const state = {
 	items: {},
 	item: null,
-	loadingItems: false,
+	runningItemsRequests: 0,
 	loadingItem: false,
 	loadingAttachments: [],
 	loadingInstanceAttachments: [],
@@ -114,7 +114,7 @@ const getters = {
 	 * @return {boolean} Are we loading items
 	 */
 	loadingItems: (state) => {
-		return state.loadingItems
+		return state.runningItemsRequests > 0
 	},
 
 	/**
@@ -378,7 +378,7 @@ const mutations = {
 	 * Set the loading state of an item
 	 *
 	 * @param {object} state Default state
-	 * @param {Item} loading Whether we load an item
+	 * @param {boolean} loading Whether we load an item
 	 */
 	setLoadingItem(state, loading) {
 		state.loadingItem = loading
@@ -388,10 +388,14 @@ const mutations = {
 	 * Set the loading state of the items
 	 *
 	 * @param {object} state Default state
-	 * @param {Item} loading Whether we load items
+	 * @param {boolean} loading Whether we load items
 	 */
 	setLoadingItems(state, loading) {
-		state.loadingItems = loading
+		if (loading) {
+			state.runningItemsRequests++
+		} else {
+			state.runningItemsRequests--
+		}
 	},
 
 	setAttachments(state, { attachments }) {
@@ -541,26 +545,34 @@ const actions = {
 		commit('setLoadingItems', false)
 	},
 
-	async getItemsByFolder({ commit, state }, path) {
-		commit('setLoadingItems', true)
+	async getItemsByFolder({ commit, state }, { path, signal = null }) {
+		await commit('setLoadingItems', true)
 		commit('setItems', [])
-		const response = await Axios.post(generateUrl('apps/inventory/items/folder'), { path })
-		const items = response.data.map(payload => {
-			return new Item(payload)
-		})
-		commit('setItems', items)
-		commit('setLoadingItems', false)
+		try {
+			const response = await Axios.post(generateUrl('apps/inventory/items/folder'), { path }, { signal })
+			const items = response.data.map(payload => {
+				return new Item(payload)
+			})
+			commit('setItems', items)
+		} catch (error) {
+		} finally {
+			await commit('setLoadingItems', false)
+		}
 	},
 
-	async getItemsByPlace({ commit, state }, path) {
+	async getItemsByPlace({ commit, state }, { path, signal = null }) {
 		commit('setLoadingItems', true)
 		commit('setItems', [])
-		const response = await Axios.post(generateUrl('apps/inventory/items/place'), { path })
-		const items = response.data.map(payload => {
-			return new Item(payload)
-		})
-		commit('setItems', items)
-		commit('setLoadingItems', false)
+		try {
+			const response = await Axios.post(generateUrl('apps/inventory/items/place'), { path }, { signal })
+			const items = response.data.map(payload => {
+				return new Item(payload)
+			})
+			commit('setItems', items)
+		} catch (error) {
+		} finally {
+			commit('setLoadingItems', false)
+		}
 	},
 
 	async createItems(context, items) {
