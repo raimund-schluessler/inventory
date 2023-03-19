@@ -83,7 +83,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div v-else
 					:key="`editinstance-${instance.id}`"
-					v-click-outside="() => { hideEditInstance(instance) }"
+					v-click-outside="($event) => { hideEditInstance(instance, $event) }"
 					class="row row--properties">
 					<div class="column column--narrow-header column--narrow-spacer" />
 					<template v-for="instanceProperty in instanceProperties">
@@ -94,6 +94,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<div v-if="instanceProperty.key === 'place'">
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</div>
+							<NcDatetimePicker v-else-if="instanceProperty.key === 'date'"
+								appendToBody
+								:value="new Date(editedInstance.date)"
+								format="YYYY-MM-DD"
+								type="date"
+								@change="setDate" />
 							<input v-else
 								v-model="editedInstance[instanceProperty.key]"
 								type="text"
@@ -229,6 +235,7 @@ import { translate as t } from '@nextcloud/l10n'
 import {
 	NcActions,
 	NcActionButton,
+	NcDatetimePicker,
 } from '@nextcloud/vue'
 
 import Check from 'vue-material-design-icons/Check.vue'
@@ -238,6 +245,7 @@ import Plus from 'vue-material-design-icons/Plus.vue'
 import Qrcode from 'vue-material-design-icons/Qrcode.vue'
 import QrcodeScan from 'vue-material-design-icons/QrcodeScan.vue'
 
+import { formatISO } from 'date-fns'
 import { vOnClickOutside as ClickOutside } from '@vueuse/components'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -245,6 +253,7 @@ export default {
 	components: {
 		NcActions,
 		NcActionButton,
+		NcDatetimePicker,
 		Attachments,
 		QrScanModal,
 		Check,
@@ -319,6 +328,9 @@ export default {
 		instanceActive(instance) {
 			return +instance.id === +this.instanceId
 		},
+		setDate(date) {
+			this.editedInstance.date = formatISO(date, { representation: 'date' })
+		},
 		/**
 		 * Checks that the new UUID is valid and not already used for this instance.
 		 *
@@ -349,7 +361,15 @@ export default {
 			}
 		},
 
-		hideEditInstance(instance) {
+		hideEditInstance(instance, $event) {
+			/**
+			 * If the click originates from the datepicker, we do nothing.
+			 */
+			 if ($event.target.closest('.mx-datepicker-main')
+				|| $event.target.closest('.mx-table')
+				|| $event.target.classList.contains('mx-btn')) {
+				return
+			}
 			if (this.editedInstance.id === instance.id) {
 				this.editedInstance = {}
 			}
@@ -452,7 +472,7 @@ export default {
 
 	&--instances {
 		.row {
-			grid-template-columns: 75px 75px 90px 110px 2fr 1fr 2fr 44px;
+			grid-template-columns: 75px 75px 110px 140px 2fr 1fr 2fr 44px;
 
 			&--column-2 {
 				grid-template-columns: 100px 1fr;
