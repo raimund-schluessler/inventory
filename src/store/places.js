@@ -36,7 +36,7 @@ Vue.use(Vuex)
 const state = {
 	places: {},
 	place: null,
-	loading: false,
+	runningPlacesRequests: 0,
 	loadingPlace: false,
 }
 
@@ -59,7 +59,7 @@ const getters = {
 	 * @return {boolean} Are we loading places
 	 */
 	loadingPlaces: (state) => {
-		return state.loading
+		return state.runningPlacesRequests > 0
 	},
 }
 
@@ -72,6 +72,20 @@ const mutations = {
 	 */
 	setPlaces(state, payload) {
 		state.places = payload.places
+	},
+
+	/**
+	 * Set the loading state of the places
+	 *
+	 * @param {object} state Default state
+	 * @param {boolean} loading Whether we load places
+	 */
+	setLoadingPlaces(state, loading) {
+		if (loading) {
+			state.runningPlacesRequests++
+		} else {
+			state.runningPlacesRequests--
+		}
 	},
 
 	setPlace(state, payload) {
@@ -179,11 +193,11 @@ const actions = {
 	 * @param {string} path The path to look at
 	 * @return {Promise}
 	 */
-	async getPlacesByPlace({ commit, state }, path) {
-		state.loading = true
+	async getPlacesByPlace({ commit, state }, { path, signal = null }) {
+		commit('setLoadingPlaces', true)
 		try {
 			commit('setPlaces', { places: [] })
-			const response = await Axios.post(generateUrl('apps/inventory/places'), { path })
+			const response = await Axios.post(generateUrl('apps/inventory/places'), { path }, { signal })
 			const places = response.data.map(payload => {
 				return new Place(payload)
 			})
@@ -191,7 +205,7 @@ const actions = {
 		} catch {
 			console.debug('Could not load the places.')
 		}
-		state.loading = false
+		commit('setLoadingPlaces', false)
 	},
 
 	async getPlaceByPath({ commit }, path) {

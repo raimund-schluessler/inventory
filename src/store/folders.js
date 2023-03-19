@@ -34,6 +34,7 @@ Vue.use(Vuex)
 const state = {
 	folders: {},
 	loading: false,
+	runningFoldersRequests: 0,
 }
 
 const getters = {
@@ -52,7 +53,7 @@ const getters = {
 	 * @return {boolean} Are we loading folders
 	 */
 	loadingFolders: (state) => {
-		return state.loading
+		return state.runningFoldersRequests > 0
 	},
 }
 
@@ -65,6 +66,20 @@ const mutations = {
 	 */
 	setFolders(state, payload) {
 		state.folders = payload.folders
+	},
+
+	/**
+	 * Set the loading state of the folders
+	 *
+	 * @param {object} state Default state
+	 * @param {boolean} loading Whether we load folders
+	 */
+	setLoadingFolders(state, loading) {
+		if (loading) {
+			state.runningFoldersRequests++
+		} else {
+			state.runningFoldersRequests--
+		}
 	},
 
 	/**
@@ -116,11 +131,11 @@ const actions = {
 	 * @param {string} path The path to look at
 	 * @return {Promise}
 	 */
-	async getFoldersByFolder({ commit, state }, path) {
-		state.loading = true
+	async getFoldersByFolder({ commit, state }, { path, signal = null }) {
+		commit('setLoadingFolders', true)
 		try {
 			commit('setFolders', { folders: [] })
-			const response = await Axios.post(generateUrl('apps/inventory/folders'), { path })
+			const response = await Axios.post(generateUrl('apps/inventory/folders'), { path }, { signal })
 			const folders = response.data.map(payload => {
 				return new Folder(payload)
 			})
@@ -128,7 +143,7 @@ const actions = {
 		} catch {
 			console.debug('Could not load the folders.')
 		}
-		state.loading = false
+		commit('setLoadingFolders', false)
 	},
 
 	async createFolder(context, { name, path }) {
