@@ -205,8 +205,13 @@ export default {
 
 <style lang="scss" scoped>
 .relation-modal :deep(.modal-container) {
-		height: 85% !important;
-		width: 85% !important;
+		min-height: 85% !important;
+		height: 0; // we have to set a height to make the children grow
+		min-width: 85% !important;
+
+		@media only screen and (max-width: 512px) {
+			height: calc(100% - var(--header-height));
+		}
 }
 
 .relation-modal .modal-container .content {

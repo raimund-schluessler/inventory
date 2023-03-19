@@ -138,6 +138,13 @@ body {
 		font-size: 16px !important;
 	}
 }
+// Adjust app-navigation-toggle position
+#app-navigation-vue .app-navigation-toggle {
+	@media only screen and (max-width: 500px) {
+		right: 0 !important;
+		top: 0 !important;
+	}
+}
 .folder-icon {
 	color: var(--color-primary);
 }
@@ -150,6 +157,12 @@ body {
 	top: 0;
 	background-color: var(--color-main-background-translucent);
 	z-index: 1000;
+
+	@media only screen and (max-width: 500px) {
+		padding-left: 44px;
+		padding-top: 0;
+		height: 44px;
+	}
 
 	.breadcrumb {
 		width: calc(100% - 44px);
