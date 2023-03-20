@@ -60,7 +60,7 @@ export default class Item {
 		this._comment = this.response.comment || ''
 		this._type = this.response.type || ''
 		this._icon = this.response.icon || ''
-		this._tags = this.response.categories || []
+		this._tags = this.response.tags || []
 		this._instances = this.response.instances || []
 		this._isInstance = this.response.isInstance || false
 		this._attachments = this.response.attachments || []
@@ -348,7 +348,7 @@ export default class Item {
 	 */
 	set tags(tags) {
 		this.response.tags = tags
-		this._tags = this.response.categories || ''
+		this._tags = this.response.tags || ''
 	}
 
 	/**

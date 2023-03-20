@@ -24,7 +24,7 @@ namespace OCA\Inventory\Db;
 
 use OCP\AppFramework\Db\Entity;
 
-class Itemcategories extends Entity {
+class ItemTags extends Entity {
 	public $id;
 	public $categoryid;
 	public $uid;
@@ -33,6 +33,6 @@ class Itemcategories extends Entity {
 	public function __construct() {
 		// add types in constructor
 		$this->addType('itemid', 'integer');
-		$this->addType('categoryid', 'integer');
+		$this->addType('tagid', 'integer');
 	}
 }

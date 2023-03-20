@@ -14,7 +14,7 @@ const itemsData = [
 		maker: 'Maker1',
 		comment: 'Comment1',
 		iconurl: 'icon.svg',
-		categories: [
+		tags: [
 			{
 				name: 'Cat1',
 				id: 1,
@@ -30,7 +30,7 @@ const itemsData = [
 		name: 'Item2',
 		maker: 'Maker1',
 		comment: 'Comment2 Maker1 is good',
-		categories: [
+		tags: [
 			{
 				name: 'Cat1',
 				id: 1,
@@ -42,7 +42,7 @@ const itemsData = [
 		name: 'Item3',
 		maker: 'Maker2',
 		comment: 'Comment3',
-		categories: [
+		tags: [
 			{
 				name: 'Cat3',
 				id: 3,

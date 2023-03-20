@@ -31,67 +31,67 @@ use Test\TestCase;
 /**
  * @group DB
  */
-class CategoryMapperTest extends TestCase {
+class TagMapperTest extends TestCase {
 	/** @var IDBConnection */
 	private $dbConnection;
-	/** @var CategoryMapper */
-	private $categoryMapper;
+	/** @var TagMapper */
+	private $tagMapper;
 
 	// Data
-	private $categories;
-	private $categoriesById = [];
+	private $tags;
+	private $tagsById = [];
 
 	public function setup(): void {
 		parent::setUp();
 
 		$this->dbConnection = \OC::$server->getDatabaseConnection();
-		$this->categoryMapper = new CategoryMapper(
+		$this->tagMapper = new TagMapper(
 			$this->dbConnection
 		);
-		$this->categories = [
-			$this->createCategoryEntity('Languages', null),
-			$this->createCategoryEntity('Javascript', 1),
-			$this->createCategoryEntity('PHP', 1),
-			$this->createCategoryEntity('C++', 1)
+		$this->tags = [
+			$this->createTagEntity('Languages', null),
+			$this->createTagEntity('Javascript', 1),
+			$this->createTagEntity('PHP', 1),
+			$this->createTagEntity('C++', 1)
 		];
-		foreach ($this->categories as $category) {
-			$entry = $this->categoryMapper->insert($category);
+		foreach ($this->tags as $tag) {
+			$entry = $this->tagMapper->insert($tag);
 			$entry->resetUpdatedFields();
-			$this->categoriesById[$entry->getId()] = $entry;
+			$this->tagsById[$entry->getId()] = $entry;
 		}
 	}
 
-	private function createCategoryEntity($name, $parentId) {
-		$category = new Category();
-		$category->setUid('admin');
-		$category->setName($name);
-		$category->setParentid($parentId);
-		return $category;
+	private function createTagEntity($name, $parentId) {
+		$tag = new Tag();
+		$tag->setUid('admin');
+		$tag->setName($name);
+		$tag->setParentid($parentId);
+		return $tag;
 	}
 
 	public function testFind() {
 		$uid = 'admin';
-		foreach ($this->categoriesById as $id => $category) {
-			$this->assertEquals($category, $this->categoryMapper->findCategory($category->getId(), $uid));
+		foreach ($this->tagsById as $id => $tag) {
+			$this->assertEquals($tag, $this->tagMapper->findTag($tag->getId(), $uid));
 		}
 	}
 	
 	public function testFindNotFound() {
-		$categoryId = 10;
+		$tagId = 10;
 		$uid = 'admin';
-		$this->assertEquals(false, $this->categoryMapper->findCategory($categoryId, $uid));
+		$this->assertEquals(false, $this->tagMapper->findTag($tagId, $uid));
 	}
 	
-	public function testFindCategoryByName() {
+	public function testFindTagByName() {
 		$name = 'Languages';
 		$uid = 'admin';
-		$this->assertEquals($this->categories[0], $this->categoryMapper->findCategoryByName($name, $uid));
+		$this->assertEquals($this->tags[0], $this->tagMapper->findTagByName($name, $uid));
 	}
 	
 	public function testFindByNameNotFound() {
 		$name = 'Ruby';
 		$uid = 'admin';
-		$this->assertEquals(false, $this->categoryMapper->findCategoryByName($name, $uid));
+		$this->assertEquals(false, $this->tagMapper->findTagByName($name, $uid));
 	}
 
 	public function testAddAndFind() {
@@ -99,25 +99,25 @@ class CategoryMapperTest extends TestCase {
 		$uid = 'admin';
 		$parentId = null;
 
-		$entry = $this->categoryMapper->add($name, $uid, $parentId);
+		$entry = $this->tagMapper->add($name, $uid, $parentId);
 		$entry->resetUpdatedFields();
 
-		$category = new Category();
-		$category->setUid($uid);
-		$category->setName($name);
-		$category->setParentid($parentId);
-		$category->setId($entry->getId());
-		$category->resetUpdatedFields();
+		$tag = new Tag();
+		$tag->setUid($uid);
+		$tag->setName($name);
+		$tag->setParentid($parentId);
+		$tag->setId($entry->getId());
+		$tag->resetUpdatedFields();
 
-		$this->assertEquals($category, $entry);
+		$this->assertEquals($tag, $entry);
 
-		$this->categories[] = $category;
+		$this->tags[] = $tag;
 	}
 
 	public function tearDown(): void {
 		parent::tearDown();
-		foreach ($this->categories as $category) {
-			$this->categoryMapper->delete($category);
+		foreach ($this->tags as $tag) {
+			$this->tagMapper->delete($tag);
 		}
 	}
 }
