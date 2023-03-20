@@ -25,56 +25,40 @@ namespace OCA\Inventory\Db;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
-use OCP\AppFramework\Db\DoesNotExistException;
 
-class CategoryMapper extends QBMapper {
+class ItemTagsMapper extends QBMapper {
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, 'invtry_categories');
+		parent::__construct($db, 'invtry_cat_map');
 	}
 
-	public function findCategory(int $categoryId, string $uid) {
+	public function findTags(int $itemId, string $uid, $limit = null, $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('*PREFIX*invtry_categories')
+			->from('*PREFIX*invtry_cat_map')
+			->setMaxResults($limit)
+			->setFirstResult($offset)
 			->where(
-				$qb->expr()->eq('id', $qb->createNamedParameter($categoryId, IQueryBuilder::PARAM_INT))
+				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemId, IQueryBuilder::PARAM_INT))
 			)
 			->andWhere(
 				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			);
 
-		try {
-			return $this->findEntity($qb);
-		} catch (DoesNotExistException $e) {
-			return false;
-		}
+		return $this->findEntities($qb);
 	}
 
-	public function findCategoryByName(string $categoryName, string $uid) {
-		$qb = $this->db->getQueryBuilder();
-
-		$qb->select('*')
-			->from('*PREFIX*invtry_categories')
-			->where(
-				$qb->expr()->eq('name', $qb->createNamedParameter($categoryName, IQueryBuilder::PARAM_STR))
-			)
-			->andWhere(
-				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
-			);
-
-		try {
-			return $this->findEntity($qb);
-		} catch (DoesNotExistException $e) {
-			return false;
-		}
+	public function add($params) {
+		$itemTag = new ItemTags();
+		$itemTag->setUid($params['uid']);
+		$itemTag->setItemid($params['itemid']);
+		$itemTag->setCategoryid($params['tagid']);
+		return $this->insert($itemTag);
 	}
 
-	public function add(string $name, string $uid, int $parentID = null) {
-		$category = new Category();
-		$category->setName($name);
-		$category->setUid($uid);
-		$category->setParentid($parentID);
-		return $this->insert($category);
+	public function deleteItemTags($itemTags) {
+		foreach ($itemTags as $itemTag) {
+			$this->delete($itemTag);
+		}
 	}
 }

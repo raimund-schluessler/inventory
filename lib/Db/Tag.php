@@ -24,7 +24,7 @@ namespace OCA\Inventory\Db;
 
 use OCP\AppFramework\Db\Entity;
 
-class Category extends Entity {
+class Tag extends Entity {
 	public $id;
 	public $uid;
 	public $name;

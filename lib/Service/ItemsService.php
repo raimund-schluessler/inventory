@@ -22,10 +22,10 @@
 
 namespace OCA\Inventory\Service;
 
-use OCA\Inventory\Db\CategoryMapper;
+use OCA\Inventory\Db\TagMapper;
 use OCA\Inventory\Db\FolderMapper;
 use OCA\Inventory\Db\Item;
-use OCA\Inventory\Db\ItemcategoriesMapper;
+use OCA\Inventory\Db\ItemTagsMapper;
 use OCA\Inventory\Db\IteminstanceMapper;
 use OCA\Inventory\Db\ItemparentMapper;
 use OCA\Inventory\Db\ItemMapper;
@@ -48,8 +48,8 @@ class ItemsService {
 	private $iteminstanceService;
 
 	private $itemMapper;
-	private $categoryMapper;
-	private $itemCategoriesMapper;
+	private $tagMapper;
+	private $itemTagsMapper;
 	private $iteminstanceMapper;
 	private $itemParentMapper;
 	private $itemRelationMapper;
@@ -60,7 +60,7 @@ class ItemsService {
 	private $attachmentStorage;
 
 	public function __construct($userId, $AppName, IL10N $l10n, ItemMapper $itemMapper, IteminstanceService $iteminstanceService,
-		IteminstanceMapper $iteminstanceMapper, CategoryMapper $categoryMapper, ItemcategoriesMapper $itemcategoriesMapper,
+		IteminstanceMapper $iteminstanceMapper, TagMapper $tagMapper, ItemTagsMapper $itemTagsMapper,
 		ItemparentMapper $itemParentMapper, ItemRelationMapper $itemRelationMapper, ItemtypeMapper $itemtypeMapper,
 		FolderMapper $folderMapper, PlaceMapper $placeMapper, AttachmentStorage $attachmentStorage) {
 		$this->userId = $userId;
@@ -69,8 +69,8 @@ class ItemsService {
 		$this->iteminstanceService = $iteminstanceService;
 		$this->iteminstanceMapper = $iteminstanceMapper;
 		$this->itemMapper = $itemMapper;
-		$this->categoryMapper = $categoryMapper;
-		$this->itemCategoriesMapper = $itemcategoriesMapper;
+		$this->tagMapper = $tagMapper;
+		$this->itemTagsMapper = $itemTagsMapper;
 		$this->itemParentMapper = $itemParentMapper;
 		$this->itemRelationMapper = $itemRelationMapper;
 		$this->itemtypeMapper = $itemtypeMapper;
@@ -283,15 +283,15 @@ class ItemsService {
 
 		$added = $this->itemMapper->add($item);
 
-		foreach ($item['categories'] as $category) {
-			$categoryEntity = $this->categoryMapper->findCategoryByName($category['name'], $this->userId);
-			if (!$categoryEntity) {
-				$categoryEntity = $this->categoryMapper->add($category['name'], $this->userId);
+		foreach ($item['tags'] as $tag) {
+			$tagEntity = $this->tagMapper->findTagByName($tag['name'], $this->userId);
+			if (!$tagEntity) {
+				$tagEntity = $this->tagMapper->add($tag['name'], $this->userId);
 			}
-			$mapping = $this->itemCategoriesMapper->add([
+			$mapping = $this->itemTagsMapper->add([
 				'itemid' => $added->id,
 				'uid' => $this->userId,
-				'categoryid' => $categoryEntity->id
+				'categoryid' => $tagEntity->id
 			]);
 		}
 
@@ -328,9 +328,9 @@ class ItemsService {
 		// Delete all instances belonging to this item
 		$this->iteminstanceService->deleteAllInstancesOfItem($item->id);
 
-		// Delete all links to categories
-		$itemCategories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
-		$this->itemCategoriesMapper->deleteItemCategories($itemCategories);
+		// Delete all links to tags
+		$itemTags = $this->itemTagsMapper->findTags($item->id, $this->userId);
+		$this->itemTagsMapper->deleteItemTags($itemTags);
 
 		// Delete all relations including this item
 		// Parent
@@ -434,12 +434,12 @@ class ItemsService {
 	 * @return \OCP\AppFramework\Db\Entity
 	 */
 	private function getItemDetails($item, $getInstances = true) {
-		$categories = $this->itemCategoriesMapper->findCategories($item->id, $this->userId);
-		$categoriesNames = [];
-		foreach ($categories as $category) {
-			$name = $this->categoryMapper->findCategory($category->categoryid, $this->userId);
-			$categoriesNames[] = [
-				'id' => $category->categoryid,
+		$tags = $this->itemTagsMapper->findTags($item->id, $this->userId);
+		$tagsNames = [];
+		foreach ($tags as $tag) {
+			$name = $this->tagMapper->findTag($tag->categoryid, $this->userId);
+			$tagsNames[] = [
+				'id' => $tag->categoryid,
 				'name' => $name->name
 			];
 		}
@@ -451,7 +451,7 @@ class ItemsService {
 			$item->icon = 'default';
 			$item->type = 'default';
 		}
-		$item->categories = $categoriesNames;
+		$item->tags = $tagsNames;
 		if ($getInstances) {
 			$item->instances = $this->iteminstanceService->getByItemID($item->id);
 		} else {

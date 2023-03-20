@@ -25,40 +25,56 @@ namespace OCA\Inventory\Db;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\AppFramework\Db\DoesNotExistException;
 
-class ItemcategoriesMapper extends QBMapper {
+class TagMapper extends QBMapper {
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, 'invtry_cat_map');
+		parent::__construct($db, 'invtry_categories');
 	}
 
-	public function findCategories(int $itemId, string $uid, $limit = null, $offset = null) {
+	public function findTag(int $tagId, string $uid) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('*PREFIX*invtry_cat_map')
-			->setMaxResults($limit)
-			->setFirstResult($offset)
+			->from('*PREFIX*invtry_categories')
 			->where(
-				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemId, IQueryBuilder::PARAM_INT))
+				$qb->expr()->eq('id', $qb->createNamedParameter($tagId, IQueryBuilder::PARAM_INT))
 			)
 			->andWhere(
 				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
 			);
 
-		return $this->findEntities($qb);
-	}
-
-	public function add($params) {
-		$itemcategory = new Itemcategories();
-		$itemcategory->setUid($params['uid']);
-		$itemcategory->setItemid($params['itemid']);
-		$itemcategory->setCategoryid($params['categoryid']);
-		return $this->insert($itemcategory);
-	}
-
-	public function deleteItemCategories($itemCategories) {
-		foreach ($itemCategories as $itemCategory) {
-			$this->delete($itemCategory);
+		try {
+			return $this->findEntity($qb);
+		} catch (DoesNotExistException $e) {
+			return false;
 		}
+	}
+
+	public function findTagByName(string $tagName, string $uid) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_categories')
+			->where(
+				$qb->expr()->eq('name', $qb->createNamedParameter($tagName, IQueryBuilder::PARAM_STR))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		try {
+			return $this->findEntity($qb);
+		} catch (DoesNotExistException $e) {
+			return false;
+		}
+	}
+
+	public function add(string $name, string $uid, int $parentID = null) {
+		$tag = new Tag();
+		$tag->setName($name);
+		$tag->setUid($uid);
+		$tag->setParentid($parentID);
+		return $this->insert($tag);
 	}
 }
