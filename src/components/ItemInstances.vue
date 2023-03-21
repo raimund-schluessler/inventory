@@ -212,7 +212,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</template>
 				<div class="column column--actions">
 					<NcActions :boundaries-element="boundaries">
-						<NcActionButton icon="icon-checkmark" :close-after-click="true" @click="putInstance">
+						<NcActionButton :close-after-click="true" @click="putInstance">
+							<template #icon>
+								<Check :size="20" />
+							</template>
 							{{ t('inventory', 'Add instance') }}
 						</NcActionButton>
 					</NcActions>
