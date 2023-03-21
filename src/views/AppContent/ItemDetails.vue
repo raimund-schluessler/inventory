@@ -127,7 +127,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 								<div v-else class="wrapper">
 									<span :class="{ 'visibility-hidden': editingItem }">{{ item[itemProperty.key] }}</span>
-									<NcActions v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem "
+									<NcActions v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem"
+										class="button--gtin"
 										:boundaries-element="boundaries">
 										<NcActionButton :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
 											<template #icon>
@@ -159,7 +160,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<div v-if="editingItem" class="row">
 							<div class="column column--width-2 column--actions">
 								<NcActions>
-									<NcActionButton @click="saveItem">
+									<NcActionButton @click="saveItem" class="button--save">
 										<template #icon>
 											<Check :size="20" />
 										</template>
@@ -670,8 +671,11 @@ export default {
 				}
 			}
 
-			.button--save {
+			.button {
+				&--gtin,
+				&--save {
 				margin-left: auto;
+				}
 			}
 
 			.input {
