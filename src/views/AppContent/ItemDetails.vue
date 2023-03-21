@@ -89,7 +89,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Properties') }}</span>
 					</h3>
-					<div v-click-outside="stopEditingItem" class="table table--properties">
+					<div v-click-outside="stopEditingItem" class="table table--properties" :class="{ 'table--editing': editingItem }">
 						<div v-for="itemProperty in itemProperties" :key="itemProperty.key" class="row">
 							<div class="column">
 								<span>{{ itemProperty.name }}</span>
@@ -631,6 +631,10 @@ export default {
 			}
 		}
 
+		&--editing .column:last-child {
+			padding-right: 0;
+		}
+
 		&--properties {
 
 			.row {
@@ -674,7 +678,7 @@ export default {
 			.button {
 				&--gtin,
 				&--save {
-				margin-left: auto;
+					margin-left: auto;
 				}
 			}
 
