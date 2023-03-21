@@ -291,7 +291,7 @@ class ItemsService {
 			$mapping = $this->itemTagsMapper->add([
 				'itemid' => $added->id,
 				'uid' => $this->userId,
-				'categoryid' => $tagEntity->id
+				'tagid' => $tagEntity->id
 			]);
 		}
 
