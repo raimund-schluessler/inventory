@@ -143,7 +143,7 @@ export default {
 			default: false,
 		},
 		uuid: {
-			type: String,
+			type: [Number, String],
 			required: true,
 		},
 		showActions: {
