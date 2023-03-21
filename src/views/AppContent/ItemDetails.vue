@@ -89,7 +89,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Properties') }}</span>
 					</h3>
-					<div v-click-outside="stopEditingItem" class="table table--properties">
+					<div v-click-outside="stopEditingItem" class="table table--properties" :class="{ 'table--editing': editingItem }">
 						<div v-for="itemProperty in itemProperties" :key="itemProperty.key" class="row">
 							<div class="column">
 								<span>{{ itemProperty.name }}</span>
@@ -127,7 +127,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 								<div v-else class="wrapper">
 									<span :class="{ 'visibility-hidden': editingItem }">{{ item[itemProperty.key] }}</span>
-									<NcActions v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem "
+									<NcActions v-if="itemProperty.key === 'gtin' && item[itemProperty.key] && !editingItem"
+										class="button--gtin"
 										:boundaries-element="boundaries">
 										<NcActionButton :close-after-click="true" @click="openBarcode(item[itemProperty.key], 'ean13', 'includetext guardwhitespace')">
 											<template #icon>
@@ -159,7 +160,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<div v-if="editingItem" class="row">
 							<div class="column column--width-2 column--actions">
 								<NcActions>
-									<NcActionButton @click="saveItem">
+									<NcActionButton @click="saveItem" class="button--save">
 										<template #icon>
 											<Check :size="20" />
 										</template>
@@ -630,6 +631,10 @@ export default {
 			}
 		}
 
+		&--editing .column:last-child {
+			padding-right: 0;
+		}
+
 		&--properties {
 
 			.row {
@@ -670,8 +675,11 @@ export default {
 				}
 			}
 
-			.button--save {
-				margin-left: auto;
+			.button {
+				&--gtin,
+				&--save {
+					margin-left: auto;
+				}
 			}
 
 			.input {
