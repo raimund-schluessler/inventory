@@ -401,6 +401,40 @@ class ItemsService {
 		$localItem->setComment($item['comment']);
 		$localItem->setType($item['type']);
 		$editedItem = $this->itemMapper->update($localItem);
+
+		// We have to update the tags
+		// Unlink all tags that are not attached anymore
+		$tags = $this->itemTagsMapper->findTags($itemId, $this->userId);
+		foreach ($tags as $tag) {
+			foreach ($item['tags'] as $itemTagKey => $itemTag) {
+				if ($itemTag['id'] === $tag->categoryid) {
+					// We remove the tag from the list of tags to add
+					unset($item['tags'][$itemTagKey]);
+					continue 2;
+				}
+			}
+			$this->itemTagsMapper->delete($tag);
+		}
+
+		// Create and link new tags
+		foreach ($item['tags'] as $tag) {
+			$tagEntity = $this->tagMapper->findTagByName($tag['name'], $this->userId);
+			if (!$tagEntity) {
+				// If the tag did not exist, we have to create it
+				$tagEntity = $this->tagMapper->add($tag['name'], $this->userId);
+			} else {
+				// If it existed already, we need to ensure it's not already linked.
+				if ($this->itemTagsMapper->findTagMap($itemId, $tagEntity->id, $this->userId)) {
+					continue;
+				}
+			}
+			$mapping = $this->itemTagsMapper->add([
+				'itemid' => $itemId,
+				'uid' => $this->userId,
+				'tagid' => $tagEntity->id
+			]);
+		}
+
 		return $this->getItemDetails($editedItem);
 	}
 

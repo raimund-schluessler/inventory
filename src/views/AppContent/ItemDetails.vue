@@ -110,7 +110,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 									</span>
 								</div>
 								<div v-else-if="itemProperty.key === 'tags'" class="wrapper">
-									<TagList :tags="item.tags" />
+									<NcSelect v-if="editingItem"
+										:value="editedItem.tags"
+										taggable
+										label="name"
+										:placeholder="t('inventory', 'Select tags')"
+										:multiple="true"
+										:close-on-select="false"
+										:tag-placeholder="t('inventory', 'Add this as a new tag')"
+										@input="setTags">
+										<template #no-options>
+											{{ t('inventory', 'No tag available. Create one!') }}
+										</template>
+									</NcSelect>
+									<TagList v-else :tags="item.tags" />
 								</div>
 								<div v-else class="wrapper">
 									<span :class="{ 'visibility-hidden': editingItem }">{{ item[itemProperty.key] }}</span>
@@ -240,6 +253,7 @@ import {
 	NcBreadcrumb,
 	NcEmptyContent,
 	NcLoadingIcon,
+	NcSelect,
 } from '@nextcloud/vue'
 
 import Barcode from 'vue-material-design-icons/Barcode.vue'
@@ -271,6 +285,7 @@ export default {
 		NcBreadcrumb,
 		NcEmptyContent,
 		NcLoadingIcon,
+		NcSelect,
 		Barcode,
 		Check,
 		Delete,
@@ -503,7 +518,24 @@ export default {
 			})
 		},
 
-		stopEditingItem() {
+		setTags(tags) {
+			/**
+			 * Probably due to a bug in VueSelect,
+			 * tags are added as plain string when "options" are empty.
+			 * We have to fix this here.
+			 */
+			this.editedItem.tags = tags.map(tag => {
+				if (typeof tag === 'string') {
+					return { name: tag }
+				}
+				return tag
+			})
+		},
+
+		stopEditingItem($event) {
+			if ($event.target.closest('.vs__dropdown-menu')) {
+				return
+			}
 			this.editingItem = false
 		},
 		startEditingItem() {
@@ -629,6 +661,10 @@ export default {
 
 						.action-item {
 							margin-right: -10px;
+						}
+
+						.v-select {
+							width: 100%;
 						}
 					}
 				}
