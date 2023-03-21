@@ -39,22 +39,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tags li {
-	box-sizing: border-box;
-	background-color: var(--color-background-darker);
-	border: 1px solid var(--color-border-dark);
-	border-radius: 2px;
-	color: var(--color-text-light);
-	float: left;
-	font-weight: bold;
-	margin-right: 8px;
-	padding: 2px 5px;
-	min-height: 22px;
-	line-height: 15px;
-	height: 15px;
+.tags {
+	display: flex;
 
-	&:last-child {
-		margin-right: 0;
+	li {
+		display: flex;
+		align-items: center;
+		background-color: var(--color-background-dark);
+		border: var(--vs-selected-border-width) var(--vs-selected-border-style) var(--vs-selected-border-color);
+		border-radius: var(--border-radius-large);
+		color: var(--color-main-text);
+		margin-right: var(--default-grid-baseline);
+		padding: 0 .5em;
+		min-height: 36px;
+
+		&:last-child {
+			margin-right: 0;
+		}
 	}
 }
 </style>

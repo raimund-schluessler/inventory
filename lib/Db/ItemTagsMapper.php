@@ -25,6 +25,7 @@ namespace OCA\Inventory\Db;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\AppFramework\Db\DoesNotExistException;
 
 class ItemTagsMapper extends QBMapper {
 	public function __construct(IDBConnection $db) {
@@ -46,6 +47,28 @@ class ItemTagsMapper extends QBMapper {
 			);
 
 		return $this->findEntities($qb);
+	}
+
+	public function findTagMap(int $itemId, int $tagId, string $uid) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_cat_map')
+			->where(
+				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('categoryid', $qb->createNamedParameter($tagId, IQueryBuilder::PARAM_INT))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		try {
+			return $this->findEntity($qb);
+		} catch (DoesNotExistException $e) {
+			return false;
+		}
 	}
 
 	public function add($params) {
