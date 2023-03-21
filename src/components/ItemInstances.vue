@@ -95,7 +95,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</div>
 							<NcDatetimePicker v-else-if="instanceProperty.key === 'date'"
-								appendToBody
+								append-to-body
 								:value="new Date(editedInstance.date)"
 								format="YYYY-MM-DD"
 								type="date"
