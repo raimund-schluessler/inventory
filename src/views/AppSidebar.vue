@@ -33,7 +33,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 			<textarea ref="description__editor"
 				v-model="place.description"
 				v-click-outside="() => { editDescription(false) }"
-				@keyup.27="editDescription(false)"
+				@keyup.escape="editDescription(false)"
 				@keydown.enter.ctrl.prevent="setDescription()"
 				@change="setDescription()"
 				@click="editDescription(true)" />
@@ -90,7 +90,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 						v-focus
 						:placeholder="t('inventory', 'Add UUID')"
 						type="text"
-						@keyup.27="addUuid = false">
+						@keyup.escape="addUuid = false">
 				</form>
 				<NcActions>
 					<NcActionButton v-if="newUuidValid"

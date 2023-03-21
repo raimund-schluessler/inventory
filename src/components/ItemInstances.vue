@@ -129,7 +129,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								v-focus
 								:placeholder="t('inventory', 'Add UUID')"
 								type="text"
-								@keyup.27="addUuidTo = null">
+								@keyup.escape="addUuidTo = null">
 						</form>
 					</div>
 					<div>
