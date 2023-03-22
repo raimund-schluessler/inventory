@@ -29,16 +29,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				&lt;{{ field }}&gt;;
 			</span>
 		</div>
-		<div>
-			<form class="items-creator__form" @submit.prevent="enlist">
-				<textarea v-model="rawInput" />
-				{{ t('inventory', 'Items:') }}
-				<div>
-					<EntityTable :items="items"
-						:allow-deletion="false" />
-				</div>
-				<input :value="t('inventory', 'Enlist')" type="submit" :disabled="!canEnlist">
-			</form>
+		<div class="items-creator__form">
+			<textarea v-model="rawInput" />
+			{{ t('inventory', 'Items:') }}
+			<div>
+				<EntityTable :items="items"
+					:allow-deletion="false" />
+			</div>
+			<NcButton class="button-enlist" :disabled="!canEnlist" @click="enlist">
+				<template #icon>
+					<Plus :size="20" />
+				</template>
+				{{ t('inventory', 'Enlist') }}
+			</NcButton>
 		</div>
 	</div>
 </template>
@@ -48,6 +51,11 @@ import EntityTable from '../../components/EntityTable/EntityTable.vue'
 import Item from '../../models/item.js'
 
 import { translate as t } from '@nextcloud/l10n'
+import {
+	NcButton,
+} from '@nextcloud/vue'
+
+import Plus from 'vue-material-design-icons/Plus.vue'
 
 import Papa from 'papaparse'
 import { mapActions } from 'vuex'
@@ -55,6 +63,8 @@ import { mapActions } from 'vuex'
 export default {
 	components: {
 		EntityTable,
+		NcButton,
+		Plus,
 	},
 	props: {
 		path: {
@@ -191,9 +201,8 @@ export default {
 			resize: none;
 		}
 
-		input[type='submit'] {
-			float: right;
-			margin: 10px 0;
+		.button-enlist {
+			margin: 10px 0 10px auto;
 		}
 	}
 }
