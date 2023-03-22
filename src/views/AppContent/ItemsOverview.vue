@@ -107,7 +107,6 @@ import {
 	NcActionRouter,
 	NcBreadcrumbs,
 	NcBreadcrumb,
-	Tooltip,
 } from '@nextcloud/vue'
 
 import Folder from 'vue-material-design-icons/Folder.vue'
@@ -137,9 +136,6 @@ export default {
 		QrcodeScan,
 		MapMarker,
 		Tag,
-	},
-	directives: {
-		Tooltip,
 	},
 	beforeRouteUpdate(to, from, next) {
 		if (to.params.path !== from.params.path) {
