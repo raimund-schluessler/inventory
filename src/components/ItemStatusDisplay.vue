@@ -20,27 +20,26 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<NcActions v-if="status" :disabled="isDisabled">
-		<NcActionButton :key="status.status"
-			:disabled="isDisabled"
-			class="full"
-			@click="statusClicked">
-			<template #icon>
-				<AlertCircleOutline v-if="status.status==='error' || status.status==='unsynced'" :size="20" class="status--error status--unsynced" />
-				<Check v-if="status.status==='success'" :size="20" class="status--success" />
-				<NcLoadingIcon v-if="status.status==='sync'" :size="20" class="status--sync" />
-				<SyncAlert v-if="status.status==='conflict'" :size="20" class="status--conflict" />
-			</template>
-			{{ status.message }}
-		</NcActionButton>
-	</NcActions>
+	<NcButton v-if="status"
+		:disabled="isDisabled"
+		type="tertiary"
+		:aria-label="status.message"
+		v-tooltip="status.message"
+		@click="statusClicked">
+		<template #icon>
+			<AlertCircleOutline v-if="status.status==='error' || status.status==='unsynced'" :size="20" class="status--error status--unsynced" />
+			<Check v-if="status.status==='success'" :size="20" class="status--success" />
+			<NcLoadingIcon v-if="status.status==='sync'" :size="20" class="status--sync" />
+			<SyncAlert v-if="status.status==='conflict'" :size="20" class="status--conflict" />
+		</template>
+	</NcButton>
 </template>
 
 <script>
 import {
-	NcActions,
-	NcActionButton,
+	NcButton,
 	NcLoadingIcon,
+	Tooltip,
 } from '@nextcloud/vue'
 
 import AlertCircleOutline from 'vue-material-design-icons/AlertCircleOutline.vue'
@@ -50,12 +49,14 @@ import SyncAlert from 'vue-material-design-icons/SyncAlert.vue'
 export default {
 	name: 'ItemStatusDisplay',
 	components: {
-		NcActions,
-		NcActionButton,
+		NcButton,
 		NcLoadingIcon,
 		AlertCircleOutline,
 		Check,
 		SyncAlert,
+	},
+	directives: {
+		Tooltip,
 	},
 	props: {
 		status: {
@@ -108,8 +109,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.action-item {
-	&:disabled.full {
+.button-vue {
+	&:disabled {
 		opacity: 1 !important;
 	}
 	.status {

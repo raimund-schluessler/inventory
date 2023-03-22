@@ -580,6 +580,7 @@ const actions = {
 		items.forEach(async (item) => {
 			await queue.add(async () => {
 				try {
+					item.syncStatus = new SyncStatus('sync', 'Creating the item.')
 					const response = await Axios.post(generateUrl('apps/inventory/item/add'), { item: item.response })
 					Vue.set(item, 'response', response.data)
 					item.updateItem()
