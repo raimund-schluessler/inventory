@@ -21,10 +21,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<NcButton v-if="status"
+		v-tooltip="status.message"
 		:disabled="isDisabled"
 		type="tertiary"
 		:aria-label="status.message"
-		v-tooltip="status.message"
 		@click="statusClicked">
 		<template #icon>
 			<AlertCircleOutline v-if="status.status==='error' || status.status==='unsynced'" :size="20" class="status--error status--unsynced" />

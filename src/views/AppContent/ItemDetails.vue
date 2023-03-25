@@ -160,7 +160,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<div v-if="editingItem" class="row">
 							<div class="column column--width-2 column--actions">
 								<NcActions>
-									<NcActionButton @click="saveItem" class="button--save">
+									<NcActionButton class="button--save" @click="saveItem">
 										<template #icon>
 											<Check :size="20" />
 										</template>
