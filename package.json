@@ -38,7 +38,7 @@
 		"date-fns": "^2.29.3",
 		"jspdf": "2.5.1",
 		"p-queue": "7.3.4",
-		"papaparse": "5.4.0",
+		"papaparse": "5.4.1",
 		"search-query-parser": "1.6.0",
 		"uuid": "9.0.0",
 		"vue": "2.7.14",
