@@ -531,10 +531,14 @@ export default {
 			.row {
 				&--wide-header {
 					grid-template-columns: 1fr;
+					margin-top: -34px;
 
 					.column {
 						&--wide-header {
 							display: none;
+						}
+						&--actions .action-item{
+							margin-left: auto;
 						}
 					}
 				}
@@ -554,6 +558,9 @@ export default {
 
 						&--actions {
 							order: -1;
+							.action-item{
+								margin-left: auto;
+							}
 						}
 
 						&--input {
