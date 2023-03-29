@@ -29,7 +29,6 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
-use OCP\Util;
 use OCA\Inventory\Middleware\ExceptionMiddleware;
 use OCA\Inventory\Search\Provider;
 
