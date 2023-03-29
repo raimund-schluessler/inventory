@@ -69,6 +69,5 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function boot(IBootContext $context): void {
-		Util::addStyle('inventory', 'search');
 	}
 }
