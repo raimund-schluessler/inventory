@@ -149,13 +149,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</div>
 						<div class="row">
-							<div class="column">
-								{{ t('inventory', 'Attachments') }}
-							</div>
 							<Attachments :attachments="item.attachments"
 								:item-id="String(item.id)"
 								:loading-attachments="loadingAttachments(item.id)"
-								class="column column--attachments" />
+								class="column column--width-2 column--attachments" />
 						</div>
 						<div v-if="editingItem" class="row">
 							<div class="column column--width-2 column--actions">

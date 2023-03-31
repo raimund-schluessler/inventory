@@ -30,6 +30,27 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		@drop.prevent="handleDropFiles">
 		<div class="attachments__wrapper">
 			<ul>
+				<li class="attachments__header">
+					<div class="label">
+						{{ t('inventory', 'Attachments') }}
+					</div>
+					<NcActions :boundaries-element="boundaries">
+						<NcActionButton :close-after-click="true"
+							@click="upload">
+							<template #icon>
+								<Upload :size="20" />
+							</template>
+							{{ t('inventory', 'Upload attachment') }}
+						</NcActionButton>
+						<NcActionButton :close-after-click="true"
+							@click="select">
+							<template #icon>
+								<Folder :size="20" />
+							</template>
+							{{ t('inventory', 'Select attachment') }}
+						</NcActionButton>
+					</NcActions>
+				</li>
 				<li v-for="attachment in attachments" :key="attachment.id" class="attachment">
 					<a class="fileicon" :style="attachmentMimetype(attachment)" :href="attachment.url" />
 					<div class="details">
@@ -78,22 +99,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 			</ul>
 		</div>
-		<NcActions :boundaries-element="boundaries">
-			<NcActionButton :close-after-click="true"
-				@click="upload">
-				<template #icon>
-					<Upload :size="20" />
-				</template>
-				{{ t('inventory', 'Upload attachment') }}
-			</NcActionButton>
-			<NcActionButton :close-after-click="true"
-				@click="select">
-				<template #icon>
-					<Folder :size="20" />
-				</template>
-				{{ t('inventory', 'Select attachment') }}
-			</NcActionButton>
-		</NcActions>
 		<input ref="localAttachments"
 			type="file"
 			style="display: none;"
@@ -365,8 +370,19 @@ export default {
 		>ul {
 			display: grid;
 			grid-gap: 5px;
-			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 			grid-auto-flow: dense;
+
+			.attachments__header {
+				display: flex;
+
+				.label {
+					line-height: 44px;
+				}
+				.action-item {
+					margin-left: auto;
+				}
+			}
 
 			li.attachment {
 				display: flex;
