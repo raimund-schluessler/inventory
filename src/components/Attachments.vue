@@ -375,6 +375,7 @@ export default {
 
 			.attachments__header {
 				display: flex;
+				grid-column: 1 / -1;
 
 				.label {
 					line-height: 44px;
