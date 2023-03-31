@@ -180,10 +180,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						</ul>
 					</div>
 				</div>
-				<div :key="`attachments${instance.id}`" class="row row--column-2">
-					<div class="column column--center">
-						{{ t('inventory', 'Attachments') }}
-					</div>
+				<div :key="`attachments${instance.id}`" class="row row--column-all">
 					<Attachments :attachments="instance.attachments"
 						:item-id="String(item.id)"
 						:instance-id="String(instance.id)"
@@ -485,7 +482,8 @@ export default {
 				grid-template-columns: 1fr 44px;
 			}
 
-			&--empty {
+			&--empty,
+			&--column-all {
 				grid-template-columns: 1fr;
 			}
 
