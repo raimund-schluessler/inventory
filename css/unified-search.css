@@ -1,0 +1,5 @@
+.unified-search .icon-inventory {
+	background-image: url(../img/inventory.svg);
+	background-size: 44px !important;
+	filter: var(--background-invert-if-bright);
+}
