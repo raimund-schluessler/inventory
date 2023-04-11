@@ -1,9 +1,9 @@
+<?php
 /**
  * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- *
- * @copyright 2019 Raimund Schlüßler <raimund.schluessler@mailbox.org>
+ * @copyright 2023 Raimund Schlüßler <raimund.schluessler@mailbox.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -19,25 +19,30 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-'use strict'
 
-import items from './items.js'
-import folders from './folders.js'
-import places from './places.js'
-import settings from './settings.js'
-import tags from './tags.js'
+namespace OCA\Inventory\Controller;
 
-import Vue from 'vue'
-import Vuex, { Store } from 'vuex'
+use \OCA\Inventory\Service\TagsService;
+use \OCP\AppFramework\Controller;
+use \OCP\IRequest;
 
-Vue.use(Vuex)
+class TagsController extends Controller {
+	private $tagsService;
 
-export default new Store({
-	modules: {
-		items,
-		folders,
-		places,
-		settings,
-		tags,
-	},
-})
+	/**
+	 * @param string $AppName
+	 * @param IRequest $request an instance of the request
+	 * @param TagsService $tagsService
+	 */
+	public function __construct(string $AppName, IRequest $request, TagsService $tagsService) {
+		parent::__construct($AppName, $request);
+		$this->tagsService = $tagsService;
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function getAll() {
+		return $this->tagsService->getAll();
+	}
+}

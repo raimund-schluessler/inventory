@@ -3,7 +3,7 @@
  * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2017 Raimund Schlüßler raimund.schluessler@mailbox.org
+ * @copyright 2023 Raimund Schlüßler raimund.schluessler@mailbox.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -30,6 +30,18 @@ use OCP\AppFramework\Db\DoesNotExistException;
 class TagMapper extends QBMapper {
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'invtry_categories');
+	}
+
+	public function findAll(string $uid) {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from('*PREFIX*invtry_categories')
+			->where(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		return $this->findEntities($qb);
 	}
 
 	public function findTag(int $tagId, string $uid) {

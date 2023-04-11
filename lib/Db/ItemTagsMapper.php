@@ -71,6 +71,45 @@ class ItemTagsMapper extends QBMapper {
 		}
 	}
 
+	public function getItemIdsForTags($tagIds, string $uid, int $limit = 0, string $offset = ''): array {
+		if (!\is_array($tagIds)) {
+			$tagIds = [$tagIds];
+		}
+
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->selectDistinct('itemid')
+			->from('*PREFIX*invtry_cat_map')
+			->where(
+				$qb->expr()->in('categoryid', $qb->createNamedParameter($tagIds, IQueryBuilder::PARAM_INT_ARRAY))
+			)
+			->andWhere(
+				$qb->expr()->eq('uid', $qb->createNamedParameter($uid, IQueryBuilder::PARAM_STR))
+			);
+
+		if ($limit) {
+			if (\count($tagIds) !== 1) {
+				throw new \InvalidArgumentException('Limit is only allowed with a single tag');
+			}
+
+			$qb->setMaxResults($limit)
+				->orderBy('itemid', 'ASC');
+
+			if ($offset !== '') {
+				$qb->andWhere($qb->expr()->gt('itemid', $qb->createNamedParameter($offset)));
+			}
+		}
+
+		$itemIds = [];
+
+		$result = $qb->execute();
+		while ($row = $result->fetch()) {
+			$itemIds[] = $row['itemid'];
+		}
+
+		return $itemIds;
+	}
+
 	public function add($params) {
 		$itemTag = new ItemTags();
 		$itemTag->setUid($params['uid']);

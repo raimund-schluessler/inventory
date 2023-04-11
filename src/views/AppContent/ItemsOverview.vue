@@ -2,7 +2,7 @@
 Nextcloud - Inventory
 
 @author Raimund Schlüßler
-@copyright 2017 Raimund Schlüßler <raimund.schluessler@mailbox.org>
+@copyright 2023 Raimund Schlüßler <raimund.schluessler@mailbox.org>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -254,6 +254,10 @@ export default {
 		encodePath,
 
 		...mapActions([
+			'getFoldersByFolder',
+			'getItemsByFolder',
+			'getPlacesByPlace',
+			'getItemsByPlace',
 			'createFolder',
 			'createPlace',
 			'moveItem',
@@ -347,13 +351,6 @@ export default {
 			this.addingCollection = false
 			this.actionsOpen = false
 		},
-
-		...mapActions([
-			'getFoldersByFolder',
-			'getItemsByFolder',
-			'getPlacesByPlace',
-			'getItemsByPlace',
-		]),
 	},
 }
 </script>

@@ -3,7 +3,7 @@
  *
  * @author Raimund Schlüßler
  *
- * @copyright 2019 Raimund Schlüßler <raimund.schluessler@mailbox.org>
+ * @copyright 2023 Raimund Schlüßler <raimund.schluessler@mailbox.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -565,6 +565,21 @@ const actions = {
 		commit('setItems', [])
 		try {
 			const response = await Axios.post(generateUrl('apps/inventory/items/place'), { path }, { signal })
+			const items = response.data.map(payload => {
+				return new Item(payload)
+			})
+			commit('setItems', items)
+		} catch (error) {
+		} finally {
+			commit('setLoadingItems', false)
+		}
+	},
+
+	async getItemsByTags({ commit, state }, { tagIds, signal = null }) {
+		commit('setLoadingItems', true)
+		commit('setItems', [])
+		try {
+			const response = await Axios.post(generateUrl('apps/inventory/items/tags'), { tagIds }, { signal })
 			const items = response.data.map(payload => {
 				return new Item(payload)
 			})
