@@ -112,8 +112,18 @@ export default {
 		},
 
 		setTagIds(path) {
-			this.tagIds = path.split('/').map(id => parseInt(id)).filter(id => !isNaN(id) && this.tags.find(tag => tag.id === id))
-			this.selectedTags = this.tagIds.map(id => this.tags.find(tag2 => tag2.id === id))
+			const selectedTags = []
+			this.tagIds = path.split('/')
+				.map(id => parseInt(id))
+				.filter(id => {
+					if (isNaN(id)) {
+						return false
+					}
+					// We check if a tag with this id exists, and push it to the selected tags array
+					const tag = this.tags.find(tag => tag.id === id)
+					return tag && selectedTags.push(tag)
+				})
+			this.selectedTags = selectedTags
 		},
 
 		async loadTags() {
