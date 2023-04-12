@@ -114,6 +114,12 @@ class TagMapperTest extends TestCase {
 		$this->tags[] = $tag;
 	}
 
+	public function testFindAll() {
+		$uid = 'admin';
+		$tags = $this->tagMapper->findAll($uid);
+		$this->assertEquals($tags, $this->tags);
+	}
+
 	public function tearDown(): void {
 		parent::tearDown();
 		foreach ($this->tags as $tag) {
