@@ -3,7 +3,7 @@
  * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2020 Raimund Schlüßler raimund.schluessler@mailbox.org
+ * @copyright 2023 Raimund Schlüßler raimund.schluessler@mailbox.org
  *
  * @author Julius Härtl
  * @copyright 2018 Julius Härtl <jus@bitgrid.net>
@@ -28,6 +28,7 @@ return [
 		['name' => 'items#getAll',			'url' => '/items',										'verb' => 'GET'],
 		['name' => 'items#getByFolder',		'url' => '/items/folder',								'verb' => 'POST'],
 		['name' => 'items#getByPlace',		'url' => '/items/place',								'verb' => 'POST'],
+		['name' => 'items#getByTags',		'url' => '/items/tags',									'verb' => 'POST'],
 		['name' => 'items#get',				'url' => '/item/{itemID}',								'verb' => 'GET'],
 
 		['name' => 'items#getSub',			'url' => '/item/{itemID}/sub',							'verb' => 'GET'],
@@ -94,5 +95,7 @@ return [
 		['name' => 'places#setDescription',	'url' => '/place/{placeID}/description',				'verb' => 'POST'],
 
 		['name' => 'search#find',			'url' => '/search',										'verb' => 'POST'],
+
+		['name' => 'tags#getAll',			'url' => '/tags',										'verb' => 'POST'],
 	]
 ];

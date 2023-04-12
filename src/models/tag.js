@@ -3,7 +3,7 @@
  *
  * @author Raimund Schlüßler
  *
- * @copyright 2019 Raimund Schlüßler <raimund.schluessler@mailbox.org>
+ * @copyright 2023 Raimund Schlüßler <raimund.schluessler@mailbox.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -19,25 +19,41 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-'use strict'
 
-import items from './items.js'
-import folders from './folders.js'
-import places from './places.js'
-import settings from './settings.js'
-import tags from './tags.js'
+export default class Tag {
 
-import Vue from 'vue'
-import Vuex, { Store } from 'vuex'
+	/**
+	 * Creates an instance of a Tag
+	 *
+	 * @param {Array} response The tag payload
+	 * @memberof Tag
+	 */
+	constructor(response) {
+		if (typeof response !== 'object') {
+			throw new Error('')
+		}
 
-Vue.use(Vuex)
+		this.response = response
 
-export default new Store({
-	modules: {
-		items,
-		folders,
-		places,
-		settings,
-		tags,
-	},
-})
+		this.initTag()
+	}
+
+	initTag() {
+
+		// Define properties, so Vue reacts to changes of them
+		this.id = this.response.id || null
+		this.uid = this.response.uid || ''
+		this.name = this.response.name || ''
+	}
+
+	/**
+	 * Return the key
+	 *
+	 * @readonly
+	 * @memberof Tag
+	 */
+	get key() {
+		return `tag_${this._id}`
+	}
+
+}

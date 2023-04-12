@@ -3,7 +3,7 @@
  * Nextcloud - Inventory
  *
  * @author Raimund Schlüßler
- * @copyright 2020 Raimund Schlüßler raimund.schluessler@mailbox.org
+ * @copyright 2023 Raimund Schlüßler raimund.schluessler@mailbox.org
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -151,6 +151,47 @@ class ItemsService {
 			$item->instances[] = $instance;
 			$item->isInstance = true;
 			$items[] = $item;
+		}
+		return $items;
+	}
+
+	/**
+	 * get items by tags
+	 *
+	 * @return array
+	 */
+	public function getByTags($tagIds) {
+		if (empty($tagIds)) {
+			return [];
+		}
+		// Code copied and adjusted from
+		// https://github.com/nextcloud/server/blob/f37b29eb2da66c66fd3752209c9e552948e35ca1/apps/dav/lib/Connector/Sabre/FilesReportPlugin.php#L313
+		$resultItemIds = null;
+
+		// fetch all item ids and intersect them
+		foreach ($tagIds as $tagId) {
+			$itemIds = $this->itemTagsMapper->getItemIdsForTags($tagId, $this->userId);
+
+			if (empty($itemIds)) {
+				// This tag has no items, nothing can ever show up
+				return [];
+			}
+
+			// first run ?
+			if ($resultItemIds === null) {
+				$resultItemIds = $itemIds;
+			} else {
+				$resultItemIds = array_intersect($resultItemIds, $itemIds);
+			}
+
+			if (empty($resultItemIds)) {
+				// Empty intersection, nothing can show up anymore
+				return [];
+			}
+		}
+		$items = $this->itemMapper->findItemsByIds($resultItemIds, $this->userId);
+		foreach ($items as $item) {
+			$item = $this->getItemDetails($item);
 		}
 		return $items;
 	}

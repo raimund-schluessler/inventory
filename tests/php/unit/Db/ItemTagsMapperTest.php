@@ -99,6 +99,15 @@ class ItemTagsMapperTest extends TestCase {
 		$this->itemTags[] = $itemTag;
 	}
 
+	public function testGetItemIdsForTags() {
+		$itemIds = $this->itemTagsMapper->getItemIdsForTags([1, 3], 'unit_tester_1');
+		$this->assertEquals([1, 2], $itemIds);
+		$itemIds = $this->itemTagsMapper->getItemIdsForTags([4], 'unit_tester_1');
+		$this->assertEquals([], $itemIds);
+		$itemIds = $this->itemTagsMapper->getItemIdsForTags([1, 3], 'unit_tester_3');
+		$this->assertEquals([], $itemIds);
+	}
+
 	public function tearDown(): void {
 		parent::tearDown();
 		$this->itemTagsMapper->deleteItemTags($this->itemTags);
