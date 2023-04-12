@@ -22,7 +22,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 <template>
 	<ul class="tags">
 		<li v-for="tag in tags" :key="tag.id">
-			<span>{{ tag.name }}</span>
+			<router-link :to="`/tags/${tag.id}`">
+				<span>{{ tag.name }}</span>
+			</router-link>
 		</li>
 	</ul>
 </template>
@@ -43,18 +45,22 @@ export default {
 	display: flex;
 
 	li {
-		display: flex;
-		align-items: center;
 		background-color: var(--color-background-dark);
 		border: var(--vs-selected-border-width) var(--vs-selected-border-style) var(--vs-selected-border-color);
 		border-radius: var(--border-radius-large);
 		color: var(--color-main-text);
 		margin-right: var(--default-grid-baseline);
-		padding: 0 .5em;
 		min-height: 36px;
 
 		&:last-child {
 			margin-right: 0;
+		}
+
+		a {
+			display: flex;
+			align-items: center;
+			padding: 0 .5em;
+			min-height: 34px;
 		}
 	}
 }
