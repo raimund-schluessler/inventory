@@ -67,13 +67,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<NcEmptyContent v-if="loadingItem || !item">
+			<NcEmptyContent v-if="loadingItem || !item" :title="loadingItem ? t('inventory', 'Loading item from server.') : t('inventory', 'Item not found!')">
 				<template #icon>
 					<NcLoadingIcon v-if="loadingItem" />
 					<Magnify v-else />
 				</template>
-				<span v-if="loadingItem">{{ t('inventory', 'Loading item from server.') }}</span>
-				<span v-else>{{ t('inventory', 'Item not found!') }}</span>
 			</NcEmptyContent>
 			<div v-else id="itemdetails">
 				<div class="paragraph paragraph--images"

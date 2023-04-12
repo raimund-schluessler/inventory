@@ -137,17 +137,15 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</template>
 		<template v-else #default>
-			<NcEmptyContent v-if="loading">
+			<NcEmptyContent v-if="loading" :title="t('inventory', 'Loading the place.')">
 				<template #icon>
 					<NcLoadingIcon :size="50" />
 				</template>
-				{{ t('inventory', 'Loading the place.') }}
 			</NcEmptyContent>
-			<NcEmptyContent v-else>
+			<NcEmptyContent v-else :title="t('inventory', 'Place not found.')">
 				<template #icon>
 					<Magnify :size="50" />
 				</template>
-				{{ t('inventory', 'Place not found.') }}
 			</NcEmptyContent>
 		</template>
 	</NcAppSidebar>
