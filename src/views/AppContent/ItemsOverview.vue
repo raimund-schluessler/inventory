@@ -25,7 +25,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<NcBreadcrumbs @dropped="moveEntities">
 				<NcBreadcrumb v-for="(crumb, index) in breadcrumbs"
 					:key="crumb.path"
-					:title="crumb.title"
+					:name="crumb.name"
 					:to="crumb.path"
 					:disable-drop="index === (breadcrumbs.length - 1)">
 					<template #icon>
@@ -178,9 +178,9 @@ export default {
 		breadcrumbs() {
 			const path = this.path
 			const crumbs = (path === '') ? [] : path.split('/')
-			return [{ title: t('inventory', 'Items'), path: `/${this.collection}/` }].concat(crumbs.map((crumb, i) => {
+			return [{ name: t('inventory', 'Items'), path: `/${this.collection}/` }].concat(crumbs.map((crumb, i) => {
 				return {
-					title: crumb,
+					name: crumb,
 					path: `/${this.collection}/${crumbs.slice(0, i + 1).join('/')}`,
 				}
 			}))
