@@ -26,7 +26,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<NcBreadcrumbs>
 					<NcBreadcrumb v-for="(crumb, index) in breadcrumbs"
 						:key="crumb.path"
-						:title="crumb.title"
+						:name="crumb.name"
 						:to="crumb.path">
 						<template #icon>
 							<component :is="breadcrumbIcon"
@@ -382,15 +382,15 @@ export default {
 		breadcrumbs() {
 			const path = this.path
 			const crumbs = (!path || path === '') ? [] : path.split('/')
-			const breadcrumbs = [{ title: t('inventory', 'Items'), path: `/${this.collection}/` }].concat(crumbs.map((crumb, i) => {
+			const breadcrumbs = [{ name: t('inventory', 'Items'), path: `/${this.collection}/` }].concat(crumbs.map((crumb, i) => {
 				return {
-					title: crumb,
+					name: crumb,
 					path: `/${this.collection}/` + encodePath(crumbs.slice(0, i + 1).join('/')),
 				}
 			}))
 			if (this.item && !this.loadingItem) {
 				return breadcrumbs.concat([{
-					title: this.item.description,
+					name: this.item.description,
 					path: `/${this.collection}/${(this.path) ? encodePath(this.path) + '/' : ''}item-${this.id}${(this.instanceId) ? `/instance-${this.instanceId}` : ''}`,
 				}])
 			}
