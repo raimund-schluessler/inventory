@@ -67,7 +67,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<NcEmptyContent v-if="loadingItem || !item" :title="loadingItem ? t('inventory', 'Loading item from server.') : t('inventory', 'Item not found!')">
+			<NcEmptyContent v-if="loadingItem || !item" :title="loadingItem ? t('inventory', 'Loading item from server.') : itemStatusMessage">
 				<template #icon>
 					<NcLoadingIcon v-if="loadingItem" />
 					<Magnify v-else />
@@ -333,6 +333,7 @@ export default {
 			editedItem: {},
 			closing: true,
 			showBarcode: false,
+			itemStatusMessage: '',
 			itemProperties: [
 				{
 					key: 'name',
@@ -507,7 +508,18 @@ export default {
 		},
 
 		async getItem(itemID) {
-			await this.getItemById(itemID)
+			try {
+				await this.getItemById(itemID)
+			} catch (error) {
+				const statusCode = error?.response?.status
+				if (statusCode === 403) {
+					this.itemStatusMessage = t('inventory', 'Item not found!')
+				} else if (statusCode === 500) {
+					this.itemStatusMessage = t('inventory', 'Loading the item failed.')
+				}
+				// No need to load anything further here
+				return
+			}
 			this.getAttachments(itemID)
 			this.item.instances.forEach(instance => {
 				this.getInstanceAttachments({ itemID, instanceID: instance.id })
