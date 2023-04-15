@@ -614,10 +614,12 @@ const actions = {
 			const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}`))
 			const item = new Item(response.data)
 			commit('setItem', { item })
-		} catch {
+		} catch (error) {
 			commit('setItem', { item: null })
+			throw error
+		} finally {
+			commit('setLoadingItem', false)
 		}
-		commit('setLoadingItem', false)
 	},
 
 	async getAttachments({ commit }, itemID) {
