@@ -113,7 +113,7 @@ export default {
 
 		setTagIds(path) {
 			const selectedTags = []
-			this.tagIds = path.split('/')
+			this.tagIds = (path?.split('/') || [])
 				.map(id => parseInt(id))
 				.filter(id => {
 					if (isNaN(id)) {
