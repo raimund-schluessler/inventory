@@ -42,6 +42,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 <script>
 import EntityTable from '../../components/EntityTable/EntityTable.vue'
 
+import { showError } from '@nextcloud/dialogs'
 import { translate as t } from '@nextcloud/l10n'
 import {
 	NcEmptyContent,
@@ -133,11 +134,17 @@ export default {
 			await this.getTags({ signal: this.abortControllerTags.signal })
 		},
 
-		loadItems() {
+		async loadItems() {
 			// Abort possibly running requests from previous paths
 			this.abortController?.abort()
 			this.abortController = new AbortController()
-			this.getItemsByTags({ tagIds: this.tagIds, signal: this.abortController.signal })
+			try {
+				await this.getItemsByTags({ tagIds: this.tagIds, signal: this.abortController.signal })
+			} catch (error) {
+				if (error?.response?.status === 500) {
+					showError(t('inventory', 'Loading the items failed.'))
+				}
+			}
 		},
 	},
 }

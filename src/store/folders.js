@@ -140,10 +140,12 @@ const actions = {
 				return new Folder(payload)
 			})
 			commit('setFolders', { folders })
-		} catch {
+		} catch (error) {
 			console.debug('Could not load the folders.')
+			throw error
+		} finally {
+			commit('setLoadingFolders', false)
 		}
-		commit('setLoadingFolders', false)
 	},
 
 	async createFolder(context, { name, path }) {
