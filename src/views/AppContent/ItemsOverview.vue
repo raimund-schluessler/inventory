@@ -99,6 +99,7 @@ import EntityTable from '../../components/EntityTable/EntityTable.vue'
 import QrScanModal from '../../components/QrScanModal.vue'
 import { encodePath } from '../../utils/encodePath.js'
 
+import { showError } from '@nextcloud/dialogs'
 import { translate as t } from '@nextcloud/l10n'
 import {
 	NcActions,
@@ -322,17 +323,34 @@ export default {
 			})
 		},
 
-		loadCollectionsAndItems(path) {
+		async loadCollectionsAndItems(path) {
 			// Abort possibly running requests from previous paths
 			this.abortController?.abort()
 			this.abortController = new AbortController()
+			let collection = 'Folder'
 			if (this.collection === 'places') {
-				this.getPlacesByPlace({ path, signal: this.abortController.signal })
-				this.getItemsByPlace({ path, signal: this.abortController.signal })
-			} else {
-				this.getFoldersByFolder({ path, signal: this.abortController.signal })
-				this.getItemsByFolder({ path, signal: this.abortController.signal })
+				collection = 'Place'
 			}
+			const loadCollections = async () => {
+				try {
+					await this[`get${collection}sBy${collection}`]({ path, signal: this.abortController.signal })
+				} catch (error) {
+					if (error?.response?.status === 500) {
+						showError(t('inventory', 'Loading the {collection} failed.', { collection: this.collection }))
+					}
+				}
+			}
+			loadCollections()
+			const loadItems = async () => {
+				try {
+					await this[`getItemsBy${collection}`]({ path, signal: this.abortController.signal })
+				} catch (error) {
+					if (error?.response?.status === 500) {
+						showError(t('inventory', 'Loading the items failed.'))
+					}
+				}
+			}
+			loadItems()
 		},
 
 		openCollectionInput() {

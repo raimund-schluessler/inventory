@@ -202,10 +202,12 @@ const actions = {
 				return new Place(payload)
 			})
 			commit('setPlaces', { places })
-		} catch {
+		} catch (error) {
 			console.debug('Could not load the places.')
+			throw error
+		} finally {
+			commit('setLoadingPlaces', false)
 		}
-		commit('setLoadingPlaces', false)
 	},
 
 	async getPlaceByPath({ commit }, path) {

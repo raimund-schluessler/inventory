@@ -554,7 +554,6 @@ const actions = {
 				return new Item(payload)
 			})
 			commit('setItems', items)
-		} catch (error) {
 		} finally {
 			await commit('setLoadingItems', false)
 		}
@@ -569,7 +568,6 @@ const actions = {
 				return new Item(payload)
 			})
 			commit('setItems', items)
-		} catch (error) {
 		} finally {
 			commit('setLoadingItems', false)
 		}
@@ -584,7 +582,6 @@ const actions = {
 				return new Item(payload)
 			})
 			commit('setItems', items)
-		} catch (error) {
 		} finally {
 			commit('setLoadingItems', false)
 		}
