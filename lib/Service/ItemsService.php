@@ -533,7 +533,12 @@ class ItemsService {
 			$instances = [];
 		}
 
-		$item->images = $this->attachmentStorage->getImages($item->id);
+		// Getting the images sometimes fails with file locking errors since Nextcloud 26
+		try {
+			$item->images = $this->attachmentStorage->getImages($item->id);
+		} catch (\Exception $e) {
+			$item->images = [];
+		}
 
 		return $item;
 	}
