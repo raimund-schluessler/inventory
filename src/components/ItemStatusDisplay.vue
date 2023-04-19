@@ -126,8 +126,6 @@ export default {
 		&--conflict svg {
 			animation-iteration-count: infinite;
 			animation-duration: 1s;
-		}
-		&--conflict svg {
 			animation-name: pulse;
 			border-radius: 50%;
 		}
