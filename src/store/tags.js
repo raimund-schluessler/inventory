@@ -47,6 +47,18 @@ const getters = {
 	getTags: (state) => Object.values(state.tags),
 
 	/**
+	 * Returns all tags sorted alphabetically
+	 *
+	 * @param {object} state The store data
+	 * @return {Array} The tags sorted
+	 */
+	getSortedTags: (state) => {
+		return [...Object.values(state.tags)].sort((tagA, tagB) => {
+			return tagA.name.toLowerCase().localeCompare(tagB.name.toLowerCase())
+		})
+	},
+
+	/**
 	 * Returns whether we currently load tags from the server
 	 *
 	 * @param {object} state The store data
