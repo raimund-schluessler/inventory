@@ -23,7 +23,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div id="controls">
 			<NcSelect v-model="selectedTags"
-				:options="sortedTags"
+				:options="tags"
 				label="name"
 				:multiple="true"
 				:loading="loading"
@@ -86,14 +86,9 @@ export default {
 	computed: {
 		...mapGetters({
 			items: 'getAllItems',
-			tags: 'getTags',
+			tags: 'getSortedTags',
 			loading: 'loadingTags',
 		}),
-		sortedTags() {
-			return [...this.tags].sort((tagA, tagB) => {
-				return tagA.name.toLowerCase().localeCompare(tagB.name.toLowerCase())
-			})
-		},
 	},
 	async created() {
 		await this.loadTags()

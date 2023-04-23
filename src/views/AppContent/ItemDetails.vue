@@ -111,6 +111,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 									<NcSelect v-if="editingItem"
 										:value="editedItem.tags"
 										taggable
+										:options="tagsAvailable"
 										label="name"
 										:placeholder="t('inventory', 'Select tags')"
 										:multiple="true"
@@ -368,6 +369,7 @@ export default {
 			maxUploadSize: 16e7,
 			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
 			boundaries: document.querySelector('#content-vue'),
+			abortControllerTagsAvailable: null,
 		}
 	},
 	computed: {
@@ -378,6 +380,7 @@ export default {
 			relatedItems: 'getRelatedItems',
 			loadingItem: 'loadingItem',
 			loadingAttachments: 'loadingAttachments',
+			tagsAvailable: 'getSortedTags',
 		}),
 
 		breadcrumbs() {
@@ -424,9 +427,28 @@ export default {
 		this.loadSubItems(this.id)
 		this.loadParentItems(this.id)
 		this.loadRelatedItems(this.id)
+		this.loadTagsAvailable()
+	},
+	beforeUnmount() {
+		// Abort possibly running requests
+		this.abortControllerTagsAvailable?.abort()
 	},
 	methods: {
 		t,
+
+		...mapActions([
+			'getItemById',
+			'getAttachments',
+			'getInstanceAttachments',
+			'loadSubItems',
+			'loadParentItems',
+			'loadRelatedItems',
+			'deleteItem',
+			'editItem',
+			'linkItems',
+			'unlinkItems',
+			'getTags',
+		]),
 
 		upload() {
 			this.$refs.localAttachments.click()
@@ -526,6 +548,13 @@ export default {
 			})
 		},
 
+		async loadTagsAvailable() {
+			// Abort possibly running requests from previous paths
+			this.abortControllerTagsAvailable?.abort()
+			this.abortControllerTagsAvailable = new AbortController()
+			await this.getTags({ signal: this.abortControllerTagsAvailable.signal })
+		},
+
 		setTags(tags) {
 			/**
 			 * Probably due to a bug in VueSelect,
@@ -594,19 +623,6 @@ export default {
 			const path = this.$router.currentRoute.path
 			this.$router.push(path.substring(0, path.lastIndexOf('/item')))
 		},
-
-		...mapActions([
-			'getItemById',
-			'getAttachments',
-			'getInstanceAttachments',
-			'loadSubItems',
-			'loadParentItems',
-			'loadRelatedItems',
-			'deleteItem',
-			'editItem',
-			'linkItems',
-			'unlinkItems',
-		]),
 	},
 }
 </script>
