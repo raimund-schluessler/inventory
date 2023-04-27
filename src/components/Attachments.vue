@@ -32,7 +32,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<ul>
 				<li class="attachments__header">
 					<div class="label">
-						{{ t('inventory', 'Attachments') }}
+						{{ attachments.length ? t('inventory', 'Attachments') : t('inventory', 'No files attached.') }}
 					</div>
 					<NcActions :boundaries-element="boundaries">
 						<NcActionButton :close-after-click="true"
@@ -93,9 +93,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<li v-if="loadingAttachments" class="attachment attachment--placeholder">
 					<NcLoadingIcon />
 					<span class="message">{{ t('inventory', 'Load attachments from server.') }}</span>
-				</li>
-				<li v-else-if="!attachments.length" class="attachment attachment--placeholder">
-					<span>{{ t('inventory', 'No files attached.') }}</span>
 				</li>
 			</ul>
 		</div>
