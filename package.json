@@ -33,7 +33,7 @@
 		"@nextcloud/moment": "1.2.1",
 		"@nextcloud/router": "2.1.2",
 		"@nextcloud/vue": "7.9.0",
-		"@vueuse/components": "^10.1.2",
+		"@vueuse/components": "^10.2.0",
 		"bwip-js": "3.4.3",
 		"date-fns": "^2.30.0",
 		"jspdf": "2.5.1",
