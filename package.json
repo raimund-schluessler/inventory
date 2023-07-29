@@ -34,7 +34,7 @@
 		"@nextcloud/router": "2.1.2",
 		"@nextcloud/vue": "7.9.0",
 		"@vueuse/components": "^10.2.1",
-		"bwip-js": "3.4.3",
+		"bwip-js": "3.4.4",
 		"date-fns": "^2.30.0",
 		"jspdf": "2.5.1",
 		"p-queue": "7.3.4",
