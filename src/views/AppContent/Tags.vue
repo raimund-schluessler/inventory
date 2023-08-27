@@ -30,7 +30,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 				@input="navigate" />
 		</div>
 		<EntityTable v-if="selectedTags.length" :items="items" />
-		<NcEmptyContent v-else :title="loading ? t('inventory', 'Loading available tags.') : t('inventory', 'Please select a tag to search for.')">
+		<NcEmptyContent v-else :name="loading ? t('inventory', 'Loading available tags.') : t('inventory', 'Please select a tag to search for.')">
 			<template #icon>
 				<NcLoadingIcon v-if="loading" />
 				<Tag v-else :size="50" />

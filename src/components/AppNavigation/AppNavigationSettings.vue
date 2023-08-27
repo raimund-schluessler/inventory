@@ -20,7 +20,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<NcAppNavigationSettings :title="appNavigationSettingsTitle">
+	<NcAppNavigationSettings :name="appNavigationSettingsName">
 		<div class="settings-wrapper">
 			<NcButton @click="downloadUuidPdf">
 				<template #icon>
@@ -61,7 +61,7 @@ export default {
 		Qrcode,
 	},
 	computed: {
-		appNavigationSettingsTitle() {
+		appNavigationSettingsName() {
 			return t('inventory', 'Inventory settings')
 		},
 	},

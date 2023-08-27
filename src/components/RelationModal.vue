@@ -27,7 +27,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		@close="closeModal">
 		<div class="content">
 			<div class="header">
-				<span class="title">
+				<span class="headline">
 					{{ t('inventory', 'Please select the relation of the items:') }}
 				</span>
 				<NcCheckboxRadioSwitch :checked.sync="relationType"
@@ -226,7 +226,7 @@ export default {
 		flex-direction: row;
 		padding: 8px;
 
-		.title {
+		.headline {
 			line-height: 38px;
 			padding: 0 14px;
 			padding-left: 6px;

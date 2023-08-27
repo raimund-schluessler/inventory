@@ -67,7 +67,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<NcEmptyContent v-if="loadingItem || !item" :title="loadingItem ? t('inventory', 'Loading item from server.') : itemStatusMessage">
+			<NcEmptyContent v-if="loadingItem || !item" :name="loadingItem ? t('inventory', 'Loading item from server.') : itemStatusMessage">
 				<template #icon>
 					<NcLoadingIcon v-if="loadingItem" />
 					<Magnify v-else />

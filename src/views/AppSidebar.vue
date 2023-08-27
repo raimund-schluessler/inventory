@@ -20,12 +20,12 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<NcAppSidebar :title="(place && !loading) ? place.name : ''"
-		:title-editable="editingTitle"
-		:title-tooltip="place ? place.path : null"
-		@update:titleEditable="editTitle"
-		@update:title="updateTitle"
-		@submit-title="saveTitle()"
+	<NcAppSidebar :name="(place && !loading) ? place.name : ''"
+		:name-editable="editingName"
+		:name-tooltip="place ? place.path : null"
+		@update:nameEditable="editName"
+		@update:name="updateName"
+		@submit-name="saveName()"
 		@close="closeAppSidebar()">
 		<template v-if="(place && place.description && !loading) || editingDescription"
 			#description>
@@ -41,7 +41,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 
 		<template v-if="place && !loading" #secondary-actions>
 			<NcActionButton :close-after-click="true"
-				@click="editTitle(true)">
+				@click="editName(true)">
 				<template #icon>
 					<Pencil :size="20" />
 				</template>
@@ -137,12 +137,12 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</template>
 		<template v-else #default>
-			<NcEmptyContent v-if="loading" :title="t('inventory', 'Loading the place.')">
+			<NcEmptyContent v-if="loading" :name="t('inventory', 'Loading the place.')">
 				<template #icon>
 					<NcLoadingIcon :size="50" />
 				</template>
 			</NcEmptyContent>
-			<NcEmptyContent v-else :title="t('inventory', 'Place not found.')">
+			<NcEmptyContent v-else :name="t('inventory', 'Place not found.')">
 				<template #icon>
 					<Magnify :size="50" />
 				</template>
@@ -203,14 +203,14 @@ export default {
 	},
 	mixins: [showBarcode],
 	/**
-	 * Before we navigate to a new place, we save possible edits to the place title.
+	 * Before we navigate to a new place, we save possible edits to the place name.
 	 *
 	 * @param {object} to The target route object being navigated to.
 	 * @param {object} from The current route being navigated away from.
 	 * @param {Function} next This function must be called to resolve the hook.
 	 */
 	beforeRouteUpdate(to, from, next) {
-		this.saveTitle()
+		this.saveName()
 		next()
 	},
 	props: {
@@ -229,10 +229,10 @@ export default {
 	},
 	data() {
 		return {
-			title: '',
-			editingTitle: false,
-			newTitle: '',
-			titleSaved: true,
+			name: '',
+			editingName: false,
+			newName: '',
+			nameSaved: true,
 			loading: false,
 			addUuid: false,
 			newUuid: '',
@@ -355,27 +355,27 @@ export default {
 		},
 
 		closeAppSidebar() {
-			this.saveTitle()
+			this.saveName()
 			this.$router.push(`/${this.collection}/${encodePath(this.path)}`)
 		},
 
-		editTitle(editing) {
-			if (!this.editingTitle && editing) {
-				this.newTitle = this.place.name
+		editName(editing) {
+			if (!this.editingName && editing) {
+				this.newName = this.place.name
 			}
-			this.editingTitle = editing
+			this.editingName = editing
 		},
 
-		updateTitle(title) {
-			this.newTitle = title
-			this.titleSaved = false
+		updateName(name) {
+			this.newName = name
+			this.nameSaved = false
 		},
 
-		saveTitle(place = this.place) {
-			if (!this.titleSaved && this.newTitle !== place.name && this.collection === 'places') {
-				this.renamePlace({ place: this.place, newName: this.newTitle })
+		saveName(place = this.place) {
+			if (!this.nameSaved && this.newName !== place.name && this.collection === 'places') {
+				this.renamePlace({ place: this.place, newName: this.newName })
 			}
-			this.titleSaved = true
+			this.nameSaved = true
 		},
 
 	},
