@@ -115,7 +115,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 		<NcModal v-if="modalShow"
 			class="modal-attachments"
-			:title="t('inventory', 'File already exists')"
+			:name="t('inventory', 'File already exists')"
 			@close="modalShow=false">
 			<div class="modal__content">
 				<h2>{{ t('inventory', 'File already exists') }}</h2>
