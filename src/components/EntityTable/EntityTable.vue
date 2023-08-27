@@ -23,17 +23,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div class="entitytable" @dragover="dragOverTable">
 			<div :class="{ 'row--has-status': oneEntityHasStatus }" class="row row--header">
-				<div :id="`headerSelection-${compUid}`" class="column column--selection">
-					<input :id="`select_all_items-${compUid}`"
-						:checked="allEntitiesSelected"
-						:indeterminate.prop="someEntitiesSelected"
-						class="select-all checkbox"
-						type="checkbox">
-					<label :for="`select_all_items-${compUid}`" @click.prevent="selectEntities">
-						<span class="hidden-visually">
-							{{ t('inventory', 'Select all') }}
-						</span>
-					</label>
+				<div class="column column--selection">
+					<NcCheckboxRadioSwitch v-bind="selectAllBind" @update:checked="selectEntities" />
 				</div>
 				<div class="column column--name">
 					<div class="sort" data-sort="name" @click="setSortOrder('name')">
@@ -94,7 +85,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:is-selected="isSelected(item)"
 				:collection="collectionType"
 				:class="{ 'dragged': isDragged(item) }"
-				:uuid="compUid"
 				:mode="mode"
 				draggable="true"
 				class="entity"
@@ -119,7 +109,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:is-selected="isSelected(item)"
 				:collection="collectionType"
 				:class="{ 'dragged': isDragged(item) }"
-				:uuid="compUid"
 				:mode="mode"
 				:show-actions="false"
 				@select-entity="selectEntity" />
@@ -155,13 +144,13 @@ import Item from '../../models/item.js'
 import Folder from '../../models/folder.js'
 import Place from '../../models/place.js'
 import { sort } from '../../store/storeHelper.js'
-import GenRandomId from '../../utils/GenRandomId.js'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
 import {
 	NcActions,
 	NcActionButton,
+	NcCheckboxRadioSwitch,
 	NcLoadingIcon,
 } from '@nextcloud/vue'
 
@@ -177,6 +166,7 @@ export default {
 		Collection,
 		NcActions,
 		NcActionButton,
+		NcCheckboxRadioSwitch,
 		NcLoadingIcon,
 		EntityTableRowPlaceholder,
 		Close,
@@ -226,7 +216,6 @@ export default {
 			draggedEntities: [],
 			// Hack to fix https://github.com/nextcloud/nextcloud-vue/issues/1384
 			boundaries: document.querySelector('#content-vue'),
-			compUid: 'table-' + GenRandomId(),
 		}
 	},
 	computed: {
@@ -238,6 +227,19 @@ export default {
 			'loadingFolders',
 			'loadingPlaces',
 		]),
+
+		selectAllBind() {
+			const label = !this.allEntitiesSelected
+				? this.t('inventory', 'Select all')
+				: this.t('inventory', 'Unselect all')
+			return {
+				'aria-label': label,
+				checked: this.allEntitiesSelected,
+				indeterminate: this.someEntitiesSelected,
+				'data-testid': 'select-all-checkbox',
+				title: label,
+			}
+		},
 
 		loadingCollections() {
 			return this.loadingFolders || this.loadingPlaces
@@ -789,10 +791,6 @@ export default {
 			&:hover {
 				background-color: unset;
 			}
-		}
-
-		&--selected {
-			background-color: var(--color-background-darker) !important;
 		}
 
 		&--deleted {
