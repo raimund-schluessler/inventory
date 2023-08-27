@@ -20,20 +20,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div :class="{ 'row--selected': isSelected, 'row--deleted': !!deleteTimeout }"
+	<div :class="{ 'row--deleted': !!deleteTimeout }"
 		class="row row--collection handler"
 		@click.ctrl="selectEntity">
 		<div class="column column--selection">
-			<input :id="`select-folder-${entity.id}-${uuid}`"
-				:value="entity.id"
+			<NcCheckboxRadioSwitch v-if="showActions"
+				:aria-label="t('inventory', 'Select')"
 				:checked="isSelected"
-				class="selectCheckBox checkbox"
-				type="checkbox">
-			<label v-if="showActions" :for="`select-folder-${entity.id}-${uuid}`" @click.stop.prevent="selectEntity">
-				<span class="hidden-visually">
-					{{ t('inventory', 'Select') }}
-				</span>
-			</label>
+				data-testid="collection-checkbox"
+				@update:checked="selectEntity" />
 		</div>
 		<div class="column">
 			<RouterLink :to="`/${collection}/${encodePath(entity.path)}`"
@@ -103,6 +98,7 @@ import {
 	NcActions,
 	NcActionButton,
 	NcActionRouter,
+	NcCheckboxRadioSwitch,
 } from '@nextcloud/vue'
 
 import Delete from 'vue-material-design-icons/Delete.vue'
@@ -120,6 +116,7 @@ export default {
 		NcActions,
 		NcActionButton,
 		NcActionRouter,
+		NcCheckboxRadioSwitch,
 		Delete,
 		InformationOutline,
 		Pencil,
@@ -141,10 +138,6 @@ export default {
 		isSelected: {
 			type: Boolean,
 			default: false,
-		},
-		uuid: {
-			type: [Number, String],
-			required: true,
 		},
 		showActions: {
 			type: Boolean,

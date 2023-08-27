@@ -126,9 +126,10 @@ describe('EntityTable.vue', () => {
 			},
 		})
 		store.commit('setSearchString', '')
-		wrapper.find('label[for="select-item-1-' + wrapper.vm.compUid + '"]').trigger('click')
-		wrapper.find('label[for="select-item-2-' + wrapper.vm.compUid + '"]').trigger('click')
-		wrapper.find('label[for="select-item-3-' + wrapper.vm.compUid + '"]').trigger('click')
+		const itemCheckbox = wrapper.findAll('[data-testid="item-checkbox"] input')
+		itemCheckbox.at(0).setChecked()
+		itemCheckbox.at(1).setChecked()
+		itemCheckbox.at(2).setChecked()
 		const itemsFound = wrapper.vm.selectedItems
 		const allSelected = wrapper.vm.allEntitiesSelected
 		expect(itemsFound.length).toBe(3)
@@ -136,7 +137,7 @@ describe('EntityTable.vue', () => {
 	})
 
 	it('selects all items on checkbox click and unselects on second click', () => {
-		const wrapper = shallowMount(EntityTable, {
+		const wrapper = mount(EntityTable, {
 			localVue,
 			store,
 			propsData: {
@@ -144,14 +145,18 @@ describe('EntityTable.vue', () => {
 				showDropdown: false,
 				filterOnly: true,
 			},
+			stubs: {
+				RouterLink: RouterLinkStub,
+			},
 		})
 		store.commit('setSearchString', '')
-		wrapper.find('input.select-all.checkbox + label').trigger('click')
+		const selectAll = wrapper.find('[data-testid="select-all-checkbox"] input')
+		selectAll.setChecked()
 		let itemsFound = wrapper.vm.selectedItems
 		let allSelected = wrapper.vm.allEntitiesSelected
 		expect(itemsFound.length).toBe(3)
 		expect(allSelected).toBe(true)
-		wrapper.find('input.select-all.checkbox + label').trigger('click')
+		selectAll.setChecked(false)
 		itemsFound = wrapper.vm.selectedItems
 		allSelected = wrapper.vm.allEntitiesSelected
 		expect(itemsFound.length).toBe(0)
@@ -172,12 +177,13 @@ describe('EntityTable.vue', () => {
 			},
 		})
 		store.commit('setSearchString', '')
-		wrapper.find('label[for="select-item-1-' + wrapper.vm.compUid + '"]').trigger('click')
+		const itemCheckbox = wrapper.find('[data-testid="item-checkbox"] input')
+		itemCheckbox.setChecked()
 		let selectedItems = wrapper.vm.selectedItems
 		let allSelected = wrapper.vm.allEntitiesSelected
 		expect(selectedItems.length).toBe(1)
 		expect(allSelected).toBe(false)
-		wrapper.find('label[for="select-item-1-' + wrapper.vm.compUid + '"]').trigger('click')
+		itemCheckbox.setChecked(false)
 		selectedItems = wrapper.vm.selectedItems
 		allSelected = wrapper.vm.allEntitiesSelected
 		expect(selectedItems.length).toBe(0)

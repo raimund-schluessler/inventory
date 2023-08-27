@@ -20,22 +20,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <template>
-	<div :class="{ 'row--selected': isSelected, 'row--has-status': entity.syncStatus }"
+	<div :class="{ 'row--has-status': entity.syncStatus }"
 		class="row handler"
 		@click.exact="() => {mode == 'selection' ? selectEntity() : ''}"
 		@click.ctrl="selectEntity">
 		<div class="column column--selection">
-			<input v-if="showActions"
-				:id="`select-item-${entity.id}-${uuid}`"
-				:value="entity.id"
+			<NcCheckboxRadioSwitch v-if="showActions"
+				:aria-label="t('inventory', 'Select')"
 				:checked="isSelected"
-				class="selectCheckBox checkbox"
-				type="checkbox">
-			<label :for="`select-item-${entity.id}-${uuid}`" @click.stop.prevent="selectEntity">
-				<span class="hidden-visually">
-					{{ t('inventory', 'Select') }}
-				</span>
-			</label>
+				data-testid="item-checkbox"
+				@update:checked="selectEntity" />
 		</div>
 		<div class="column">
 			<component :is="itemRoute ? 'RouterLink' : 'a'"
@@ -90,11 +84,13 @@ import { encodePath } from '../../utils/encodePath.js'
 
 import { translate as t } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
+import { NcCheckboxRadioSwitch } from '@nextcloud/vue'
 
 import { mapMutations } from 'vuex'
 
 export default {
 	components: {
+		NcCheckboxRadioSwitch,
 		ItemStatusDisplay,
 		InventoryIcon,
 		TagList,
@@ -107,10 +103,6 @@ export default {
 		isSelected: {
 			type: Boolean,
 			default: false,
-		},
-		uuid: {
-			type: [Number, String],
-			required: true,
 		},
 		showActions: {
 			type: Boolean,
