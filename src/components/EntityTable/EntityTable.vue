@@ -27,28 +27,43 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<NcCheckboxRadioSwitch v-bind="selectAllBind" @update:checked="selectEntities" />
 				</div>
 				<div class="column column--name">
-					<div class="sort" data-sort="name" @click="setSortOrder('name')">
-						<span>{{ t('inventory', 'Name') }}</span>
-						<span v-show="sortOrder === 'name'"
-							:class="sortOrderIcon"
-							class="sort-indicator" />
-					</div>
+					<NcButton alignment="center-reverse"
+						class="sort-button"
+						:class="{ 'sort-button--active': sortOrder === 'name' }"
+						type="tertiary"
+						@click="setSortOrder('name')">
+						{{ t('inventory', 'Name') }}
+						<template #icon>
+							<MenuDown v-if="sortDirection && sortOrder === 'name'" />
+							<MenuUp v-else />
+						</template>
+					</NcButton>
 				</div>
 				<div class="column">
-					<div class="sort" data-sort="maker" @click="setSortOrder('maker')">
-						<span>{{ t('inventory', 'Maker') }}</span>
-						<span v-show="sortOrder === 'maker'"
-							:class="sortOrderIcon"
-							class="sort-indicator" />
-					</div>
+					<NcButton alignment="center-reverse"
+						class="sort-button"
+						:class="{ 'sort-button--active': sortOrder === 'maker' }"
+						type="tertiary"
+						@click="setSortOrder('maker')">
+						{{ t('inventory', 'Maker') }}
+						<template #icon>
+							<MenuDown v-if="sortDirection && sortOrder === 'maker'" />
+							<MenuUp v-else />
+						</template>
+					</NcButton>
 				</div>
 				<div class="column">
-					<div class="sort" data-sort="description" @click="setSortOrder('description')">
-						<span>{{ t('inventory', 'Description') }}</span>
-						<span v-show="sortOrder === 'description'"
-							:class="sortOrderIcon"
-							class="sort-indicator" />
-					</div>
+					<NcButton alignment="center-reverse"
+						class="sort-button"
+						:class="{ 'sort-button--active': sortOrder === 'description' }"
+						type="tertiary"
+						@click="setSortOrder('description')">
+						{{ t('inventory', 'Description') }}
+						<template #icon>
+							<MenuDown v-if="sortDirection && sortOrder === 'description'" />
+							<MenuUp v-else />
+						</template>
+					</NcButton>
 				</div>
 				<div class="column column--hide">
 					<div>
@@ -150,12 +165,15 @@ import { generateUrl } from '@nextcloud/router'
 import {
 	NcActions,
 	NcActionButton,
+	NcButton,
 	NcCheckboxRadioSwitch,
 	NcLoadingIcon,
 } from '@nextcloud/vue'
 
 import Close from 'vue-material-design-icons/Close.vue'
 import Delete from 'vue-material-design-icons/Delete.vue'
+import MenuDown from 'vue-material-design-icons/MenuDown.vue'
+import MenuUp from 'vue-material-design-icons/MenuUp.vue'
 
 import searchQueryParser from 'search-query-parser'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
@@ -166,11 +184,14 @@ export default {
 		Collection,
 		NcActions,
 		NcActionButton,
+		NcButton,
 		NcCheckboxRadioSwitch,
 		NcLoadingIcon,
 		EntityTableRowPlaceholder,
 		Close,
 		Delete,
+		MenuDown,
+		MenuUp,
 	},
 	props: {
 		mode: {
@@ -730,6 +751,7 @@ export default {
 			height: 50px;
 			background-color: var(--color-main-background-translucent);
 			z-index: 55;
+			font-weight: 700;
 
 			&:hover {
 				background-color: var(--color-main-background-translucent);
@@ -738,9 +760,10 @@ export default {
 			.column {
 				display: flex;
 				align-items: center;
+				padding-left: 0 !important;
 
-				&--name > div {
-					padding-left: 40px;
+				&--name .sort-button {
+					margin-left: 24px;
 				}
 
 				&--actions {
@@ -749,18 +772,20 @@ export default {
 					top: 3px;
 				}
 
-				& > div {
-					display: inline-flex;
-					margin-right: auto;
-					overflow: hidden;
-
-					span:not(.sort-indicator) {
-						overflow: hidden;
-						text-overflow: ellipsis;
+				.sort-button {
+					.button-vue__icon {
+						transition-timing-function: linear;
+						transition-duration: .1s;
+						transition-property: opacity;
+						opacity: 0;
 					}
 
-					.sort-indicator {
-						display: inline-block;
+					&:hover,
+					&--active,
+					&:active {
+						.button-vue__icon {
+							opacity: 1;
+						}
 					}
 				}
 			}
@@ -806,14 +831,21 @@ export default {
 			align-items: center;
 			overflow: hidden;
 			text-overflow: ellipsis;
+			padding-left: 14px;
+
+			&:nth-child(2) {
+				padding-left: 0 !important;
+			}
 
 			&--actions {
 				overflow: unset;
+				padding-left: 0 !important;
 			}
 
 			&--selection {
 				display: inline-flex;
 				justify-content: center;
+				padding-left: 0 !important;
 
 				input[type='checkbox'].checkbox + label::before {
 					margin: 0;
