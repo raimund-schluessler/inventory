@@ -145,9 +145,6 @@ body {
 		top: 0 !important;
 	}
 }
-.folder-icon {
-	color: var(--color-primary);
-}
 #controls {
 	display: flex;
 	padding-left: 48px;

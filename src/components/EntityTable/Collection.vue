@@ -33,9 +33,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="column">
 			<RouterLink :to="`/${collection}/${encodePath(entity.path)}`"
 				@click.ctrl.prevent>
-				<div class="thumbnail">
-					<div :style="{ backgroundImage: getThumbnailUrl }"
-						class="thumbnail__image folder" />
+				<div class="row__icon">
+					<Folder :size="38" />
 				</div>
 				<div class="text">
 					<span v-if="!renaming">{{ entity.name }}</span>
@@ -93,7 +92,6 @@ import { encodePath } from '../../utils/encodePath.js'
 
 import { showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
-import { generateUrl } from '@nextcloud/router'
 import {
 	NcActions,
 	NcActionButton,
@@ -102,6 +100,7 @@ import {
 } from '@nextcloud/vue'
 
 import Delete from 'vue-material-design-icons/Delete.vue'
+import Folder from 'vue-material-design-icons/Folder.vue'
 import InformationOutline from 'vue-material-design-icons/InformationOutline.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import Undo from 'vue-material-design-icons/Undo.vue'
@@ -118,6 +117,7 @@ export default {
 		NcActionRouter,
 		NcCheckboxRadioSwitch,
 		Delete,
+		Folder,
 		InformationOutline,
 		Pencil,
 		Undo,
@@ -160,9 +160,6 @@ export default {
 		}
 	},
 	computed: {
-		getThumbnailUrl() {
-			return `url(${generateUrl('apps/theming/img/core/filetypes/folder.svg?v=17')})`
-		},
 		deleteString() {
 			if (this.collection === 'places') {
 				return t('inventory', 'Delete place')
@@ -270,3 +267,10 @@ export default {
 	},
 }
 </script>
+
+<style lang="scss">
+.row__icon {
+	color: var(--color-primary-element);
+	margin-right: 2px;
+}
+</style>
