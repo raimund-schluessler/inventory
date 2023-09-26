@@ -27,7 +27,7 @@ jobs:
     name: info.xml lint
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.0.0 # v3.5.2
+        uses: actions/checkout@v4.1.0 # v3.5.2
 
       - name: Download schema
         run: wget https://raw.githubusercontent.com/nextcloud/appstore/master/nextcloudappstore/api/v1/release/info.xsd
