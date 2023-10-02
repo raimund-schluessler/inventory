@@ -99,7 +99,7 @@ export default {
 					this.resetStatusTimeout = setTimeout(
 						() => {
 							this.$emit('reset-status')
-						}, 5000
+						}, 5000,
 					)
 				}
 			}

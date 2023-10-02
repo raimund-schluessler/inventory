@@ -285,7 +285,7 @@ export default {
 			if (this.maxUploadSize > 0 && file.size > this.maxUploadSize) {
 				showError(
 					t('inventory', 'Failed to upload {name}', { name: file.name }) + ' - '
-						+ t('inventory', 'Maximum file size of {size} exceeded', { size: formatFileSize(this.maxUploadSize) })
+						+ t('inventory', 'Maximum file size of {size} exceeded', { size: formatFileSize(this.maxUploadSize) }),
 				)
 				event.target.value = ''
 				return

@@ -102,6 +102,8 @@ const actions = {
 	 * @param {object} context The store object
 	 * @param {object} context.commit The store mutations
 	 * @param {object} context.state The store state
+	 * @param {object} context2 The signal object
+	 * @param {object} context2.signal The signal to call
 	 * @return {Promise}
 	 */
 	async getTags({ commit, state }, { signal = null }) {

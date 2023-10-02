@@ -318,7 +318,7 @@ export default {
 				this.$nextTick(
 					() => {
 						this.$refs.description__editor.focus()
-					}
+					},
 				)
 			}
 		},
@@ -337,7 +337,7 @@ export default {
 			this.resetStatusTimeout = setTimeout(
 				() => {
 					this.statusMessage = ''
-				}, 3000
+				}, 3000,
 			)
 		},
 

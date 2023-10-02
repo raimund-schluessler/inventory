@@ -300,7 +300,7 @@ export default {
 			this.resetStatusTimeout = setTimeout(
 				() => {
 					this.statusMessage = ''
-				}, 3000
+				}, 3000,
 			)
 		},
 
