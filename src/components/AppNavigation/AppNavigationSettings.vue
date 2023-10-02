@@ -115,7 +115,7 @@ export default {
 						spacing * column + offsetLeft + padding,
 						spacing * row + offsetTop + padding,
 						size,
-						size
+						size,
 					)
 				}
 			}
