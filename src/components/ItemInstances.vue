@@ -94,7 +94,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<div v-if="instanceProperty.key === 'place'">
 								{{ getInstanceProperty(instance, instanceProperty) }}
 							</div>
-							<NcDatetimePicker v-else-if="instanceProperty.key === 'date'"
+							<NcDateTimePicker v-else-if="instanceProperty.key === 'date'"
 								append-to-body
 								:value="new Date(editedInstance.date)"
 								format="YYYY-MM-DD"
@@ -235,7 +235,7 @@ import { translate as t } from '@nextcloud/l10n'
 import {
 	NcActions,
 	NcActionButton,
-	NcDatetimePicker,
+	NcDateTimePicker,
 } from '@nextcloud/vue'
 
 import Check from 'vue-material-design-icons/Check.vue'
@@ -253,7 +253,7 @@ export default {
 	components: {
 		NcActions,
 		NcActionButton,
-		NcDatetimePicker,
+		NcDateTimePicker,
 		Attachments,
 		QrScanModal,
 		Check,
