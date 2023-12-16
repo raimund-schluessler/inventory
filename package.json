@@ -37,7 +37,7 @@
 		"bwip-js": "4.1.2",
 		"date-fns": "^2.30.0",
 		"jspdf": "2.5.1",
-		"p-queue": "8.0.0",
+		"p-queue": "8.0.1",
 		"papaparse": "5.4.1",
 		"search-query-parser": "1.6.0",
 		"uuid": "9.0.1",
