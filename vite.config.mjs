@@ -3,6 +3,9 @@ import { defineConfig } from 'vite'
 import { resolve } from 'node:path'
 
 const config = defineConfig({
+  build: {
+    sourcemap: false, // disabled, otherwise vite runs out of memory
+  },
   test: {
     coverage: {
       include: ['src/**'],
