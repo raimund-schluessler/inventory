@@ -22,9 +22,9 @@
 
 namespace OCA\Inventory\Controller;
 
+use OCA\Inventory\Service\IteminstanceService;
 use OCP\AppFramework\Controller;
 use OCP\IRequest;
-use OCA\Inventory\Service\IteminstanceService;
 
 class InstanceController extends Controller {
 	private $iteminstanceService;

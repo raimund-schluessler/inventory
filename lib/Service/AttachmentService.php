@@ -25,14 +25,14 @@
 
 namespace OCA\Inventory\Service;
 
+use OCA\Inventory\BadRequestException;
 use OCA\Inventory\Db\Attachment;
 use OCA\Inventory\Db\AttachmentMapper;
-use OCA\Inventory\Storage\AttachmentStorage;
-use OCA\Inventory\BadRequestException;
 use OCA\Inventory\InvalidAttachmentType;
 use OCA\Inventory\NoPermissionException;
 use OCA\Inventory\NotFoundException;
 use OCA\Inventory\StatusException;
+use OCA\Inventory\Storage\AttachmentStorage;
 use OCP\AppFramework\Http\Response;
 use OCP\IConfig;
 

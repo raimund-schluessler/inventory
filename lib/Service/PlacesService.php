@@ -22,15 +22,15 @@
 
 namespace OCA\Inventory\Service;
 
-use OCP\IConfig;
+use OCA\Inventory\BadRequestException;
+use OCA\Inventory\Db\IteminstanceMapper;
 use OCA\Inventory\Db\IteminstanceUuidMapper;
+use OCA\Inventory\Db\ItemMapper;
 use OCA\Inventory\Db\Place;
 use OCA\Inventory\Db\PlaceMapper;
 use OCA\Inventory\Db\PlaceUuidMapper;
-use OCA\Inventory\Db\ItemMapper;
-use OCA\Inventory\Db\IteminstanceMapper;
-use OCA\Inventory\BadRequestException;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\IConfig;
 
 class PlacesService {
 	private $userId;

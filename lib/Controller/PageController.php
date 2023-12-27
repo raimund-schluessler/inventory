@@ -22,11 +22,11 @@
 
 namespace OCA\Inventory\Controller;
 
-use OCP\IRequest;
-use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
 use OCP\IInitialStateService;
+use OCP\IRequest;
 
 /**
  * Controller class for main page.

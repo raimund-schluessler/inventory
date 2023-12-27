@@ -25,11 +25,11 @@
 
 namespace OCA\Inventory\Middleware;
 
-use OCP\AppFramework\Middleware;
+use OCA\Inventory\Exceptions\ConflictException;
+use OCA\Inventory\StatusException;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http\JSONResponse;
-use OCA\Inventory\StatusException;
-use OCA\Inventory\Exceptions\ConflictException;
+use OCP\AppFramework\Middleware;
 
 class ExceptionMiddleware extends Middleware {
 	/**

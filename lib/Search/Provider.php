@@ -26,12 +26,12 @@ declare(strict_types=1);
 namespace OCA\Inventory\Search;
 
 use OCA\Inventory\AppInfo\Application;
-use OCA\Inventory\Service\ItemsService;
 use OCA\Inventory\Service\FoldersService;
+use OCA\Inventory\Service\ItemsService;
 use OCP\App\IAppManager;
 use OCP\IL10N;
-use OCP\IUser;
 use OCP\IURLGenerator;
+use OCP\IUser;
 use OCP\Search\IProvider;
 use OCP\Search\ISearchQuery;
 use OCP\Search\SearchResult;
@@ -62,10 +62,10 @@ class Provider implements IProvider {
 	 * @param CalDavBackend $backend
 	 */
 	public function __construct(IAppManager $appManager,
-								ItemsService $itemsService,
-								FoldersService $foldersService,
-								IL10N $l10n,
-								IURLGenerator $urlGenerator) {
+		ItemsService $itemsService,
+		FoldersService $foldersService,
+		IL10N $l10n,
+		IURLGenerator $urlGenerator) {
 		$this->appManager = $appManager;
 		$this->itemsService = $itemsService;
 		$this->foldersService = $foldersService;
