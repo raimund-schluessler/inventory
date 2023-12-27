@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace OCA\Inventory\Migration;
 
 use Closure;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\DB\ISchemaWrapper;
-use OCP\Migration\SimpleMigrationStep;
 use OCP\Migration\IOutput;
+use OCP\Migration\SimpleMigrationStep;
 
 class Version000003Date20200216210000 extends SimpleMigrationStep {
 	/**

@@ -22,9 +22,9 @@
 
 namespace OCA\Inventory\Controller;
 
+use OCA\Inventory\Service\SearchService;
 use OCP\AppFramework\Controller;
 use OCP\IRequest;
-use OCA\Inventory\Service\SearchService;
 
 class SearchController extends Controller {
 	private $searchService;

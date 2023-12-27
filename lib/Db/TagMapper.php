@@ -22,10 +22,10 @@
 
 namespace OCA\Inventory\Db;
 
-use OCP\IDBConnection;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
-use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\IDBConnection;
 
 class TagMapper extends QBMapper {
 	public function __construct(IDBConnection $db) {

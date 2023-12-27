@@ -22,12 +22,12 @@
 
 namespace OCA\Inventory\Service;
 
-use OCP\IConfig;
+use OCA\Inventory\BadRequestException;
 use OCA\Inventory\Db\Folder;
 use OCA\Inventory\Db\FolderMapper;
 use OCA\Inventory\Db\ItemMapper;
-use OCA\Inventory\BadRequestException;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\IConfig;
 
 class FoldersService {
 	private $userId;

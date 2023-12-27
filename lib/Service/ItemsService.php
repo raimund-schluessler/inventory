@@ -22,20 +22,20 @@
 
 namespace OCA\Inventory\Service;
 
-use OCA\Inventory\Db\TagMapper;
+use OCA\Inventory\BadRequestException;
 use OCA\Inventory\Db\FolderMapper;
 use OCA\Inventory\Db\Item;
-use OCA\Inventory\Db\ItemTagsMapper;
 use OCA\Inventory\Db\IteminstanceMapper;
-use OCA\Inventory\Db\ItemparentMapper;
 use OCA\Inventory\Db\ItemMapper;
+use OCA\Inventory\Db\ItemparentMapper;
 use OCA\Inventory\Db\ItemrelationMapper;
+use OCA\Inventory\Db\ItemTagsMapper;
 use OCA\Inventory\Db\ItemtypeMapper;
 use OCA\Inventory\Db\PlaceMapper;
+use OCA\Inventory\Db\TagMapper;
 use OCA\Inventory\Storage\AttachmentStorage;
-use OCA\Inventory\BadRequestException;
-use OCP\IL10N;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\IL10N;
 
 class ItemsService {
 	private $userId;

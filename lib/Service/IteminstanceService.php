@@ -22,10 +22,10 @@
 
 namespace OCA\Inventory\Service;
 
-use OCA\Inventory\Db\IteminstanceMapper;
-use OCA\Inventory\Db\PlaceMapper;
-use OCA\Inventory\Db\IteminstanceUuidMapper;
 use OCA\Inventory\BadRequestException;
+use OCA\Inventory\Db\IteminstanceMapper;
+use OCA\Inventory\Db\IteminstanceUuidMapper;
+use OCA\Inventory\Db\PlaceMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IL10N;
 
@@ -44,7 +44,7 @@ class IteminstanceService {
 	private $iteminstanceUuidMapper;
 
 	public function __construct($userId, $AppName, PlacesService $placesService, IL10N $l10n, IteminstanceMapper $iteminstanceMapper,
-	PlaceMapper $placeMapper, IteminstanceUuidMapper $iteminstanceUuidMapper) {
+		PlaceMapper $placeMapper, IteminstanceUuidMapper $iteminstanceUuidMapper) {
 		$this->userId = $userId;
 		$this->appName = $AppName;
 		$this->placesService = $placesService;

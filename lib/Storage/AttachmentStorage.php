@@ -37,9 +37,9 @@ use OCP\Files\IAppData;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
-use OCP\IRequest;
-use OCP\IL10N;
 use OCP\IConfig;
+use OCP\IL10N;
+use OCP\IRequest;
 
 class AttachmentStorage {
 	private $userId;
@@ -52,7 +52,7 @@ class AttachmentStorage {
 	private $AppName;
 
 	public function __construct($userId, IAppData $appData, IRootFolder $rootFolder,
-	IRequest $request, IL10N $l10n, AttachmentMapper $attachmentMapper, IConfig $settings, string $AppName) {
+		IRequest $request, IL10N $l10n, AttachmentMapper $attachmentMapper, IConfig $settings, string $AppName) {
 		$this->userId = $userId;
 		$this->appData = $appData;
 		$this->rootFolder = $rootFolder;
@@ -176,7 +176,7 @@ class AttachmentStorage {
 	 * @return \OCP\Files\Node
 	 * @throws \Exception
 	 */
-	private function getFileFromRootFolder(Attachment $attachment) {#
+	private function getFileFromRootFolder(Attachment $attachment) { #
 		if (strpos($attachment->getBasename(), '/') === 0) {
 			$folder = $this->getRootFolder();
 		} else {

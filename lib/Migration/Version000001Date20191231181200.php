@@ -7,8 +7,8 @@ namespace OCA\Inventory\Migration;
 use Closure;
 use Doctrine\DBAL\Types\Types;
 use OCP\DB\ISchemaWrapper;
-use OCP\Migration\SimpleMigrationStep;
 use OCP\Migration\IOutput;
+use OCP\Migration\SimpleMigrationStep;
 
 class Version000001Date20191231181200 extends SimpleMigrationStep {
 	/**
