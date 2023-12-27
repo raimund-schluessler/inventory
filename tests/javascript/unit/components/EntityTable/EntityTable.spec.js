@@ -1,5 +1,6 @@
 import { mount, shallowMount, RouterLinkStub } from '@vue/test-utils'
-import EntityTable from 'Components/EntityTable/EntityTable.vue'
+import EntityTable from '../../../../../src/components/EntityTable/EntityTable.vue'
+import { describe, expect, it } from 'vitest'
 
 import { store, localVue } from '../../setupStore.js'
 
