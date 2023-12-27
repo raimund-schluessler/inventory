@@ -250,3 +250,6 @@ coverage_php
 .phpunit.result.cache
 
 .php-cs-fixer.cache
+
+css/*
+!css/unified-search.css
