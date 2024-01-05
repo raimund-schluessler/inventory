@@ -33,7 +33,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 		<NcEmptyContent v-else :name="loading ? t('inventory', 'Loading available tags.') : t('inventory', 'Please select a tag to search for.')">
 			<template #icon>
 				<NcLoadingIcon v-if="loading" />
-				<Tag v-else :size="50" />
+				<TagMultiple v-else :size="50" />
 			</template>
 		</NcEmptyContent>
 	</div>
@@ -50,7 +50,7 @@ import {
 	NcSelect,
 } from '@nextcloud/vue'
 
-import Tag from 'vue-material-design-icons/Tag.vue'
+import TagMultiple from 'vue-material-design-icons/TagMultiple.vue'
 
 import { mapGetters, mapActions } from 'vuex'
 
@@ -60,7 +60,7 @@ export default {
 		NcLoadingIcon,
 		NcSelect,
 		EntityTable,
-		Tag,
+		TagMultiple,
 	},
 	beforeRouteUpdate(to, from, next) {
 		if (to.params.path !== from.params.path) {
