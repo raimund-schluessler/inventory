@@ -45,22 +45,28 @@ export default {
 	display: flex;
 
 	li {
-		background-color: var(--color-background-dark);
-		border: var(--vs-selected-border-width) var(--vs-selected-border-style) var(--vs-selected-border-color);
-		border-radius: var(--border-radius-large);
-		color: var(--color-main-text);
-		margin-right: var(--default-grid-baseline);
-		min-height: 36px;
+		height: 32px;
+		overflow: hidden;
+		display: flex;
+		padding: 0 8px 0 12px;
+		background-color: var(--color-primary-element-light);
+		border: none;
+		border-radius: 18px !important;
+		margin: 4px 2px;
+		align-items: center;
+		cursor: pointer;
 
 		&:last-child {
 			margin-right: 0;
 		}
 
 		a {
-			display: flex;
-			align-items: center;
-			padding: 0 .5em;
-			min-height: 34px;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			width: 100%;
+			text-align: center;
+			cursor: pointer;
 		}
 	}
 }

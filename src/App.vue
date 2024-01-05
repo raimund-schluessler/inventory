@@ -60,7 +60,7 @@ import {
 
 import Folder from 'vue-material-design-icons/Folder.vue'
 import MapMarker from 'vue-material-design-icons/MapMarker.vue'
-import Tag from 'vue-material-design-icons/Tag.vue'
+import TagMultiple from 'vue-material-design-icons/TagMultiple.vue'
 
 export default {
 	name: 'App',
@@ -72,7 +72,7 @@ export default {
 		AppNavigationSettings,
 		Folder,
 		MapMarker,
-		Tag,
+		TagMultiple,
 	},
 	data() {
 		return {
@@ -91,7 +91,7 @@ export default {
 				{
 					name: t('inventory', 'Tags'),
 					id: 'tags',
-					icon: 'Tag',
+					icon: 'TagMultiple',
 				},
 			],
 		}
