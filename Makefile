@@ -88,9 +88,8 @@ update-composer: composer.phar
 # Removes the build directory and the compiled files
 .PHONY: clean
 clean:
-	rm -f ./js/inventory-main.js
-	rm -f ./js/inventory-main.js.map
-	rm -f ./js/inventory-main.js.LICENSE.txt
+	rm -rf ./js/*
+	ls -d ./css/* | grep -P '^((?!unified-search.css).)*$$' | xargs -r -d'\n' rm
 	rm -rf $(build_directory)
 
 # Same as clean but also removes dependencies installed by npm
@@ -105,31 +104,21 @@ appstore: clean build-js-production
 	rsync -av .	$(appstore_build_directory) \
 	--exclude=/.git \
 	--exclude=/.github \
-	--exclude=/.babelrc \
-	--exclude=/.babelrc.js \
 	--exclude=/.editorconfig \
-	--exclude=/.eslintrc.js \
+	--exclude=/.eslintrc.cjs \
 	--exclude=/.gitattributes \
 	--exclude=/.gitignore \
-	--exclude=/.gitlab-ci.yml \
 	--exclude=/.phpunit.result.cache \
 	--exclude=/.php-cs-fixer.cache \
 	--exclude=/.php-cs-fixer.dist.php \
-	--exclude=/.prettierrc.js \
-	--exclude=/.scrutinizer.yml \
 	--exclude=/.stylelintignore \
-	--exclude=/.stylelintrc \
-	--exclude=/.travis.yml \
 	--exclude=/.tx \
 	--exclude=/.v8flags*.json \
-	--exclude=/babel.config.js \
+	--exclude=/babel.config.cjs \
 	--exclude=/build.xml \
 	--exclude=/composer.json \
 	--exclude=/composer.lock \
 	--exclude=/composer.phar \
-	--exclude=/CONTRIBUTING.md \
-	--exclude=/issue_template.md \
-	--exclude=/gulpfile.js \
 	--exclude=/Makefile \
 	--exclude=/package-lock.json \
 	--exclude=/package.json \
@@ -137,17 +126,13 @@ appstore: clean build-js-production
 	--exclude=/phpunit.integration.xml \
 	--exclude=/README.md \
 	--exclude=/stylelint.config.js \
-	--exclude=/renovate.json \
-	--exclude=/webpack.config.js \
+	--exclude=/vite.config.mjs \
 	--exclude=/build \
-	--exclude=/ci \
 	--exclude=/coverage \
 	--exclude=/coverage_php \
-	--exclude=/img/src \
 	--exclude=/src \
 	--exclude=/node_modules \
 	--exclude=/screenshots/ \
-	--exclude=/test \
 	--exclude=/tests \
 	--exclude=/vendor
 ifdef CAN_SIGN
