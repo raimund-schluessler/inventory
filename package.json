@@ -59,7 +59,7 @@
 		"babel-core": "7.0.0-bridge.0",
 		"happy-dom": "^13.2.0",
 		"regenerator-runtime": "0.14.1",
-		"vitest": "^1.2.0"
+		"vitest": "^1.2.1"
 	},
 	"engines": {
 		"node": ">=15.0.0",
