@@ -28,15 +28,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:name="crumb.name"
 					:to="crumb.path"
 					:disable-drop="index === (breadcrumbs.length - 1)">
-					<template #icon>
+					<template v-if="index === 0" #icon>
 						<component :is="breadcrumbIcon"
-							v-if="index === 0"
 							:size="20" />
 					</template>
 				</NcBreadcrumb>
 			</NcBreadcrumbs>
-			<NcActions :boundaries-element="boundaries"
-				:open.sync="actionsOpen"
+			<NcActions v-model:open="actionsOpen"
+				:boundaries-element="boundaries"
 				@close="addingCollection = false">
 				<NcActionButton :close-after-click="true" @click="openQrModal('search')">
 					<template #icon>
@@ -60,7 +59,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				</NcActionRouter>
 				<NcActionRouter v-if="collection === 'places'"
 					:close-after-click="true"
-					:to="`/${collection}/${(path) ? encodePath(path) + '/' : ''}&details`">
+					:to="`/${collection}/${path ? encodePath(path) + '/' : ''}&details`">
 					<template #icon>
 						<InformationOutline :size="20" />
 					</template>
@@ -74,7 +73,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					{{ addCollectionString }}
 				</NcActionButton>
 				<NcActionInput v-if="addingCollection"
-					:value.sync="newCollectionName"
+					v-model="newCollectionName"
 					:helper-text="collectionNameErrorString"
 					:error="collectionNameError"
 					@submit="addCollection">
@@ -88,7 +87,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			:collections="collections"
 			:collection-type="collection" />
 		<!-- qrcode -->
-		<QrScanModal :qr-modal-open.sync="qrModalOpen" :status-string="statusMessage" @recognized-qr-code="foundUuid" />
+		<QrScanModal v-model:qr-modal-open="qrModalOpen" :status-string="statusMessage" @codes-detected="foundUuid" />
 	</div>
 </template>
 
@@ -246,7 +245,7 @@ export default {
 	created() {
 		this.loadCollectionsAndItems(this.path)
 	},
-	beforeDestroy() {
+	beforeUnmount() {
 		// Abort possibly running requests
 		this.abortController?.abort()
 	},
@@ -274,7 +273,10 @@ export default {
 			this.qrModalOpen = true
 		},
 
-		async foundUuid(uuid) {
+		async foundUuid(codes) {
+			if (!codes.length) return
+			// We only use the first detected code for now
+			const uuid = codes[0].rawValue
 			if (this.qrTarget === 'search') {
 				const response = await this.searchByUUID(uuid)
 				if (response.length) {

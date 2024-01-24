@@ -24,7 +24,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		:out-transition="true"
 		size="large"
 		@close="closeModal">
-		<QrcodeStream @decode="onDecode" @init="onInit" />
+		<QrcodeStream :formats="['ean_13', 'qr_code']" @detect="onDetect" @init="onInit" />
 		<div v-if="statusString" class="status-bar">
 			<span>{{ statusString }}</span>
 		</div>
@@ -32,9 +32,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 </template>
 
 <script>
+import { linkTo } from '@nextcloud/router'
 import { NcModal } from '@nextcloud/vue'
 
-import { QrcodeStream } from 'vue-qrcode-reader'
+import { QrcodeStream, setZXingModuleOverrides } from 'vue-qrcode-reader'
+
+setZXingModuleOverrides({
+	locateFile: (path, prefix) => {
+		if (path.endsWith('.wasm')) {
+			return linkTo('inventory', 'js/zxing_reader.wasm')
+		}
+		return prefix + path
+	},
+})
 
 export default {
 	components: {
@@ -53,7 +63,7 @@ export default {
 	},
 	emits: [
 		'update:qrModalOpen',
-		'recognized-qr-code',
+		'codes-detected',
 	],
 	data() {
 		return {
@@ -64,8 +74,8 @@ export default {
 		closeModal(event) {
 			this.$emit('update:qrModalOpen', false)
 		},
-		onDecode(result) {
-			this.$emit('recognized-qr-code', result)
+		onDetect(detectedCodes) {
+			this.$emit('codes-detected', detectedCodes)
 		},
 
 		async onInit(promise) {

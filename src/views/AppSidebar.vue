@@ -23,7 +23,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 	<NcAppSidebar :name="(place && !loading) ? place.name : ''"
 		:name-editable="editingName"
 		:name-tooltip="place ? place.path : null"
-		@update:nameEditable="editName"
+		@update:name-editable="editName"
 		@update:name="updateName"
 		@submit-name="saveName()"
 		@close="closeAppSidebar()">
@@ -70,7 +70,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 		</template>
 		<template v-if="place && !loading" #default>
 			<!-- qrcode -->
-			<QrScanModal :qr-modal-open.sync="qrModalOpen" :status-string="statusMessage" @recognized-qr-code="foundUuid" />
+			<QrScanModal v-model:qr-modal-open="qrModalOpen" :status-string="statusMessage" @codes-detected="foundUuid" />
 			<NcModal v-if="showBarcode"
 				class="qrcode-modal"
 				size="small"
@@ -156,6 +156,7 @@ import QrScanModal from '../components/QrScanModal.vue'
 import focus from '../directives/focus.vue'
 import showBarcode from '../mixins/showBarcode.js'
 import { encodePath } from '../utils/encodePath.js'
+import isUuid from '../utils/isUuid.js'
 
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import {
@@ -289,13 +290,17 @@ export default {
 			this.qrModalOpen = true
 		},
 
-		async foundUuid(uuid) {
+		async foundUuid(codes) {
+			// We use the first valid UUID
+			const code = codes.find(code => isUuid(code.rawValue))
+			if (!code) return
+
 			if (this.collection === 'places') {
 				if (this.qrTarget === 'move') {
-					const item = await this.moveItemByUuid({ newPath: this.placePath, uuid })
+					const item = await this.moveItemByUuid({ newPath: this.placePath, uuid: code.rawValue })
 					this.setStatusMessage(t('inventory', 'Item "{item}" moved', { item: item?.data?.name }))
 				} else if (this.qrTarget === 'add') {
-					this.newUuid = uuid
+					this.newUuid = code.rawValue
 					this.qrModalOpen = false
 				}
 			}

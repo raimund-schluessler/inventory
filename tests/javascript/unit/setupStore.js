@@ -1,11 +1,5 @@
-import { createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
-
 import store from '../../../src/store/store.js'
 import Item from '../../../src/models/item.js'
-
-const localVue = createLocalVue()
-localVue.use(Vuex)
 
 const itemsData = [
 	{
@@ -57,4 +51,4 @@ const items = itemsData.map(item => {
 
 store.commit('addItems', items)
 
-export { store, localVue }
+export { store }

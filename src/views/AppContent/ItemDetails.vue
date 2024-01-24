@@ -28,9 +28,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						:key="crumb.path"
 						:name="crumb.name"
 						:to="crumb.path">
-						<template #icon>
+						<template v-if="index === 0" #icon>
 							<component :is="breadcrumbIcon"
-								v-if="index === 0"
 								:size="20" />
 						</template>
 					</NcBreadcrumb>
@@ -109,7 +108,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 								<div v-else-if="itemProperty.key === 'tags'" class="wrapper">
 									<NcSelect v-if="editingItem"
-										:value="editedItem.tags"
+										:model-value="editedItem.tags"
 										taggable
 										:options="tagsAvailable"
 										label="name"
@@ -117,7 +116,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 										:multiple="true"
 										:close-on-select="false"
 										:tag-placeholder="t('inventory', 'Add this as a new tag')"
-										@input="setTags">
+										@update:model-value="setTags">
 										<template #no-options>
 											{{ t('inventory', 'No tag available. Create one!') }}
 										</template>
@@ -210,7 +209,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 			</div>
-			<RelationModal :modal-open.sync="modalOpen" :link="link" :item-id="id" />
+			<RelationModal v-model:modal-open="modalOpen" :link="link" :item-id="id" />
 		</div>
 		<form id="edit_item" method="POST" />
 		<NcModal v-if="showBarcode"
@@ -620,7 +619,7 @@ export default {
 		},
 
 		closeDetails() {
-			const path = this.$router.currentRoute.path
+			const path = this.$router.currentRoute.value.path
 			this.$router.push(path.substring(0, path.lastIndexOf('/item')))
 		},
 	},

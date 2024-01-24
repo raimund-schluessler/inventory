@@ -2,7 +2,7 @@ import { mount, shallowMount, RouterLinkStub } from '@vue/test-utils'
 import EntityTable from '../../../../../src/components/EntityTable/EntityTable.vue'
 import { describe, expect, it } from 'vitest'
 
-import { store, localVue } from '../../setupStore.js'
+import { store } from '../../setupStore.js'
 
 const items = store.getters.getAllItems
 
@@ -11,9 +11,10 @@ describe('EntityTable.vue', () => {
 
 	it('returns all items when search is empty', () => {
 		const wrapper = shallowMount(EntityTable, {
-			localVue,
-			store,
-			propsData: {
+			global: {
+				plugins: [store],
+			},
+			props: {
 				items,
 				showDropdown: false,
 				filterOnly: true,
@@ -26,9 +27,10 @@ describe('EntityTable.vue', () => {
 
 	it('finds items when searching with text in tags "Cat1"', () => {
 		const wrapper = shallowMount(EntityTable, {
-			localVue,
-			store,
-			propsData: {
+			global: {
+				plugins: [store],
+			},
+			props: {
 				items,
 				showDropdown: false,
 				filterOnly: true,
@@ -41,9 +43,10 @@ describe('EntityTable.vue', () => {
 
 	it('returns filtered items when search is "Maker1"', () => {
 		const wrapper = shallowMount(EntityTable, {
-			localVue,
-			store,
-			propsData: {
+			global: {
+				plugins: [store],
+			},
+			props: {
 				items,
 				showDropdown: false,
 				filterOnly: true,
@@ -56,9 +59,10 @@ describe('EntityTable.vue', () => {
 
 	it('searches in tags "tags:Cat1"', () => {
 		const wrapper = shallowMount(EntityTable, {
-			localVue,
-			store,
-			propsData: {
+			global: {
+				plugins: [store],
+			},
+			props: {
 				items,
 				showDropdown: false,
 				filterOnly: true,
@@ -71,9 +75,10 @@ describe('EntityTable.vue', () => {
 
 	it('searches only in given keywords "comment:Maker1"', () => {
 		const wrapper = shallowMount(EntityTable, {
-			localVue,
-			store,
-			propsData: {
+			global: {
+				plugins: [store],
+			},
+			props: {
 				items,
 				showDropdown: false,
 				filterOnly: true,
@@ -86,9 +91,10 @@ describe('EntityTable.vue', () => {
 
 	it('handles if item has no entry with given keyword "itemNumber:42"', () => {
 		const wrapper = shallowMount(EntityTable, {
-			localVue,
-			store,
-			propsData: {
+			global: {
+				plugins: [store],
+			},
+			props: {
 				items,
 				showDropdown: false,
 				filterOnly: true,
@@ -101,9 +107,10 @@ describe('EntityTable.vue', () => {
 
 	it('does not fail when no items are passed', () => {
 		const wrapper = shallowMount(EntityTable, {
-			localVue,
-			store,
-			propsData: {
+			global: {
+				plugins: [store],
+			},
+			props: {
 				showDropdown: false,
 				filterOnly: true,
 			},
@@ -115,15 +122,16 @@ describe('EntityTable.vue', () => {
 
 	it('selects item when clicked', () => {
 		const wrapper = mount(EntityTable, {
-			localVue,
-			store,
-			propsData: {
+			props: {
 				items,
 				showDropdown: false,
 				filterOnly: true,
 			},
-			stubs: {
-				RouterLink: RouterLinkStub,
+			global: {
+				plugins: [store],
+				stubs: {
+					RouterLink: RouterLinkStub,
+				},
 			},
 		})
 		store.commit('setSearchString', '')
@@ -139,15 +147,16 @@ describe('EntityTable.vue', () => {
 
 	it('selects all items on checkbox click and unselects on second click', () => {
 		const wrapper = mount(EntityTable, {
-			localVue,
-			store,
-			propsData: {
+			props: {
 				items,
 				showDropdown: false,
 				filterOnly: true,
 			},
-			stubs: {
-				RouterLink: RouterLinkStub,
+			global: {
+				plugins: [store],
+				stubs: {
+					RouterLink: RouterLinkStub,
+				},
 			},
 		})
 		store.commit('setSearchString', '')
@@ -166,15 +175,16 @@ describe('EntityTable.vue', () => {
 
 	it('selects item when clicked on label', () => {
 		const wrapper = mount(EntityTable, {
-			localVue,
-			store,
-			propsData: {
+			props: {
 				items,
 				showDropdown: false,
 				filterOnly: true,
 			},
-			stubs: {
-				RouterLink: RouterLinkStub,
+			global: {
+				plugins: [store],
+				stubs: {
+					RouterLink: RouterLinkStub,
+				},
 			},
 		})
 		store.commit('setSearchString', '')

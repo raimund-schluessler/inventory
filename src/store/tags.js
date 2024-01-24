@@ -26,11 +26,6 @@ import Tag from '../models/tag.js'
 import Axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 
-import Vue from 'vue'
-import Vuex from 'vuex'
-
-Vue.use(Vuex)
-
 const state = {
 	tags: {},
 	loading: false,
@@ -102,8 +97,8 @@ const actions = {
 	 * @param {object} context The store object
 	 * @param {object} context.commit The store mutations
 	 * @param {object} context.state The store state
-	 * @param {object} context2 The signal object
-	 * @param {object} context2.signal The signal to call
+	 * @param {object} signal Additional object
+	 * @param {object} signal.signal The signal to possibly cancel the request
 	 * @return {Promise}
 	 */
 	async getTags({ commit, state }, { signal = null }) {
