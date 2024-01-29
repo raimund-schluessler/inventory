@@ -534,7 +534,7 @@ const actions = {
 
 	async loadItems({ commit, state }) {
 		commit('setLoadingItems', true)
-		const response = await Axios.get(generateUrl('apps/inventory/items'))
+		const response = await Axios.get(generateUrl('apps/inventory/api/v1/items'))
 		const items = response.data.map(payload => {
 			return new Item(payload)
 		})
@@ -546,7 +546,7 @@ const actions = {
 		await commit('setLoadingItems', true)
 		commit('setItems', [])
 		try {
-			const response = await Axios.post(generateUrl('apps/inventory/items/folder'), { path }, { signal })
+			const response = await Axios.post(generateUrl('apps/inventory/api/v1/items/folder'), { path }, { signal })
 			const items = response.data.map(payload => {
 				return new Item(payload)
 			})
@@ -560,7 +560,7 @@ const actions = {
 		commit('setLoadingItems', true)
 		commit('setItems', [])
 		try {
-			const response = await Axios.post(generateUrl('apps/inventory/items/place'), { path }, { signal })
+			const response = await Axios.post(generateUrl('apps/inventory/api/v1/items/place'), { path }, { signal })
 			const items = response.data.map(payload => {
 				return new Item(payload)
 			})
@@ -574,7 +574,7 @@ const actions = {
 		commit('setLoadingItems', true)
 		commit('setItems', [])
 		try {
-			const response = await Axios.post(generateUrl('apps/inventory/items/tags'), { tagIds }, { signal })
+			const response = await Axios.post(generateUrl('apps/inventory/api/v1/items/tags'), { tagIds }, { signal })
 			const items = response.data.map(payload => {
 				return new Item(payload)
 			})
@@ -590,7 +590,7 @@ const actions = {
 			await queue.add(async () => {
 				try {
 					item.syncStatus = new SyncStatus('sync', 'Creating the item.')
-					const response = await Axios.post(generateUrl('apps/inventory/item/add'), { item: item.response })
+					const response = await Axios.post(generateUrl('apps/inventory/api/v1/item/add'), { item: item.response })
 					item.response = response.data
 					item.updateItem()
 					item.syncStatus = new SyncStatus('success', 'Successfully created the item.') // eslint-disable-line require-atomic-updates
@@ -605,7 +605,7 @@ const actions = {
 	async getItemById({ commit }, itemID) {
 		commit('setLoadingItem', true)
 		try {
-			const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}`))
+			const response = await Axios.get(generateUrl(`apps/inventory/api/v1/item/${itemID}`))
 			const item = new Item(response.data)
 			commit('setItem', { item })
 		} catch (error) {
@@ -619,7 +619,7 @@ const actions = {
 	async getAttachments({ commit }, itemID) {
 		state.loadingAttachments.push(`item-${itemID}`)
 		try {
-			const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}/attachments`))
+			const response = await Axios.get(generateUrl(`apps/inventory/api/v1/item/${itemID}/attachments`))
 			commit('setAttachments', { attachments: response.data })
 		} catch {
 			commit('setAttachments', { attachments: [] })
@@ -630,7 +630,7 @@ const actions = {
 	async getInstanceAttachments({ commit }, { itemID, instanceID }) {
 		state.loadingInstanceAttachments.push(`item-${itemID}_instance-${instanceID}`)
 		try {
-			const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}/instance/${instanceID}/attachments`))
+			const response = await Axios.get(generateUrl(`apps/inventory/api/v1/item/${itemID}/instance/${instanceID}/attachments`))
 			commit('setInstanceAttachments', { instanceID, attachments: response.data })
 		} catch {
 			commit('setInstanceAttachments', { instanceID, attachments: [] })
@@ -640,31 +640,31 @@ const actions = {
 
 	async createAttachment({ commit }, { itemId, formData, instanceId }) {
 		if (instanceId) {
-			const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/create`), formData)
+			const response = await Axios.post(generateUrl(`apps/inventory/api/v1/item/${itemId}/instance/${instanceId}/attachment/create`), formData)
 			commit('createInstanceAttachment', { itemId, attachment: response.data, instanceId })
 		} else {
-			const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/attachment/create`), formData)
+			const response = await Axios.post(generateUrl(`apps/inventory/api/v1/item/${itemId}/attachment/create`), formData)
 			commit('createAttachment', { itemId, attachment: response.data })
 		}
 	},
 
 	async updateAttachment({ commit }, { itemId, attachmentId, formData, instanceId }) {
 		if (instanceId) {
-			const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/update`), formData)
+			const response = await Axios.post(generateUrl(`apps/inventory/api/v1/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/update`), formData)
 			commit('updateInstanceAttachment', { itemId, attachment: response.data, instanceId })
 		} else {
-			const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/update`), formData)
+			const response = await Axios.post(generateUrl(`apps/inventory/api/v1/item/${itemId}/attachment/${attachmentId}/update`), formData)
 			commit('updateAttachment', { itemId, attachment: response.data })
 		}
 	},
 
 	async deleteAttachment({ commit }, { itemId, attachmentId, instanceId }) {
 		if (instanceId) {
-			const response = await Axios.delete(generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/delete`))
+			const response = await Axios.delete(generateUrl(`apps/inventory/api/v1/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/delete`))
 			commit('deleteInstanceAttachment', { itemId, attachmentId, instanceId })
 			return response
 		} else {
-			const response = await Axios.delete(generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/delete`))
+			const response = await Axios.delete(generateUrl(`apps/inventory/api/v1/item/${itemId}/attachment/${attachmentId}/delete`))
 			commit('deleteAttachment', { itemId, attachmentId })
 			return response
 		}
@@ -672,21 +672,21 @@ const actions = {
 
 	async linkAttachment({ commit }, { itemId, attachment, instanceId }) {
 		if (instanceId) {
-			const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/link`), { attachment })
+			const response = await Axios.post(generateUrl(`apps/inventory/api/v1/item/${itemId}/instance/${instanceId}/attachment/link`), { attachment })
 			commit('createInstanceAttachment', { itemId, attachment: response.data, instanceId })
 		} else {
-			const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/attachment/link`), { attachment })
+			const response = await Axios.post(generateUrl(`apps/inventory/api/v1/item/${itemId}/attachment/link`), { attachment })
 			commit('createAttachment', { itemId, attachment: response.data })
 		}
 	},
 
 	async unlinkAttachment({ commit }, { itemId, attachmentId, instanceId }) {
 		if (instanceId) {
-			const response = await Axios.delete(generateUrl(`apps/inventory/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/unlink`))
+			const response = await Axios.delete(generateUrl(`apps/inventory/api/v1/item/${itemId}/instance/${instanceId}/attachment/${attachmentId}/unlink`))
 			commit('deleteInstanceAttachment', { itemId, attachmentId, instanceId })
 			return response
 		} else {
-			const response = await Axios.delete(generateUrl(`apps/inventory/item/${itemId}/attachment/${attachmentId}/unlink`))
+			const response = await Axios.delete(generateUrl(`apps/inventory/api/v1/item/${itemId}/attachment/${attachmentId}/unlink`))
 			commit('deleteAttachment', { itemId, attachmentId })
 			return response
 		}
@@ -701,17 +701,17 @@ const actions = {
 	},
 
 	async uploadImage({ commit }, { itemId, formData }) {
-		const response = await Axios.post(generateUrl(`apps/inventory/item/${itemId}/image/upload`), formData)
+		const response = await Axios.post(generateUrl(`apps/inventory/api/v1/item/${itemId}/image/upload`), formData)
 		commit('addImage', { itemId, image: response.data })
 	},
 
 	async setAttachmentFolder(context, { path }) {
-		return Axios.post(generateUrl('apps/inventory/settings/attachmentFolder/set'), { path })
+		return Axios.post(generateUrl('apps/inventory/api/v1/settings/attachmentFolder/set'), { path })
 	},
 
 	async loadSubItems({ commit }, itemID) {
 		try {
-			const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}/sub`))
+			const response = await Axios.get(generateUrl(`apps/inventory/api/v1/item/${itemID}/sub`))
 			const subItems = response.data.map(payload => {
 				return new Item(payload)
 			})
@@ -722,7 +722,7 @@ const actions = {
 	},
 	async loadParentItems({ commit }, itemID) {
 		try {
-			const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}/parent`))
+			const response = await Axios.get(generateUrl(`apps/inventory/api/v1/item/${itemID}/parent`))
 			const parentItems = response.data.map(payload => {
 				return new Item(payload)
 			})
@@ -733,7 +733,7 @@ const actions = {
 	},
 	async loadRelatedItems({ commit }, itemID) {
 		try {
-			const response = await Axios.get(generateUrl(`apps/inventory/item/${itemID}/related`))
+			const response = await Axios.get(generateUrl(`apps/inventory/api/v1/item/${itemID}/related`))
 			const relatedItems = response.data.map(payload => {
 				return new Item(payload)
 			})
@@ -746,7 +746,7 @@ const actions = {
 		commit('setLoadingItems', true)
 		try {
 			commit('setItemCandidates', { itemCandidates: [] })
-			const response = await Axios.get(generateUrl(`apps/inventory/item/${parameters.itemID}/candidates/${parameters.relationType}`))
+			const response = await Axios.get(generateUrl(`apps/inventory/api/v1/item/${parameters.itemID}/candidates/${parameters.relationType}`))
 			const itemCandidates = response.data.map(payload => {
 				return new Item(payload)
 			})
@@ -758,7 +758,7 @@ const actions = {
 	},
 	async deleteItem({ commit }, item) {
 		try {
-			await Axios.delete(generateUrl(`apps/inventory/item/${item.id}/delete`))
+			await Axios.delete(generateUrl(`apps/inventory/api/v1/item/${item.id}/delete`))
 			commit('deleteItem', item)
 		} catch {
 			console.debug('Item deletion failed.')
@@ -773,7 +773,7 @@ const actions = {
 	},
 	async editItem({ commit }, item) {
 		try {
-			const response = await Axios.patch(generateUrl(`apps/inventory/item/${item.id}/edit`), { item: item.response })
+			const response = await Axios.patch(generateUrl(`apps/inventory/api/v1/item/${item.id}/edit`), { item: item.response })
 			item.response = response.data
 			item.updateItem()
 			commit('editItem', item)
@@ -783,7 +783,7 @@ const actions = {
 	},
 	async moveItem({ commit }, { itemID, newPath }) {
 		try {
-			const response = await Axios.patch(generateUrl(`apps/inventory/item/${itemID}/move`), { path: newPath })
+			const response = await Axios.patch(generateUrl(`apps/inventory/api/v1/item/${itemID}/move`), { path: newPath })
 			const item = new Item(response.data)
 			commit('deleteItem', item)
 		} catch {
@@ -792,14 +792,14 @@ const actions = {
 	},
 	async moveItemByUuid({ commit }, { uuid, newPath }) {
 		try {
-			return await Axios.patch(generateUrl('apps/inventory/item/move'), { newPath, uuid })
+			return await Axios.patch(generateUrl('apps/inventory/api/v1/item/move'), { newPath, uuid })
 		} catch {
 			console.debug('Moving the item by UUID failed.')
 		}
 	},
 	async moveInstance({ commit }, { itemID, instanceID, newPath }) {
 		try {
-			const response = await Axios.patch(generateUrl(`apps/inventory/item/${itemID}/instance/${instanceID}/move`), { path: newPath })
+			const response = await Axios.patch(generateUrl(`apps/inventory/api/v1/item/${itemID}/instance/${instanceID}/move`), { path: newPath })
 			const item = new Item(response.data)
 			commit('deleteItem', item)
 		} catch {
@@ -813,7 +813,7 @@ const actions = {
 		try {
 			// Extract itemIDs from items array
 			const itemIDs = items.map((item) => { return item.id })
-			await Axios.post(generateUrl(`apps/inventory/item/${itemID}/link/${relation}`), { itemIDs })
+			await Axios.post(generateUrl(`apps/inventory/api/v1/item/${itemID}/link/${relation}`), { itemIDs })
 			if (relation === 'parent') {
 				context.dispatch('loadParentItems', itemID)
 			} else if (relation === 'sub') {
@@ -832,7 +832,7 @@ const actions = {
 		try {
 			// Extract itemIDs from items array
 			const itemIDs = items.map((item) => { return item.id })
-			await Axios.post(generateUrl(`apps/inventory/item/${itemID}/unlink/${relation}`), { itemIDs })
+			await Axios.post(generateUrl(`apps/inventory/api/v1/item/${itemID}/unlink/${relation}`), { itemIDs })
 			if (relation === 'parent') {
 				commit('unlinkParents', items)
 			} else if (relation === 'sub') {
@@ -846,7 +846,7 @@ const actions = {
 	},
 	async addInstance({ commit }, { item, instance }) {
 		try {
-			const response = await Axios.post(generateUrl(`apps/inventory/item/${item.id}/instance/add`), { instance })
+			const response = await Axios.post(generateUrl(`apps/inventory/api/v1/item/${item.id}/instance/add`), { instance })
 			commit('addInstance', { item, instance: response.data })
 		} catch {
 			console.debug('Creating item instance failed.')
@@ -854,7 +854,7 @@ const actions = {
 	},
 	async deleteInstance({ commit }, { item, instance }) {
 		try {
-			await Axios.delete(generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/delete`))
+			await Axios.delete(generateUrl(`apps/inventory/api/v1/item/${item.id}/instance/${instance.id}/delete`))
 			commit('deleteInstance', { item, instance })
 		} catch {
 			console.debug('Deleting item instance failed.')
@@ -862,7 +862,7 @@ const actions = {
 	},
 	async editInstance({ commit }, { item, instance }) {
 		try {
-			const response = await Axios.patch(generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/edit`), { instance })
+			const response = await Axios.patch(generateUrl(`apps/inventory/api/v1/item/${item.id}/instance/${instance.id}/edit`), { instance })
 			commit('editInstance', { item, instance: response.data })
 		} catch {
 			console.debug('Editing item instance failed.')
@@ -870,7 +870,7 @@ const actions = {
 	},
 	async addUuid({ commit }, { item, instance, uuid }) {
 		try {
-			const response = await Axios.put(generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/uuid/${uuid}`))
+			const response = await Axios.put(generateUrl(`apps/inventory/api/v1/item/${item.id}/instance/${instance.id}/uuid/${uuid}`))
 			commit('addUuid', { instance, uuid: response.data })
 		} catch {
 			console.debug('Saving uuid failed.')
@@ -878,7 +878,7 @@ const actions = {
 	},
 	async deleteUuid({ commit }, { item, instance, uuid }) {
 		try {
-			await Axios.delete(generateUrl(`apps/inventory/item/${item.id}/instance/${instance.id}/uuid/${uuid}`))
+			await Axios.delete(generateUrl(`apps/inventory/api/v1/item/${item.id}/instance/${instance.id}/uuid/${uuid}`))
 			commit('deleteUuid', { instance, uuid })
 		} catch {
 			console.debug('Uuid deletion failed.')
@@ -889,7 +889,7 @@ const actions = {
 		try {
 			commit('setSearchResults', [])
 			state.searching = true
-			const response = await Axios.post(generateUrl('apps/inventory/search'), { searchString })
+			const response = await Axios.post(generateUrl('apps/inventory/api/v1/search'), { searchString })
 			const items = response.data.items.map(item => {
 				return new Item(item)
 			})
@@ -905,7 +905,7 @@ const actions = {
 
 	async searchByUUID({ commit }, searchString) {
 		try {
-			const response = await Axios.post(generateUrl('apps/inventory/search'), { searchString })
+			const response = await Axios.post(generateUrl('apps/inventory/api/v1/search'), { searchString })
 			const items = response.data.items.map(item => {
 				return new Item(item)
 			})

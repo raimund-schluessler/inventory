@@ -192,7 +192,7 @@ const actions = {
 		commit('setLoadingPlaces', true)
 		try {
 			commit('setPlaces', { places: [] })
-			const response = await Axios.post(generateUrl('apps/inventory/places'), { path }, { signal })
+			const response = await Axios.post(generateUrl('apps/inventory/api/v1/places'), { path }, { signal })
 			const places = response.data.map(payload => {
 				return new Place(payload)
 			})
@@ -208,7 +208,7 @@ const actions = {
 	async getPlaceByPath({ commit }, path) {
 		state.loadingPlace = true
 		try {
-			const response = await Axios.post(generateUrl('apps/inventory/place'), { path })
+			const response = await Axios.post(generateUrl('apps/inventory/api/v1/place'), { path })
 			const place = new Place(response.data)
 			commit('setPlace', { place })
 		} catch {
@@ -219,7 +219,7 @@ const actions = {
 
 	async createPlace(context, { name, path }) {
 		try {
-			const response = await Axios.post(generateUrl('apps/inventory/places/add'), { name, path })
+			const response = await Axios.post(generateUrl('apps/inventory/api/v1/places/add'), { name, path })
 			const place = new Place(response.data)
 			context.commit('addPlace', { place })
 		} catch {
@@ -229,7 +229,7 @@ const actions = {
 
 	async movePlace({ commit }, { placeID, newPath }) {
 		try {
-			const response = await Axios.patch(generateUrl(`apps/inventory/places/${placeID}/move`), { path: newPath })
+			const response = await Axios.patch(generateUrl(`apps/inventory/api/v1/places/${placeID}/move`), { path: newPath })
 			commit('deletePlace', { place: new Place(response.data) })
 		} catch {
 			console.debug('Could not move the place.')
@@ -238,7 +238,7 @@ const actions = {
 
 	async deletePlace(context, placeID) {
 		try {
-			const response = await Axios.delete(generateUrl(`apps/inventory/places/${placeID}/delete`))
+			const response = await Axios.delete(generateUrl(`apps/inventory/api/v1/places/${placeID}/delete`))
 			context.commit('deletePlace', { place: new Place(response.data) })
 		} catch {
 			console.debug('Could not delete the place.')
@@ -247,7 +247,7 @@ const actions = {
 
 	async renamePlace(context, { place, newName }) {
 		try {
-			const response = await Axios.patch(generateUrl(`apps/inventory/places/${place.id}/rename`), { newName })
+			const response = await Axios.patch(generateUrl(`apps/inventory/api/v1/places/${place.id}/rename`), { newName })
 			const newPlace = new Place(response.data)
 			// If the place is loaded, rename it
 			if (context.state.place?.path === place.path) {
@@ -268,7 +268,7 @@ const actions = {
 
 	async setPlaceDescription(context, { place, description }) {
 		try {
-			await Axios.post(generateUrl(`apps/inventory/place/${place.id}/description`), { description })
+			await Axios.post(generateUrl(`apps/inventory/api/v1/place/${place.id}/description`), { description })
 			context.commit('setPlaceDescription', { place, description })
 		} catch {
 			console.debug('Could not set the description of the place.')
@@ -277,7 +277,7 @@ const actions = {
 
 	async addUuidToPlace({ commit }, { place, uuid }) {
 		try {
-			const newUuid = await Axios.post(generateUrl(`apps/inventory/place/${place.id}/uuid/add`), { uuid })
+			const newUuid = await Axios.post(generateUrl(`apps/inventory/api/v1/place/${place.id}/uuid/add`), { uuid })
 			commit('addUuidToPlace', { place, uuid: newUuid.data })
 		} catch {
 			console.debug('Saving uuid failed.')
@@ -286,7 +286,7 @@ const actions = {
 
 	async deleteUuidFromPlace({ commit }, { place, uuid }) {
 		try {
-			await Axios.post(generateUrl(`apps/inventory/place/${place.id}/uuid/delete`), { uuid })
+			await Axios.post(generateUrl(`apps/inventory/api/v1/place/${place.id}/uuid/delete`), { uuid })
 			commit('deleteUuidFromPlace', { place, uuid })
 		} catch {
 			console.debug('Uuid deletion failed.')

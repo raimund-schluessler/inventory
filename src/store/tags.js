@@ -105,7 +105,7 @@ const actions = {
 		commit('setLoadingTags', true)
 		try {
 			commit('setTags', { tags: [] })
-			const response = await Axios.post(generateUrl('apps/inventory/tags'), {}, { signal })
+			const response = await Axios.post(generateUrl('apps/inventory/api/v1/tags'), {}, { signal })
 			const tags = response.data.map(payload => {
 				return new Tag(payload)
 			})

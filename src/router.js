@@ -26,8 +26,16 @@ import ItemsOverview from './views/AppContent/ItemsOverview.vue'
 import Tags from './views/AppContent/Tags.vue'
 import AppSidebar from './views/AppSidebar.vue'
 
+import { getRootUrl, generateUrl } from '@nextcloud/router'
+
 import { h } from 'vue'
-import { createWebHashHistory, createRouter, RouterView } from 'vue-router'
+import { createWebHistory, createRouter, RouterView } from 'vue-router'
+
+const webRootWithIndexPHP = getRootUrl() + '/index.php'
+const doesURLContainIndexPHP = window.location.pathname.startsWith(webRootWithIndexPHP)
+const base = generateUrl('apps/inventory', {}, {
+	noRewrite: doesURLContainIndexPHP,
+})
 
 const routes = [
 	{ path: '/', redirect: '/folders/' },
@@ -240,7 +248,7 @@ const routes = [
 ]
 
 const router = createRouter({
-	history: createWebHashHistory(),
+	history: createWebHistory(base),
 	routes,
 })
 
