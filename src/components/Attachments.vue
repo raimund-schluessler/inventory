@@ -337,9 +337,9 @@ export default {
 
 		attachmentUrl(attachment) {
 			if (attachment.instanceid) {
-				return generateUrl(`/apps/inventory/item/${attachment.itemid}/instance/${attachment.instanceid}/attachment/${attachment.id}/display`)
+				return generateUrl(`/apps/inventory/api/v1/item/${attachment.itemid}/instance/${attachment.instanceid}/attachment/${attachment.id}/display`)
 			} else {
-				return generateUrl(`/apps/inventory/item/${attachment.itemid}/attachment/${attachment.id}/display`)
+				return generateUrl(`/apps/inventory/api/v1/item/${attachment.itemid}/attachment/${attachment.id}/display`)
 			}
 		},
 

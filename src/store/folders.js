@@ -130,7 +130,7 @@ const actions = {
 		commit('setLoadingFolders', true)
 		try {
 			commit('setFolders', { folders: [] })
-			const response = await Axios.post(generateUrl('apps/inventory/folders'), { path }, { signal })
+			const response = await Axios.post(generateUrl('apps/inventory/api/v1/folders'), { path }, { signal })
 			const folders = response.data.map(payload => {
 				return new Folder(payload)
 			})
@@ -145,7 +145,7 @@ const actions = {
 
 	async createFolder(context, { name, path }) {
 		try {
-			const response = await Axios.post(generateUrl('apps/inventory/folders/add'), { name, path })
+			const response = await Axios.post(generateUrl('apps/inventory/api/v1/folders/add'), { name, path })
 			const folder = new Folder(response.data)
 			context.commit('addFolder', { folder })
 		} catch {
@@ -155,7 +155,7 @@ const actions = {
 
 	async moveFolder({ commit }, { folderID, newPath }) {
 		try {
-			const response = await Axios.patch(generateUrl(`apps/inventory/folders/${folderID}/move`), { path: newPath })
+			const response = await Axios.patch(generateUrl(`apps/inventory/api/v1/folders/${folderID}/move`), { path: newPath })
 			commit('deleteFolder', { folder: new Folder(response.data) })
 		} catch {
 			console.debug('Could not move the folder.')
@@ -164,7 +164,7 @@ const actions = {
 
 	async deleteFolder(context, folderID) {
 		try {
-			const response = await Axios.delete(generateUrl(`apps/inventory/folders/${folderID}/delete`))
+			const response = await Axios.delete(generateUrl(`apps/inventory/api/v1/folders/${folderID}/delete`))
 			context.commit('deleteFolder', { folder: new Folder(response.data) })
 		} catch {
 			console.debug('Could not delete the folder.')
@@ -173,7 +173,7 @@ const actions = {
 
 	async renameFolder(context, { folderID, newName }) {
 		try {
-			const response = await Axios.patch(generateUrl(`apps/inventory/folders/${folderID}/rename`), { newName })
+			const response = await Axios.patch(generateUrl(`apps/inventory/api/v1/folders/${folderID}/rename`), { newName })
 			context.commit('updateFolder', { newFolder: new Folder(response.data) })
 		} catch {
 			console.debug('Could not rename the folder.')

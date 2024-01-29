@@ -79,7 +79,7 @@ const actions = {
 	async setSetting(context, payload) {
 		try {
 			context.commit('setSetting', payload)
-			await Axios.post(generateUrl('apps/inventory/settings/{type}/{value}', payload), {})
+			await Axios.post(generateUrl('apps/inventory/api/v1/settings/{type}/{value}', payload), {})
 		} catch {
 			console.debug('Could not save settings.')
 		}
@@ -94,7 +94,7 @@ const actions = {
 	 */
 	async loadSettings({ commit }) {
 		try {
-			const response = await Axios.get(generateUrl('apps/inventory/settings'))
+			const response = await Axios.get(generateUrl('apps/inventory/api/v1/settings'))
 			commit('setSettings', { settings: response.data })
 		} catch {
 			console.debug('Could not load settings.')
