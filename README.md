@@ -6,14 +6,31 @@
 
 ## Features
 
-* edit items
+- List all items and their properties in your inventory
+- Sort items into folders or places
+- Link parent, related and sub items
+- Upload attachments such as invoices and manuals
+- Upload images for items
+- Find item instances by their storage place
+- Assign unique UUIDs and find item instances by scanning their GTIN or QR code
+- Assign tags to items and search by tag
 
-## Developer setup info
+## Build the app
 
-Just clone this repo into your apps directory (Nextcloud server installation needed). Additionally,  [nodejs and npm](https://nodejs.org/en/download/package-manager/) are needed for installing JavaScript dependencies.
+To build you need to have [Node.js](https://nodejs.org/en/) installed.
 
-Once node and npm are installed, PHP and JavaScript dependencies can be installed by running
-```bash
-$ make
+- Install JS dependencies: `npm ci`
+- Build JavaScript for the frontend
+    - `npm run dev` development build
+    - `npm run watch` watch for changes
+    - `npm run build` production build 
+
+Read more about [necessary prerequisites](https://docs.nextcloud.com/server/latest/admin_manual/installation/source_installation.html#prerequisites-for-manual-installation) for manual installs.
+
+## Running tests
+
+You can run the front-end tests by using:
+
 ```
-Please execute this command with your ordinary user account and neither root nor sudo.
+npm run test
+```
