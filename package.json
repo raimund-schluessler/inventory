@@ -43,7 +43,7 @@
 		"search-query-parser": "1.6.0",
 		"uuid": "9.0.1",
 		"vue": "3.4.15",
-		"vue-material-design-icons": "5.2.0",
+		"vue-material-design-icons": "5.3.0",
 		"vue-qrcode-reader": "5.5.1",
 		"vue-router": "4.2.5",
 		"vuex": "4.1.0"
