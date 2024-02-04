@@ -12,7 +12,8 @@
 - Upload attachments such as invoices and manuals
 - Upload images for items
 - Find item instances by their storage place
-- Assign unique UUIDs and find item instances by scanning their GTIN or QR code
+- Assign unique UUIDs and find item instances by scanning their GTIN or UUID QR code
+- Create UUID QR code sticker sheets
 - Assign tags to items and search by tag
 
 ## Build the app
