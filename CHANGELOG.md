@@ -1,3 +1,9 @@
+## 0.1.1 - 2024-02-04
+
+### Added
+
+- Add more information to info.xml #476
+
 ## 0.1.0 - 2024-02-04
 
 Initial release of the inventory app
