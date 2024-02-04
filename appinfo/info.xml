@@ -1,9 +1,20 @@
 <?xml version="1.0"?>
-<info>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
 	<id>inventory</id>
 	<name>Inventory</name>
 	<summary>The inventory app for Nextcloud</summary>
-	<description>Inventory App</description>
+	<description><![CDATA[An inventory app for Nextcloud. Manage your inventory.
+
+* List all items and their properties in your inventory
+* Sort items into folders or places
+* Link parent, related and sub items
+* Upload attachments such as invoices and manuals
+* Upload images for items
+* Find item instances by their storage place
+* Assign unique UUIDs and find item instances by scanning their GTIN or QR code
+* Assign tags to items and search by tag
+	]]></description>
 	<version>0.1.0</version>
 	<licence>agpl</licence>
 	<author mail="raimund.schluessler@mailbox.org">Raimund Schlüßler</author>
@@ -11,6 +22,9 @@
 	<category>organization</category>
 	<website>https://github.com/raimund-schluessler/inventory</website>
 	<bugs>https://github.com/raimund-schluessler/inventory/issues</bugs>
+    <repository>https://github.com/raimund-schluessler/inventory.git</repository>
+    <screenshot>https://github.com/raimund-schluessler/inventory/master/screenshots/inventory-1.png</screenshot>
+    <screenshot>https://github.com/raimund-schluessler/inventory/master/screenshots/inventory-2.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="28" max-version="29"/>
 	</dependencies>
