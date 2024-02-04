@@ -1,3 +1,9 @@
+## 0.1.2 - 2024-02-04
+
+### Added
+
+- Correct links to screenshots in info.xml #478
+
 ## 0.1.1 - 2024-02-04
 
 ### Added

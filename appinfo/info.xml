@@ -15,7 +15,7 @@
 * Assign unique UUIDs and find item instances by scanning their GTIN or QR code
 * Assign tags to items and search by tag
 	]]></description>
-	<version>0.1.1</version>
+	<version>0.1.2</version>
 	<licence>agpl</licence>
 	<author mail="raimund.schluessler@mailbox.org">Raimund Schlüßler</author>
 	<namespace>Inventory</namespace>
