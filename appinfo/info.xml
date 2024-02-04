@@ -23,8 +23,8 @@
 	<website>https://github.com/raimund-schluessler/inventory</website>
 	<bugs>https://github.com/raimund-schluessler/inventory/issues</bugs>
     <repository>https://github.com/raimund-schluessler/inventory.git</repository>
-    <screenshot>https://github.com/raimund-schluessler/inventory/master/screenshots/inventory-1.png</screenshot>
-    <screenshot>https://github.com/raimund-schluessler/inventory/master/screenshots/inventory-2.png</screenshot>
+    <screenshot>https://raw.githubusercontent.com/raimund-schluessler/inventory/master/screenshots/inventory-1.png</screenshot>
+    <screenshot>https://raw.githubusercontent.com/raimund-schluessler/inventory/master/screenshots/inventory-2.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="28" max-version="29"/>
 	</dependencies>
