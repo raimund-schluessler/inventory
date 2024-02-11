@@ -1,0 +1,8 @@
+{ "translations": {
+    "Inventory" : "Инвентарь",
+    "places" : "места",
+    "Places" : "Места",
+    "Items" : "Объекты",
+  	"Description" : "Описание"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
