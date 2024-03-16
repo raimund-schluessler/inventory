@@ -54,7 +54,7 @@
 		"@nextcloud/eslint-config": "github:nextcloud-libraries/eslint-config#vue3",
 		"@nextcloud/stylelint-config": "2.4.0",
 		"@nextcloud/vite-config": "github:nextcloud-libraries/nextcloud-vite-config#vue3",
-		"@vue/test-utils": "^2.4.4",
+		"@vue/test-utils": "^2.4.5",
 		"happy-dom": "^13.8.6",
 		"vite-plugin-static-copy": "^1.0.1",
 		"vitest": "^1.4.0"
