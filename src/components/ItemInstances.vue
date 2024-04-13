@@ -342,7 +342,7 @@ export default {
 			const uuids = instance.uuids.map(uuid => {
 				return uuid.uuid
 			})
-			return this.isUuid(this.newUuid) && !uuids.includes(this.newUuid)
+			return isUuid(this.newUuid) && !uuids.includes(this.newUuid)
 		},
 
 		openQrModal() {
