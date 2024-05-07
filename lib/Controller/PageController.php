@@ -24,6 +24,7 @@ namespace OCA\Inventory\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
+use OCP\AppFramework\Http\FeaturePolicy;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
 use OCP\IInitialStateService;
@@ -70,6 +71,10 @@ class PageController extends Controller {
 		// Needed to get https://github.com/gruhn/vue-qrcode-reader to work.
 		// $csp->allowEvalWasm(true);
 		$response->setContentSecurityPolicy($csp);
+
+		$featurePolicy = new FeaturePolicy();
+		$featurePolicy->addAllowedCameraDomain('\'self\'');
+		$response->setFeaturePolicy($featurePolicy);
 
 		return $response;
 	}
