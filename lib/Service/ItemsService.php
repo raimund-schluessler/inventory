@@ -322,6 +322,9 @@ class ItemsService {
 			$item['folderid'] = $folder->id;
 		}
 
+		$item['gtin'] = trim($item['gtin']);
+		$this->checkItem($item);
+
 		$added = $this->itemMapper->add($item);
 
 		foreach ($item['tags'] as $tag) {
@@ -398,38 +401,8 @@ class ItemsService {
 			throw new BadRequestException('Item id must be a number.');
 		}
 
-		if ($item['name'] === null || $item['name'] === false) {
-			throw new BadRequestException('Item name must not be empty.');
-		}
-
-		// Check that string length does not exceed database column length
-		if (strlen($item['name']) > 100) {
-			throw new BadRequestException('Item name must not exceed 100 characters.');
-		}
-
-		if (strlen($item['maker']) > 100) {
-			throw new BadRequestException('Item maker must not exceed 100 characters.');
-		}
-
-		if (strlen($item['link']) > 255) {
-			throw new BadRequestException('Item link must not exceed 255 characters.');
-		}
-
-		if (strlen($item['comment']) > 65000) {
-			throw new BadRequestException('Item comment must not exceed 65000 characters.');
-		}
-
-		if (strlen($item['details']) > 65000) {
-			throw new BadRequestException('Item details must not exceed 65000 characters.');
-		}
-
-		if (strlen($item['description']) > 65000) {
-			throw new BadRequestException('Item description must not exceed 65000 characters.');
-		}
-
-		if ($item['gtin'] !== null && $item['gtin'] !== '' && strlen($item['gtin']) !== 13) {
-			throw new BadRequestException('The provided GTIN is invalid.');
-		}
+		$item['gtin'] = trim($item['gtin']);
+		$this->checkItem($item);
 
 		$localItem = $this->itemMapper->find($itemId, $this->userId);
 		$localItem->setName($item['name']);
@@ -477,6 +450,59 @@ class ItemsService {
 		}
 
 		return $this->getItemDetails($editedItem);
+	}
+	private function checkItem($item) {
+		if ($item['name'] === null || $item['name'] === false) {
+			throw new BadRequestException('Item name must not be empty.');
+		}
+
+		// Check that string length does not exceed database column length
+		if (strlen($item['name']) > 100) {
+			throw new BadRequestException('Item name must not exceed 100 characters.');
+		}
+
+		if (strlen($item['maker']) > 100) {
+			throw new BadRequestException('Item maker must not exceed 100 characters.');
+		}
+
+		if (strlen($item['link']) > 255) {
+			throw new BadRequestException('Item link must not exceed 255 characters.');
+		}
+
+		if (strlen($item['comment']) > 65000) {
+			throw new BadRequestException('Item comment must not exceed 65000 characters.');
+		}
+
+		if (strlen($item['details']) > 65000) {
+			throw new BadRequestException('Item details must not exceed 65000 characters.');
+		}
+
+		if (strlen($item['description']) > 65000) {
+			throw new BadRequestException('Item description must not exceed 65000 characters.');
+		}
+
+		if ($item['gtin'] !== null && $item['gtin'] !== '' && !$this->checkGTIN($item['gtin'])) {
+			throw new BadRequestException('The GTIN provided is invalid.');
+		}
+	}
+
+	private function checkGTIN($gtin) {
+		if (strlen($gtin) !== 13) {
+			return false;
+		}
+		$check = 0;
+		for ($i = 0; $i < 6; $i++) {
+			$check = $check + (int)$gtin[2 * $i + 1];
+		}
+		$check = 3 * $check;
+		for ($i = 0; $i < 6; $i++) {
+			$check = $check + (int)$gtin[2 * $i];
+		}
+		$check = $check % 10;
+		if ($check != 0) {
+			$check = 10 - $check;
+		}
+		return $check == (int)$gtin[12];
 	}
 
 	public function findByString($searchString, $limit = null, $offset = null) {
