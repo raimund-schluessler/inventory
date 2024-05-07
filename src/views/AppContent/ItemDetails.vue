@@ -569,10 +569,10 @@ export default {
 		},
 
 		stopEditingItem($event) {
-			if ($event.target.closest('.vs__dropdown-menu')) {
+			if ($event.target.closest('.v-popper__popper')) {
 				return
 			}
-			this.editingItem = false
+			this.saveItem()
 		},
 		startEditingItem() {
 			this.editingItem = true
