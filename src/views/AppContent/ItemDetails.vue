@@ -579,8 +579,10 @@ export default {
 			this.editedItem = this.item.response
 		},
 		async saveItem() {
-			await this.editItem(this.item)
-			this.editingItem = false
+			if (this.editingItem) {
+				await this.editItem(this.item)
+				this.editingItem = false
+			}
 		},
 		openModal() {
 			this.modalOpen = true
