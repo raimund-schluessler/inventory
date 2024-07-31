@@ -148,8 +148,9 @@ body {
 #controls {
 	display: flex;
 	padding-left: 52px;
-	padding-top: 8px;
-	height: 52px;
+	margin-right: 8px;
+	margin-top: 8px;
+	height: 44px;
 	position: sticky;
 	top: 0;
 	background-color: var(--color-main-background-translucent);
@@ -163,7 +164,7 @@ body {
 
 	.breadcrumb {
 		height: 44px;
-		width: calc(100% - 44px);
+		min-width: 0;
 	}
 }
 .error input[type='text'] {
