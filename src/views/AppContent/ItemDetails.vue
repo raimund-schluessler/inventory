@@ -745,7 +745,7 @@ export default {
 
 		@media only screen and (min-width: 500px) {
 			> div {
-				padding: 0 10px;
+				padding: 0 8px;
 			}
 
 			&--properties {
