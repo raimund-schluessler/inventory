@@ -135,7 +135,7 @@ describe('EntityTable.vue', () => {
 			},
 		})
 		store.commit('setSearchString', '')
-		const itemCheckbox = wrapper.findAll('[data-testid="item-checkbox"] input')
+		const itemCheckbox = wrapper.findAll('.row--item .checkbox-radio-switch input')
 		itemCheckbox.at(0).setChecked()
 		itemCheckbox.at(1).setChecked()
 		itemCheckbox.at(2).setChecked()
@@ -160,7 +160,7 @@ describe('EntityTable.vue', () => {
 			},
 		})
 		store.commit('setSearchString', '')
-		const selectAll = wrapper.find('[data-testid="select-all-checkbox"] input')
+		const selectAll = wrapper.find('.row--header .checkbox-radio-switch input')
 		selectAll.setChecked()
 		let itemsFound = wrapper.vm.selectedItems
 		let allSelected = wrapper.vm.allEntitiesSelected
@@ -188,7 +188,7 @@ describe('EntityTable.vue', () => {
 			},
 		})
 		store.commit('setSearchString', '')
-		const itemCheckbox = wrapper.find('[data-testid="item-checkbox"] input')
+		const itemCheckbox = wrapper.find('.row--item .checkbox-radio-switch input')
 		itemCheckbox.setChecked()
 		let selectedItems = wrapper.vm.selectedItems
 		let allSelected = wrapper.vm.allEntitiesSelected
