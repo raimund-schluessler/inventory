@@ -149,8 +149,8 @@ body {
 	display: flex;
 	padding-left: 52px;
 	margin-right: 8px;
-	margin-top: 8px;
-	height: 44px;
+	padding-top: 8px;
+	height: 52px;
 	position: sticky;
 	top: 0;
 	background-color: var(--color-main-background-translucent);
