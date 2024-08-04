@@ -257,7 +257,6 @@ export default {
 				'aria-label': label,
 				'model-value': this.allEntitiesSelected,
 				indeterminate: this.someEntitiesSelected,
-				'data-testid': 'select-all-checkbox',
 				title: label,
 			}
 		},

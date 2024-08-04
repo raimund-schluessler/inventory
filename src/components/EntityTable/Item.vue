@@ -21,14 +21,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 <template>
 	<div :class="{ 'row--has-status': entity.syncStatus }"
-		class="row handler"
+		class="row row--item handler"
 		@click.exact="() => {mode == 'selection' ? selectEntity() : ''}"
 		@click.ctrl="selectEntity">
 		<div class="column column--selection">
 			<NcCheckboxRadioSwitch v-if="showActions"
 				:aria-label="t('inventory', 'Select')"
 				:model-value="isSelected"
-				data-testid="item-checkbox"
 				@update:model-value="selectEntity" />
 		</div>
 		<div class="column">
