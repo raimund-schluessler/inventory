@@ -435,7 +435,7 @@ export default {
 	watch: {
 		items: 'checkSelected',
 		collections: 'checkSelected',
-		searchString(newVal, oldVal) {
+		searchString(newVal) {
 			if (newVal && !this.filterOnly) {
 				this.$store.dispatch('search', newVal)
 			}
@@ -599,7 +599,7 @@ export default {
 			const dragHelper = document.getElementById('drag-preview')
 			e.dataTransfer.setDragImage(dragHelper, 10, 10)
 		},
-		dragEnd(e) {
+		dragEnd() {
 			this.draggedEntities = []
 			this.setDraggedEntities(this.draggedEntities)
 			const collections = document.querySelectorAll('.over')

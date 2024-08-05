@@ -504,9 +504,8 @@ export default {
 		 *
 		 * @param {string} value The string to show as barcode
 		 * @param {string} type The barcode type
-		 * @param {string} options The barcode options
 		 */
-		openBarcode(value, type = 'qrcode', options = '') {
+		openBarcode(value, type = 'qrcode') {
 			if (value.length > 0) {
 				this.showBarcode = true
 				// We have to wait for the modal to render before

@@ -359,7 +359,7 @@ export default {
 			this.addingCollection = !this.addingCollection
 		},
 
-		async addCollection(event) {
+		async addCollection() {
 			if (this.collectionNameError) {
 				return
 			}

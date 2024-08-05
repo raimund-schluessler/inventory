@@ -71,7 +71,7 @@ export default {
 		}
 	},
 	methods: {
-		closeModal(event) {
+		closeModal() {
 			this.$emit('update:qrModalOpen', false)
 		},
 		onDetect(detectedCodes) {

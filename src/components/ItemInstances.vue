@@ -384,7 +384,7 @@ export default {
 			this.addingInstance = true
 		},
 
-		hideInstanceInput(e) {
+		hideInstanceInput() {
 			this.addingInstance = false
 		},
 
