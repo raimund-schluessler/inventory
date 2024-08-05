@@ -6,6 +6,6 @@ module.exports = {
 		OCA: false
 	},
 	extends: [
-		'@nextcloud',
+		'@nextcloud/eslint-config/vue3',
 	],
 }; 
