@@ -108,7 +108,7 @@ export default {
 		},
 	},
 	watch: {
-		rawInput(val, oldVal) {
+		rawInput(val) {
 			this.enlisted = false
 			const results = Papa.parse(val, { delimiter: ';', newline: '\n' })
 			this.items = []

@@ -177,11 +177,11 @@ export default {
 	methods: {
 		t,
 
-		closeModal(event) {
+		closeModal() {
 			this.searchString = ''
 			this.$emit('update:modalOpen', false)
 		},
-		selectItems(event) {
+		selectItems() {
 			this.link(this.relationType, this.selectedItems)
 			this.closeModal()
 		},
