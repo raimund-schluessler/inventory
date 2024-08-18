@@ -145,7 +145,7 @@ export default {
 		},
 	},
 	emits: [
-		'select-entity',
+		'selectEntity',
 	],
 	data() {
 		return {
@@ -186,7 +186,7 @@ export default {
 		]),
 
 		selectEntity() {
-			this.$emit('select-entity', this.entity)
+			this.$emit('selectEntity', this.entity)
 		},
 
 		startRename() {
