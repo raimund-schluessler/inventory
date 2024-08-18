@@ -103,7 +103,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:mode="mode"
 				draggable="true"
 				class="entity"
-				@select-entity="selectEntity"
+				@selectEntity="selectEntity"
 				@dragstart="dragStart(item, $event)"
 				@dragend="dragEnd"
 				@drop="dropped(item, $event)"
@@ -126,7 +126,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:class="{ 'dragged': isDragged(item) }"
 				:mode="mode"
 				:show-actions="false"
-				@select-entity="selectEntity" />
+				@selectEntity="selectEntity" />
 		</div>
 		<div id="drag-preview" class="entitytable entitytable--drag-preview">
 			<div v-for="entity in draggedEntities" :key="entity.key" class="row">
@@ -229,7 +229,7 @@ export default {
 	},
 	emits: [
 		'unlink',
-		'selected-items-changed',
+		'selectedItemsChanged',
 	],
 	data() {
 		return {
@@ -435,7 +435,7 @@ export default {
 	watch: {
 		items: 'checkSelected',
 		collections: 'checkSelected',
-		searchString(newVal, oldVal) {
+		searchString(newVal) {
 			if (newVal && !this.filterOnly) {
 				this.$store.dispatch('search', newVal)
 			}
@@ -488,7 +488,7 @@ export default {
 			/**
 			 * Emits that the selected items have changed
 			 */
-			this.$emit('selected-items-changed', this.selectedItems)
+			this.$emit('selectedItemsChanged', this.selectedItems)
 		},
 
 		placeholder(position) {
@@ -534,7 +534,7 @@ export default {
 				return true
 			})
 			if (before !== this.selectedEntities.length) {
-				this.$emit('selected-items-changed', this.selectedItems)
+				this.$emit('selectedItemsChanged', this.selectedItems)
 			}
 		},
 
@@ -561,7 +561,7 @@ export default {
 			} else {
 				this.selectedEntities.push(entity)
 			}
-			this.$emit('selected-items-changed', this.selectedItems)
+			this.$emit('selectedItemsChanged', this.selectedItems)
 		},
 		isSelected(item) {
 			return this.selectedEntities.includes(item)
@@ -599,7 +599,7 @@ export default {
 			const dragHelper = document.getElementById('drag-preview')
 			e.dataTransfer.setDragImage(dragHelper, 10, 10)
 		},
-		dragEnd(e) {
+		dragEnd() {
 			this.draggedEntities = []
 			this.setDraggedEntities(this.draggedEntities)
 			const collections = document.querySelectorAll('.over')

@@ -69,7 +69,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<TagList :tags="entity.tags" />
 		</div>
 		<div v-if="entity.syncStatus" class="column">
-			<ItemStatusDisplay :status="entity.syncStatus" @reset-status="resetStatus(entity)" />
+			<ItemStatusDisplay :status="entity.syncStatus" @resetStatus="resetStatus(entity)" />
 		</div>
 	</div>
 </template>
@@ -117,7 +117,7 @@ export default {
 		},
 	},
 	emits: [
-		'select-entity',
+		'selectEntity',
 	],
 	computed: {
 		imageSrc() {
@@ -155,7 +155,7 @@ export default {
 		t,
 
 		selectEntity() {
-			this.$emit('select-entity', this.entity)
+			this.$emit('selectEntity', this.entity)
 		},
 
 		...mapMutations(['setSyncStatus']),

@@ -163,7 +163,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 							<li v-for="uuid in instance.uuids" :key="`uuids${instance.id}${uuid.id}`">
 								<span>{{ uuid.uuid }}</span>
 								<NcActions :boundaries-element="boundaries">
-									<NcActionButton :close-after-click="true" @click="$emit('open-barcode', uuid.uuid)">
+									<NcActionButton :close-after-click="true" @click="$emit('openBarcode', uuid.uuid)">
 										<template #icon>
 											<Qrcode :size="20" />
 										</template>
@@ -222,7 +222,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="new_instance" method="POST" />
 		<form id="edit_instance" method="POST" />
 		<!-- qrcode -->
-		<QrScanModal v-model:qr-modal-open="qrModalOpen" @codes-detected="foundCodes" />
+		<QrScanModal v-model:qr-modal-open="qrModalOpen" @codesDetected="foundCodes" />
 	</div>
 </template>
 
@@ -279,7 +279,7 @@ export default {
 		},
 	},
 	emits: [
-		'open-barcode',
+		'openBarcode',
 	],
 	data() {
 		return {
@@ -384,7 +384,7 @@ export default {
 			this.addingInstance = true
 		},
 
-		hideInstanceInput(e) {
+		hideInstanceInput() {
 			this.addingInstance = false
 		},
 

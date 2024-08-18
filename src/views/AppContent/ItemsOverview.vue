@@ -87,7 +87,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			:collections="collections"
 			:collection-type="collection" />
 		<!-- qrcode -->
-		<QrScanModal v-model:qr-modal-open="qrModalOpen" :status-string="statusMessage" @codes-detected="foundUuid" />
+		<QrScanModal v-model:qr-modal-open="qrModalOpen" :status-string="statusMessage" @codesDetected="foundUuid" />
 	</div>
 </template>
 
@@ -359,7 +359,7 @@ export default {
 			this.addingCollection = !this.addingCollection
 		},
 
-		async addCollection(event) {
+		async addCollection() {
 			if (this.collectionNameError) {
 				return
 			}

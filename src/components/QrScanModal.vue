@@ -63,7 +63,7 @@ export default {
 	},
 	emits: [
 		'update:qrModalOpen',
-		'codes-detected',
+		'codesDetected',
 	],
 	data() {
 		return {
@@ -71,11 +71,11 @@ export default {
 		}
 	},
 	methods: {
-		closeModal(event) {
+		closeModal() {
 			this.$emit('update:qrModalOpen', false)
 		},
 		onDetect(detectedCodes) {
-			this.$emit('codes-detected', detectedCodes)
+			this.$emit('codesDetected', detectedCodes)
 		},
 
 		async onInit(promise) {

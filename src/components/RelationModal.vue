@@ -63,7 +63,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:allow-deletion="false"
 					:filter-only="true"
 					mode="selection"
-					@selected-items-changed="selectedItemsChanged" />
+					@selectedItemsChanged="selectedItemsChanged" />
 			</div>
 
 			<div class="footer">
@@ -177,11 +177,11 @@ export default {
 	methods: {
 		t,
 
-		closeModal(event) {
+		closeModal() {
 			this.searchString = ''
 			this.$emit('update:modalOpen', false)
 		},
-		selectItems(event) {
+		selectItems() {
 			this.link(this.relationType, this.selectedItems)
 			this.closeModal()
 		},
