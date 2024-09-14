@@ -55,7 +55,7 @@
 		"@nextcloud/stylelint-config": "3.0.1",
 		"@nextcloud/vite-config": "2.2.2",
 		"@vue/test-utils": "^2.4.6",
-		"happy-dom": "^15.7.3",
+		"happy-dom": "^15.7.4",
 		"vite-plugin-static-copy": "^1.0.6",
 		"vitest": "^2.1.1"
 	},
