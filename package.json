@@ -36,7 +36,7 @@
 		"@nextcloud/vue": "9.0.0-alpha.5",
 		"@vueuse/components": "^11.1.0",
 		"bwip-js": "4.5.1",
-		"date-fns": "^3.6.0",
+		"date-fns": "^4.1.0",
 		"jspdf": "2.5.2",
 		"p-queue": "8.0.1",
 		"papaparse": "5.4.1",
