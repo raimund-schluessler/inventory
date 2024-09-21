@@ -37,7 +37,7 @@
 		"@vueuse/components": "^11.0.3",
 		"bwip-js": "4.5.1",
 		"date-fns": "^3.6.0",
-		"jspdf": "2.5.1",
+		"jspdf": "2.5.2",
 		"p-queue": "8.0.1",
 		"papaparse": "5.4.1",
 		"search-query-parser": "1.6.0",
