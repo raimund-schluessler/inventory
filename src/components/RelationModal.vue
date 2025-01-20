@@ -63,7 +63,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					:allow-deletion="false"
 					:filter-only="true"
 					mode="selection"
-					@selectedItemsChanged="selectedItemsChanged" />
+					@selected-items-changed="selectedItemsChanged" />
 			</div>
 
 			<div class="footer">

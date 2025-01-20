@@ -222,7 +222,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="new_instance" method="POST" />
 		<form id="edit_instance" method="POST" />
 		<!-- qrcode -->
-		<QrScanModal v-model:qr-modal-open="qrModalOpen" @codesDetected="foundCodes" />
+		<QrScanModal v-model:qr-modal-open="qrModalOpen" @codes-detected="foundCodes" />
 	</div>
 </template>
 

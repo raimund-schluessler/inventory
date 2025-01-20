@@ -170,7 +170,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<h3>
 						<span>{{ t('inventory', 'Instances') }}</span>
 					</h3>
-					<ItemInstances :item="item" :instance-id="instanceId" @openBarcode="(uuid) => openBarcode(uuid)" />
+					<ItemInstances :item="item" :instance-id="instanceId" @open-barcode="(uuid) => openBarcode(uuid)" />
 				</div>
 				<div v-if="parentItems.length" class="paragraph">
 					<h3>
@@ -180,7 +180,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<EntityTable :items="parentItems"
 							:unlink="true"
 							:filter-only="true"
-							@selectedItemsChanged="selectedParentsChanged"
+							@selected-items-changed="selectedParentsChanged"
 							@unlink="unlink('parent')" />
 					</div>
 				</div>
@@ -192,7 +192,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<EntityTable :items="subItems"
 							:unlink="true"
 							:filter-only="true"
-							@selectedItemsChanged="selectedSubChanged"
+							@selected-items-changed="selectedSubChanged"
 							@unlink="unlink('sub')" />
 					</div>
 				</div>
@@ -204,7 +204,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 						<EntityTable :items="relatedItems"
 							:unlink="true"
 							:filter-only="true"
-							@selectedItemsChanged="selectedRelatedChanged"
+							@selected-items-changed="selectedRelatedChanged"
 							@unlink="unlink('related')" />
 					</div>
 				</div>
