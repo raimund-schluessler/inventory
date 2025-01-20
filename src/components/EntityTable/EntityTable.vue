@@ -103,7 +103,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:mode="mode"
 				draggable="true"
 				class="entity"
-				@selectEntity="selectEntity"
+				@select-entity="selectEntity"
 				@dragstart="dragStart(item, $event)"
 				@dragend="dragEnd"
 				@drop="dropped(item, $event)"
@@ -126,7 +126,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				:class="{ 'dragged': isDragged(item) }"
 				:mode="mode"
 				:show-actions="false"
-				@selectEntity="selectEntity" />
+				@select-entity="selectEntity" />
 		</div>
 		<div id="drag-preview" class="entitytable entitytable--drag-preview">
 			<div v-for="entity in draggedEntities" :key="entity.key" class="row">
