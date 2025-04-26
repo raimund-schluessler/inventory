@@ -57,7 +57,7 @@
 		"@vue/test-utils": "^2.4.6",
 		"happy-dom": "^17.4.4",
 		"vite-plugin-static-copy": "^2.3.1",
-		"vitest": "^3.1.1"
+		"vitest": "^3.1.2"
 	},
 	"engines": {
 		"node": ">=15.0.0",
