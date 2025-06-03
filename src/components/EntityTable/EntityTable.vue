@@ -30,7 +30,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<NcButton alignment="center-reverse"
 						class="sort-button"
 						:class="{ 'sort-button--active': sortOrder === 'name' }"
-						type="tertiary"
+						variant="tertiary"
+						wide
 						@click="setSortOrder('name')">
 						{{ t('inventory', 'Name') }}
 						<template #icon>
@@ -43,7 +44,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<NcButton alignment="center-reverse"
 						class="sort-button"
 						:class="{ 'sort-button--active': sortOrder === 'maker' }"
-						type="tertiary"
+						variant="tertiary"
+						wide
 						@click="setSortOrder('maker')">
 						{{ t('inventory', 'Maker') }}
 						<template #icon>
@@ -56,7 +58,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<NcButton alignment="center-reverse"
 						class="sort-button"
 						:class="{ 'sort-button--active': sortOrder === 'description' }"
-						type="tertiary"
+						variant="tertiary"
+						wide
 						@click="setSortOrder('description')">
 						{{ t('inventory', 'Description') }}
 						<template #icon>

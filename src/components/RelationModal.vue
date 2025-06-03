@@ -70,7 +70,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="item-adding-status">
 					{{ statusString }}
 				</span>
-				<NcButton type="primary" @click="selectItems">
+				<NcButton variant="primary" @click="selectItems">
 					{{ t('inventory', 'Select') }}
 				</NcButton>
 				<NcButton @click="closeModal">
