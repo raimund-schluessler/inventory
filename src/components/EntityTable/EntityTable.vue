@@ -27,7 +27,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					<NcCheckboxRadioSwitch v-bind="selectAllBind" @update:model-value="selectEntities" />
 				</div>
 				<div class="column column--name">
-					<NcButton alignment="center-reverse"
+					<NcButton alignment="start-reverse"
 						class="sort-button"
 						:class="{ 'sort-button--active': sortOrder === 'name' }"
 						variant="tertiary"
@@ -41,7 +41,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</NcButton>
 				</div>
 				<div class="column">
-					<NcButton alignment="center-reverse"
+					<NcButton alignment="start-reverse"
 						class="sort-button"
 						:class="{ 'sort-button--active': sortOrder === 'maker' }"
 						variant="tertiary"
@@ -55,7 +55,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 					</NcButton>
 				</div>
 				<div class="column">
-					<NcButton alignment="center-reverse"
+					<NcButton alignment="start-reverse"
 						class="sort-button"
 						:class="{ 'sort-button--active': sortOrder === 'description' }"
 						variant="tertiary"
@@ -724,17 +724,16 @@ export default {
 
 	:deep() .row {
 		display: grid;
-		grid-template-columns: 44px 2fr 1fr 3fr 1fr;
+		grid-template-columns: calc(var(--default-clickable-area) + 4 * var(--default-grid-baseline)) 2fr 1fr 3fr 1fr calc(var(--default-clickable-area) + 4 * var(--default-grid-baseline));
 		height: 44px;
 		transition: background-color .3s ease;
 		border-bottom: 1px solid var(--color-border-dark);
-		padding-left: 8px;
 		@media only screen and (max-width: 500px) {
-			grid-template-columns: 44px 2fr 1fr 3fr;
+			grid-template-columns: calc(var(--default-clickable-area) + 4 * var(--default-grid-baseline)) 2fr 1fr 3fr;
 			padding-left: 0;
 
 			&--has-status {
-				grid-template-columns: 44px 2fr 1fr 3fr 44px;
+				grid-template-columns: var(--default-clickable-area) 2fr 1fr 3fr var(--default-clickable-area);
 			}
 
 			.column.column--hide {
@@ -747,7 +746,7 @@ export default {
 		}
 
 		&--has-status {
-			grid-template-columns: 44px 2fr 1fr 3fr 1fr 44px;
+			grid-template-columns: var(--default-clickable-area) 2fr 1fr 3fr 1fr var(--default-clickable-area);
 		}
 
 		&--header {
@@ -770,12 +769,6 @@ export default {
 					margin-left: 24px;
 				}
 
-				&--actions {
-					position: absolute;
-					right: 0;
-					top: 3px;
-				}
-
 				.sort-button {
 					.button-vue__icon {
 						transition-timing-function: linear;
@@ -796,7 +789,7 @@ export default {
 		}
 
 		&--collection {
-			grid-template-columns: 44px 1fr 44px;
+			grid-template-columns: calc(var(--default-clickable-area) + 4 * var(--default-grid-baseline)) 1fr calc(var(--default-clickable-area) + 4 * var(--default-grid-baseline));
 		}
 
 		&--empty,
@@ -844,6 +837,7 @@ export default {
 			&--actions {
 				overflow: unset;
 				padding-left: 0 !important;
+				justify-content: center;
 			}
 
 			&--selection {
