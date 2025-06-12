@@ -147,10 +147,8 @@ body {
 }
 #controls {
 	display: flex;
-	padding-left: 52px;
-	margin-right: 8px;
-	padding-top: 8px;
-	height: 52px;
+	padding: calc(2 * var(--default-grid-baseline));;
+	padding-left: calc(4 * var(--default-grid-baseline) + var(--default-clickable-area));;
 	position: sticky;
 	top: 0;
 	background-color: var(--color-main-background-translucent);
@@ -159,11 +157,10 @@ body {
 	@media only screen and (max-width: 500px) {
 		padding-left: 44px;
 		padding-top: 0;
-		height: 44px;
 	}
 
 	.breadcrumb {
-		height: 44px;
+		height: var(--default-clickable-area);
 		min-width: 0;
 	}
 }
