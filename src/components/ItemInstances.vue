@@ -477,14 +477,14 @@ export default {
 
 	&--instances {
 		.row {
-			grid-template-columns: 75px 75px 110px 140px 2fr 1fr 2fr 44px;
+			grid-template-columns: 75px 75px 110px 140px 2fr 1fr 2fr var(--default-clickable-area);
 
 			&--column-2 {
 				grid-template-columns: 100px 1fr;
 			}
 
 			&--add-uuid {
-				grid-template-columns: 1fr 44px;
+				grid-template-columns: 1fr var(--default-clickable-area);
 			}
 
 			&--empty,
