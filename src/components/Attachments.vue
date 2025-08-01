@@ -375,7 +375,7 @@ export default {
 				grid-column: 1 / -1;
 
 				.label {
-					line-height: 44px;
+					line-height: var(--default-clickable-area);
 				}
 				.action-item {
 					margin-left: auto;
