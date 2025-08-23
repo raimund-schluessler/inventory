@@ -42,7 +42,7 @@
 		"papaparse": "^5.5.3",
 		"search-query-parser": "^1.6.0",
 		"uuid": "^11.1.0",
-		"vue": "^3.5.18",
+		"vue": "^3.5.19",
 		"vue-material-design-icons": "^5.3.1",
 		"vue-qrcode-reader": "^5.7.0",
 		"vue-router": "^4.5.1",
