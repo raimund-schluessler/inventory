@@ -62,6 +62,8 @@ import Folder from 'vue-material-design-icons/Folder.vue'
 import MapMarker from 'vue-material-design-icons/MapMarker.vue'
 import TagMultiple from 'vue-material-design-icons/TagMultiple.vue'
 
+import '@nextcloud/dialogs/style.css'
+
 export default {
 	name: 'App',
 	components: {
