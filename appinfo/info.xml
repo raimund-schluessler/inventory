@@ -15,7 +15,7 @@
 * Assign unique UUIDs and find item instances by scanning their GTIN or QR code
 * Assign tags to items and search by tag
 	]]></description>
-	<version>0.1.2</version>
+	<version>0.1.3</version>
 	<licence>agpl</licence>
 	<author mail="raimund.schluessler@mailbox.org">Raimund Schlüßler</author>
 	<namespace>Inventory</namespace>
@@ -26,7 +26,7 @@
     <screenshot>https://raw.githubusercontent.com/raimund-schluessler/inventory/master/screenshots/inventory-1.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/raimund-schluessler/inventory/master/screenshots/inventory-2.png</screenshot>
 	<dependencies>
-		<nextcloud min-version="28" max-version="31"/>
+		<nextcloud min-version="30" max-version="33"/>
 	</dependencies>
 	<navigations>
 		<navigation>

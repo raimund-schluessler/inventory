@@ -1,3 +1,15 @@
+## 0.1.3 - 2025-09-12
+
+### Fixed
+
+- Check GTIN correctly when creating and editing #547
+- Add camera feature policy #548
+- Save edited item when clicking outside #549
+- Fix checkbox in item relation modal #816 
+
+### Changed
+- Updated dependencies #550
+
 ## 0.1.2 - 2024-02-04
 
 ### Added
