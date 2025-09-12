@@ -71,14 +71,22 @@ export default {
 		async selectFolder() {
 			const folder = await this.$store.dispatch('getAttachmentFolder')
 
-			const path = await getFilePickerBuilder(t('inventory', 'Select attachment folder'))
-				.addMimeTypeFilter('httpd/unix-directory')
-				.startAt(folder)
-				.allowDirectories(true)
-				.build()
-				.pick()
+			try {
+				const path = await getFilePickerBuilder(t('inventory', 'Select attachment folder'))
+					.addMimeTypeFilter('httpd/unix-directory')
+					.startAt(folder)
+					.allowDirectories(true)
+					.addButton({
+						label: 'Select folder',
+						callback: () => {},
+					})
+					.build()
+					.pick()
 
-			this.$store.dispatch('setAttachmentFolder', { path })
+				this.$store.dispatch('setAttachmentFolder', { path })
+			} catch (err) {
+
+			}
 		},
 		/**
 		 * Creates a PDF file with multiple randomly generated UUID qrcodes.

@@ -258,15 +258,22 @@ export default {
 		},
 
 		async select() {
-			const attachment = await getFilePickerBuilder(t('inventory', 'Select a file to link as attachment')).build().pick()
 			try {
-				await this.$store.dispatch('linkAttachment', {
-					itemId: this.itemId,
-					attachment,
-					instanceId: this.instanceId,
-				})
+				const attachment = await getFilePickerBuilder(t('inventory', 'Select a file to link as attachment'))
+					.addButton({
+						label: 'Select attachment',
+						callback: () => {},
+					}).build().pick()
+				try {
+					await this.$store.dispatch('linkAttachment', {
+						itemId: this.itemId,
+						attachment,
+						instanceId: this.instanceId,
+					})
+				} catch (err) {
+					showError(err.response.data.message)
+				}
 			} catch (err) {
-				showError(err.response.data.message)
 			}
 		},
 
