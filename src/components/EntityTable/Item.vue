@@ -28,7 +28,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 			<NcCheckboxRadioSwitch v-if="showActions"
 				:aria-label="t('inventory', 'Select')"
 				:model-value="isSelected"
-				@update:model-value="selectEntity" />
+				@update:model-value="() => {mode != 'selection' ? selectEntity() : ''}" />
 		</div>
 		<div class="column">
 			<component :is="itemRoute ? 'RouterLink' : 'a'"
