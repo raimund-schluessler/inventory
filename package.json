@@ -45,7 +45,7 @@
 		"vue": "^3.5.25",
 		"vue-material-design-icons": "^5.3.1",
 		"vue-qrcode-reader": "^5.7.0",
-		"vue-router": "^4.6.3",
+		"vue-router": "^4.6.4",
 		"vuex": "^4.1.0"
 	},
 	"devDependencies": {
