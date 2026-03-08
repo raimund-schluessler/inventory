@@ -26,7 +26,7 @@
     <screenshot>https://raw.githubusercontent.com/raimund-schluessler/inventory/master/screenshots/inventory-1.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/raimund-schluessler/inventory/master/screenshots/inventory-2.png</screenshot>
 	<dependencies>
-		<nextcloud min-version="30" max-version="33"/>
+		<nextcloud min-version="33" max-version="34"/>
 	</dependencies>
 	<navigations>
 		<navigation>
