@@ -84,7 +84,7 @@ class ItemparentMapper extends QBMapper {
 			->where(
 				$qb->expr()->eq('parentid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
 			);
-		$cursor = $qb->execute();
+		$cursor = $qb->executeQuery();
 		$subIDs = [];
 		while ($row = $cursor->fetch()) {
 			array_push($subIDs, $row['itemid']);
@@ -113,7 +113,7 @@ class ItemparentMapper extends QBMapper {
 			->where(
 				$qb->expr()->eq('itemid', $qb->createNamedParameter($itemID, IQueryBuilder::PARAM_INT))
 			);
-		$cursor = $qb->execute();
+		$cursor = $qb->executeQuery();
 		$subIDs = [];
 		while ($row = $cursor->fetch()) {
 			array_push($subIDs, $row['parentid']);
