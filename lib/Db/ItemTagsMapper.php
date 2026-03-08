@@ -102,7 +102,7 @@ class ItemTagsMapper extends QBMapper {
 
 		$itemIds = [];
 
-		$result = $qb->execute();
+		$result = $qb->executeQuery();
 		while ($row = $result->fetch()) {
 			$itemIds[] = $row['itemid'];
 		}

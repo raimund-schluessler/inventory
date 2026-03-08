@@ -97,7 +97,7 @@ class ItemrelationMapper extends QBMapper {
 			->andWhere(
 				$qb->expr()->eq('uid', $qb->createNamedParameter($userID, IQueryBuilder::PARAM_STR))
 			);
-		$cursor = $qb->execute();
+		$cursor = $qb->executeQuery();
 		$relatedIDs = [];
 		while ($row = $cursor->fetch()) {
 			$relatedID = ((int)$row['itemid1'] === $itemID) ? $row['itemid2'] : $row['itemid1'];
