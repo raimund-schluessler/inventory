@@ -1,3 +1,12 @@
+## 0.1.4 - 2026-03-09
+
+### Fixed
+
+- Adjust app for Nextcloud server 33 #914
+
+### Changed
+- Updated dependencies
+
 ## 0.1.3 - 2025-09-12
 
 ### Fixed
