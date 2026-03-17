@@ -26,6 +26,7 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
+use OCP\Server;
 use Test\TestCase;
 
 /**
@@ -47,7 +48,7 @@ class AttachmentMapperTest extends TestCase {
 
 		$this->userId = 'inventory_tester';
 
-		$this->dbConnection = \OC::$server->getDatabaseConnection();
+		$this->dbConnection = Server::get(IDBConnection::class);
 		$this->attachmentMapper = new AttachmentMapper(
 			$this->dbConnection
 		);
