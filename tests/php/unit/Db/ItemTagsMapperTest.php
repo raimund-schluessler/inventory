@@ -26,6 +26,7 @@
 namespace OCA\Inventory\Db;
 
 use OCP\IDBConnection;
+use OCP\Server;
 use Test\TestCase;
 
 /**
@@ -44,7 +45,7 @@ class ItemTagsMapperTest extends TestCase {
 	public function setup(): void {
 		parent::setUp();
 
-		$this->dbConnection = \OC::$server->getDatabaseConnection();
+		$this->dbConnection = Server::get(IDBConnection::class);
 		$this->itemTagsMapper = new ItemTagsMapper(
 			$this->dbConnection
 		);

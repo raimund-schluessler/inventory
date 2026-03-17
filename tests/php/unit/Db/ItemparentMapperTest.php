@@ -27,6 +27,7 @@ namespace OCA\Inventory\Db;
 
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IDBConnection;
+use OCP\Server;
 use Test\TestCase;
 
 /**
@@ -45,7 +46,7 @@ class ItemparentMapperTest extends TestCase {
 	public function setup(): void {
 		parent::setUp();
 
-		$this->dbConnection = \OC::$server->getDatabaseConnection();
+		$this->dbConnection = Server::get(IDBConnection::class);
 		$this->itemparentMapper = new ItemparentMapper(
 			$this->dbConnection
 		);
