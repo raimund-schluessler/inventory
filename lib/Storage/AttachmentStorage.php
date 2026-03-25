@@ -204,7 +204,7 @@ class AttachmentStorage {
 					continue;
 				}
 				// Check whether file is PNG or JPEG
-				if (in_array(strtolower($nodeInfo->getMimetype()), ['image/png', 'image/jpeg'])) {
+				if (in_array(strtolower($nodeInfo->getMimetype()), ['image/png', 'image/jpeg', 'image/webp'])) {
 					$images[] = [
 						'filename' => $nodeInfo->getName(),
 						'path' => $nodeInfo->getPath(),
