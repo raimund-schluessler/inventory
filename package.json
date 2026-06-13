@@ -56,7 +56,7 @@
 		"@nextcloud/vite-config": "^2.5.2",
 		"@vue/test-utils": "^2.4.11",
 		"happy-dom": "^20.10.3",
-		"vite-plugin-static-copy": "^4.1.0",
+		"vite-plugin-static-copy": "^4.1.1",
 		"vitest": "^4.1.8"
 	},
 	"engines": {
