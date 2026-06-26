@@ -67,7 +67,6 @@ class PageController extends Controller {
 		$response = new TemplateResponse('inventory', 'main');
 
 		$csp = new ContentSecurityPolicy();
-		$csp->allowEvalScript(true);
 		// Needed to get https://github.com/gruhn/vue-qrcode-reader to work.
 		// $csp->allowEvalWasm(true);
 		$response->setContentSecurityPolicy($csp);
