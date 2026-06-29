@@ -1,3 +1,15 @@
+## 0.1.5 - 2026-06-29
+
+### Added
+
+- feat: include WEBP in supported image formats #929
+
+### Fixed
+- fix: adjust app for Nextcloud server 34 #987
+
+### Changed
+- Updated dependencies
+
 ## 0.1.4 - 2026-03-09
 
 ### Fixed
